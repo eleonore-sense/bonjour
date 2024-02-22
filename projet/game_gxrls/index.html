@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+	<title>↗🕹️↘🎡↗🕹️↘🎡↗🕹️↘🎡</title>
+<!--	<link rel="icon" type="image/png" href="../image/etoiledeux.png" />-->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="../script_projet.js"></script>
+	<link rel="stylesheet" type="text/css" href="../style_projet.css">
+
+
+
+</head>
+
+<body id="body">
+
+
+
+<div id="entete">
+  <div id="accueil">
+
+    <p><span class="emoji"></span> 
+      <a href="../index.html" class="lien"> retour à la liste</a>
+    </p>
+    <p><span class="emoji"></span> 
+      <a href="../machine_histoire/index.html" class="lien"> voir un autre projet</a>
+    </p>
+      <p><span class="emoji"></span> 
+      <a href="../../index.html" class="lien"> retour au bureau</a>
+    </p>
+  </div>
+
+
+  <div id="contact">
+    <p><a href="../CONTACT/index.html" class="lien"> éléonore sense</a>
+    </p>
+  </div>
+
+</div>
+
+
+<div id="contenu_projet">
+<div id="txt_pres">
+    <div class="bloc_titre">
+      <p id="titre">>_ game gxrl</p>
+      <p id="sous_titre">outils de prise en main et de découverte des interactions numériques avec les enseignants <a href="https://www.buzzinglight.com/" class="lien_pote">Guillaume Jacquemin</a> et <a href="https://www.timknapen.be/" class="lien_pote">Tim Knapen</a> à l’ENSCI-les-ateliers_ 2020</p>
+    </div>
+    <div id="txt">Avec les enseignants de l'atelier numérique de l’école l'ENSCI-les-Ateliers, <a href="https://www.buzzinglight.com/" class="lien_pote">Guillaume Jacqumin</a> et <a href="https://www.timknapen.be/" class="lien_pote">Tim Knapen</a>, nous réalisons que l’espace dédié au numérique est principalement utilisé par des étudiant·es ayant des connaissances ultérieures en électronique et programmation et que les personnes novices osent assez peu y entrer.
+
+<br><br> Nous réalisons alors des outils numériques qui prennent la forme de consoles de jeu à destination
+des élèves pour simplifier la conception de prototypes intégrant des éléments électroniques.
+<br>Ces outils sont utilisés dans le cadre de
+workshop informels entre étudiant·es.
+<br><br>Ils permettent de mettre facilement en fonctionnement des moteurs,
+un amplificateur sonore, des lumières, des vibreurs, sans connaissances particulières en électronique ou programmation dans le but d’ouvrir le champs des possibles en intéraction numérique.
+    </div>
+</div>
+
+
+
+
+
+<div id="visuel">
+<div id="photo" style="background-image: url('img/1.jpg');">
+  <div id="gauche" onclick="prev_img()">
+    <p id="precedent">←</p>
+  </div>
+  <div id="droite" onclick="next_img()">
+    <p id="suivant">→</p>
+  </div>
+</div>
+</div>
+
+
+
+</div>
+
+
+
+<div id="gif" style="background-image: url('img/0_min.gif'); left:113px; bottom: 324px; width:54px; height:70px;"></div>
+
+
+</body>
+
+
+<script>
+  var image = ['1.jpg', '2.gif', '3.gif', '4.jpg', '5.gif', '6.jpg', '7.jpg', '8.jpg', '9.gif', '10.gif', '11.jpg', '12.gif', '13.jpg'];
+
+  var x = 0;
+var long = image.length-1;
+
+   function next_img(){
+    if (x < long){
+  x=x+1;  
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+
+}else{
+    x=0;  
+
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+}
+};
+
+
+
+   function prev_img(){
+  if (x >= 1){
+  x=x-1;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+}else{
+x=12;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+    console.log(x);
+}
+};
+</script>
+	</html>

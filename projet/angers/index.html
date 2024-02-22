@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+	<title>↗🐲↘🌿↗🐲↘🌿↗🐲↘🌿</title>
+<!--	<link rel="icon" type="image/png" href="../image/etoiledeux.png" />-->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="../script_projet.js"></script>
+	<link rel="stylesheet" type="text/css" href="../style_projet.css"> 
+
+
+
+</head>
+
+<body id="body">
+
+
+
+<div id="entete">
+  <div id="accueil">
+
+    <p><span class="emoji"></span> 
+      <a href="../index.html" class="lien"> retour à la liste</a>
+    </p>
+    <p><span class="emoji"></span> 
+      <a href="../gaite_atelier/index.html" class="lien"> voir un autre projet</a>
+    </p>
+      <p><span class="emoji"></span> 
+      <a href="../../index.html" class="lien"> retour au bureau</a>
+    </p>
+  </div>
+
+
+  <div id="contact">
+    <p><a href="../CONTACT/index.html" class="lien"> éléonore sense</a>
+    </p>
+  </div>
+
+</div>
+
+
+<div id="contenu_projet">
+<div id="txt_pres">
+    <div class="bloc_titre">
+      <p id="titre">>_ plantes voisines, exploration <br>en chemin</p>
+      <p id="sous_titre">résidence artistique de médiation avec l’artiste 
+et designer <a href="https://www.instagram.com/nora_dupo/" class="lien_pote">Nora Dupont</a>_ Angers, 2023</p>
+    </div>
+    <div id="txt">
+Dans le cadre d’une résidence de médiation avec l’artiste et designer <a href="https://www.instagram.com/nora_dupo/" class="lien_pote">Nora Dupont</a>, nous travaillons en partenariat avec la ville d’Angers, les maisons de quartier les 3 Mâts et le centre Jean Villar, et 5 écoles des quartiers des Justices et de la Roseraie à Angers.
+<br>
+Durant 4 mois nous nous implantons dans les quartiers des Justices et de la Roseraie, nous proposons des ateliers sensibles autour des jardins en ville aux écoles et maisons de quartier.
+Nous proposons un premier cycle d’atelier autour de la collecte. Nous explorons le patrimoine végétal autour des écoles, à la recherche de formes, de couleurs. Cette matière collectée, est ensuite utilisée pour produire de la couleur, impression végétale, sérigraphie.
+<br><br>
+Nous organisons en partenariat avec la ville une grande journée de restitution au Parc de l’Arboretum, où les publics des deux maisons de quartier sont conduits par le petit train de la ville. Nous fabriquons des costumes et drapeaux mettre en valeur les jardins explorés.
+    </div>
+</div>
+
+
+
+
+
+<div id="visuel">
+<div id="photo" style="background-image: url('img/1.jpg');">
+  <div id="gauche" onclick="prev_img()">
+    <p id="precedent">←</p>
+  </div>
+  <div id="droite" onclick="next_img()">
+    <p id="suivant">→</p>
+  </div>
+</div>
+</div>
+
+
+<div id="credit">
+(<span class="emoji"></span> photos réalisées par la designer <a href="https://www.instagram.com/dalvarospape/" class="lien_pote">Dalva Rospape</a>)
+</div>
+
+
+</div>
+
+
+<!--<div id="gif" style="background-image: url('img/0_gif.gif'); left:500px; bottom: 70px; width:150px; height:150px;"></div>-->
+
+
+
+</body>
+
+
+<script>
+  var image = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg','7.jpg', '8.jpg', '9.jpg', '10.jpg', '11.jpg', '12.jpg', '13.jpg', '14.jpg', '15.jpg', '16.jpg'];
+
+  var x = 0;
+var long = image.length-1;
+
+   function next_img(){
+    if (x < long){
+  x=x+1;  
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+
+}else{
+    x=0;  
+
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+}
+};
+
+
+
+   function prev_img(){
+  if (x >= 1){
+  x=x-1;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+  console.log(x);
+}else{
+x=16;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+    console.log(x);
+}
+};
+</script>
+	</html>

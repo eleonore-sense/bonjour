@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+	<title>↗💡↘🖼️↗💡↘🖼️↗💡↘🖼️</title>
+<!--	<link rel="icon" type="image/png" href="../image/etoiledeux.png" />-->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="../script_projet.js"></script>
+	<link rel="stylesheet" type="text/css" href="../style_projet.css"> 
+
+
+
+</head>
+
+<body id="body">
+
+
+
+<div id="entete">
+  <div id="accueil">
+
+    <p><span class="emoji"></span> 
+      <a href="../index.html" class="lien"> retour à la liste</a>
+    </p>
+    <p><span class="emoji"></span> 
+      <a href="../tarot/index.html" class="lien"> voir un autre projet</a>
+    </p>
+      <p><span class="emoji"></span> 
+      <a href="../../index.html" class="lien"> retour au bureau</a>
+    </p>
+  </div>
+
+
+  <div id="contact">
+    <p><a href="../CONTACT/index.html" class="lien"> éléonore sense</a>
+    </p>
+  </div>
+
+</div>
+
+
+<div id="contenu_projet">
+<div id="txt_pres">
+    <div class="bloc_titre">
+      <p id="titre">>_ diploramax</p>
+      <p id="sous_titre">scénographie d'exposition réalisée avec les artistes et designers <a href="https://www.instagram.com/amira.louadah/?hl=fr" class="lien_pote">Amira Louadah</a>, <a href="https://www.instagram.com/rafael_tetedoie/" class="lien_pote">Rafaël Têtedoie</a> et <a href="https://www.instagram.com/lucaslorigeon/" class="lien_pote">Lucas Lorigeon</a>_ La Vilette Paris, 2022</p>
+    </div>
+    <div id="txt">
+Conception, réalisation et montage de la scénographie d’exposition présentant les projets de diplômes des étudiantes de l’ENSCI-les-Ateliers dans le cadre du Festival 100% à la Villette en 2022.
+<br><br>Un mapping d’objets met en valeur les projets lorsque l’artiste présente son travail en vidéo. 
+<br>Réalisation du graphisme de l’exposition et du <a href="../diploramax_site/index.html" class="lien_pote">site web</a>.
+    </div>
+</div>
+
+
+
+
+
+<div id="visuel">
+<div id="photo" style="background-image: url('img/1.jpg');">
+  <div id="gauche" onclick="prev_img()">
+    <p id="precedent">←</p>
+  </div>
+  <div id="droite" onclick="next_img()">
+    <p id="suivant">→</p>
+  </div>
+</div>
+</div>
+
+
+<div id="credit">
+(<span class="emoji"></span> photos réalisées par la photographe Véronique Huyghe et le designer <a href="https://www.instagram.com/lucaslorigeon/" class="lien_pote">Thomas Signollet</a>)
+</div>
+
+
+</div>
+
+
+<div id="gif" style="background-image: url('img/0.gif'); left:500px; bottom: 80px;"></div>
+
+
+
+</body>
+
+
+<script>
+  var image = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg','7.jpg', '8.jpg', '9.jpg', '10.jpg', '11.jpg'];
+
+  var x = 0;
+var long = image.length-1;
+
+   function next_img(){
+    if (x < long){
+  x=x+1;  
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+
+}else{
+    x=0;  
+
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+}
+};
+
+
+
+   function prev_img(){
+  if (x >= 1){
+  x=x-1;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+}else{
+x=10;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+    console.log(x);
+}
+};
+</script>
+	</html>

@@ -1,0 +1,375 @@
+	@font-face {
+	    font-family: 'Wingdings';
+	    src: url('../../TYPO/wingding.ttf') format('truetype'),
+	         url('wingding.svg') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+
+	}
+
+
+
+html, body{
+margin: 0px;
+padding: 0px;
+ font-family: Consolas;
+color: rgb(0,0,0);
+overflow: hidden;
+  background: rgb(245,245,245) ;
+  width: 100vw;
+  font-size: 0.9em;
+    -ms-user-select : none; 
+  -moz-user-select  : none; 
+  -webkit-user-select : none; 
+  user-select : none;
+}
+
+
+.emoji{
+	font-family: Wingdings;
+	font-size: 1.3em;
+}
+
+
+#entete{
+	z-index: 8;
+position: relative;
+display: flex;
+padding-left: 20px;
+padding-right: 20px;
+  justify-content: space-between;
+line-height: 0.3em;
+}
+
+#entete a{
+	text-decoration: none;
+	color: black;
+}
+
+#entete a:hover {
+	color: blue;
+	text-decoration: underline;
+}
+
+
+#fond{
+left:50vw;
+top: 50vh;
+margin-top: 100px;
+position: absolute;
+	width: 1600px;
+		height: 964px;
+			background-size: contain;
+background-repeat: no-repeat;
+		transform: translate(-50%, -50%);
+				background-image: url("fond.jpg");
+}
+
+
+
+
+	.pop_up{
+		background-color: rgb(245, 245, 245, 1.0);
+left:50vw;
+top: 50vh;
+	position: absolute;
+	z-index: 8;
+	border: solid 1px grey;
+	border-radius: 5px;
+	display: block;
+	padding:3px;
+		display: none;
+	}
+
+	#haut{
+		display: flex;
+		justify-content: right;
+		margin-bottom: 5px;
+	}
+
+
+	#pop_up_dauphin{
+margin-left: -450px;
+margin-top: -250px;
+	}
+
+	#pop_up_case_game{
+transform: translate(-50%, -50%);
+	}
+
+	#pop_up_encrypteur{
+transform: translate(-50%, -50%);
+	}
+
+	#pop_up_dans_les_brumes{
+transform: translate(-50%, -50%);
+	}
+
+
+	#pop_up_diploramax{
+transform: translate(-50%, -50%);
+	}
+
+		#pop_up_messagerie{
+transform: translate(-50%, -50%);
+width: 900px;
+height: 600px;
+	}
+
+
+
+
+
+
+	#pop_up_genre{
+transform: translate(-50%, -50%);
+	}
+
+	#boite_encrypteur{
+background-color: black;
+border: solid 1px grey;
+border-radius: 3px;
+width: 350px;
+height: 150px;
+	}
+
+
+#message_cligno{
+	text-align: center;
+	color: white;
+	text-decoration: none;
+	width: 100%;
+	height: 100%;
+	animation-name:cligno;
+	animation-duration:5s;
+	animation-iteration-count: infinite;
+	 font-family: 'UnifrakturMaguntia', cursive;
+	 display: block;
+	 margin-top: 40px;
+	 font-size: 1.7em;
+
+}
+
+
+
+	@keyframes cligno {
+		0% {filter: brightness(100%);
+				text-shadow: white 1px 0 5px;}
+		30%{filter: brightness(100%);
+				text-shadow: white 1px 0 5px;}
+		31%{filter: brightness(0%);
+				text-shadow: white 1px 0 0px;}
+		33% {filter: brightness(500%);
+				text-shadow: white 1px 0 15px;}
+		34% {filter: brightness(100%);
+				 text-shadow: white 1px 0 5px;}
+		35% {filter: brightness(100%);
+				text-shadow: white 1px 0 5px;}
+		36% {filter: brightness(0%);
+				text-shadow: white 1px 0 0px;}
+		37% {filter: brightness(500%);
+				text-shadow: white 1px 0 15px;}
+				38% {filter: brightness(0%);
+								text-shadow: white 1px 0 0px;}
+		39% {filter: brightness(500%);
+				text-shadow: white 1px 0 15px;}
+		44% {filter: brightness(100%);
+					text-shadow: white 1px 0 5px;}
+		100% {filter: brightness(100%);
+						text-shadow: white 1px 0 5px;}
+	}
+
+
+
+	#boite_case_game{
+
+background-color: white;
+border: solid 1px grey;
+border-radius: 3px;
+width: 800px;
+height: 500px;
+	}
+
+.case_game{
+height: 100%;
+margin-top: -40px;
+}
+
+
+#img_dans_les_brumes{
+	background-image: url("../../projet/dans_les_brumes/img/1.gif");
+}
+
+
+#img_diploramax{
+	background-image: url("../../projet/diploramax_site/img/1.gif");
+}
+
+#img_genre{
+	background-image: url("../../projet/genre_site/img/2.jpg");
+}
+
+
+#boite_messagerie{
+	display: block;
+}
+
+
+#img_1{
+	background-image: url("message1.jpg");
+}
+
+#img_2{
+	background-image: url("message2.jpg");
+}
+
+#filtre1{
+	background-image: url("filtre1.jpg");
+	position: absolute;
+	z-index: 20;
+top: 310px;
+left: 350px;
+		cursor:move;
+		mix-blend-mode: multiply;
+}
+
+#filtre2{
+	background-image: url("filtre2.jpg");
+	position: absolute;
+	z-index: 20;
+top: 187px;
+left: 350px;
+		cursor:move;
+		mix-blend-mode: multiply;
+}
+
+.img_messagerie{
+	width: 550px;
+height: 273px;
+margin-left: 10px;
+margin-bottom: 10px;
+
+background-repeat: no-repeat;
+background-size: contain;
+}
+
+.img_pop_up{
+
+width: 500px;
+height: 312px;
+background-repeat: no-repeat;
+background-size: contain;
+}
+
+
+
+
+
+center{
+	height: 100%;
+}
+*
+.lien_site{
+	margin-left: 15px;
+}
+
+button{cursor: pointer}
+
+
+
+
+
+
+.declencheur{
+	z-index: 8;
+left:50vw;
+top: 50vh;
+position: absolute;
+		opacity:0;
+			cursor: pointer;
+	background-color: blue;
+}
+
+
+#declencheur_dauphin{
+width: 62px;
+height: 82px;
+		transform: translate(456px, -298px);
+}
+
+
+#declencheur_case_game{
+width: 55px;
+height: 70px;
+		transform: translate(-448px, -53px);
+}
+
+#declencheur_genre{
+width: 55px;
+height: 70px;
+		transform: translate(-388px, -110px);
+}
+
+#declencheur_encrypteur{
+width: 55px;
+height: 70px;
+		transform: translate(-328px, -110px);
+}
+
+#declencheur_messagerie{
+width: 55px;
+height: 70px;
+		transform: translate(-327px, -177px);
+}
+
+#declencheur_dans_les_brumes{
+width: 55px;
+height: 70px;
+		transform: translate(-267px, -177px);
+}
+
+#declencheur_diploramax{
+width: 55px;
+height: 70px;
+		transform: translate(-206px, -110px);
+}
+
+#declencheur_ele{
+width: 55px;
+height: 70px;
+		transform: translate(-148px, -53px);
+}
+
+#story{
+	overflow:hidden ;
+	}
+
+
+
+.vers_projet{
+	color: black;
+	text-decoration: none;
+	position: absolute;
+	top: 25px;
+	left: 20px;
+		display: none;
+}
+
+
+
+.vers_projet_lien:hover {
+	color: black;
+	text-decoration: none;
+	 text-shadow: 0px 0px 8px white, 0px 0px 10px rgba(255, 0, 221, 1), 0px 0px 8px rgba(255, 0, 221, 1); 
+}
+
+.vers_projet_lien{
+	color: blue;
+	text-decoration: underline;	
+	text-shadow: none;
+	}
+
+
+
+
+#tel{display: none;}

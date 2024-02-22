@@ -1,0 +1,159 @@
+	@font-face {
+	    font-family: 'Wingdings';
+	    src: url('../../TYPO/wingding.ttf') format('truetype'),
+	         url('wingding.svg') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+
+	}
+	      @font-face {
+      font-family: 'Minion';
+      src: url("../../TYPO/MinionPro-Regular.ttf") format('truetype');
+      font-style: normal;
+
+  }
+
+
+html, body{
+margin: 0px;
+padding: 0px;
+ font-family: Consolas;
+color: rgb(0,0,0);
+overflow: hidden;
+  background: rgb(245,245,245) ;
+  width: 100vw;
+  font-size: 0.9em;
+      -ms-user-select : none; 
+  -moz-user-select  : none; 
+  -webkit-user-select : none; 
+  user-select : none;
+}
+
+
+.emoji{
+	font-family: Wingdings;
+	font-size: 1.3em;
+}
+
+
+#entete{
+	position: absolute;
+display: flex;
+padding-left: 15px;
+padding-right: 15px;
+  justify-content: space-between;
+  line-height: 0.3em;
+  z-index: 8;
+
+}
+
+#entete a{
+	text-decoration: none;
+	color: black;
+}
+
+
+
+#entete a:hover {
+	color: mediumblue;
+	text-decoration: underline;
+}
+
+
+
+#fond{
+	width: 100vw; 
+	height: 40vh; 
+position: absolute;
+display: flex;
+justify-content: center;
+margin-top: 50px;}
+
+
+
+#visuel{
+	position: absolute;
+	margin-top: 3vh;
+	height: 50vh;
+	width: 100vw;
+	top: 40vh;
+}
+
+
+#photo{
+	width:100% ;
+	height: 100%;
+	background-size: contain;
+background-repeat: no-repeat;
+
+background-position-x: center;
+background-position-y: center;
+}
+
+
+
+
+
+
+#droite{
+	z-index: 20;
+	position: absolute;
+	width: 40vw;
+  height: 50vh;
+  margin-left: 30vw;
+}
+
+
+ /*////FLECHE////*/
+
+
+
+#suivant{
+	font-size: 3em;
+	font-family: Minion;
+}
+
+
+
+      #droite  #suivant {
+        pointer-events: none;
+        display: none;
+        position:absolute;
+        text-shadow: 0px 0px 8px white, 0px 0px 10px rgba(255, 0, 221, 1), 0px 0px 8px rgba(255, 0, 221, 1); }
+
+
+      #droite:hover #suivant {
+        display: block;
+        position: absolute;
+        cursor: none;
+         }
+
+
+
+
+.vers_projet{
+	color: black;
+	text-decoration: none;
+	position: absolute;
+	left: 15px;
+	top: 25px;
+}
+
+
+
+.vers_projet_lien:hover {
+		color: black;
+	text-decoration: none;
+	 text-shadow: 0px 0px 8px white, 0px 0px 10px rgba(255, 0, 221, 1), 0px 0px 8px rgba(255, 0, 221, 1); 
+
+}
+
+.vers_projet_lien{
+	color: blue;
+	text-decoration: underline;	
+	text-shadow: none;
+	}
+
+#tel{
+	display: none;
+}

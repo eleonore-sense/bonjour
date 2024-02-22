@@ -1,0 +1,116 @@
+	@font-face {
+	    font-family: 'Wingdings';
+	    src: url('../TYPO/wingding.ttf') format('truetype'),
+	         url('wingding.svg') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+
+	}
+
+    @font-face {
+      font-family: 'Amie_round';
+      src: url("Amiamie-RegularRound.woff") format('woff');
+      font-style: normal;
+
+  }
+
+html, body{
+margin: 0px;
+padding: 0px;
+ font-family: Consolas;
+color: rgb(0,0,0);
+overflow: hidden;
+  background: rgb(245,245,245) ;
+  width: 100vw;
+  font-size: 0.9em;
+}
+
+
+.emoji{
+	font-family: Wingdings;
+	font-size: 1.3em;
+}
+
+
+#entete{
+position: relative;
+display: flex;
+padding-left: 20px;
+padding-right: 20px;
+  justify-content: space-between;
+line-height: 0.3em;
+}
+
+#entete a{
+	text-decoration: none;
+	color: black;
+}
+
+#entete a:hover {
+	color: blue;
+	text-decoration: underline;
+}
+
+#menu a {
+		text-decoration: none;
+	color: black;
+}
+
+
+#menu{
+	top: px;
+display: flex;
+  justify-content: space-between;
+  padding-left: 25px;
+  padding-right: 50px;
+  position: relative;
+}
+
+.titre_menu{
+	text-decoration: underline;
+}
+
+.lien_projets{
+line-height: 0.3em;
+}
+
+
+
+#visuel{
+	position: absolute;
+	right: 25px;
+	bottom: 25px;
+	width: 45vw;
+	height: 65vh;
+}
+
+
+#photo{
+	width:auto ;
+	height: 97%;
+background-position-x: right;
+	background-size: contain;
+background-repeat: no-repeat;
+background-position-y: bottom;
+}
+
+#ref{
+	margin-top: -7px;
+	font-size: 0.9em;
+
+}
+
+
+
+.gif{
+	position: absolute;
+background-repeat: no-repeat;
+background-size: contain;
+display: none;
+}
+
+
+
+#tel{
+	display: none;
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+	<title>↗🎤↘👂↗🎤↘👂↗🎤↘👂</title>
+<!--	<link rel="icon" type="image/png" href="../image/etoiledeux.png" />-->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="../script_projet.js"></script>
+	<link rel="stylesheet" type="text/css" href="../style_projet.css"> 
+
+
+
+</head>
+
+<body id="body">
+
+
+
+<div id="entete">
+  <div id="accueil">
+
+    <p><span class="emoji"></span> 
+      <a href="../index.html" class="lien"> retour à la liste</a>
+    </p>
+    <p><span class="emoji"></span> 
+      <a href="../gxrls_need_modems/index.html" class="lien"> voir un autre projet</a>
+    </p>
+      <p><span class="emoji"></span> 
+      <a href="../../index.html" class="lien"> retour au bureau</a>
+    </p>
+  </div>
+
+
+  <div id="contact">
+    <p><a href="../CONTACT/index.html" class="lien"> éléonore sense</a>
+    </p>
+  </div>
+
+</div>
+
+
+<div id="contenu_projet">
+<div id="txt_pres">
+    <div class="bloc_titre">
+      <p id="titre">>_ machine à histoires collectives</p>
+      <p id="sous_titre">dispositifs de captation et ateliers proposés au cours d’évenements dans le parc départemental et à Lil’Ô avec l’artiste 
+et designer <a href="https://www.instagram.com/nora_dupo/" class="lien_pote">Nora Dupont</a>_ Île-Saint-Denis, 2021</p>
+    </div>
+    <div id="txt">
+Lors d’une journée porte ouverte d’une friche au nord de l’île, nous proposons un dispositif qui cherche à faire circuler les histoires de l'île.
+<br><br>
+Les passant·es sont invité·es à nourrir l’exposition. Une série de cartes postales est mise à disposition sur lesquelles il est écrit des narrations récoltées au cours des différents temps participatifs du cycle.<br>
+Les passant·es peuvent prendre une carte déjà décorée et en laisser à disposition des prochain·es visiteur·euses une autre. Système de mise en scène des créations produites directement sur le lieu de production
+    </div>
+</div>
+
+
+
+
+
+<div id="visuel">
+<div id="photo" style="background-image: url('img/1.jpg');">
+  <div id="gauche" onclick="prev_img()">
+    <p id="precedent">←</p>
+  </div>
+  <div id="droite" onclick="next_img()">
+    <p id="suivant">→</p>
+  </div>
+</div>
+</div>
+
+
+<div id="credit">
+(<span class="emoji"></span> photos réalisées par le photographe <a href="https://thomascecchelani.com/" class="lien_pote">Thomas Cecchelani</a>)
+</div>
+
+
+</div>
+
+
+<div id="gif" style="background-image: url('img/0.gif'); left:500px; bottom: 80px;"></div>
+
+
+
+</body>
+
+
+<script>
+  var image = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg','7.jpg', '8.jpg', '9.jpg', '10.jpg', '11.jpg', '12.jpg', '13.jpg', '14.jpg'];
+
+  var x = 0;
+var long = image.length-1;
+
+   function next_img(){
+    if (x < long){
+  x=x+1;  
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+
+}else{
+    x=0;  
+
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+}
+};
+
+
+
+   function prev_img(){
+  if (x >= 1){
+  x=x-1;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+  console.log(x);
+}else{
+x=13;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+    console.log(x);
+}
+};
+</script>
+	</html>

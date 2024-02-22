@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+	<title>↗↗↗↗↗↗↗ bonjour ↗↗↗↗↗↗</title>
+<!--	<link rel="icon" type="image/png" href="../image/etoiledeux.png" />-->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="script.js"></script>
+
+	<link rel="stylesheet" media="screen and (min-width: 750px)"type="text/css" href="style.css"> 
+    <link rel="stylesheet" media="screen and (max-width: 750px)" href="../style_tel.css">
+
+
+
+</head>
+
+<body id="body">
+
+  	<script language="JavaScript">
+ 
+var message = new Array();
+message[0] = ""
+var reps = 2;
+var speed = 2000;
+var p = message.length;
+var T = "";
+var C = 0;
+var mC = 0;
+var s = 0;
+var sT = null;
+if (reps < 1) reps = 1;
+function doIt() {
+T = message[mC];
+A();
+}
+function A() {
+s++;
+if (s > 8) { s = 1;}
+if (s == 1) { document.title = '↗↗↗↗↗↗↗ bonjour ↗↗↗↗↗↗'; }
+if (s == 2) { document.title = '⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢'; }
+if (s == 3) { document.title = '↝↝↝↝↝ bienvenue ↝↝↝↝↝'; }
+if (s == 4) { document.title = '⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝'; }
+if (s == 5) { document.title = '↠↠↠ sur le site web ↠↠↠'; }
+if (s == 6) { document.title = '↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯'; }
+if (s == 7) { document.title = '↬ de Eléonore Sense ↫'; }
+
+if (s == 8) { document.title = '☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺'; }if (C < (8 * reps)) {
+sT = setTimeout("A()", speed);
+C++;
+}
+else {
+C = 0;
+s = 0;
+mC++;
+if(mC > p - 1) mC = 0;
+sT = null;
+doIt();
+   }
+}
+doIt();
+
+  	</script> 
+
+
+<div id="entete">
+  <div id="accueil">
+    <p><span class="emoji"></span> 
+      <a href="../index.html" class="lien"> retour au bureau</a>
+    </p>
+  </div>
+
+  <div id="contact">
+    <p><a href="../CONTACT/index.html" class="lien"> éléonore sense</a>
+    </p>
+  </div>
+
+</div>
+
+
+<div id="menu">
+
+  <div id="atelier">
+    <div class="titre_menu">
+      <p>ateliers / outils pédagogiques</p>
+    </div>
+    <div class="lien_projets">
+<a class="vers_projet" href="angers/index.html" onmouseover="angers()" onmouseleave="quitter_angers()"><p class="angers">_ plantes voisines, exploration en chemin</p></a>
+<a class="vers_projet"  href="gaite_atelier/index.html" onmouseover="gaite_atelier()" onmouseleave="quitter_gaite_atelier()"><p class="gaite_atelier">_ chimères numériques</p></a>
+<a class="vers_projet" href="genre/index.html" onmouseover="genre()" onmouseleave="quitter_genre()"><p class="genre">_ genre c'est du design</p></a>
+<a class="vers_projet" href="game_gxrls/index.html" onmouseover="game_gxrls()" onmouseleave="quitter_game_gxrls()"><p class="game_gxrls">_ game gxrl</p></a>
+<a class="vers_projet" href="machine_histoire/index.html" onmouseover="machine_histoire()" onmouseleave="quitter_machine_histoire()"><p class="machine_histoire">_ machine à histoires collectives</p></a>
+
+    </div>
+  </div>
+
+  <div id="recherche">
+    <div class="titre_menu">
+      <p>recherches techno-plastiques</p>
+    </div>
+    <div class="lien_projets">
+<a class="vers_projet"  href="gxrls_need_modems/index.html" onmouseover="gxrls_need_modems()" onmouseleave="quitter_gxrls_need_modems()"><p class="gxrls_need_modems">_ gxrls need modems</p></a>
+<a class="vers_projet" href="case_game/index.html" onmouseover="case_game()" onmouseleave="quitter_case_game()"><p class="case_game">_ case game & cie</p></a>
+<a class="vers_projet" class="programm" href="programm/index.html" onmouseover="programm()" onmouseleave="quitter_programm()"><p class="programm" >_ always already programming</p></a>
+<a class="vers_projet" href="machine_politique/index.html" onmouseover="machine_politique()" onmouseleave="quitter_machine_politique()"><p class="machine_politique">_ machine à discours politiques</p></a>
+<a class="vers_projet" class="game_gxrls" href="game_gxrls/index.html" onmouseover="game_gxrls()" onmouseleave="quitter_game_gxrls()"><p class="game_gxrls">_ game gxrl</p></a>
+<a class="vers_projet" href="messagerie_cryptee/index.html" onmouseover="messagerie_cryptee()" onmouseleave="quitter_messagerie_cryptee()"><p class="messagerie_cryptee">_ encrypter les internets</p></a>
+
+    </div>
+  </div>
+
+    <div id="sceno">
+    <div class="titre_menu">
+      <p>installations / scénographies</p>
+    </div>
+    <div class="lien_projets">
+<a class="vers_projet" href="diploramax/index.html" onmouseover="diploramax()" onmouseleave="quitter_diploramax()"><p class="diploramax">_ diploramax</p></a>
+<a class="vers_projet" href="tarot/index.html" onmouseover="tarot()" onmouseleave="quitter_tarot()"><p class="tarot">_ tarot algorithmique</p></a>
+<a class="vers_projet" href="machine_histoire/index.html" onmouseover="machine_histoire()" onmouseleave="quitter_machine_histoire()"><p class="machine_histoire">_ machine à histoires collectives</p></a>
+<a class="vers_projet" href="unamed_road/index.html" onmouseover="unamed_road()" onmouseleave="quitter_unamed_road()"><p class="unamed_road">_ unamed road festival</p></a>
+<a class="vers_projet" href="machine_politique/index.html" onmouseover="machine_politique()" onmouseleave="quitter_machine_politique()"><p class="machine_politique">_ machine à discours politiques</p></a>
+
+    </div>
+  </div>
+
+    <div id="graphisme">
+    <div class="titre_menu">
+      <p>graphisme</p>
+    </div>
+    <div class="lien_projets">
+<a class="vers_projet" href="dans_les_brumes/index.html" onmouseover="dans_les_brumes()" onmouseleave="quitter_dans_les_brumes()"><p class="dans_les_brumes">_ dans les brumes</p></a>
+<a class="vers_projet" href="diploramax_site/index.html" onmouseover="diploramax_site()" onmouseleave="quitter_diploramax_site()"><p class="diploramax_site">_ diploramax</p></a>
+<a class="vers_projet" href="deepzine/index.html" onmouseover="deepzine()" onmouseleave="quitter_deepzine()"><p class="deepzine">_ mini auto-édition</p></a>
+<a class="vers_projet" href="messagerie_cryptee/index.html" onmouseover="messagerie_cryptee()" onmouseleave="quitter_messagerie_cryptee()"><p class="messagerie_cryptee">_ encrypter les internets</p></a>
+<a class="vers_projet" href="genre_site/index.html" onmouseover="genre_site()" onmouseleave="quitter_genre_site()"><p class="genre_site">_ genre c'est de l'éducation</p></a>
+<a class="vers_projet" href="tissage/index.html" onmouseover="tissage()" onmouseleave="quitter_tissage()"><p class="tissage">_ exploration graphique</p></a>
+
+    </div>
+  </div>
+
+
+
+</div>
+
+
+<div id="visuel">
+<div id="photo"></div>
+<div id="ref"><p id="legende"></p></div>
+</div>
+
+
+
+
+
+
+<div id="gif_angers" class="gif" style="background-image: url('angers/img/0_gif.gif'); left:400px; top: 320px; width:130px; height: 130px;"></div>
+
+<div id="gif_tarot" class="gif" style="background-image: url('tarot/img/0_mini.jpg'); left:200px; top: 520px; width:80px; height: 80px;"></div>
+
+<div id="gif_messagerie" class="gif" style="background-image: url('messagerie_cryptee/img/0_gif.gif'); left:300px; bottom: 250px; width:40px; height: 40px;"></div>
+
+
+<div id="gif_gaite" class="gif" style="background-image: url('gaite_atelier/img/0_gif.gif'); left:100px; bottom: 70px; width:80px; height:80px;"></div>
+
+<div id="gif_game" class="gif" style="background-image: url('game_gxrls/img/0_min.gif'); left:113px; bottom: 324px; width:54px; height:70px;"></div>
+
+<div id="gif_programm" class="gif" style="background-image: url('programm/img/0_gif.gif'); left:650px; bottom: 220px; width:54px; height:70px;"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="tel">
+<div id="gif_ordi1" class="gif_tel" style="background-image: url('programm/img/0_gif.gif'); right:10vw; top: 13vh; width:84px; height:80px;"></div>
+
+  <div id="txt_tel">
+    bonjour! 
+    <br>ce site se regarde sur un ordinateur,
+    <br><br>merci et à bientôt!
+  </div>
+<div id="gif_ordi2" class="gif_tel" style="background-image: url('messagerie_cryptee/img/0_gifbis.gif'); left:20vw; bottom: 25vh; width:110px; height:100px;"></div>
+</div>
+</body>
+	</html>

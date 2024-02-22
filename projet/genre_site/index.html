@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+	<title>↗📃↘🎰↗📃↘🎰↗📃↘🎰</title>
+<!--	<link rel="icon" type="image/png" href="../image/etoiledeux.png" />-->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="../script_projet.js"></script>
+	<link rel="stylesheet" type="text/css" href="../style_projet.css"> 
+
+
+
+</head>
+
+<body id="body">
+
+
+
+<div id="entete">
+  <div id="accueil">
+
+    <p><span class="emoji"></span> 
+      <a href="../index.html" class="lien"> retour à la liste</a>
+    </p>
+    <p><span class="emoji"></span> 
+      <a href="../tissage/index.html" class="lien"> voir un autre projet</a>
+    </p>
+      <p><span class="emoji"></span> 
+      <a href="../../index.html" class="lien"> retour au bureau</a>
+    </p>
+  </div>
+
+
+  <div id="contact">
+    <p><a href="../CONTACT/index.html" class="lien"> éléonore sense</a>
+    </p>
+  </div>
+
+</div>
+
+
+<div id="contenu_projet">
+<div id="txt_pres">
+    <div class="bloc_titre">
+      <p id="titre">>_ genre, c’est de l'éducation</p>
+      <p id="sous_titre">site web qui recense des recherches autour des inégalités entre les genres en milieu scolaire réalisé avec l’artiste et designer <a href="https://www.instagram.com/nora_dupo/" class="lien_pote">Nora Dupont</a>_ 2019</p>
+    </div>
+    <div id="txt">
+Le site web «genre, c’est de l’éducation» présente des recherches réalisées par l’artiste-designer <a href="https://www.instagram.com/nora_dupo/" class="lien_pote">Nora Dupont</a> sur les inégalités entre les genres en milieu scolaires.
+<br>Il aborde différentes entrées de la construction de ces inégalités en s'appuyant sur des articles, podcasts, interviews trouvé sur internet.
+<br>Ce temps de recherche à précédé la réalisation du projet «genre c’est du design» réalisé avec la maison de quartier A.I.R.E.S 10 à Paris en 2019.
+<br><br>Co-conception graphique et codage du site web, à visiter ici:
+<br><span class="emoji"></span> <a href="https://genre-genre-genre.github.io/genre/?fbclid=IwAR1xRjZJry6DVvJwuGNSEYAibsHMpAtWi1efOeqPq136o-A8HXHR5J-fPQ0" class="lien_pote">le site web</a>.
+<br><span class="emoji"></span> <a href="../genre/index.html" class="lien_pote">en apprendre plus sur le projet</a>.
+    </div>
+</div>
+
+
+
+
+
+<div id="visuel">
+<div id="photo" style="background-image: url('img/1.gif');">
+  <div id="gauche" onclick="prev_img()">
+    <p id="precedent">←</p>
+  </div>
+  <div id="droite" onclick="next_img()">
+    <p id="suivant">→</p>
+  </div>
+</div>
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+</body>
+
+
+<script>
+  var image = ['1.gif', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg','7.jpg', '8.jpg'];
+
+  var x = 0;
+var long = image.length-1;
+
+   function next_img(){
+    if (x < long){
+  x=x+1;  
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+
+}else{
+    x=0;  
+
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+}
+};
+
+
+
+   function prev_img(){
+  if (x >= 1){
+  x=x-1;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+}else{
+x=7;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+    console.log(x);
+}
+};
+</script>
+	</html>

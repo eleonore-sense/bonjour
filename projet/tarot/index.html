@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+	<title>↗🔮↘📱↗🔮↘📱↗🔮↘📱</title>
+<!--	<link rel="icon" type="image/png" href="../image/etoiledeux.png" />-->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="../script_projet.js"></script>
+	<link rel="stylesheet" type="text/css" href="../style_projet.css"> 
+
+
+
+</head>
+
+<body id="body">
+
+
+
+<div id="entete">
+  <div id="accueil">
+
+    <p><span class="emoji"></span> 
+      <a href="../index.html" class="lien"> retour à la liste</a>
+    </p>
+    <p><span class="emoji"></span> 
+      <a href="../unamed_road/index.html" class="lien"> voir un autre projet</a>
+    </p>
+      <p><span class="emoji"></span> 
+      <a href="../../index.html" class="lien"> retour au bureau</a>
+    </p>
+  </div>
+
+
+  <div id="contact">
+    <p><a href="../CONTACT/index.html" class="lien"> éléonore sense</a>
+    </p>
+  </div>
+
+</div>
+
+
+<div id="contenu_projet">
+<div id="txt_pres">
+    <div class="bloc_titre">
+      <p id="titre">>_ tarot algorithmique</p>
+      <p id="sous_titre">performance qui met en scène le système de profilage des algorithme Google, Paris_ 2021</p>
+    </div>
+    <div id="txt">
+Alors qu'à sa création, internet se voulait être une nouvelle place publique sans corps ni statut, ce domaine a très vite été repris par des schémas de pouvoir. Si les formes de transmission conventionnelles entretiennent des rapports de domination en étant accessibles et pleinement compréhensibles à des profils semblables, quels outils et clés de décryptage mettre à disposition pour faire entendre d'autres voix?
+<br><br>
+«Tarot algorithmique» est une performance qui tente de démystifier des mécanismes de domination dans le domaine du numérique.<br>
+Il s’incarne dans un univers mystique qui permet de faire le lien à la fois avec le sentiment de dépossession de nos outils numériques mais aussi avec des formes de contre pouvoir et d’émancipation.
+    </div>
+</div>
+
+
+
+
+
+<div id="visuel">
+<div id="photo" style="background-image: url('img/1.jpg');">
+  <div id="gauche" onclick="prev_img()">
+    <p id="precedent" class="fleche_typo">←</p>
+  </div>
+  <div id="droite" onclick="next_img()">
+    <p id="suivant"class="fleche_typo">→</p>
+  </div>
+</div>
+</div>
+
+
+<div id="credit">
+(<span class="emoji"></span> photos réalisées par la photographie Véronique Huyghe</a>)
+</div>
+
+
+</div>
+
+
+<div id="gif" style="background-image: url('img/0_mini.jpg'); left:150px; bottom: 50px; width:70px; height: 70px;"></div>
+<!--<div id="gif_2" style="background-image: url('img/0_gif.gif'); left:560px; top: 80px;"></div>-->
+
+
+
+</body>
+
+
+<script>
+  var image = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg','7.jpg', '8.jpg', '9.jpg'];
+
+  var x = 0;
+var long = image.length-1;
+
+   function next_img(){
+    if (x < long){
+  x=x+1;  
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+
+}else{
+    x=0;  
+
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+}
+};
+
+
+
+   function prev_img(){
+  if (x >= 1){
+  x=x-1;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+}else{
+x=9;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+    console.log(x);
+}
+};
+</script>
+	</html>

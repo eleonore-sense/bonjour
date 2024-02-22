@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+  <title>↗↗↗↗↗↗↗ bonjour ↗↗↗↗↗↗</title>
+  <!--  <link rel="icon" type="image/png" href="../image/etoiledeux.png" />-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" media="screen and (min-width: 750px)"type="text/css" href="style.css"> 
+  <link rel="stylesheet" media="screen and (max-width: 750px)" href="../../style_tel.css">
+
+<SCRIPT LANGUAGE="JavaScript">
+
+document.include = function (url) {
+ if ('undefined' == typeof(url)) return false;
+ var p,rnd;
+ if (document.all){
+   p = new ActiveXObject("Microsoft.XMLHTTP");
+ }
+ else {
+   p = new XMLHttpRequest();
+ }
+
+ rnd = Math.random().toString().substring(2);
+ url = url.indexOf('?')>-1 ? url+'&rnd='+rnd : url+'?rnd='+rnd;
+ p.open("GET",url,false);
+ p.send(null);
+ document.write( p.responseText );
+}
+
+</SCRIPT>
+
+</head>
+
+<body id="body">
+
+    <script language="JavaScript">
+ 
+var message = new Array();
+message[0] = ""
+var reps = 2;
+var speed = 2000;
+var p = message.length;
+var T = "";
+var C = 0;
+var mC = 0;
+var s = 0;
+var sT = null;
+if (reps < 1) reps = 1;
+function doIt() {
+T = message[mC];
+A();
+}
+function A() {
+s++;
+if (s > 8) { s = 1;}
+if (s == 1) { document.title = '↗↗↗↗↗↗↗ bonjour ↗↗↗↗↗↗'; }
+if (s == 2) { document.title = '⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢'; }
+if (s == 3) { document.title = '↝↝↝↝↝ bienvenue ↝↝↝↝↝'; }
+if (s == 4) { document.title = '⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝'; }
+if (s == 5) { document.title = '↠↠↠ sur le site web ↠↠↠'; }
+if (s == 6) { document.title = '↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯'; }
+if (s == 7) { document.title = '↬ de Eléonore Sense ↫'; }
+
+if (s == 8) { document.title = '☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺'; }if (C < (8 * reps)) {
+sT = setTimeout("A()", speed);
+C++;
+}
+else {
+C = 0;
+s = 0;
+mC++;
+if(mC > p - 1) mC = 0;
+sT = null;
+doIt();
+   }
+}
+doIt();
+
+    </script>
+
+
+<div id="entete">
+  <div id="accueil">
+    <p><span class="emoji"></span> 
+      <a href="../../index.html" class="lien"> revenir au bureau</a>
+    </p>
+  </div>
+</div>
+
+
+<div id="fond">
+                                         
+
+        <pre id="titre"><script>document.include('titre.txt');</script>
+        </pre>
+
+</div>
+
+<div id="visuel">
+<div id="photo" style="background-image: url('../../projet/gxrls_need_modems/img/1.jpg');">
+
+  <div id="droite" onclick="next_img()">
+    <p id="suivant">→</p>
+  </div>
+</div>
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+<div id="vers_tarot" class="vers_projet"><span class="emoji"></span> <a href="../../projet/gxrls_need_modems/index.html" class="vers_projet_lien">en apprendre plus sur le projet</a></div>
+</body>
+
+
+<div id="tel">
+<div id="gif_ordi1" class="gif_tel" style="background-image: url('../../projet/programm/img/0_gif.gif'); right:10vw; top: 13vh; width:84px; height:80px;"></div>
+
+  <div id="txt_tel">
+    bonjour! 
+    <br>ce site se regarde sur un ordinateur,
+    <br><br>merci et à bientôt!
+  </div>
+<div id="gif_ordi2" class="gif_tel" style="background-image: url('../../projet/messagerie_cryptee/img/0_gifbis.gif'); left:20vw; bottom: 25vh; width:110px; height:100px;"></div>
+</div>
+
+
+<script>
+
+
+
+  $(function() {
+ 
+  $('#droite').mousemove(function(e) {
+    var width = $("#droite").width();
+    var height = $("#droite").height();
+    var x = e.pageX-width+100;
+    var y = e.pageY-height;
+
+
+
+      $('#suivant').css('top', y+'px');
+$('#droite').css('cursor', 'none');
+    $('#suivant').css('left', x+'px');
+  
+
+});
+});
+
+
+
+
+
+  var image = ['1.jpg', '2.jpg', '3.gif', '4.jpg', '5.jpg', '6.jpg','7.gif', '8.jpg', '9.jpg'];
+
+  var x = 0;
+var long = image.length-1;
+
+   function next_img(){
+    if (x < long){
+  x=x+1;  
+  $('#photo').css({'background-image': 'url("../../projet/gxrls_need_modems/img/' + image[x] + '")'});
+
+}else{
+    x=0;  
+
+  $('#photo').css({'background-image': 'url("../../projet/gxrls_need_modems/img/' + image[x] + '")'});
+}
+};
+
+     ///////////////////////POSITION FLECHE//////////////////////////////////
+
+
+
+
+
+</script>
+  </html>

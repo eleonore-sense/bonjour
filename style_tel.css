@@ -1,0 +1,51 @@
+	@font-face {
+	    font-family: 'Wingdings';
+	    src: url('TYPO/wingding.ttf') format('truetype'),
+	         url('wingding.svg') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+
+	}
+
+
+
+html, body{
+margin: 0px;
+padding: 0px;
+ font-family: Consolas;
+color: rgb(0,0,0);
+overflow: hidden;
+  background: rgb(245,245,245) ;
+  width: 100vw;
+  font-size: 0.9em;
+}
+
+
+.emoji{
+	font-family: Wingdings;
+	font-size: 1.3em;
+}
+
+
+#entete, #menu, #visuel, .gif, .declencheur, #fond, .pop_up, .vers_projet, #contenu{
+display:none;
+}
+
+
+
+#txt_tel{
+	font-size: 1.5em;
+	display: flex;
+	justify-content: space-between;
+margin-top: 32vh;
+margin-left: 10vw;
+width: 80vw;
+}
+
+
+.gif_tel{
+	position: absolute;
+background-repeat: no-repeat;
+background-size: contain;
+display: block;
+}

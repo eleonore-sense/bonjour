@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+	<title>↗🖱️↘⌨️↗🖱️↘⌨️↗🖱️↘⌨️</title>
+<!--	<link rel="icon" type="image/png" href="../image/etoiledeux.png" />-->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="../script_projet.js"></script>
+	<link rel="stylesheet" type="text/css" href="../style_projet.css"> 
+
+
+
+</head>
+
+<body id="body">
+
+
+
+<div id="entete">
+  <div id="accueil">
+
+    <p><span class="emoji"></span> 
+      <a href="../index.html" class="lien"> retour à la liste</a>
+    </p>
+    <p><span class="emoji"></span> 
+      <a href="../programm/index.html" class="lien"> voir un autre projet</a>
+    </p>
+      <p><span class="emoji"></span> 
+      <a href="../../index.html" class="lien"> retour au bureau</a>
+    </p>
+  </div>
+
+
+  <div id="contact">
+    <p><a href="../CONTACT/index.html" class="lien"> éléonore sense</a>
+    </p>
+  </div>
+
+</div>
+
+
+<div id="contenu_projet">
+<div id="txt_pres">
+    <div class="bloc_titre">
+      <p id="titre">>_ case game & cie</p>
+      <p id="sous_titre">série minis jeux vidéos qui utilisent un langage de programmation rudimentaire_ 2020/2023</p>
+    </div>
+    <div id="txt">Ces mini-projets font partie d’une série de recherches plastiques qui détourne les usages conventionnels des mises en page web en exploitant des zones inoccupées ou hors de leurs pratiques communes.
+<br>
+      Le case game est mini jeu vidéo en ligne réalisé uniquement en bouton et champs de saisie de texte.
+<br><span class="emoji"></span> <a href="https://bonjourwesh.github.io/eleonore_sense/case_game/tete.html" class="lien_pote">jouer au case game</a>.
+<br><br>L’encrypteur galactique a été réalisé avec la designeuse <a href="https://www.instagram.com/jeanne_chiche/" class="lien_pote">Jeanne Chiche</a>.
+<br>Il joue sur la complémentarité du format numérique et impression.
+<br>Une personne reçoit une constellation. pour la décrypter, elle doit imprimer la page et ainsi faire apparaître le tableau décrypteur.
+<br>Différents indices se cache dans la page tel un lien vers la page Wikipédia sur l’imprimerie.
+<br><span class="emoji"></span> <a href="https://bonjourwesh.github.io/eleonore_sense/tes-mots-doux.html" class="lien_pote">envoyer un message crypté</a>.
+    </div>
+</div>
+
+
+
+
+
+<div id="visuel">
+<div id="photo" style="background-image: url('img/1.jpg');">
+  <div id="gauche" onclick="prev_img()">
+    <p id="precedent">←</p>
+  </div>
+  <div id="droite" onclick="next_img()">
+    <p id="suivant">→</p>
+  </div>
+</div>
+</div>
+
+
+
+</div>
+
+
+
+<div id="gif" style="background-image: url('img/0_gif.gif'); left:650px; top: 60px; width:70px; height:70px;"></div>
+
+
+</body>
+
+
+<script>
+  var image = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.gif', '8.jpg', '9.jpg'];
+
+  var x = 0;
+var long = image.length-1;
+
+   function next_img(){
+    if (x < long){
+  x=x+1;  
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+
+}else{
+    x=0;  
+
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+}
+};
+
+
+
+   function prev_img(){
+  if (x >= 1){
+  x=x-1;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+}else{
+x=8;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+    console.log(x);
+}
+};
+</script>
+	</html>
