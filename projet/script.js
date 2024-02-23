@@ -249,7 +249,7 @@ $('#legende').text('')
 function tissage(){
 $( ".tissage" ).css('textShadow',effet_txt);
 $("#photo").css("background-image", "url(tissage/img/1.jpg)");
-$('#legende').text('expérimentation autour du tissage_ 2023/2024')
+$('#legende').text('recherches graphiques sur de multiples formats comme support narratif_ 2022/2024');
     };
 
 function quitter_tissage(){

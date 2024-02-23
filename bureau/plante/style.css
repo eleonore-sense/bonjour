@@ -32,7 +32,7 @@ overflow: hidden;
 
 
 #entete{
-	color: white;
+	color: black;
 	z-index: 8;
 position: absolute;
 display: flex;
@@ -44,11 +44,11 @@ line-height: 0.3em;
 
 #entete a{
 	text-decoration: none;
-	color: white;
+	color: black;
 }
 
 #entete a:hover {
-	color: rgb(255,0,255);
+	color: mediumblue;
 	text-decoration: underline;
 }
 
@@ -56,7 +56,7 @@ line-height: 0.3em;
 	z-index: 1;
 	width: 100vw; 
 	height: 100vh; 
-	background-image: url('fond.jpg'); 
+	background-image: url('../../projet/tissage/img/1.jpg'); 
 	background-repeat: no-repeat;
 background-size: cover; 
 position: absolute;
@@ -65,5 +65,5 @@ position: absolute;
 
 
 #tel{
-	display:none;
+	display: none;
 }

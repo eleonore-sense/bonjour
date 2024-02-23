@@ -97,7 +97,7 @@ $("#photo").css("background-image", "none");
 
 
 function plante(){
-$("#photo").css("background-image", "url(bureau/plante.png)");
+$("#photo").css("background-image", "url(bureau/arbre.png)");
     };
 
 function quitter_plante(){
