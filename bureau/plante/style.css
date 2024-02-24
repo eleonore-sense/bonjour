@@ -62,7 +62,16 @@ background-size: cover;
 position: absolute;
 }
 
-
+#chantier{
+	position: absolute;
+	width: 100vw;
+	height: 45px;
+top: 50vh;
+transform: translate(0%, -50%);
+z-index: 10;
+background-color: white;
+text-align: center;
+}
 
 #tel{
 	display: none;

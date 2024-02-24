@@ -16,6 +16,22 @@
 
   }
 
+      @font-face {
+      font-family: 'IBM Plex Mono';
+      src: url("../TYPO/IBMPlexMono-Regular.ttf") format('truetype');
+      font-style: normal;
+
+  }
+
+
+        @font-face {
+      font-family: 'IBM Plex Mono Italic';
+      src: url("../TYPO/IBMPlexMono-Italic.ttf") format('truetype');
+      font-style: italic;
+
+  }
+
+
 html, body{
 margin: 0px;
 padding: 0px;
