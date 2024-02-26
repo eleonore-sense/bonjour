@@ -154,8 +154,13 @@ $("#declencheur_ele").css("opacity", "0");
 
 
 
+  $("#declencheur_ensorceleuse").mouseover(function(){
+$("#img_ensorceleuse").css("display", "block");
+  });
 
-
+  $("#declencheur_ensorceleuse").mouseleave(function(){
+$("#img_ensorceleuse").css("display", "none");
+  });
 
 
 
