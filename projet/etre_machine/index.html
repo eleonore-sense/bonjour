@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+	<title>↗🦗↘📡↗🦗↘📡↗🦗↘📡</title>
+  <link rel="icon" type="image/png" href="../../img_4.png" />
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="../script_projet.js"></script>
+	<link rel="stylesheet" type="text/css" href="../style_projet.css"> 
+
+
+
+</head>
+
+<body id="body">
+
+
+
+<div id="entete">
+  <div id="accueil">
+
+    <p><span class="emoji"></span> 
+      <a href="../index.html" class="lien"> retour à la liste</a>
+    </p>
+    <p><span class="emoji"></span> 
+      <a href="../diploramax/index.html" class="lien"> voir un autre projet</a>
+    </p>
+      <p><span class="emoji"></span> 
+      <a href="../../index.html" class="lien"> retour au bureau</a>
+    </p>
+  </div>
+
+
+  <div id="contact">
+    <p><a href="https://docs.google.com/spreadsheets/d/12UdJACSnNIuI5MsdhvDRUM02DI4OiWgJJHoQ_n4WByk/edit?hl=fr#gid=0" target="_blanck" class="lien"> éléonore sense</a>
+    </p>
+  </div>
+
+</div>
+
+
+<div id="contenu_projet">
+<div id="txt_pres">
+    <div class="bloc_titre">
+      <p id="titre">>_ Et les êtres-machines ont regardé ce que les humain ne savaient plus voir</p>
+      <p id="sous_titre"> installation mettant en lumière l’émission d’ondes électromagnétiques par les outils et infrastructures numériques dans le cadre d’une résidence à <a href="https://www.lalabomedia.org" class="lien_pote">la Labomédia</a>, Orléans_ 2024</p>
+    </div>
+    <div id="txt">
+Suite à une recherche autour des formes de contre-pouvoir pour reprendre possession de ses outils numériques, j’expérimente des techniques de détournements de nos outils pour jouer avec en pleine conscience.
+<br><br>En partant d’analyse de fonctionnement de messagerie
+cryptée, je tente de créer des systèmes d’encryptage graphique aux formes hybrides entre écran et matériel.
+<br>Cela passe par des jeux de superposition de filtres, des découpages
+et autres formes rudimentaires qui reprennent avec une
+autre matérialité (concrète et palpable) le système de clé
+d’encryptage des messageries.
+    </div>
+</div>
+
+
+
+
+
+<div id="visuel">
+<div id="photo" style="background-image: url('img/1.jpg');">
+  <div id="gauche" onclick="prev_img()">
+    <p id="precedent">←</p>
+  </div>
+  <div id="droite" onclick="next_img()">
+    <p id="suivant">→</p>
+  </div>
+</div>
+</div>
+
+
+
+
+
+</div>
+
+
+<div id="gif" style="background-image: url('img/0_gifbis.gif'); left:150px; bottom: 50px; width:70px ; height: 70px;"></div>
+<div id="gif_2" style="background-image: url('img/0_gif.gif'); left:560px; top: 80px; width: 30px; height: 30px;"></div>
+
+
+
+</body>
+
+
+<script>
+  var image = ['1.jpg', '2.gif', '3.gif', '4.jpg', '5.jpg', '6.jpg','7.jpg', '8.jpg', '9.jpg', '10.jpg', '11.gif', '12.jpg', '13.jpg', '14.jpg'];
+
+  var x = 0;
+var long = image.length-1;
+
+   function next_img(){
+    if (x < long){
+  x=x+1;  
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+
+}else{
+    x=0;  
+
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+}
+};
+
+
+
+   function prev_img(){
+  if (x >= 1){
+  x=x-1;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+}else{
+x=13;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+    console.log(x);
+}
+};
+</script>
+	</html>

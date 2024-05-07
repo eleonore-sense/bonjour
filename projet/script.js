@@ -150,6 +150,20 @@ $('#legende').text('');
 $( "#gif_messagerie" ).css('display','none');
     };
 
+function requin_internet(){
+$( ".requin_internet" ).css('textShadow',effet_txt);
+$("#photo").css("background-image", "url(requin_internet/img/4.jpg)");
+$('#legende').text('recherche autour des enjeux politiques et sociaux des câbles sous-marins du réseaux internet et la production d’ondes électromagnétiques dans le cadre d’une résidence à la Labomédia, Orléans_ 2024');
+$( "#gif_messagerie" ).css('display','block');
+    };
+
+function quitter_requin_internet(){
+$('.requin_internet').css('textShadow','none');
+$("#photo").css("background-image", "none");
+$('#legende').text('');
+$( "#gif_messagerie" ).css('display','none');
+    };
+
 
 function diploramax(){
 $( ".diploramax" ).css('textShadow',effet_txt);
@@ -190,6 +204,20 @@ function quitter_unamed_road(){
 $('.unamed_road').css('textShadow','none');
 $("#photo").css("background-image", "none");
 $('#legende').text('')
+    };
+
+function etre_machine(){
+$( ".etre_machine" ).css('textShadow',effet_txt);
+$("#photo").css("background-image", "url(etre_machine/img/4.jpg)");
+$('#legende').text('installation mettant en lumière l’émission d’ondes électromagnétiques par les outils et infrastructures numériques dans le cadre d’une résidence à la Labomédia, Orléans_ 2024');
+$( "#gif_messagerie" ).css('display','block');
+    };
+
+function quitter_etre_machine(){
+$('.etre_machine').css('textShadow','none');
+$("#photo").css("background-image", "none");
+$('#legende').text('');
+$( "#gif_messagerie" ).css('display','none');
     };
 
 
