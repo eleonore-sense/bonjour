@@ -22,6 +22,7 @@ overflow: hidden;
   -moz-user-select  : none; 
   -webkit-user-select : none; 
   user-select : none;
+  cursor: none;
 }
 
 
@@ -38,8 +39,11 @@ position: absolute;
 display: flex;
 padding-left: 20px;
 padding-right: 20px;
+padding-bottom: 50px;
+padding-right: 100px;
   justify-content: space-between;
 line-height: 0.3em;
+cursor: auto;
 }
 
 #entete a{
@@ -56,23 +60,46 @@ line-height: 0.3em;
 	z-index: 1;
 	width: 100vw; 
 	height: 100vh; 
-	background-image: url('../../projet/tissage/img/1.jpg'); 
+/*	background-image: url('../../projet/tissage/img/1.jpg'); 
 	background-repeat: no-repeat;
 background-size: cover; 
+position: absolute;*/
+}
+
+#texte_en_bas{
+		z-index: 8;
 position: absolute;
+padding-left: 20px;
+bottom: 0px;
+padding-top: 50px;
+cursor: auto;
 }
 
-#chantier{
-	position: absolute;
-	width: 100vw;
-	height: 45px;
-top: 50vh;
-transform: translate(0%, -50%);
-z-index: 10;
-background-color: white;
-text-align: center;
+#credit{
+		font-style: italic;
+	font-size: 0.8em;
 }
-
 #tel{
 	display: none;
+}
+
+#instruction{
+	position: fixed;
+	right: 10px;
+	color: black;
+	font-style: italic;
+text-shadow: -1px -1px 1px rgba(255, 255, 255, 1),
+             1px 1px 0px rgba(255, 255, 255, 1),
+             1px 0px 0px rgba(255, 255, 255, 1),
+             0px 1px 0px rgba(255, 255, 255, 1);
+}
+
+img{
+background-image: url('img/1.jpg');
+	background-repeat: no-repeat;
+background-size: contain; 
+height: 600px;
+width: 600px;
+z-index: 1;
+position: fixed;
 }
