@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<head>
+<SCRIPT LANGUAGE="JavaScript">
+
+document.include = function (url) {
+ if ('undefined' == typeof(url)) return false;
+ var p,rnd;
+ if (document.all){
+   p = new ActiveXObject("Microsoft.XMLHTTP");
+ }
+ else {
+   p = new XMLHttpRequest();
+ }
+
+ rnd = Math.random().toString().substring(2);
+ url = url.indexOf('?')>-1 ? url+'&rnd='+rnd : url+'?rnd='+rnd;
+ p.open("GET",url,false);
+ p.send(null);
+ document.write( p.responseText );
+}
+
+</SCRIPT>
+</head>
+
+
+
+
+
+<body style="font-size: 13px; font-family: Courier New;" onload="fonctionApparition()" >
+ 
+        <a href="bigcarto.html" id="bigcarto" style="text-decoration: none; color: black; z-index:3; margin-top: 10px; position: absolute; right: 30px;">
+retour à la carto -->
+  </a>
+
+
+  <div id="fond"  style=" width: 1200px; height:570px; position:absolute; left: 50%;  top:  50% ;transform: translate(-50%, -50%);">
+
+
+
+
+<div>
+
+    <pre id="bibli" style=" z-index: 0; position:absolute; left: 680px; top:25px;" ><script>document.include('txt/bibli.txt')</script>
+    </pre>
+
+        <pre id="boite" style=" z-index: 0; position:absolute; left: 50px; top:20px;" ><script>document.include('txt/boite.txt')</script>
+    </pre>
+
+
+
+<!--///////////////////////BOITE/////////////////////////////////-->    
+
+<!--///////////////////////MODEM//////////////////////////////////-->
+
+    <pre id="modem" class="obj" style=" cursor:  copy; z-index: 2; position:absolute; left: 80px; top:50px; display:block;" onclick="fonctionModem()" ><script>document.include('txt/modem.txt')</script>
+    </pre>
+
+
+  <div >
+    <pre id="modem_texte" class="texte" onclick= "fonctionFermeModem()" style=" z-index:5; display: none; position:absolute;  left: 400px; top:290px;" ><script>document.include('txt/modem_texte.txt')</script>
+    </pre>
+  </div>
+
+  <div id="rectangle_modem_texte" class="rectangle" style="z-index:4; position: absolute; width: 420px; height: 180px; background-color:white;  opacity:  100%; left: 390px; top:290px; display: none;"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!--///////////////////////BIBLI///////////////////////////////////-->
+
+
+<!--///////////////////////POEME RADIA///////////////////////////////////-->
+
+                  
+    <pre id="poeme_radia_livre" style=" cursor:  copy; z-index: 2; position:absolute; left: 860px; top:355px; " onclick="FonctionPoemeRadia()" ><script>document.include('txt/inventaire/poeme_radia_livre.txt')</script>
+    </pre>
+
+        <div id="rectangle_poeme_radia_livre" style=" z-index: 1; position:absolute; left: 860px; top: 405px; width:31px; height:60px; background-color: white;">
+    </div>
+
+
+
+
+        <div id="poeme_radia" style="z-index: 5; display:none; position:absolute; left: 380px; top:135px;" >
+    <pre onclick="FonctionFermePoeme()" ><script>document.include('txt/foret/poeme_radia.txt')</script>
+    </pre>
+  </div>
+
+  <div id="rectangle_poeme_radia" style="z-index:4; position: absolute; width: 480px; height: 385px; background-color: white;  left: 380px; top:150px; display:none;"></div>
+
+
+
+<!--///////////////////////MANIFESTE KEFIR///////////////////////////////////-->
+
+    <pre id="manifeste_kefir_livre" style="cursor:  copy;  z-index: 2; position:absolute; left: 840px; top: 70px; " onclick="FonctionManifesteKefir()" ><script>document.include('txt/inventaire/manifeste_kefir_livre.txt')</script>
+    </pre>
+
+        <div id="rectangle_manifeste_kefir_livre" style="  z-index: 1; position:absolute; left: 840px; top: 100px; width:40px; height:60px; background-color: white;">
+    </div>
+
+
+  <div >
+    <pre id="manifeste_kefir" style="cursor: copy; display: none; z-index: 5; position:absolute; left: 305px; top:185px;" onclick="FonctionFermeManifesteKefir()" ><script>document.include('txt/foret/manifeste.txt')</script>
+    </pre>
+  </div>
+
+<div id="rectangle_manifeste_kefir" style="z-index:4; position: absolute; width: 630px; height: 305px; background-color: white;  left: 295px; top:190px; display:none;"></div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+///////////////////////////APPARITION LIVRE////////////////////////////////
+
+function fonctionApparition(){
+  if(localStorage.getItem("poeme_radia") == "ok"){
+document.getElementById("poeme_radia_livre").style.display = "block";
+document.getElementById("rectangle_poeme_radia_livre").style.display = "block";
+ 
+ }else if(localStorage.getItem("poeme_radia") !== "ok"){
+document.getElementById("poeme_radia_livre").style.display = "none";
+document.getElementById("rectangle_poeme_radia_livre").style.display = "none";
+ 
+ }else if(localStorage.getItem("manifeste_kefir") == "ok"){
+document.getElementById("manifeste_kefir_livre").style.display = "block";
+document.getElementById("rectangle_manifeste_kefir_livre").style.display = "block";
+ 
+ }else if(localStorage.getItem("manifeste_kefir") !== "ok"){
+ document.getElementById("manifeste_kefir_livre").style.display = "none";
+ document.getElementById("rectangle_manifeste_kefir_livre").style.display = "none";
+
+ }else if(localStorage.getItem("modem") !== "ok"){
+ document.getElementById("modem").style.display = "none";
+
+  }else if(localStorage.getItem("modem") == "ok"){
+ document.getElementById("modem").style.display = "block";
+
+}else{
+
+}
+
+
+}
+///////////////////////////BOITE//////////////////////////////////////
+
+
+///////////////////////////MODEM//////////////////////////////////////
+
+function fonctionModem(){
+document.getElementById("rectangle_modem_texte").style.display = "block";
+document.getElementById("modem_texte").style.display = "block";
+
+}
+
+function fonctionFermeModem(){
+document.getElementById("rectangle_modem_texte").style.display = "none";
+document.getElementById("modem_texte").style.display = "none";
+
+}
+
+
+
+
+
+
+
+///////////////////////////BIBLI//////////////////////////////////////
+
+///////////////////////////POEME RADIA//////////////////////////////////////
+
+function FonctionPoemeRadia(){
+document.getElementById("rectangle_poeme_radia").style.display = "block";
+document.getElementById("poeme_radia").style.display = "block";
+
+}
+
+function FonctionFermePoeme(){
+document.getElementById("rectangle_poeme_radia").style.display = "none";
+document.getElementById("poeme_radia").style.display = "none";
+
+}
+
+
+///////////////////////////MANIFESTE KEFIR//////////////////////////////////////
+
+function FonctionManifesteKefir(){
+document.getElementById("rectangle_manifeste_kefir").style.display = "block";
+document.getElementById("manifeste_kefir").style.display = "block";
+
+}
+
+function FonctionFermeManifesteKefir(){
+document.getElementById("rectangle_manifeste_kefir").style.display = "none";
+document.getElementById("manifeste_kefir").style.display = "none";
+
+}
+
+
+</script>
+
+
+
+
+</body>
+</html> 
+
