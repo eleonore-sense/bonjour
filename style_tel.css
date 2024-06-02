@@ -27,7 +27,7 @@ overflow: hidden;
 }
 
 
-#entete, #menu, #visuel, .gif, .declencheur, #fond, .pop_up, .vers_projet, #contenu{
+#entete, #menu, #visuel, .gif, .declencheur, #fond, .pop_up, .vers_projet, #contenu, #blabla_accueil, #bouton_go{
 display:none;
 }
 
