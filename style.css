@@ -94,7 +94,9 @@ height: 110px;
 #declencheur_magie{
 width: 100px;
 height: 100px;
-		transform: translate(250px, 160px);
+		transform: translate(187px, 214px);
+margin-top: -1px;
+margin-left: -1.5px;
 }
 
 
@@ -135,13 +137,22 @@ transform: translate(297px, -172px);
 #declencheur_radio{
 width: 89px;
 height: 110px;
-transform: translate(483px, 102px);
+transform: translate(-383px, -243px);
 }
 
 #declencheur_livre{
 width: 72px;
 height: 198px;
 transform: translate(-27px, -297px);
+}
+
+
+#declencheur_aquarium{
+width: 119px;
+height: 128px;
+transform: translate(425px, -12px);
+margin-top: -1px;
+margin-left: -1.5px;
 }
 
 

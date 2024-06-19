@@ -1,0 +1,186 @@
+	@font-face {
+	    font-family: 'Wingdings';
+	    src: url('../../TYPO/wingding.ttf') format('truetype'),
+	         url('wingding.svg') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+
+	}
+
+
+
+html, body{
+margin: 0px;
+padding: 0px;
+ font-family: Consolas;
+color: rgb(0,0,0);
+overflow: hidden;
+  background: rgb(245,245,245) ;
+  width: 100vw;
+  font-size: 0.9em;
+    -ms-user-select : none; 
+  -moz-user-select  : none; 
+  -webkit-user-select : none; 
+  user-select : none;
+}
+
+
+.emoji{
+	font-family: Wingdings;
+	font-size: 1.3em;
+}
+
+
+#entete{
+	color: black;
+	z-index: 8;
+position: absolute;
+display: flex;
+padding-left: 20px;
+padding-right: 20px;
+  justify-content: space-between;
+line-height: 0.3em;
+}
+
+#entete a{
+	text-decoration: none;
+	color: black;
+}
+
+#entete a:hover {
+	color: blue;
+	text-decoration: underline;
+}
+
+#fond{
+	margin-top: -20px;
+	z-index: 1;
+	width: 103vw; 
+	height: 103vh; 
+position: absolute;
+background-color: antiquewhite;
+	background-repeat: no-repeat;
+background-size: cover; 
+	background-image: url('fond.png');
+}
+
+
+.img{
+z-index: 3;
+position: absolute;
+left: 50vw;
+top: 50vh;
+transform: translate(-50%, -50%);
+	background-repeat: no-repeat;
+background-size: cover; 
+}
+
+
+.selecteur:hover{
+	cursor: pointer;
+}
+#tete{
+	width: 168px;
+	height: 166px;
+	background-image: url('tete.png');
+margin-left: -568px;
+margin-top: 253px;
+}
+
+#terril{
+	width: 274px;
+	height: 182px;
+	background-image: url('terril.png');
+margin-left: 490px;
+margin-top: 174px;
+}
+
+#chien{
+	width: 220px;
+	height: 154px;
+	background-image: url('chien.png');
+margin-left: -468px;
+margin-top: -177px;
+}
+
+#voiture{
+	width: 243px;
+	height: 175px;
+	background-image: url('voiture.png');
+margin-left: 272px;
+margin-top: -220px;
+}
+
+
+
+#soucoupe{
+	width: 246px;
+	height: 223px;
+		background-image: url('soucoupe.png');
+margin-left: -87px;
+margin-top: 100px;
+}
+
+.selecteur{
+	z-index: 20;
+	position: absolute;
+left: 50vw;
+top: 50vh;
+transform: translate(-50%, -50%);
+	background-repeat: no-repeat;
+background-size: cover; 
+}
+#selecteur_tete{
+	width: 168px;
+	height: 166px;
+margin-left: -568px;
+margin-top: 253px;
+}
+
+#selecteur_terril{
+	width: 274px;
+	height: 182px;
+margin-left: 490px;
+margin-top: 174px;
+}
+
+#selecteur_chien{
+	width: 220px;
+	height: 154px;
+margin-left: -468px;
+margin-top: -177px;
+}
+
+#selecteur_voiture{
+	width: 243px;
+	height: 175px;
+margin-left: 272px;
+margin-top: -220px;
+}
+
+
+
+#selecteur_soucoupe{
+	width: 246px;
+	height: 223px;
+margin-left: -87px;
+margin-top: 100px;
+}
+
+#photo{
+	z-index: 9;
+	position: absolute;
+left: 50vw;
+top: 50vh;
+transform: translate(-50%, -50%);	
+	width:65vw;
+	height: 65vh;
+	background-size: contain;
+background-repeat: no-repeat;
+
+background-position-x: center;
+background-position-y: center;
+}
+
+
+#style_tel{display: none}

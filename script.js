@@ -45,13 +45,26 @@ $("#photo").css("background-image", "none");
 
 function magie(){
 $("#photo").css("background-image", "url(bureau/magie.png)");
+$("#photo").css("margin-left", "-1.5px");
     };
 
 function quitter_magie(){
 $("#photo").css("background-image", "none");
+$("#photo").css("margin-left", "0px");
     };
 
 
+function aquarium(){
+$("#photo").css("background-image", "url(bureau/aquarium.png)");
+$("#photo").css("margin-top", "-1px");
+$("#photo").css("margin-left", "-1.5px");
+    };
+
+function quitter_aquarium(){
+$("#photo").css("background-image", "none");
+$("#photo").css("margin-top", "0px");
+$("#photo").css("margin-left", "0px");
+    };
 
 
 
