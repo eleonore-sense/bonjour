@@ -165,7 +165,19 @@ $( "#gif_requin" ).css('display','none');
     };
 
 
-function diploramax(){
+function madcow(){
+$( ".madcow" ).css('textShadow',effet_txt);
+$("#photo").css("background-image", "url(madcow/img/1.jpg)");
+$('#legende').text('scénographie du madcow festival réalisée avec les artistes et designers Nora Dupont et Marie Marcombe_ 2024');
+    };
+
+function quitter_madcow(){
+$('.madcow').css('textShadow','none');
+$("#photo").css("background-image", "none");
+$('#legende').text('')
+    };
+
+    function diploramax(){
 $( ".diploramax" ).css('textShadow',effet_txt);
 $("#photo").css("background-image", "url(diploramax/img/1.jpg)");
 $('#legende').text('scénographie d’une partie de l’exposition 100% à la Villette réalisée avec les artistes et designers Amira Louadah, Rafaël Têtedoie et Lucas Lorigeon_ 2022');
