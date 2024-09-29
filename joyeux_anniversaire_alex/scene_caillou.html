@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+	<title>↗↗↗↗↗↗↗ a.a.a ↗↗↗↗↗↗</title>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+	<link rel="stylesheet" media="screen and (min-width: 750px)"type="text/css" href="style_caillou.css"> 
+    <link rel="stylesheet" media="screen and (max-width: 750px)" href="style_tel.css">
+
+
+
+</head>
+
+<body id="body">
+
+
+<div id="blabla">
+<p> Ceci est l'histoire de deux cailloux.
+<p> iels se sont trouvé·es par un mois frais de février.
+<p> les deux cailloux cherchaient un peu de compagnie pour passer l'hiver, 
+  <br>et se sont rencontré·es sur une appli pas vraiment faite pour les cailloux.
+</div>
+
+ <button id="bouton_youpi" onclick="apparitionCaillou()" title="wierdo"> c'est vraiment chelou ce que tu me racontes, mais ok, next</button>
+
+
+
+<div id="next">
+  <div id="caillou">
+<div id="c1"><img src="img/caillou_1.jpg" onclick="caillou1_tchatch()"></div>
+<div id="c2"><img src="img/caillou_2.jpg"onclick="caillou2_tchatch()"></div>
+</div>
+<p class="notice"> click sur les cailloux pour les faire parler</p>
+ <button id="bouton_suite" onclick="window.location.href= 'scene_escargot.html';" title="thank you, next" style="margin-top: 30px;"> Bon, passons à la suite </button>
+
+</div>
+
+
+</div>
+
+
+<div id="tchatch_caillou1"><p class="tchatch" id="p1"></p>euuh salut...</div>
+<div id="tchatch_caillou2"><p class="tchatch" id="p2"></p>salut salut!</div>
+
+
+</body>
+
+<script type="text/javascript">
+	var message = new Array();
+message[0] = ""
+var reps = 2;
+var speed = 2000;
+var p = message.length;
+var T = "";
+var C = 0;
+var mC = 0;
+var s = 0;
+var sT = null;
+if (reps < 1) reps = 1;
+function doIt() {
+T = message[mC];
+A();
+}
+function A() {
+s++;
+if (s > 8) { s = 1;}
+if (s == 1) { document.title = '↗↗↗↗↗↗↗ ceci ↗↗↗↗↗↗'; }
+if (s == 2) { document.title = '⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢'; }
+if (s == 3) { document.title = '↝↝↝↝↝ est un site ↝↝↝↝↝'; }
+if (s == 4) { document.title = '⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝'; }
+if (s == 5) { document.title = '↠↠↠ pour alex ↠↠↠'; }
+if (s == 6) { document.title = '↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯'; }
+if (s == 7) { document.title = '↬ de élé ↫'; }
+
+if (s == 8) { document.title = '☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺'; }if (C < (8 * reps)) {
+sT = setTimeout("A()", speed);
+C++;
+}
+else {
+C = 0;
+s = 0;
+mC++;
+if(mC > p - 1) mC = 0;
+sT = null;
+doIt();
+   }
+}
+doIt();
+
+
+
+
+
+function apparitionCaillou(){
+$("#next").css("display", "block");
+$("#bouton_youpi").css("display", "none");
+}
+
+
+let blabla = ['yessssss', 'cool', 'cool cool top','suuuuu-per', 'okay...', 'voila voila', 'super super', 'bon bon bon...', 'tip top!', 'tip top cooool'];
+
+
+  var count1 = 0;   
+  var count2 = 0;   
+
+function caillou1_tchatch(){
+
+
+    count1 += 1;
+    console.log(count1);
+    if(count1 ==1){
+    $("#tchatch_caillou1").css("display", "block");
+}else if(count1 ==2){
+    $("#tchatch_caillou1").text('ça boom?');
+}else if(count1 ==8){
+    $("#tchatch_caillou1").text(blabla[Math.floor(Math.random() * 6)]);
+$("#bouton_suite").css("display","block");
+}else{
+        $("#tchatch_caillou1").text(blabla[Math.floor(Math.random() * 6)]);
+
+}
+}
+
+function caillou2_tchatch(){
+
+
+    count2 += 1;
+    console.log(count2);
+    if(count2 ==1){
+    $("#tchatch_caillou2").css("display", "block");
+}else if(count2 ==2){
+    $("#tchatch_caillou2").text('ça farte, tranquille...');
+}else if(count2 ==8){
+    $("#tchatch_caillou2").text(blabla[Math.floor(Math.random() * 6)]);
+$("#bouton_suite").css("display","block");
+}else{
+        $("#tchatch_caillou2").text(blabla[Math.floor(Math.random() * 6)]);
+
+}
+}
+</script>
+
+	</html>
+
+

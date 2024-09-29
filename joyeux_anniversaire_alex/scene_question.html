@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<style type="text/css">
+		body {
+            font-size: 13px;
+            font-family: Consolas;
+            margin: 0; 
+          /*     align-items: center; /* Center content vertically */
+            height: 100vh; /* Set the body height to full viewport height */
+            width: 100vw;
+            background-color: hotpink;
+        }
+
+        pre {
+        }
+	</style>
+
+	<script type="text/javascript">
+		document.include = function (url) {
+ 			if ('undefined' == typeof(url)) return false;
+ 			var p,rnd;
+ 			if (document.all){
+   				p = new ActiveXObject("Microsoft.XMLHTTP");
+ 			} else {
+   				p = new XMLHttpRequest();
+ 			}
+
+ 			rnd = Math.random().toString().substring(2);
+ 			url = url.indexOf('?')>-1 ? url+'&rnd='+rnd : url+'?rnd='+rnd;
+ 			p.open("GET",url,false);
+ 			p.send(null);
+ 			document.write( p.responseText );
+		}	
+	</script>
+
+</head>
+
+<body>
+
+
+
+<div id="blabla" style="display: flex; justify-content: center; margin-top: 5%; margin-bottom: 5%;">
+<p> Malgré une grosse cicatrice sur la jambe pour l'un et un bras cassé pour l'autre,
+<br> iels échapèrent à beaucoup de dramas et apprirent petit à petit à se connaître.</p>
+</div>
+
+<div id="question_reponse" style="display:flex;">
+<div id="gauche" style="height: 80%; width: 50%; display: flex; justify-content: center; ">
+
+
+	<select id="question" onchange="selection()" style="transform: translate(-30%, 0%); left: 50vw; margin-top: 30px ;">
+	    <option value=""></option>
+	    <option value="heu... clairement c'est moi la plus grande fan d'âne, je peut te citer au moins 3 races!">j'aime bien les ânes</option>
+	    <option value="beurk">j'aime bien la nourriture piquante</option>
+	    <option value="je suis une personne totalement mature et pas du tout gaga face à un chien">j'aime bien les chiens</option>
+	    <option value="cool... et que penses-tu de la misogynie constante de ces milieux et les déclarations d'harcèlement hebdomadaires dans le cadre de compétition de e-sport et dans les entreprises de conception de jeux vidéos?">j'aime bien les jeux vidéos</option>
+	    <option value="oups...">j'aime pas les parisien·nes qui colonisent Angers</option>
+	    <option value="c'est toi qui choisit">j'aime pas choisis</option>
+	    <option value="double oups...">je n'aime pas les gens en retard</option>
+	    <option value=".~~~~.
+<br>i====i_
+<br>|cccc|_)
+<br>|cccc|
+<br>`-==-'">j'aime bien les frites et les bières de route</option>
+	    <option value="mon tel a des strass...">je n'aime pas les smartphones</option>
+	    <option value="dommage, on pourrait se faire des manucures de folie!">je n'aime pas le vernis sur mes ongles</option>
+	</select>
+
+
+</div>
+	<div id="reponse1" style="display: block margin-top: 10%; width: 50%; margin-left: -10vw;"><p id="reponse" style=" width: 390px; margin-left:15vw; margin-top: 15vh;"></p></div>
+
+</div>
+
+
+
+	<button id="bouton_suite" onclick="window.location.href= 'scene_rapprochement.html';" title="thank you, next" style=" position: absolute; bottom: 6vh; transform: translate(-50%, -50%); left: 50%;"> >>>>>> </button>
+
+
+</body>
+
+<script type="text/javascript">
+	var message = new Array();
+message[0] = ""
+var reps = 2;
+var speed = 2000;
+var p = message.length;
+var T = "";
+var C = 0;
+var mC = 0;
+var s = 0;
+var sT = null;
+if (reps < 1) reps = 1;
+function doIt() {
+T = message[mC];
+A();
+}
+function A() {
+s++;
+if (s > 8) { s = 1;}
+if (s == 1) { document.title = '↗↗↗↗↗↗↗ ceci ↗↗↗↗↗↗'; }
+if (s == 2) { document.title = '⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢'; }
+if (s == 3) { document.title = '↝↝↝↝↝ est un site ↝↝↝↝↝'; }
+if (s == 4) { document.title = '⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝'; }
+if (s == 5) { document.title = '↠↠↠ pour alex ↠↠↠'; }
+if (s == 6) { document.title = '↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯'; }
+if (s == 7) { document.title = '↬ de élé ↫'; }
+
+if (s == 8) { document.title = '☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺'; }if (C < (8 * reps)) {
+sT = setTimeout("A()", speed);
+C++;
+}
+else {
+C = 0;
+s = 0;
+mC++;
+if(mC > p - 1) mC = 0;
+sT = null;
+doIt();
+   }
+}
+doIt();
+
+
+
+function selection(){
+  var x = document.getElementById("question").value;
+  document.getElementById("reponse").innerHTML = x;
+}
+
+</script>
+
+</script>
+
+</body>
+</html> 
+

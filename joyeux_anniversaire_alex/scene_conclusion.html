@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+    <title>↗↗↗↗↗↗↗ a.a.a ↗↗↗↗↗↗</title>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<SCRIPT LANGUAGE="JavaScript">
+
+document.include = function (url) {
+ if ('undefined' == typeof(url)) return false;
+ var p,rnd;
+ if (document.all){
+   p = new ActiveXObject("Microsoft.XMLHTTP");
+ }
+ else {
+   p = new XMLHttpRequest();
+ }
+
+ rnd = Math.random().toString().substring(2);
+ url = url.indexOf('?')>-1 ? url+'&rnd='+rnd : url+'?rnd='+rnd;
+ p.open("GET",url,false);
+ p.send(null);
+ document.write( p.responseText );
+}
+
+</SCRIPT>
+<style type="text/css">
+    body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+</style>
+
+</head>
+
+
+
+	<body style="">
+	
+<div style=" position: absolute; left:50vw; margin-top: 10px;    transform: translate(-50%,0); ">
+        <pre ><script>document.include('img/coquillage.txt') ;</script></pre></div> 
+
+
+
+<div id="tchuss" style="position: absolute; left:50vw; top:50vh; transform: translate(-50%,-50%);"><img id="gif_warning" src="a_bientot.gif">
+</div>
+
+<div style=" position: absolute; left:50vw; top: 100vh;  margin-top:-20px;  transform: translate(-50%,-100%); ">
+        <pre ><script>document.include('img/coquillage.txt') ;</script></pre></div> 
+
+</body>
+
+<script type="text/javascript">
+    var message = new Array();
+message[0] = ""
+var reps = 2;
+var speed = 2000;
+var p = message.length;
+var T = "";
+var C = 0;
+var mC = 0;
+var s = 0;
+var sT = null;
+if (reps < 1) reps = 1;
+function doIt() {
+T = message[mC];
+A();
+}
+function A() {
+s++;
+if (s > 8) { s = 1;}
+if (s == 1) { document.title = '↗↗↗↗↗↗↗ ceci ↗↗↗↗↗↗'; }
+if (s == 2) { document.title = '⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢'; }
+if (s == 3) { document.title = '↝↝↝↝↝ est un site ↝↝↝↝↝'; }
+if (s == 4) { document.title = '⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝'; }
+if (s == 5) { document.title = '↠↠↠ pour alex ↠↠↠'; }
+if (s == 6) { document.title = '↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯'; }
+if (s == 7) { document.title = '↬ de élé ↫'; }
+
+if (s == 8) { document.title = '☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺'; }if (C < (8 * reps)) {
+sT = setTimeout("A()", speed);
+C++;
+}
+else {
+C = 0;
+s = 0;
+mC++;
+if(mC > p - 1) mC = 0;
+sT = null;
+doIt();
+   }
+}
+doIt();
+
+
+</script>
+</html>

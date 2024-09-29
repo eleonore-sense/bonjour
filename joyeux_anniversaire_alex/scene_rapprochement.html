@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+	<title>↗↗↗↗↗↗↗ a.a.a ↗↗↗↗↗↗</title>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+
+</head>
+<style>
+
+
+
+html, body{
+margin: 0px;
+padding: 0px;
+ font-family: Consolas;
+color: rgb(0,0,0);
+  background: rgb(245,245,245) ;
+  width: 100vw;
+  font-size: 0.9em;
+  text-align: center;
+  height: 300vh;
+}
+
+
+#bouton_suite{
+    display: none;
+    position: absolute;
+    left: 50vw;
+    transform: translate(-50%,0);
+    margin-top: 20px;
+}
+
+
+img{
+    width: 400px;
+    height: 250px;
+    cursor: pointer;
+    mix-blend-mode: multiply;
+
+}
+
+.cailloux{
+    position: absolute;
+    transform: translate(-50%,-50%);
+    left: 50vw;
+}
+
+.humain{
+    position: absolute;
+    transform: translate(-50%,-50%);
+    left: 50vw;
+}
+
+#c1{
+    top: 35vh;
+      animation: 4s linear infinite alternate c1_anim;
+    mix-blend-mode: multiply;
+    margin-left: -10vw;
+
+}
+
+#c2{
+    top: 35vh;
+      animation: 4s linear infinite alternate c2_anim;
+        mix-blend-mode: multiply;
+        margin-left: -10vw;
+
+
+}
+
+#poc{
+    text-shadow: 0 0 5px #0fff00, 0 0 7px #0fff00, 0 0 10px #0fff00,  2px -2px 5px #0fff00;
+    color: #ff00fb;
+    top: 40vh;
+        left: 50vW;
+    animation: 8s linear infinite poc;
+    position: absolute;
+    transform: translate(-50%,-50%);
+}
+
+#c3{
+    top: 165vh;
+    margin-left:230px;
+        z-index: 4;
+        cursor: pointer;
+        opacity: 1;
+}
+
+@keyframes c2_anim {
+  from {left: 5vw; transform: rotate(0deg) }
+  to   { left: 50vw; transform: rotate(360deg) }
+}
+
+@keyframes c1_anim {
+  from {left: 95vw; transform: rotate(0deg)  }
+  to   { left: 50vw; transform: rotate(-360deg)   }
+}
+
+
+@keyframes poc {
+  0% {opacity: 0; }
+  50%   {opacity: 0; }
+  51%   {opacity: 1; }
+  70%   {opacity: 1; }
+  81%   {opacity: 0; }
+    100%   {opacity: 0; }
+}
+
+
+#h2{
+    top: 165vh;
+    margin-left:230px;
+}
+#c4{
+    top: 165vh;
+    margin-left:-230px;
+    z-index: 4;
+    cursor: pointer;
+    opacity: 1;
+}
+
+#h1{
+    top: 165vh;
+    margin-left:-230px;
+}
+
+
+#notice{
+    margin-top: 400px;
+    font-style: italic;
+}
+
+
+.tchatch{
+    display: none;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    left: 50vw;
+
+}
+
+
+#c3_parle{
+    text-shadow: 0 0 5px #ff00fb, 0 0 7px #ff00fb, 0 0 10px #ff00fb,  2px -2px 5px #ff00fb;
+    color: #0fff00;
+    margin-left:312px;
+    top: 156vh;
+}
+
+
+#c4_parle{
+text-shadow: 0 0 5px #0fff00, 0 0 7px #0fff00, 0 0 10px #0fff00,  2px -2px 5px #0fff00;
+    color: #ff00fb;
+        margin-left:-100px;
+    top: 170vh;
+}
+
+</style>
+
+<body id="body">
+
+
+<div id="blabla" style="margin-top: 100px;">
+<p> Au début de leur recontre, les cailloux n'avaient pas 
+<br>l'habitude de partager leur territoire avec quelq'un·e
+<br> et se cognaient beaucoup.</p>
+</div>
+
+
+
+
+  <div id="caillou">
+<div id="c1" class="cailloux"><img src="img/caillou_1.jpg"></div>
+<div id="c2" class="cailloux"><img src="img/caillou_2.jpg"></div>
+<div id="poc"> poc! </div>
+</div>
+
+
+<p id="fleche" style="margin-top: 70vh;">|
+<br>|
+<br>|
+<br>|
+<br>|
+<br>|
+<br>|
+<br>|
+<br>|
+<br>|
+<br>V
+</p>    
+<p style="margin-top: 100px;"> mais au bout d'un moment, 
+    <br>à force de se découvrir et se comprendre, <br>iels se sont apprivoisé·es et sont devenu·es de vrai·es copaines.</p>
+<p> c'est alors que leurs carapaces de caillou ont fondu 
+<br>et en faite, c'était des vrai·es humain·es dedans, 
+<br>genre des gens normaux...
+
+</p>
+
+
+<div id="c3" class="cailloux" onclick="opacite_c3(); suite()"><img src="img/caillou_1.jpg"></div>
+<div id="c4" class="cailloux" onclick="opacite_c4(); suite()"><img src="img/caillou_2.jpg"></div>
+<div id="h1" class="humain">¯\_( ͡° ͜ʖ ͡°)_/¯</div>
+<div id="h2" class="humain">¯〜(◠‿◠ 〜)</div>
+<div id="notice">il faut briser les cailloux</div>
+<div id="c3_parle" class="tchatch">Ahhh! c'est bien plus <br>pratique comme ça!</div> 
+<div id="c4_parle" class="tchatch">Ouhlala <br>j'ai fondu!</div> 
+ <button id="bouton_suite" onclick="window.location.href= 'scene_demenagement.html';" title="thank you, next" style="cursor: pointer; margin-top: 30px;"> ok, ultra gnangnan mais passons </button>
+
+
+
+</div>
+
+
+</body>
+
+<script type="text/javascript">
+	var message = new Array();
+message[0] = ""
+var reps = 2;
+var speed = 2000;
+var p = message.length;
+var T = "";
+var C = 0;
+var mC = 0;
+var s = 0;
+var sT = null;
+if (reps < 1) reps = 1;
+function doIt() {
+T = message[mC];
+A();
+}
+function A() {
+s++;
+if (s > 8) { s = 1;}
+if (s == 1) { document.title = '↗↗↗↗↗↗↗ ceci ↗↗↗↗↗↗'; }
+if (s == 2) { document.title = '⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢'; }
+if (s == 3) { document.title = '↝↝↝↝↝ est un site ↝↝↝↝↝'; }
+if (s == 4) { document.title = '⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝'; }
+if (s == 5) { document.title = '↠↠↠ pour alex ↠↠↠'; }
+if (s == 6) { document.title = '↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯'; }
+if (s == 7) { document.title = '↬ de élé ↫'; }
+
+if (s == 8) { document.title = '☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺'; }if (C < (8 * reps)) {
+sT = setTimeout("A()", speed);
+C++;
+}
+else {
+C = 0;
+s = 0;
+mC++;
+if(mC > p - 1) mC = 0;
+sT = null;
+doIt();
+   }
+}
+doIt();
+
+
+
+
+function opacite_c3() {
+if ($('#c3').css('opacity') == 1){
+    $('#c3').css('opacity', '0.8');
+} else if ($('#c3').css('opacity') == 0.8){
+    $('#c3').css('opacity', '0.6');
+}  else if ($('#c3').css('opacity') == 0.6){
+    $('#c3').css('opacity', '0.4');
+} else if ($('#c3').css('opacity') == 0.4){
+    $('#c3').css('opacity', '0.2');
+} else if ($('#c3').css('opacity') == 0.2){
+    $('#c3').css('opacity', '0');
+    $('#c3_parle').css('display', 'block');
+}
+}
+
+function opacite_c4() {
+if ($('#c4').css('opacity') == 1){
+    $('#c4').css('opacity', '0.8');
+} else if ($('#c4').css('opacity') == 0.8){
+    $('#c4').css('opacity', '0.6');
+}  else if ($('#c4').css('opacity') == 0.6){
+    $('#c4').css('opacity', '0.4');
+} else if ($('#c4').css('opacity') == 0.4){
+    $('#c4').css('opacity', '0.2');
+} else if ($('#c4').css('opacity') == 0.2){
+    $('#c4').css('opacity', '0');
+    $('#c4_parle').css('display', 'block');
+}
+}
+
+function suite() {
+if ($('#c4').css('opacity') == 0 && $('#c3').css('opacity') == 0){
+   $('#bouton_suite').css('display','block');
+}    
+}
+</script>
+
+	</html>
+
+

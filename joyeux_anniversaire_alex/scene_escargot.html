@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+	<title>↗↗↗↗↗↗↗ a.a.a ↗↗↗↗↗↗</title>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+	<link rel="stylesheet" media="screen and (min-width: 750px)"type="text/css" href="style_escargot.css"> 
+    <link rel="stylesheet" media="screen and (max-width: 750px)" href="style_tel.css">
+
+
+
+</head>
+
+<body id="body">
+
+
+<div id="blabla">
+<p> L'un des deux cailloux était particulièrement maladroit
+<br> et sur sa route, roulait régulièrement sur des escargots...</p>
+</div>
+
+
+
+
+<div id="e1" class="escargot" onclick="tue_e1()"; ></div>
+<div id="e2" class="escargot" onclick="tue_e2()"></div>
+<div id="e3" class="escargot" onclick="tue_e3()"; ></div>
+<div id="e4" class="escargot" onclick="tue_e4()"></div>
+<div id="e5" class="escargot" onclick="tue_e5()"; ></div>
+<div id="e6" class="escargot" onclick="tue_e6()"></div>
+<div id="e7" class="escargot" onclick="tue_e7()"; ></div>
+<div id="e8" class="escargot" onclick="tue_e8()"></div>
+
+
+<div id="phrase_malheur">
+<p> <br><br><br>DRAAAAMMMME, 
+	<br>comme le dit le très connu proverbe:
+  <br>écrase un escargot, 
+<br>un grand malheur s'abbatra sur toi!!!</p> 
+	<button id="bouton_suite" onclick="window.location.href= 'scene_question.html';" title="thank you, next" style=""> >>>>>> </button>
+</div>
+
+
+
+</body>
+
+<script type="text/javascript">
+	var message = new Array();
+message[0] = ""
+var reps = 2;
+var speed = 2000;
+var p = message.length;
+var T = "";
+var C = 0;
+var mC = 0;
+var s = 0;
+var sT = null;
+if (reps < 1) reps = 1;
+function doIt() {
+T = message[mC];
+A();
+}
+function A() {
+s++;
+if (s > 8) { s = 1;}
+if (s == 1) { document.title = '↗↗↗↗↗↗↗ ceci ↗↗↗↗↗↗'; }
+if (s == 2) { document.title = '⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢⇢'; }
+if (s == 3) { document.title = '↝↝↝↝↝ est un site ↝↝↝↝↝'; }
+if (s == 4) { document.title = '⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝⇝'; }
+if (s == 5) { document.title = '↠↠↠ pour alex ↠↠↠'; }
+if (s == 6) { document.title = '↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯↯'; }
+if (s == 7) { document.title = '↬ de élé ↫'; }
+
+if (s == 8) { document.title = '☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺⇼☻⇼☺'; }if (C < (8 * reps)) {
+sT = setTimeout("A()", speed);
+C++;
+}
+else {
+C = 0;
+s = 0;
+mC++;
+if(mC > p - 1) mC = 0;
+sT = null;
+doIt();
+   }
+}
+doIt();
+
+
+$(document).on('mousemove', (event) => {
+  $('.escargot').css({
+    left: event.clientX,
+    top: event.clientY,
+  });
+});
+
+
+
+function tue_e1(){
+	$('#e1').css('background-image','url(img/shinny_blood.gif');
+	tue_escargot();
+}
+
+function tue_e2(){
+	$('#e2').css('background-image','url(img/shinny_blood.gif');
+	tue_escargot();
+}
+
+function tue_e3(){
+	$('#e3').css('background-image','url(img/shinny_blood.gif');
+	tue_escargot();
+}
+
+function tue_e4(){
+	$('#e4').css('background-image','url(img/shinny_blood.gif');
+	tue_escargot();
+}
+
+function tue_e5(){
+	$('#e5').css('background-image','url(img/shinny_blood.gif');
+	tue_escargot();
+}
+
+function tue_e6(){
+	$('#e6').css('background-image','url(img/shinny_blood.gif');
+	tue_escargot();
+}
+
+function tue_e7(){
+	$('#e7').css('background-image','url(img/shinny_blood.gif');
+	tue_escargot();
+}
+
+function tue_e8(){
+	$('#e8').css('background-image','url(img/shinny_blood.gif');
+	tue_escargot();
+}
+
+function tue_escargot(){
+	$('#phrase_malheur').css('display','block');
+}
+
+
+
+</script>
+
+	</html>
+
+
