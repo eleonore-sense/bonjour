@@ -1,0 +1,90 @@
+body{
+  background-color: white;
+  font-size: 13px;
+}
+
+
+
+/*@media (max-width: 992px) {
+    .pre-LG {font-size: 100%;}
+}
+
+@media (max-width: 768px) {
+    .pre-LG {font-size: 95%;}
+}
+
+@media (max-width: 576px) {
+    .pre-LG {font-size: 80%;}
+}*/
+
+#stars1{
+-webkit-animation: pulse 2s steps(1) infinite;
+-moz-animation:    pulse 2s steps(1) infinite;
+-o-animation:      pulse 2s steps(1) infinite;
+animation:         pulse 2s steps(1) infinite;
+}
+
+@-webkit-keyframes pulse {
+  0%   { opacity: 0; }
+  50% { opacity: 1; }
+}
+@-moz-keyframes pulse {
+  0%   { opacity: 0; }
+  50% { opacity: 1; }
+}
+@-o-keyframes pulse {
+  0%   { opacity: 0; }
+  50% { opacity: 1; }
+}
+@keyframes pulse {
+  0%   { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+#stars2{
+-webkit-animation: pulsebis 2s steps(1) infinite;
+-moz-animation:    pulsebis 2s steps(1) infinite;
+-o-animation:      pulsebis 2s steps(1) infinite;
+animation:         pulsebis 2s steps(1) infinite;
+}
+
+@-webkit-keyframes pulsebis {
+  0%   { opacity: 1; }
+  50% { opacity: 0; }
+}
+@-moz-keyframes pulsebis {
+  0%   { opacity: 1; }
+  50% { opacity: 0; }
+}
+@-o-keyframes pulsebis {
+  0%   { opacity: 1; }
+  50% { opacity: 0; }
+}
+@keyframes pulsebis {
+  0%   { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+#white{
+    color: white;
+}
+
+#color{
+  position : fixed;
+  z-index: 3;
+  left: auto;
+  right: 30px;
+  color: black;
+  cursor: pointer;
+}
+
+pre{
+  color: black;
+}
+
+
+#bouton_youpi{
+  margin-top: 100px;
+  margin-bottom: 240px;
+  cursor: pointer;
+}

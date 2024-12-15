@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+    <title>↗↗↗↗↗↗↗ joyeux noel! ↗↗↗↗↗↗</title>
+    <script src="SCENE/jquery-3.7.1.min.js"></script>
+
+<script>
+document.include = function (url) {
+ if ('undefined' == typeof(url)) return false;
+ var p,rnd;
+ if (document.all){
+   p = new ActiveXObject("Microsoft.XMLHTTP");
+ }
+ else {
+   p = new XMLHttpRequest();
+ }
+
+ rnd = Math.random().toString().substring(2);
+ url = url.indexOf('?')>-1 ? url+'&rnd='+rnd : url+'?rnd='+rnd;
+ p.open("GET",url,false);
+ p.send(null);
+ document.write( p.responseText );
+}
+</script>
+<style type="text/css">
+    body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+</style>
+
+</head>
+
+
+
+	<body style="">
+	
+<div style=" position: absolute; left:50vw; margin-top: 10px;    transform: translate(-50%,0); ">
+        <pre ><script>document.include('../img/coquillage.txt') ;</script></pre></div> 
+
+<div id="tchuss" style="position: absolute; left:50vw; top:40vh; transform: translate(-50%,-50%);">
+    <p style="text-align: center; font-family: consolas;">malheureusement l'histoire de notre jeune agent+e s'arrête brusquement ici car il est presque 20h et je dois courrir faire des courses et vous rejoindre</p>
+</div>
+
+<div id="tchuss" style="position: absolute; left:50vw; top:60vh; transform: translate(-50%,-50%);">
+
+    <img id="gif_warning" src="../img/a_bientot.gif">
+</div>
+
+<div style=" position: absolute; left:50vw; top: 100vh;  margin-top:-20px;  transform: translate(-50%,-100%); ">
+        <pre ><script>document.include('../img/coquillage.txt') ;</script></pre></div> 
+
+</body>
+
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+
+  
+    <title>↗↗↗↗↗↗↗ joyeux noel! ↗↗↗↗↗↗</title>
+    <script src="jquery-3.7.1.min.js"></script>
+    <script src="script_commun.js"></script>
+
+
+	<link rel="stylesheet" media=""type="text/css" href="style_escargot.css"> 
+
+
+
+</head>
+
+<body id="body">
+
+
+<div id="blabla">
+<p> cependant, en atterissant avec sa super navette, 
+<br>l'agent+e ne s'était pas rendu.es compte qu'il y avait de la vie sous ses pieds</p>
+</div>
+
+
+
+
+<div id="e1" class="escargot" onclick="tue_e1()"; ></div>
+<div id="e2" class="escargot" onclick="tue_e2()"></div>
+<div id="e3" class="escargot" onclick="tue_e3()"; ></div>
+<div id="e4" class="escargot" onclick="tue_e4()"></div>
+<div id="e5" class="escargot" onclick="tue_e5()"; ></div>
+<div id="e6" class="escargot" onclick="tue_e6()"></div>
+<div id="e7" class="escargot" onclick="tue_e7()"; ></div>
+<div id="e8" class="escargot" onclick="tue_e8()"></div>
+
+
+<div id="phrase_malheur">
+<p> <br><br><br>DRAAAAMMMME, 
+	<br>l'agent+es a malencontreusement écrasé un membre
+  <br>de son équipe en le prenant pour un escargot! 
+<br>un grand malheur s'abbatra sur toi!!!</p> 
+	<button id="bouton_suite" onclick="window.location.href= 'scene_conclusion.html';" title="thank you, next" style=""> >>>>>> </button>
+</div>
+
+
+
+</body>
+
+<script type="text/javascript">
+
+
+
+$(document).on('mousemove', (event) => {
+  $('.escargot').css({
+    left: event.clientX,
+    top: event.clientY,
+  });
+});
+
+
+
+function tue_e1(){
+	$('#e1').css('background-image','url(../img/shinny_blood-lucien.gif');
+	tue_escargot();
+}
+
+function tue_e2(){
+	$('#e2').css('background-image','url(../img/shinny_blood-joris.gif');
+	tue_escargot();
+}
+
+function tue_e3(){
+	$('#e3').css('background-image','url(../img/shinny_blood-jajou.gif');
+	tue_escargot();
+}
+
+function tue_e4(){
+	$('#e4').css('background-image','url(../img/shinny_blood-mae.gif');
+	tue_escargot();
+}
+
+function tue_e5(){
+	$('#e5').css('background-image','url(../img/shinny_blood-mathilde.gif');
+	tue_escargot();
+}
+
+function tue_e6(){
+	$('#e6').css('background-image','url(../img/shinny_blood-nico.gif');
+	tue_escargot();
+}
+
+function tue_e7(){
+	$('#e7').css('background-image','url(../img/shinny_blood-raf.gif');
+	tue_escargot();
+}
+
+function tue_e8(){
+	$('#e8').css('background-image','url(../img/shinny_blood-camilles.gif');
+	tue_escargot();
+}
+
+function tue_escargot(){
+	$('#phrase_malheur').css('display','block');
+}
+
+
+
+</script>
+
+	</html>
+
+

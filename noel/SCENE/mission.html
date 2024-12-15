@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+    <title>↗↗↗↗↗↗↗ joyeux noel! ↗↗↗↗↗↗</title>
+    <script src="jquery-3.7.1.min.js"></script>
+    <script src="script_commun.js"></script>
+
+
+<style>
+    
+.centre{
+    margin-left: 50vw;
+    margin-top: 50vh;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.terminal2 {
+  color:deepskyblue;
+  font-size:13px;
+  border: none;
+  width: 130px;
+  height: 167px;
+  top:-152px;
+  left: 5px;
+resize: none;
+display: none;
+}
+</style>
+</head>
+
+<body id="body">
+
+
+<div id="photo_1"><img id="" class="centre" src="../img/1.png" style="height:700px; width:700px;"></div>
+
+
+<div id="photo_2" style="display: none;"><img id="" class="centre" src="../img/2.png" style="height:700px; width:700px; cursor: pointer;" onclick="ouvrirTel()"></div>
+
+
+<div id="photo_3" style="display: none;"><img id="" class="centre" src="../img/3.png" style="height:700px; width:700px;"></div>
+
+
+<div id="terminal2_boite">
+ <textarea class="terminal2 centre_ordi centre" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="terminal2" cols="100" rows="100"></textarea></div>
+
+</body>
+
+
+
+<script>
+
+      $( window ).on( "load", function() {
+ setTimeout(() => {$("#photo_1").css('display','none'); $("#photo_2").css('display','block')}, 3000);
+});   
+
+
+
+
+function ouvrirTel(){
+ $("#photo_2").css('display','none');
+ $("#photo_3").css('display','block'); 
+ $ ("#terminal2").css('display','block'); 
+ smsRecu();
+
+}
+
+
+
+
+//////////////////////////TEXTE TERMINAL2//////////////////////////////////////
+let terminal2, writeSpeed2;
+function smsRecu() {
+    $('#terminal2').css('display','block');
+  // default settings
+  terminal2 = document.getElementById("terminal2");
+  writeSpeed2 = 60;
+  terminal2Start();
+
+  // input listener
+  terminal2.addEventListener("keydown", terminal2InputHandler);
+}
+
+function terminal2Start() {
+  let text1 = 'vous venez de recevoir une mission, un·e agent·e de la division vient d’etre enlevé·e, \nveuillez vous rendre immédiatement à la base \ntape [o] pour [accepter]:';
+
+  terminal2Write(text1);
+
+}
+
+
+function terminal2Write(text) {
+  let counter = 0;
+  (function writer() {
+    terminal2.disabled = true;
+      var textarea = document.getElementById("terminal2");
+  if(textarea.selectionStart == textarea.selectionEnd) {
+     textarea.scrollTop = textarea.scrollHeight;
+  }
+  
+    if (counter < text.length) {
+      let terminalText = (`${(terminal2.value).replace("|","")}${text.charAt(counter)}`);
+      if (counter !== text.length-1) {
+        terminalText = `${terminalText}|`
+      }
+      terminal2.value = terminalText;
+      counter++;
+      setTimeout(writer, writeSpeed2);
+    } else {
+      clearTimeout(writer);
+      terminal2.disabled = false;
+      terminal2.blur();
+      terminal2.focus();
+    }
+  })();
+}
+
+function terminal2InputHandler(e) {
+  console.log(e.keyCode);
+  switch (e.keyCode) {
+    case 79:
+terminal2.value = "";
+$('#terminal2').css('display','none');
+window.location.href='agent.html'
+      break;
+
+    default:
+      e.preventDefault();
+      terminal2Write("\nbah super! bonne ambiance! t'as pas le choix, accepte la mission! tape [o]:");
+  }
+}
+
+
+
+</script>
+
+	</html>
+
+
