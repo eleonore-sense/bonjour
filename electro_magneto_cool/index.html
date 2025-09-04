@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+	<title>👄↝🎤↝📈↝📡↝📡↝📈↝📻↝👂</title>
+  <link rel="icon" type="image/png" href="img_4.png" />
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css"> 
+
+
+
+</head>
+
+<body id="body">
+
+<div><a href="champs_electromagnetique/champs_electrique.html">les champs electromagnétiques</a>
+</div>
+
+<div>la communication par radio
+</div>
+
+<div><a href="telecommunication/telecommunication_test.html">la communication par téléphone</a>
+</div>
+
+<div>les longueurs d'ondes
+</div>
+
+<a id="antenne" class="chapitre" href="antenne/menu_antenne.html"><a></a>
+  <p class="legende">les antennes</p>
+</a>
+
+<div>les antennes camouflées
+</div>
+
+<div>les ondes et le vivant
+</div>
+
+<div>le champs electromagnétique de la terre
+</div>
+<div>croyances et imaginaires des ondes
+</div>
+
+<div>
+<a id="capteur" class="chapitre" href="capteur_emf/index.html">
+  <p class="legende">le fonctionnement des capteurs</p>
+</a>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+
+
+  ///////////////////////POSITION texte//////////////////////////////////
+
+$(function() {
+ 
+  $('#body').mousemove(function(e) {
+    var x = e.pageX;
+    var y = e.pageY;
+    var mid = $(window).height();
+    var midW =$(window).width()/2;
+    // var docHeight = $(document).height();
+
+    $('.legende').css('top', y-350+'px');
+
+    $('.legende').css('left', (x-midW+20)+'px');
+
+});
+
+});
+
+
+
+
+
+</script>
+</body>
+	</html>

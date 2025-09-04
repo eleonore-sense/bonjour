@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>charges negatives</title>
+  <style>
+    /* Style général de la page avec fond sombre */
+    body {
+      margin: 0;
+      background: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: white;
+      font-family: sans-serif;
+    }
+    /* Style du conteneur SVG */
+    svg {
+      background: #222;
+      border: 1px solid #444;
+    }
+    /* Style des lignes de champ électrique */
+    path {
+      stroke: #555;
+      stroke-width: 1;
+      fill: none;
+    }
+    /* Style de la charge positive (rouge) */
+    circle.charge1 {
+      fill: red;
+      stroke: white;
+      stroke-width: 2;
+      cursor: grab;
+    }
+    /* Style de la charge négative (bleue) */
+    circle.charge2 {
+      fill: blue;
+      stroke: white;
+      stroke-width: 2;
+      cursor: grab;
+    }
+    /* Style des flèches animées sur les trajectoires */
+    polygon.arrow {
+      fill: cyan;
+      stroke: white;
+      stroke-width: 0.5;
+    }
+    /* Style des symboles + et - au centre des charges */
+    text.charge-symbol {
+      fill: white;
+      font-family: sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      text-anchor: middle;
+      dominant-baseline: central;
+      pointer-events: none;
+    }
+    /* Style du texte informatif en bas */
+    .info {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 14px;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <!-- Zone SVG pour dessiner les charges et trajectoires -->
+  <svg id="mysvg" width="800" height="600"></svg>
+  <!-- Texte explicatif sur les couleurs et comportement -->
+  <div class="info">Rouge : charge positive (+) | Bleu : charge négative (-)<br>Les trajectoires bleues ne peuvent pas s'approcher plus près du noyau rouge que les trajectoires rouges</div>
+  <script>
+    // Récupération de l'élément SVG
+    const svg = document.getElementById("mysvg");
+
+    // Définition des deux charges : une positive (+1) et une négative (-1)
+    const charges = [
+      { x: 250, y: 300, sign: 1, elem: null },  // Charge positive (rouge)
+      { x: 550, y: 300, sign: -1, elem: null } // Charge négative (bleue)
+    ];
+
+    // Création des éléments visuels pour chaque charge
+    charges.forEach((c, i) => {
+      // Création du cercle représentant la charge
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("r", 10);
+      circle.setAttribute("cx", c.x);
+      circle.setAttribute("cy", c.y);
+      circle.setAttribute("class", i === 0 ? "charge1" : "charge2");
+      svg.appendChild(circle);
+      c.elem = circle;
+      
+      // Création du symbole + ou - au centre de la charge
+      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      text.setAttribute("x", c.x);
+      text.setAttribute("y", c.y);
+      text.setAttribute("class", "charge-symbol");
+      text.textContent = i === 0 ? "+" : "−"; // + pour positive, − pour négative
+      svg.appendChild(text);
+      c.symbol = text;
+    });
+
+    // Fonction qui calcule le champ électrique en un point (x, y)
+    function computeField(x, y) {
+      let fx = 0, fy = 0; // Composantes du champ résultant
+      charges.forEach(c => {
+        const dx = x - c.x; // Distance horizontale à la charge
+        const dy = y - c.y; // Distance verticale à la charge
+        const distSq = dx * dx + dy * dy; // Distance au carré
+        if (distSq > 1) { // Éviter division par zéro près de la charge
+          const dist = Math.sqrt(distSq);
+          const force = c.sign / (distSq * 0.8); // Force avec facteur d'atténuation
+          fx += force * dx / dist; // Composante x du champ
+          fy += force * dy / dist; // Composante y du champ
+        }
+      });
+      return { fx, fy };
+    }
+
+    // Tableaux pour stocker les chemins, flèches et points finaux des trajectoires rouges
+    const paths = [];
+    const arrows = [];
+    let redTrajectoryEndPoints = []; // Points finaux des trajectoires rouges pour comparaison
+
+    // Fonction qui trace une ligne de champ à partir d'un point donné
+    function traceLine(x, y, startCharge, maxLength = 120) {
+      let points = [`M${x},${y}`]; // Début du chemin SVG
+      let steps = 150; // Nombre maximum d'étapes
+      let stepSize = 1.2; // Taille de chaque pas
+      let prevDir = null; // Direction précédente pour le lissage
+      let currentLength = 0; // Longueur parcourue
+      let endPoint = { x, y }; // Point final de la trajectoire
+
+      for (let i = 0; i < steps; i++) {
+        // Calcul du champ électrique au point actuel
+        const { fx, fy } = computeField(x, y);
+        const len = Math.sqrt(fx * fx + fy * fy);
+        if (len === 0) break; // Arrêt si champ nul
+
+        let dx = fx / len; // Direction normalisée
+        let dy = fy / len;
+
+        // Inversion de direction pour les charges négatives (attraction vs répulsion)
+        if (startCharge && startCharge.sign < 0) {
+          dx = -dx;
+          dy = -dy;
+        }
+
+        // Lissage de la trajectoire avec la direction précédente
+        if (prevDir) {
+          const curveStrength = 0.4; // Force du lissage
+          dx = (1 - curveStrength) * prevDir.dx + curveStrength * dx;
+          dy = (1 - curveStrength) * prevDir.dy + curveStrength * dy;
+          const dlen = Math.sqrt(dx * dx + dy * dy);
+          if (dlen > 0) {
+            dx /= dlen;
+            dy /= dlen;
+          }
+        }
+
+        // Calcul de la nouvelle position
+        const newX = x + dx * stepSize;
+        const newY = y + dy * stepSize;
+
+        // Vérification de la longueur maximale autorisée
+        currentLength += stepSize;
+        if (currentLength > maxLength) break;
+        
+        x = newX;
+        y = newY;
+        endPoint = { x, y }; // Mise à jour du point final
+
+        // Arrêt si on sort des limites du SVG
+        if (x < 0 || x > 800 || y < 0 || y > 600) break;
+
+        // Vérification de proximité avec une charge de signe opposé
+        let nearOppositeCharge = false;
+        charges.forEach(c => {
+          const dist = Math.sqrt((x - c.x) * (x - c.x) + (y - c.y) * (y - c.y));
+          if (dist < 15 && c.sign !== startCharge.sign) {
+            nearOppositeCharge = true;
+          }
+        });
+        if (nearOppositeCharge) break; // Arrêt si trop proche d'une charge opposée
+
+        points.push(`L${x},${y}`); // Ajout du point au chemin
+        prevDir = { dx, dy };
+      }
+
+      return { pathData: points.join(" "), endPoint, length: currentLength };
+    }
+
+    // Fonction qui calcule la distance d'un point à la charge rouge
+    function getDistanceFromRedCharge(point) {
+      const redCharge = charges[0]; // La charge rouge est la première
+      return Math.sqrt(
+        (point.x - redCharge.x) ** 2 + (point.y - redCharge.y) ** 2
+      );
+    }
+
+    // Fonction qui trouve la distance minimale des trajectoires rouges à leur charge source
+    function getMinDistanceRedTrajectoriesToCharge() {
+      let minDistance = Infinity;
+      redTrajectoryEndPoints.forEach(redEnd => {
+        const distance = getDistanceFromRedCharge(redEnd);
+        minDistance = Math.min(minDistance, distance);
+      });
+      return minDistance;
+    }
+
+    // Fonction principale qui met à jour toutes les trajectoires
+    function updatePaths() {
+      // Suppression des anciens éléments graphiques
+      paths.forEach(p => p.parentNode && p.parentNode.removeChild(p));
+      arrows.forEach(a => a.arrow.parentNode && a.arrow.parentNode.removeChild(a.arrow));
+      paths.length = 0;
+      arrows.length = 0;
+      redTrajectoryEndPoints = []; // Réinitialisation des points finaux rouges
+
+      const redCharge = charges[0];   // Charge positive (rouge)
+      const blueCharge = charges[1];  // Charge négative (bleue)
+      const redLines = 20;   // Nombre de trajectoires rouges
+      const blueLines = 20;  // Nombre de trajectoires bleues
+      const offsetRadius = 12; // Rayon de départ autour des charges
+
+      // ÉTAPE 1 : Tracer d'abord toutes les trajectoires rouges avec longueur fixe
+      for (let i = 0; i < redLines; i++) {
+        // Calcul de la position de départ (cercle autour de la charge rouge)
+        const angle = (2 * Math.PI * i) / redLines;
+        const x = redCharge.x + Math.cos(angle) * offsetRadius;
+        const y = redCharge.y + Math.sin(angle) * offsetRadius;
+        
+        // Traçage de la trajectoire rouge avec longueur maximale (120)
+        const result = traceLine(x, y, redCharge, 120);
+        redTrajectoryEndPoints.push(result.endPoint); // Stockage du point final
+        
+        // Création du chemin SVG pour la trajectoire rouge
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", result.pathData);
+        svg.appendChild(path);
+        paths.push(path);
+
+        // Création de la flèche animée pour cette trajectoire
+        const arrow = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        arrow.setAttribute("class", "arrow");
+        svg.appendChild(arrow);
+        arrows.push({ arrow, path });
+      }
+
+      // ÉTAPE 2 : Tracer les trajectoires bleues avec contrainte de distance
+      const minRedDistance = getMinDistanceRedTrajectoriesToCharge(); // Distance min des rouges
+      
+      for (let i = 0; i < blueLines; i++) {
+        // Calcul de la position de départ (cercle autour de la charge bleue)
+        const angle = (2 * Math.PI * i) / blueLines;
+        const x = blueCharge.x + Math.cos(angle) * offsetRadius;
+        const y = blueCharge.y + Math.sin(angle) * offsetRadius;
+        
+        // Test de la trajectoire bleue complète pour analyser son comportement
+        const testResult = traceLine(x, y, blueCharge, 120);
+        
+        // Vérification si la trajectoire bleue viole la "zone rouge"
+        const blueEndDistanceFromRed = getDistanceFromRedCharge(testResult.endPoint);
+        
+        let maxLength = 120; // Longueur par défaut
+        
+        // Si la trajectoire bleue s'approche trop près de la charge rouge
+        if (blueEndDistanceFromRed < minRedDistance) {
+          // Calcul de la violation de la zone interdite
+          const violation = minRedDistance - blueEndDistanceFromRed;
+          const maxViolation = minRedDistance * 0.5; // Zone de transition
+          
+          if (violation >= maxViolation) {
+            // Suppression complète si violation trop importante
+            continue;
+          } else {
+            // Réduction progressive de la longueur selon la violation
+            const reductionFactor = 1 - (violation / maxViolation);
+            maxLength = 120 * reductionFactor;
+          }
+        }
+        
+        // Suppression des trajectoires trop courtes
+        if (maxLength < 10) continue;
+        
+        // Traçage final de la trajectoire bleue avec longueur ajustée
+        const result = traceLine(x, y, blueCharge, maxLength);
+        
+        // Création du chemin SVG pour la trajectoire bleue
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", result.pathData);
+        svg.appendChild(path);
+        paths.push(path);
+
+        // Création de la flèche animée pour cette trajectoire
+        const arrow = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        arrow.setAttribute("class", "arrow");
+        svg.appendChild(arrow);
+        arrows.push({ arrow, path });
+      }
+    }
+
+    // Fonction d'animation des flèches le long des trajectoires
+    function animate() {
+      const t = performance.now() * 0.001; // Temps actuel en secondes
+      const speed = 80; // Vitesse d'animation (non utilisée dans ce code)
+      const cycleTime = 3; // Durée d'un cycle complet en secondes
+      
+      arrows.forEach(({ arrow, path }, index) => {
+        if (!path || !arrow || !path.getTotalLength) return;
+        const len = path.getTotalLength(); // Longueur totale du chemin
+        if (len === 0) return;
+
+        // Détermination du type de trajectoire (bleue si index >= 20)
+        const isBlueTrajectory = index >= 20;
+        
+        // Calcul de la position dans le cycle (0 à 1)
+        const cycle = (t % cycleTime) / cycleTime;
+        
+        let pos; // Position de la flèche sur le chemin
+        if (isBlueTrajectory) {
+          // Flèches bleues : vont des extrémités vers le centre (attraction)
+          pos = len * (1 - cycle);
+        } else {
+          // Flèches rouges : vont du centre vers l'extérieur (répulsion)
+          pos = len * cycle;
+        }
+        
+        // Calcul des points pour orienter la flèche
+        const p1 = path.getPointAtLength(pos);
+        const p2 = path.getPointAtLength(isBlueTrajectory ? Math.max(pos - 8, 0) : Math.min(pos + 8, len));
+
+        // Calcul de l'angle et création de la géométrie de la flèche
+        const angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+        const size = 6; // Taille de la flèche
+        const cos = Math.cos(angle), sin = Math.sin(angle);
+        const ax = p1.x, ay = p1.y;
+
+        // Géométrie triangulaire de la flèche
+        const points = [
+          [ax + cos * size, ay + sin * size],           // Pointe
+          [ax - sin * size * 0.5, ay + cos * size * 0.5], // Base gauche
+          [ax + sin * size * 0.5, ay - cos * size * 0.5]  // Base droite
+        ];
+        arrow.setAttribute("points", points.map(p => p.join(",")).join(" "));
+      });
+      requestAnimationFrame(animate); // Répétition de l'animation
+    }
+
+    // Fonction pour permettre le déplacement des charges à la souris
+    function setupDrag(charge) {
+      let dragging = false;
+      
+      // Début du déplacement au clic
+      charge.elem.addEventListener("mousedown", (e) => {
+        dragging = true;
+        charge.elem.style.cursor = "grabbing"; // Changement du curseur
+      });
+      
+      // Déplacement pendant le mouvement de la souris
+      window.addEventListener("mousemove", (e) => {
+        if (!dragging) return;
+        const rect = svg.getBoundingClientRect();
+        // Limitation des positions dans les limites du SVG avec marges
+        charge.x = Math.max(20, Math.min(780, e.clientX - rect.left));
+        charge.y = Math.max(20, Math.min(580, e.clientY - rect.top));
+        
+        // Mise à jour de la position du cercle
+        charge.elem.setAttribute("cx", charge.x);
+        charge.elem.setAttribute("cy", charge.y);
+        
+        // Mise à jour de la position du symbole + ou -
+        charge.symbol.setAttribute("x", charge.x);
+        charge.symbol.setAttribute("y", charge.y);
+        
+        updatePaths(); // Recalcul de toutes les trajectoires
+      });
+      
+      // Fin du déplacement au relâchement de la souris
+      window.addEventListener("mouseup", () => {
+        dragging = false;
+        charge.elem.style.cursor = "grab"; // Retour du curseur normal
+      });
+    }
+
+    // Configuration du déplacement pour chaque charge
+    charges.forEach(setupDrag);
+    
+    // Initialisation : création des trajectoires et démarrage de l'animation
+    updatePaths();
+    animate();
+  </script>
+</body>
+</html>

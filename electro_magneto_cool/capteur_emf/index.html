@@ -1,0 +1,2034 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>👄↝🎤↝📈↝📡↝📡↝📈↝📻↝👂</title>
+  <link rel="icon" type="image/png" href="img_4.png" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css"> 
+  <style>
+
+  @font-face {
+      font-family: 'palace';
+      src: url('../TYPO/Palace script.ttf') format('truetype'),
+      font-weight: normal;
+      font-style: normal;
+
+  }
+
+body{
+        stroke-width: 0.8px;
+        scale: 90%;
+}
+    /* Classe unifiée pour tous les tracés - trait noir fin */
+    .trace {
+      fill: none;
+      stroke: #000000;
+      stroke-miterlimit: 10;
+
+    }
+    
+    .arrow {
+      fill: #000000;
+     /* stroke-width: 1px;*/
+    }
+
+
+      .i,.j,.k,.l{fill:#fff;}
+      .n{stroke:#000000;}
+      .n,.o,.p,.q,.r,.s{fill:none;}
+      .n,.p,.k,.q,.r,.s{stroke-miterlimit:10;}
+      .o{stroke:#000000;}
+      .o,.l{stroke-linecap:round;stroke-linejoin:round;}
+      .p{stroke:#000000;}
+      .j,.k,.l,.r{stroke:#000000;}
+      .q{stroke:#000000;}
+      .s{stroke:#000000;}
+      .m{stroke:#000000;
+        fill:none;}
+
+.g, .f {
+    fill: none;
+    stroke: #000000;
+}
+
+.f{stroke-width: 0.5px}
+
+#courbe{margin-left:254px;}
+
+
+.e{
+fill: none;
+stroke: black;
+}
+svg{
+  position: absolute;
+}
+
+
+
+#le_tout{
+transform: translate(-50%,-50%);
+  margin-top: 50vh;
+  margin-left: 30vw;
+  width: 1010px;
+  height: 838px;
+}    
+
+
+
+.led_allume{
+  width: 12px;
+  height: 12px;
+  border-radius: 50%; /* Rond parfait */
+  background: radial-gradient(circle, white 0%, lime 100%);
+  box-shadow: 0 0 10px lime, 0 0 20px lime, 0 0 30px lime; /* Halo lumineux */
+  display: none; /* Par défaut caché */
+  position: absolute;
+
+}
+
+
+#antenne {
+  z-index: 10;
+  position: relative;
+}
+
+
+/* Encart d'information */
+#hover-info-panel {
+  position: fixed;
+  top: -24px;
+  left: 100vw;
+  transform: translateX(-100%);
+  width: 350px;
+  height: 260px;
+  padding: 20px;
+  display: none;
+  z-index: 1000;
+}
+
+
+
+#hover-curve-container-antenne, #hover-curve-container-reception, #hover-curve-container-diode, #hover-curve-container-condensateur,  #hover-curve-container-transistor    {
+  width: 100%;
+  height: 90px;
+  border: 1px solid black;
+}
+
+#hover-curve {
+  margin: 0 auto; /* centrer horizontalement */
+}
+
+
+#antenne-hover-zone{
+  left: 592px;
+  top: -5px;
+  width: 186px;
+  height: 189px;
+  z-index: 1000;
+
+
+}
+
+#reception-hover-zone{
+  left: 387px;
+  top: -5px;
+  width: 196px;
+  height: 189px;
+}
+
+
+#diode-hover-zone{
+  left: 635px;
+  top: 189px;
+  width: 196px;
+  height: 142px;
+}
+
+
+#condensateur-hover-zone{
+  left: 671px;
+  top: 327px;
+  width: 236px;
+  height: 142px;
+}
+
+#lm324-hover-zone{
+  left: 454px;
+  top: 514px;
+  width: 155px;
+  height: 140px;
+}
+
+#transistor-hover-zone{
+  left: 232px;
+  top: 597px;
+  width: 196px;
+  height: 206px;
+}
+
+.zone_transparente{
+  z-index: 1000;
+  cursor: pointer;
+  position: fixed;
+}
+
+
+#panel-title {
+  font-weight: normal; /* ou normal */
+  font-size: 2.5em; 
+  margin:0;
+  padding-bottom:5px;
+  font-family: palace;
+  color: black;
+  -webkit-text-stroke: 0.7px black;
+}
+
+#panel-description {
+  font-weight: normal; /* ou bold */
+  font-size: 1em;
+}
+
+
+
+
+/* le texte volant */
+  .tooltip {
+    position: fixed;
+    padding: 6px 10px;
+    font-size: 2.5em;
+    pointer-events: none; /* la souris "passe à travers" */
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 1000;
+    font-family: palace;
+  color: white;
+  -webkit-text-stroke: 0.7px white;
+text-shadow: #FFF 0px 0px 5px, #FF00E7 0px 0px 20px, #FF00E7 0px 0px 30px, #FF00E7 0px 0px 5px, #FF00E7 0px 0px 10px ;
+line-height: 0.6;
+width: 250px;
+  }
+
+.voltage-text {
+  position: fixed;
+  font-size: 2em;
+  color: black;
+    -webkit-text-stroke: 0.7px black;
+
+    font-family: palace;
+  pointer-events: none;
+  z-index: 500;
+  display: none;
+}
+
+
+.typo_tordue_1{
+    transform: rotate(-15deg);
+  letter-spacing: 0em;
+  word-spacing: 0.5em;
+}
+
+.typo_tordue_2{
+    transform: rotate(24deg);
+  letter-spacing: 0em;
+  word-spacing: 0.5em;
+}
+.txt_toutletemps{
+    position: fixed;
+  font-size: 2em;
+  color: black;
+    -webkit-text-stroke: 0.7px black;
+    font-family: palace;
+    z-index: 1;
+
+}
+
+
+  </style>
+
+
+</head>
+<body>
+
+
+<div id="le_tout">
+
+
+
+ <div id="antenne-hover-zone" class="zone_transparente"></div> 
+  <div id="reception-hover-zone" class="zone_transparente"></div> 
+  <div id="diode-hover-zone" class="zone_transparente"></div> 
+  <div id="condensateur-hover-zone" class="zone_transparente"></div> 
+  <div id="lm324-hover-zone" class="zone_transparente"></div> 
+  <div id="transistor-hover-zone" class="zone_transparente"></div> 
+
+<div id="resistance1-hover-zone" class="zone_transparente" style="left: 425px; top: 402px; width: 50px; height: 34px;"></div>
+<div id="resistance2-hover-zone" class="zone_transparente" style="left: 360px; top: 437px; width: 50px; height: 37px;"></div>
+<div id="resistance3-hover-zone" class="zone_transparente" style="left: 598px; top: 524px; width: 50px; height: 40px;"></div>
+<div id="resistance4-hover-zone" class="zone_transparente" style="left: 367px; top: 566px; width: 50px; height: 34px;"></div>
+<div id="resistance5-hover-zone" class="zone_transparente" style="left: 697px; top: 625px; width: 50px; height: 39px;"></div>
+
+<div id="leds-hover-zone" class="zone_transparente" style="left: 541px; top: 640px; width: 103px; height: 100px;"></div>
+
+
+<div id="pile-positive-hover-zone" class="zone_transparente" style="left: 907px; top: 488px; width: 78px; height: 91px;"></div>
+<div id="pile-negative-hover-zone" class="zone_transparente" style="left: 63px; top: 474px; width: 71px; height: 79px;"></div>
+
+
+<!-- Ajoutez ces 3 divs après les LEDs oscillation-indicator -->
+<div id="voltage-7mv-1" class="voltage-text typo_tordue_2" style="left: 615px; top: 279px; ">7mV</div>
+<div id="voltage-7mv-2" class="voltage-text typo_tordue_1" style="left: 528px; top: 394px; ">7mV</div>
+<div id="voltage-9v" class="voltage-text typo_tordue_1" style="left: 416px; top: 525px; ">9V</div>
+
+
+
+<!-- Ajoutez ces 2 divs après les autres voltage-text -->
+<div id="lm324-voltage-9v-1" class="voltage-text typo_tordue_1" style="left: 534px; top: 515px; ">+9V</div>
+<div id="lm324-voltage-9v-2" class="voltage-text typo_tordue_1" style="left: 539px; top: 615px; ">-9V</div>
+
+
+<div id="pile_posit" class="txt_toutletemps typo_tordue_1" style="left: 911px; top: 467px; ">+9V</div>
+<div id="pile_negat" class="txt_toutletemps typo_tordue_1" style="left: 53px; top: 452px; ">-9V</div>
+
+
+
+<div id="tooltip" class="tooltip"></div>
+
+
+<div id="hover-info-panel">
+  <h3 id="panel-title"></h3>
+  
+  <!-- Bloc antenne -->
+  <div id="hover-curve-container-antenne">
+    <svg id="hover-curve-antenne" width="100%" height="95" viewBox="0 0 300 60">
+      <path id="hover-sine-path-antenne" class="e" stroke="#007bff" stroke-width="1" fill="none"/>
+    </svg>
+  </div>
+  
+  <!-- Flèche (cachée par défaut) -->
+  <div id="arrow-down" style="display: none; text-align: center; margin: 5px 0;">
+    ↓
+  </div>
+  
+  <!-- Bloc réception (caché par défaut) -->
+  <div id="hover-curve-container-reception" style="display: none;">
+    <svg id="hover-curve-reception" width="100%" height="95" viewBox="0 0 300 60">
+          <line x1="15" y1="30" x2="259" y2="30" stroke="black" stroke-width="0.5" opacity="0.8"/>
+      <path id="hover-sine-path-reception" class="e" stroke="#ff5733" stroke-width="1" fill="none"/>
+    </svg>
+  </div>
+
+    <div id="arrow-down-2" style="display: none; text-align: center; margin: 5px 0;">
+    ↓
+  </div>
+  
+  <div id="hover-curve-container-diode" style="display:none;">
+    <svg id="hover-curve-diode" width="100%" height="95" viewBox="0 0 300 60">
+    <line x1="15" y1="30" x2="259" y2="30" stroke="black" stroke-width="0.5" opacity="0.8"/>
+
+      <path id="hover-sine-path-diode" class="e" stroke="#ff5733" stroke-width="1" fill="none"/>
+    </svg>
+  </div>
+  
+
+    <div id="arrow-down-3" style="display: none; text-align: center; margin: 5px 0;">
+    ↓
+  </div>
+  
+  <div id="hover-curve-container-condensateur" style="display:none;">
+    <svg id="hover-curve-condensateur" width="100%" height="95" viewBox="0 0 300 60">
+    <line x1="15" y1="30" x2="259" y2="30" stroke="black" stroke-width="0.5" opacity="0.8"/>
+
+      <path id="hover-sine-path-condensateur" class="e" stroke="#ff5733" stroke-width="1" fill="none"/>
+    </svg>
+  </div>
+  
+
+    <div id="arrow-down-4" style="display: none; text-align: center; margin: 5px 0;">
+    ↓
+  </div>
+  
+  <div id="hover-curve-container-lm324" style="display:none; text-align: center; margin: 5px 0;">
+  </div>
+
+  
+  <div id="hover-curve-container-transistor" style="display:none;">
+    <svg id="hover-curve-transistor" width="100%" height="95" viewBox="0 0 300 60">
+      <path id="hover-sine-path-transistor" class="e" stroke="#ff5733" stroke-width="1" fill="none"/>
+    </svg>
+  </div>
+  
+
+
+
+  <p id="panel-description"></p>
+</div>
+
+
+<div id="oscillation-indicator-1" class="led_allume" style="margin-left: 550px; margin-top: 682px;"></div>
+<div id="oscillation-indicator-2" class="led_allume" style="margin-left: 621px; margin-top: 648px;"></div>
+
+  <svg id="courbe" width="170.69mm" height="209.39mm" viewBox="0 0 483.84 593.55">
+                
+                <!-- ========== CADRES GÉOMÉTRIQUES (classe .g) ========== -->
+      <g id="geometric-frames">
+                    <!-- Cadre supérieur gauche -->
+                    <polyline class="g" points="108.8 32.81 222.63 77.03 222.63 122.74 108.8 78.52 108.8 32.81 108.8 78.52"/>
+                    
+                    <!-- Cadre inférieur gauche -->
+                    <polyline class="g" points=".25 503.26 114.08 547.48 114.08 593.19 .25 548.97 .25 503.26 .25 548.97"/>
+                    
+                    <!-- Cadre central droit -->
+                    <polyline class="g" points="301.84 153.81 415.66 198.03 415.66 243.74 301.84 199.52 301.84 153.81 301.84 199.52"/>
+                    
+                    <!-- Polygone supérieur droit -->
+                    <polygon class="g" points="483.59 287.73 347.46 351.01 347.46 303.48 483.59 240.2 483.59 287.73"/>
+                </g>
+                
+                <!-- ========== LIGNES DE CONNEXION (classe .f) ========== -->
+                <g id="connection-lines">
+                    <line class="f" x1="408.9" y1="221.08" x2="306.48" y2="180.84"/>
+                    <line class="f" x1="476.66" y1="269.91" x2="353.5" y2="327.16"/>
+                    <line class="f" x1="219.1" y1="99.48" x2="110.73" y2="56.96"/>
+                </g>
+                
+
+                <!-- ========== SINUSOIDES========== -->
+                      <g id="sine-waves">
+        <path id="animated-sine-antenne" class="e" />
+        <path id="animated-sine-entree" class="e" />
+        <path id="animated-sine-satellite" class="e" />
+        <path id="animated-sine-condensateur" class="e" />
+        <path id="animated-sine-transistor" class="e" />
+      </g>
+
+
+
+
+  </svg>
+  <!-- Groupe principal -->
+ <svg width="257.52mm" height="199.12mm" viewBox="0 0 729.99 564.43"> <g id="main-content">
+    
+
+    <g id="pile_negative">
+      <polygon class="k" points="90.66 370.52 71.76 362.74 54.37 370.73 71.86 397.24 78.98 391.46 90.66 370.52"/>
+      <polygon class="k" points="53.78 400.27 73.29 408 73.29 378.43 53.77 370.66 53.78 400.27"/>
+      <polygon class="k" points="73.27 408.09 90.46 399.9 90.46 370.32 73.27 378.51 73.27 408.09"/>
+    </g>
+    
+    <g id="pile_positive">    
+      <polygon class="k" points="729.28 384.85 710.37 377.07 692.98 385.07 710.48 411.58 717.59 405.8 729.28 384.85"/>
+      <polygon class="k" points="692.4 414.61 711.91 422.34 711.91 392.77 692.38 384.99 692.4 414.61"/>
+      <polygon class="k" points="711.88 422.43 729.08 414.23 729.08 384.65 711.88 392.85 711.88 422.43"/>
+    </g>
+
+    <g div="lm324">
+              <path class="j" d="M402.54,475.94v-9.87h-5.49v9.87c0,.61,.59,1.03,1.06,1.24,.52,.23,1.12,.33,1.69,.33s1.17-.1,1.68-.33c.47-.21,1.06-.63,1.06-1.24Z"/>
+      <polygon class="k" points="432.4 418.55 422.26 414.35 367.03 439.88 396.87 459.01 403.98 453.23 432.4 418.55"/>
+      <polygon class="k" points="367.04 476.63 377.19 480.77 377.19 444 367.03 439.8 367.04 476.63"/>
+      <polygon class="k" points="377.17 480.62 432.4 455.1 432.4 418.55 377.17 444.07 377.17 480.62"/>
+
+
+        <path class="j" d="M380.15,438.87v-9.87h-5.49v9.87c0,.61,.59,1.03,1.06,1.24,.52,.23,1.12,.33,1.69,.33s1.17-.1,1.68-.33c.47-.21,1.06-.63,1.06-1.24Z"/>
+        <path class="j" d="M374.63,428.79c0,.62,.59,1.04,1.07,1.25,.52,.23,1.13,.33,1.7,.33s1.17-.1,1.7-.33c.47-.21,1.07-.63,1.07-1.25,0-.51-.42-.9-.81-1.12-.77-.44-1.83-.54-2.68-.41-.47,.07-.89,.2-1.29,.45-.37,.23-.74,.6-.74,1.08Z"/>
+
+        <path class="j" d="M387.61,435.54v-9.87h-5.49v9.87c0,.61,.59,1.03,1.06,1.24,.52,.23,1.12,.33,1.69,.33s1.17-.1,1.68-.33c.47-.21,1.06-.63,1.06-1.24Z"/>
+        <path class="j" d="M382.1,425.45c0,.62,.59,1.04,1.07,1.25,.52,.23,1.13,.33,1.7,.33s1.17-.1,1.7-.33c.47-.21,1.07-.63,1.07-1.25,0-.51-.42-.9-.81-1.12-.77-.44-1.83-.54-2.68-.41-.47,.07-.89,.2-1.29,.45-.37,.23-.74,.6-.74,1.08Z"/>
+
+        <path class="j" d="M395.08,432.15v-9.87h-5.49v9.87c0,.61,.59,1.03,1.06,1.24,.52,.23,1.12,.33,1.69,.33s1.17-.1,1.68-.33c.47-.21,1.06-.63,1.06-1.24Z"/>
+        <path class="j" d="M389.56,422.07c0,.62,.59,1.04,1.07,1.25,.52,.23,1.13,.33,1.7,.33s1.17-.1,1.7-.33c.47-.21,1.07-.63,1.07-1.25,0-.51-.42-.9-.81-1.12-.77-.44-1.83-.54-2.68-.41-.47,.07-.89,.2-1.29,.45-.37,.23-.74,.6-.74,1.08Z"/>
+
+        <path class="j" d="M402.54,428.97v-9.87h-5.49v9.87c0,.61,.59,1.03,1.06,1.24,.52,.23,1.12,.33,1.69,.33s1.17-.1,1.68-.33c.47-.21,1.06-.63,1.06-1.24Z"/>
+
+      <path class="j" d="M404.49,425.26c0,.62,.59,1.04,1.07,1.25,.52,.23,1.13,.33,1.7,.33s1.17-.1,1.7-.33c.47-.21,1.07-.63,1.07-1.25,0-.51-.42-.9-.81-1.12-.77-.44-1.83-.54-2.68-.41-.47,.07-.89,.2-1.29,.45-.37,.23-.74,.6-.74,1.08Z"/>
+      <path class="j" d="M411.95,421.97c0,.62,.59,1.04,1.07,1.25,.52,.23,1.13,.33,1.7,.33s1.17-.1,1.7-.33c.47-.21,1.07-.63,1.07-1.25,0-.51-.42-.9-.81-1.12-.77-.44-1.83-.54-2.68-.41-.47,.07-.89,.2-1.29,.45-.37,.23-.74,.6-.74,1.08Z"/>
+      <path class="j" d="M419.42,418.48c0,.62,.59,1.04,1.07,1.25,.52,.23,1.13,.33,1.7,.33s1.17-.1,1.7-.33c.47-.21,1.07-.63,1.07-1.25,0-.51-.42-.9-.81-1.12-.77-.44-1.83-.54-2.68-.41-.47,.07-.89,.2-1.29,.45-.37,.23-.74,.6-.74,1.08Z"/>
+
+            <polygon class="r" points="400.71 436.96 387.26 443.24 393.68 453.98 400.71 436.96"/>
+      <polyline class="r" points="386.81 436.84 389.65 438.26 389.65 441.83"/>
+      <line class="r" x1="378.97" y1="440.2" x2="382.17" y2="441.78"/>
+      <polyline class="r" points="394.58 433.25 397.42 434.53 397.42 438.11"/>
+      <polyline class="r" points="393.68 453.98 393.68 464.25 381.88 469.89 381.88 442.11"/>
+    </g>
+
+
+    <g id="diode">
+      <rect class="l" x="506.18" y="219.83" width="12.25" height="5.45" rx="2.27" ry="2.27" transform="translate(115.2 -170.24) rotate(21.21)"/><path class="l" d="M514.95,226.5c1.17,.45,2.48-.13,2.93-1.29l.33-.85c.45-1.17-.13-2.48-1.29-2.93s-2.48,.13-2.93,1.29l-.33,.85c-.45,1.17,.13,2.48,1.29,2.93Z"/>
+    </g>
+
+
+    <g id="antenne">
+      <path d="M470.69,112.42v27.3c-1.36-.52-2.64-1.02-3.92-1.52-.09-.04-.16-.18-.18-.29-.03-.16-.01-.34-.01-.51,0-9.34,0-18.69,0-28.03,0-1.61,.64-2.12,2.16-1.65,4.65,1.43,9.4,2.29,14.28,2.24,6.41-.07,12.41-1.59,17.78-5.21,5.64-3.81,9.32-9.09,11.46-15.49,1.77-5.29,2.23-10.75,1.85-16.28-.78-11.4-4.72-21.75-10.62-31.42-6.7-10.99-15.37-20.12-26.17-27.17-5.73-3.74-11.85-6.63-18.49-8.37-6.85-1.8-13.75-2.33-20.67-.49-10.07,2.68-16.79,9.07-20.34,18.8-2.01,5.49-2.51,11.21-2.11,17.01,.79,11.56,4.84,22.03,10.85,31.8,6.09,9.91,13.83,18.3,23.31,25.07,3.6,2.57,7.41,4.76,11.41,6.65,1.29,.61,1.97,1.64,1.97,3.09,0,9.41,0,18.81,0,28.22v.67c-1.34-.52-2.63-1.01-3.9-1.52-.1-.04-.17-.22-.19-.34-.03-.16,0-.34,0-.51,0-8.49-.01-16.98,.02-25.47,0-.78-.2-1.17-.93-1.54-6.12-3.12-11.72-7.02-16.86-11.57-9.81-8.69-17.55-18.94-23.09-30.83-2.65-5.69-4.65-11.59-5.77-17.77-1.43-7.89-1.55-15.77,.69-23.55,2.05-7.1,5.84-13.03,11.85-17.44,4.12-3.02,8.74-4.85,13.75-5.7,6.65-1.13,13.21-.54,19.69,1.22,10.64,2.88,19.95,8.25,28.33,15.29,10.51,8.83,18.73,19.46,24.59,31.89,2.74,5.81,4.75,11.86,5.94,18.18,.95,5.06,1.23,10.16,.79,15.28-.62,7.19-2.77,13.86-7.24,19.63-4.95,6.39-11.53,10.13-19.41,11.62-6.44,1.22-12.81,.72-19.14-.85-.51-.13-1.03-.26-1.65-.42Zm-.99,25.91v-27.21c.17,.05,.27,.07,.37,.1,5.35,1.52,10.78,2.33,16.36,1.96,5.36-.35,10.42-1.71,15.06-4.46,7.23-4.29,11.75-10.68,14.12-18.65,2.04-6.87,2.12-13.87,1.1-20.9-.97-6.67-2.98-13.04-5.78-19.16-5.64-12.32-13.64-22.86-23.93-31.66-8.39-7.18-17.75-12.64-28.48-15.53-6.16-1.66-12.4-2.25-18.74-1.24-5.38,.86-10.3,2.82-14.63,6.18-5.48,4.26-8.97,9.85-10.92,16.45-2.04,6.92-2.14,13.95-1.1,21.03,.89,6.09,2.67,11.93,5.11,17.58,3.9,9.06,9.21,17.22,15.77,24.57,7.29,8.16,15.69,14.88,25.53,19.73,.51,.25,.64,.53,.63,1.06-.02,8.55-.01,17.11-.01,25.66,0,.17-.03,.35,.01,.51,.04,.14,.12,.33,.23,.38,.58,.25,1.17,.47,1.8,.71,.01-.23,.03-.38,.03-.52,0-9.13,0-18.26,0-27.39,0-.85-.39-1.4-1.14-1.75-3.19-1.49-6.27-3.17-9.19-5.13-14.96-10.06-25.86-23.44-32.65-40.12-2.81-6.91-4.47-14.09-4.65-21.59-.12-5.18,.45-10.26,2.21-15.16,3.22-9,9.2-15.34,18.29-18.54,6.91-2.44,13.98-2.36,21.07-.86,7.68,1.63,14.73,4.79,21.28,9.07,13.55,8.87,23.78,20.69,30.88,35.21,3.43,7.02,5.74,14.41,6.6,22.2,.51,4.62,.47,9.24-.36,13.83-.95,5.28-2.82,10.18-6.09,14.47-5.99,7.85-14.16,11.42-23.84,11.86-5.36,.25-10.57-.65-15.69-2.21-1.1-.33-1.35-.13-1.35,1,0,5.84,0,11.69,0,17.53,0,3.22,0,6.44,.01,9.66,0,.21,.1,.54,.26,.62,.54,.27,1.13,.46,1.83,.73Z"/>
+      <path class="i" d="M469.69,138.33c-.7-.27-1.29-.45-1.83-.73-.15-.08-.26-.4-.26-.62-.02-3.22-.01-6.44-.01-9.66,0-5.84,0-11.69,0-17.53,0-1.13,.26-1.33,1.35-1,5.11,1.56,10.33,2.45,15.69,2.21,9.68-.45,17.84-4.02,23.84-11.86,3.27-4.29,5.14-9.19,6.09-14.47,.83-4.59,.87-9.21,.36-13.83-.87-7.79-3.17-15.17-6.6-22.2-7.1-14.53-17.33-26.35-30.88-35.21-6.54-4.28-13.59-7.44-21.28-9.07-7.09-1.5-14.15-1.58-21.07,.86-9.08,3.2-15.06,9.54-18.29,18.54-1.75,4.9-2.33,9.98-2.21,15.16,.18,7.49,1.84,14.68,4.65,21.59,6.79,16.69,17.69,30.07,32.65,40.12,2.92,1.96,6,3.65,9.19,5.13,.75,.35,1.14,.9,1.14,1.75,0,9.13,0,18.26,0,27.39,0,.15-.01,.29-.03,.52-.63-.24-1.23-.46-1.8-.71-.11-.05-.2-.24-.23-.38-.04-.16-.01-.34-.01-.51,0-8.55,0-17.11,.01-25.66,0-.53-.12-.81-.63-1.06-9.84-4.86-18.25-11.57-25.53-19.73-6.56-7.35-11.87-15.51-15.77-24.57-2.43-5.65-4.21-11.49-5.11-17.58-1.04-7.08-.94-14.11,1.1-21.03,1.95-6.6,5.44-12.19,10.92-16.45,4.32-3.36,9.25-5.32,14.63-6.18,6.34-1.01,12.58-.42,18.74,1.24,10.74,2.89,20.09,8.36,28.48,15.53,10.29,8.8,18.29,19.34,23.93,31.66,2.8,6.12,4.81,12.49,5.78,19.16,1.02,7.03,.94,14.03-1.1,20.9-2.37,7.98-6.89,14.36-14.12,18.65-4.64,2.75-9.71,4.11-15.06,4.46-5.57,.37-11.01-.44-16.36-1.96-.1-.03-.2-.05-.37-.1v27.21Z"/>
+    </g>
+
+    <g id="condensateur">
+      <g>
+        <path class="k" d="M511.74,263.94c0-.7,.07-1.41,.24-2.12,.16-.67,.41-1.32,.76-1.93,.35-.61,.79-1.15,1.29-1.63,.53-.5,1.11-.92,1.71-1.26"/>
+        <line class="k" x1="518.92" y1="263.07" x2="518.98" y2="263.17"/>
+        <path class="k" d="M515.75,266.26c-.82,.48-1.98,.83-2.9,.24l-.64-.65c-.72-1.14-.49-2.81-.13-3.95,.4-1.27,1.11-2.52,2-3.51,.81-.89,2.11-1.93,3.46-1.93,.72,0,1.32,.31,1.72,.92,.38,.57,.5,1.29,.5,1.95,0,.7-.07,1.41-.24,2.12-.16,.67-.41,1.32-.76,1.93-.35,.61-.79,1.15-1.29,1.63-.53,.5-1.11,.92-1.71,1.26"/>
+
+      <polyline class="r" points="511.53 279.74 511.53 272.23 511.53 268.57 514.83 263.19 517.22 262.44 520.21 264.98 520.39 268.03 520.39 275.56"/>
+      </g>
+    </g>
+
+
+    <g id="resistances">
+      <g>
+      <path class="o" d="M326.28,313.7c-.61-.25-.87-.93-.95-1.5"/>
+      <path class="o" d="M338.21,317.38c-.16-1.13,.22-2.43,.79-3.38,.29-.49,.69-.98,1.15-1.32,.45-.33,1.07-.6,1.65-.37"/><path class="o" d="M342.5,319.1c-.16-1.13,.22-2.43,.79-3.38,.29-.49,.69-.98,1.15-1.32,.45-.33,1.07-.6,1.65-.37"/><path class="o" d="M332.39,314.93c-.46,.39-1.16,.76-1.82,.49"/><path class="o" d="M325.32,312.2c-.16-1.13,.22-2.43,.79-3.38,.29-.49,.69-.98,1.15-1.32,.45-.33,1.07-.6,1.65-.37"/><path class="o" d="M329.62,313.92c-.16-1.13,.22-2.43,.79-3.38,.29-.49,.69-.98,1.15-1.32,.45-.33,1.07-.6,1.65-.37"/><line class="o" x1="331.4" y1="309.34" x2="339.99" y2="312.8"/><line class="o" x1="338.19" y1="317.27" x2="329.6" y2="313.81"/><path class="o" d="M346.38,318.72c-.29,.54-.69,1.07-1.18,1.45-.46,.36-1.12,.68-1.74,.43"/><path class="o" d="M339.16,318.88c-.61-.25-.87-.93-.95-1.5"/><path class="o" d="M346.1,314.03c.62,.25,.88,.94,.96,1.52,.08,.61,0,1.27-.15,1.86"/><path class="o" d="M343.46,320.6c-.61-.25-.87-.93-.96-1.5"/><line class="o" x1="341.81" y1="312.3" x2="346.1" y2="314.03"/><line class="o" x1="343.46" y1="320.6" x2="339.16" y2="318.88"/><path class="o" d="M333.22,308.85c.65,.26,.9,1.01,.97,1.61"/><path class="o" d="M330.57,315.43c-.61-.25-.87-.93-.96-1.5"/><line class="o" x1="328.92" y1="307.12" x2="333.22" y2="308.85"/><line class="o" x1="330.57" y1="315.43" x2="326.28" y2="313.7"/>
+      </g>
+      
+      <!-- Deuxième groupe -->
+      <g><path class="o" d="M279.61,342.21c-.61-.25-.87-.93-.95-1.5"/>
+       <path class="o" d="M291.54,345.88c-.16-1.13,.22-2.43,.79-3.38,.29-.49,.69-.98,1.15-1.32,.45-.33,1.07-.6,1.65-.37"/><path class="o" d="M295.84,347.61c-.16-1.13,.22-2.43,.79-3.38,.29-.49,.69-.98,1.15-1.32,.45-.33,1.07-.6,1.65-.37"/><path class="o" d="M285.72,343.44c-.46,.39-1.16,.76-1.82,.49"/><path class="o" d="M278.66,340.7c-.16-1.13,.22-2.43,.79-3.38,.29-.49,.69-.98,1.15-1.32,.45-.33,1.07-.6,1.65-.37"/><path class="o" d="M282.95,342.43c-.16-1.13,.22-2.43,.79-3.38,.29-.49,.69-.98,1.15-1.32,.45-.33,1.07-.6,1.65-.37"/><line class="o" x1="284.74" y1="337.85" x2="293.33" y2="341.3"/><line class="o" x1="291.53" y1="345.77" x2="282.94" y2="342.32"/><path class="o" d="M299.71,347.23c-.29,.54-.69,1.07-1.18,1.45-.46,.36-1.12,.68-1.74,.43"/><path class="o" d="M292.5,347.38c-.61-.25-.87-.93-.95-1.5"/><path class="o" d="M299.44,342.54c.62,.25,.88,.94,.96,1.52,.08,.61,0,1.27-.15,1.86"/><path class="o" d="M296.79,349.11c-.61-.25-.87-.93-.96-1.5"/><line class="o" x1="295.14" y1="340.81" x2="299.44" y2="342.54"/><line class="o" x1="296.79" y1="349.11" x2="292.5" y2="347.38"/><path class="o" d="M286.55,337.36c.65,.26,.9,1.01,.97,1.61"/><path class="o" d="M283.91,343.93c-.61-.25-.87-.93-.96-1.5"/><line class="o" x1="282.25" y1="335.63" x2="286.55" y2="337.36"/><line class="o" x1="283.91" y1="343.93" x2="279.61" y2="342.21"/></g>
+      
+      <!-- Troisième groupe -->
+      <g><path class="o" d="M456.96,410.24c-.61-.25-.87-.93-.95-1.5"/>
+        <path class="o" d="M468.89,413.92c-.16-1.13,.22-2.43,.79-3.38,.29-.49,.69-.98,1.15-1.32,.45-.33,1.07-.6,1.65-.37"/>
+        <path class="o" d="M473.18,415.65c-.16-1.13,.22-2.43,.79-3.38,.29-.49,.69-.98,1.15-1.32,.45-.33,1.07-.6,1.65-.37"/>
+        <path class="o" d="M463.07,411.48c-.46,.39-1.16,.76-1.82,.49"/>
+        <path class="o" d="M456,408.74c-.16-1.13,.22-2.43,.79-3.38,.29-.49,.69-.98,1.15-1.32,.45-.33,1.07-.6,1.65-.37"/>
+        <path class="o" d="M460.3,410.47c-.16-1.13,.22-2.43,.79-3.38,.29-.49,.69-.98,1.15-1.32,.45-.33,1.07-.6,1.65-.37"/>
+        <line class="o" x1="462.08" y1="405.89" x2="470.67" y2="409.34"/><line class="o" x1="468.87" y1="413.81" x2="460.28" y2="410.36"/><path class="o" d="M477.06,415.26c-.29,.54-.69,1.07-1.18,1.45-.46,.36-1.12,.68-1.74,.43"/><path class="o" d="M469.84,415.42c-.61-.25-.87-.93-.95-1.5"/><path class="o" d="M476.78,410.57c.62,.25,.88,.94,.96,1.52,.08,.61,0,1.27-.15,1.86"/><path class="o" d="M474.14,417.15c-.61-.25-.87-.93-.96-1.5"/><line class="o" x1="472.49" y1="408.85" x2="476.78" y2="410.57"/><line class="o" x1="474.14" y1="417.15" x2="469.84" y2="415.42"/><path class="o" d="M463.9,405.39c.65,.26,.9,1.01,.97,1.61"/><path class="o" d="M461.25,411.97c-.61-.25-.87-.93-.96-1.5"/><line class="o" x1="459.6" y1="403.67" x2="463.9" y2="405.39"/><line class="o" x1="461.25" y1="411.97" x2="456.96" y2="410.24"/>
+      </g>
+
+
+      <g>
+        <line class="j" x1="291.29" y1="435.6" x2="297.77" y2="432.53"/>
+        <line class="j" x1="299.77" y1="436.96" x2="293.35" y2="439.95"/>
+        <path class="j" d="M285.27,441.89c.44,.71,1.2,1.56,2.1,1.78,.47,.12,.94,.03,1.29-.34,.33-.34,.46-.84,.5-1.29"/>
+        <path class="j" d="M293.34,440.06c.09-1.14-.37-2.42-.99-3.33-.32-.47-.74-.94-1.23-1.25-.46-.3-1.1-.53-1.67-.27"/>
+        <path class="j" d="M299.01,437.28c1.32,.98,2.57,.49,2.7-1.17"/>
+        <path class="j" d="M301.71,436.11c.09-1.14-.37-2.42-.99-3.33-.32-.47-.74-.94-1.23-1.25-.46-.3-1.1-.53-1.67-.27"/>
+        <path class="j" d="M305.9,434.13c.09-1.14-.37-2.42-.99-3.33-.32-.47-.74-.94-1.23-1.25-.46-.3-1.1-.53-1.67-.27"/>
+        <path class="j" d="M285.27,437.19c-.6,.29-.82,.99-.87,1.57-.05,.62,.07,1.27,.26,1.85"/>
+        <path class="j" d="M289.16,442.04c.09-1.14-.37-2.42-.99-3.33-.32-.47-.74-.94-1.23-1.25-.46-.3-1.1-.53-1.67-.27"/>
+        <line class="j" x1="292.48" y1="441.62" x2="288.29" y2="443.6"/>
+        <line class="j" x1="285.32" y1="437.16" x2="289.45" y2="435.21"/>
+        <path class="j" d="M292.48,441.62c.6-.28,.82-.98,.86-1.56"/>
+        <path class="j" d="M297.82,431.26c-.64,.3-.84,1.06-.87,1.67"/>
+        <line class="j" x1="305.03" y1="435.69" x2="300.85" y2="437.66"/>
+        <line class="j" x1="297.88" y1="431.23" x2="302.01" y2="429.28"/>
+        <path class="j" d="M305.03,435.69c.6-.28,.82-.98,.86-1.56"/>
+        <path class="j" d="M297.67,432.53c.83-.39,1.98,.28,2.55,1.5s.37,2.53-.46,2.93"/>
+      </g>
+      
+      <!-- Deuxième groupe de résistances -->
+      <g>
+        <line class="j" x1="539.96" y1="480.77" x2="546.44" y2="477.7"/>
+        <line class="j" x1="548.44" y1="482.13" x2="542.02" y2="485.13"/>
+        <path class="j" d="M533.94,487.06c.44,.71,1.2,1.56,2.1,1.78,.47,.12,.94,.03,1.29-.34,.33-.34,.46-.84,.5-1.29"/>
+        <path class="j" d="M542.01,485.24c.09-1.14-.37-2.42-.99-3.33-.32-.47-.74-.94-1.23-1.25-.46-.3-1.1-.53-1.67-.27"/>
+        <path class="j" d="M547.68,482.45c1.32,.98,2.57,.49,2.7-1.17"/>
+        <path class="j" d="M550.38,481.28c.09-1.14-.37-2.42-.99-3.33-.32-.47-.74-.94-1.23-1.25-.46-.3-1.1-.53-1.67-.27"/>
+        <path class="j" d="M554.57,479.3c.09-1.14-.37-2.42-.99-3.33-.32-.47-.74-.94-1.23-1.25-.46-.3-1.1-.53-1.67-.27"/>
+        <path class="j" d="M533.93,482.36c-.6,.29-.82,.99-.87,1.57-.05,.62,.07,1.27,.26,1.85"/>
+        <path class="j" d="M537.83,487.21c.09-1.14-.37-2.42-.99-3.33-.32-.47-.74-.94-1.23-1.25-.46-.3-1.1-.53-1.67-.27"/>
+        <line class="j" x1="541.15" y1="486.79" x2="536.96" y2="488.77"/>
+        <line class="j" x1="533.99" y1="482.34" x2="538.12" y2="480.39"/>
+        <path class="j" d="M541.15,486.79c.6-.28,.82-.98,.86-1.56"/>
+        <path class="j" d="M546.49,476.43c-.64,.3-.84,1.06-.87,1.67"/>
+        <line class="j" x1="553.7" y1="480.86" x2="549.52" y2="482.84"/>
+        <line class="j" x1="546.55" y1="476.4" x2="550.67" y2="474.45"/>
+        <path class="j" d="M553.7,480.86c.6-.28,.82-.98,.86-1.56"/>
+        <path class="j" d="M546.34,477.7c.83-.39,1.98,.28,2.55,1.5s.37,2.53-.46,2.93"/>
+      </g>
+    </g>
+
+
+    <g id="transistor">
+      <line class="o" x1="200.29" y1="460.12" x2="200.29" y2="469.38"/>
+      <path class="o" d="M194.88,473.77c1.34-.77,2.67-1.54,4.01-2.31"/><line class="o" x1="194.88" y1="473.77" x2="194.88" y2="464.51"/><path class="o" d="M184.85,467.98c3.34,1.93,6.68,3.86,10.02,5.79"/><line class="o" x1="195.88" y1="497.49" x2="195.88" y2="473.19"/><line class="o" x1="192.37" y1="484.47" x2="192.37" y2="472.32"/><line class="o" x1="188.86" y1="493.44" x2="188.86" y2="470.3"/><path class="o" d="M200.29,460.12c0-1.16-.96-2.14-1.78-2.73-.9-.65-2-1.11-3.06-1.39-1.07-.29-2.23-.43-3.34-.4-1.07,.04-2.29,.25-3.25,.81"/><path class="o" d="M194.88,464.51c1.34-.77,2.67-1.54,4.01-2.31"/><path class="o" d="M184.85,458.73c3.34,1.93,6.68,3.86,10.02,5.79"/><path class="o" d="M188.86,456.41c-1.34,.77-2.67,1.54-4.01,2.31"/><line class="o" x1="184.85" y1="467.98" x2="184.85" y2="458.73"/><path class="o" d="M198.89,462.2c.75-.43,1.41-1.13,1.41-2.08"/><path class="o" d="M198.89,471.46c.75-.43,1.41-1.13,1.41-2.08"/>
+    </g>
+
+
+    <g id="led">
+      <!-- Premier élément jaune -->
+      <g>
+        <path class="m" d="M422.51,524.52c0,.65-.34,1.22-.78,1.65-.44,.44-1.01,.76-1.57,1-1.14,.47-2.46,.66-3.67,.61"/>
+        <path class="m" d="M422.51,522.21c0,.65-.34,1.22-.78,1.65-.44,.44-1.01,.76-1.57,1-1.14,.47-2.46,.66-3.67,.61"/>
+        <line class="m" x1="416.49" y1="527.79" x2="411.19" y2="524.73"/>
+        <line class="m" x1="416.49" y1="525.48" x2="411.19" y2="522.42"/>
+        <line class="m" x1="412.59" y1="522.21" x2="412.59" y2="515.27"/>
+        <line class="m" x1="421.1" y1="515.27" x2="421.1" y2="522.21"/>
+        <path class="m" d="M421.1,522.21c0,.96-.91,1.61-1.64,1.94-.8,.36-1.74,.52-2.61,.52-.87,0-1.81-.16-2.61-.52-.73-.33-1.64-.98-1.64-1.94"/>
+        <path class="m" d="M421.1,520.05c.71,.47,1.42,1.21,1.42,2.16"/>
+        <line class="m" x1="411.19" y1="524.73" x2="411.19" y2="522.42"/>
+        <path class="m" d="M411.18,522.21c0-.96,.7-1.7,1.42-2.17"/>
+        <line class="m" x1="411.18" y1="524.52" x2="411.18" y2="522.21"/>
+        <line class="m" x1="422.51" y1="522.21" x2="422.51" y2="524.52"/>
+        <path class="m" d="M411.19,524.73c0-.07-.01-.14-.01-.21"/>
+        <path class="m" d="M411.19,522.42c0-.07-.01-.14-.01-.2"/>
+        <line class="m" x1="416.49" y1="525.48" x2="416.49" y2="527.79"/>
+        <path class="m" d="M412.59,515.27c0-.67,.16-1.32,.46-1.92,.11-.22,.24-.43,.39-.63,.34-.46,.78-.84,1.28-1.13,.65-.37,1.38-.57,2.13-.57s1.48,.2,2.13,.57"/>
+        <path class="m" d="M418.97,511.58c.5,.29,.93,.67,1.28,1.13,.15,.2,.28,.41,.39,.63,.3,.59,.46,1.25,.46,1.92"/>
+        <line class="m" x1="414.34" y1="542.54" x2="414.34" y2="526.55"/>
+        <line class="m" x1="419.35" y1="540.22" x2="419.35" y2="527.46"/>
+      </g>
+      
+      <!-- Deuxième élément jaune -->
+      <g>
+        <path class="m" d="M475.76,499.04c0,.65-.34,1.22-.78,1.65-.44,.44-1.01,.76-1.57,1-1.14,.47-2.46,.66-3.67,.61"/>
+        <path class="m" d="M475.76,496.73c0,.65-.34,1.22-.78,1.65-.44,.44-1.01,.76-1.57,1-1.14,.47-2.46,.66-3.67,.61"/>
+        <line class="m" x1="469.73" y1="502.31" x2="464.43" y2="499.25"/>
+        <line class="m" x1="469.73" y1="500" x2="464.43" y2="496.94"/>
+        <line class="m" x1="465.83" y1="496.73" x2="465.83" y2="489.79"/>
+        <line class="m" x1="474.34" y1="489.79" x2="474.34" y2="496.73"/>
+        <path class="m" d="M474.34,496.73c0,.96-.91,1.61-1.64,1.94-.8,.36-1.74,.52-2.61,.52-.87,0-1.81-.16-2.61-.52-.73-.33-1.64-.98-1.64-1.94"/>
+        <path class="m" d="M474.34,494.57c.71,.47,1.42,1.21,1.42,2.16"/>
+        <line class="m" x1="464.43" y1="499.25" x2="464.43" y2="496.94"/>
+        <path class="m" d="M464.42,496.73c0-.96,.7-1.7,1.42-2.17"/>
+        <line class="m" x1="464.42" y1="499.04" x2="464.42" y2="496.73"/>
+        <line class="m" x1="475.76" y1="496.73" x2="475.76" y2="499.04"/>
+        <path class="m" d="M464.43,499.25c0-.07-.01-.14-.01-.21"/>
+        <path class="m" d="M464.43,496.94c0-.07-.01-.14-.01-.2"/>
+        <line class="m" x1="469.73" y1="500" x2="469.73" y2="502.31"/>
+        <path class="m" d="M465.83,489.79c0-.67,.16-1.32,.46-1.92,.11-.22,.24-.43,.39-.63,.34-.46,.78-.84,1.28-1.13,.65-.37,1.38-.57,2.13-.57s1.48,.2,2.13,.57"/>
+        <path class="m" d="M472.21,486.1c.5,.29,.93,.67,1.28,1.13,.15,.2,.28,.41,.39,.63,.3,.59,.46,1.25,.46,1.92"/>
+        <line class="m" x1="467.58" y1="517.53" x2="467.58" y2="501.07"/>
+        <line class="m" x1="472.59" y1="514.94" x2="472.59" y2="501.98"/>
+      </g>
+    </g>
+
+
+</g>
+</svg>
+  <!-- FOND -->
+  <svg width="257.52mm" height="199.12mm" viewBox="0 0 729.99 564.43" id="mainSvg"> 
+    <g id="main-content">
+      <g id="cable">
+        <!-- Chemin invisible pour l'animation - avec nouvelles extensions -->
+        <path id="cablePath" d="M 469.09 140.1 L 469.09 206.24 L 506.43 220.77 L 515.26 223.95 L 578.53 248.47 L 520.39 275.56 L 511.53 279.74 L 484.42 292.39 L 392.19 335.64 L 345.14 317.26 L 325.79 309.87 L 275.6 290.68" 
+              fill="none" stroke="none"/>
+        
+        <!-- Tous les tracés avec la même classe 'trace' -->
+        <polyline class="trace" points="469.09 206.24 469.09 140.1 469.09 206.24 506.43 220.77"/>
+        <polyline class="trace" points="520.39 275.56 578.53 248.47 515.26 223.95"/>
+        <polyline class="trace" points="345.14 317.26 392.19 335.64 484.42 292.39 511.53 279.74"/>
+        <line class="trace" x1="369.78" y1="246.46" x2="484.42" y2="292.39"/>
+        <line class="trace" x1="275.6" y1="290.68" x2="325.79" y2="309.87"/>
+        <line class="trace" x1="392.19" y1="335.64" x2="392.19" y2="422.46"/>
+        <polyline class="trace" points="89.4 378.96 369.78 246.46 461.44 203.85 461.44 138.2"/>
+        <line class="trace" x1="554.34" y1="476.85" x2="702.45" y2="406.74"/>
+        <line class="trace" x1="472.64" y1="515.03" x2="535.04" y2="485.65"/>
+        <line class="trace" x1="419.35" y1="540.22" x2="467.33" y2="517.53"/>
+        <polyline class="trace" points="196.06 497.41 368.74 563.89 414.34 542.54"/>
+        <polyline class="trace" points="62.51 391.95 1.27 420.93 189.22 493.13"/>
+        <line class="trace" x1="475.24" y1="413.92" x2="591.46" y2="458.43"/>
+        <polyline class="trace" points="384.96 425.6 384.96 378.66 385.1 379.41 455.96 406.39"/>
+        <polyline class="trace" points="399.74 419.33 399.74 356.7 624.63 443.6"/>
+        <polyline class="trace" points="231.01 311.29 231.01 450.66 399.63 515.86 399.63 477.98"/>
+        <line class="trace" x1="297.93" y1="345.94" x2="384.72" y2="378.96"/>
+        <line class="trace" x1="221.6" y1="316.22" x2="278.74" y2="338.18"/>
+        <polyline class="trace" points="305.66 431.43 377.49 398 377.49 428.7"/>
+        <line class="trace" x1="192.37" y1="484.47" x2="286.95" y2="440.35"/>
+      </g>
+      
+      <!-- Flèches -->
+<polygon class="arrow" id="movingArrow" points="0,-3 6,0 0,3" style="display: none;"/>
+<polygon class="arrow" id="secondArrow" points="0,-3 6,0 0,3" style="display: none;"/>
+<polygon class="arrow" id="thirdArrow" points="0,-3 6,0 0,3" style="display: none;"/>
+<polygon class="arrow" id="fourthArrow" points="0,-3 6,0 0,3" style="display: none;"/>
+<polygon class="arrow" id="fifthArrow" points="0,-3 6,0 0,3" style="display: none;"/>
+<polygon class="arrow" id="sixthArrow" points="0,-3 6,0 0,3" style="display: none;"/>
+<polygon class="arrow" id="seventhArrow" points="0,-3 6,0 0,3" style="display: none;"/>
+<polygon class="arrow" id="eighthArrow" points="0,-3 6,0 0,3" style="display: none;"/>
+
+    </g>
+  </svg>
+
+
+
+
+</div>
+
+
+
+
+  <script>
+
+const componentData = {
+  antenne: {
+    title: "L ' onde electromagnétique",
+    description: "une onde électromagnétique de fréquence autour de 1.8Giga Hertz entre dans l’antenne boucle.",
+    curveConfig: {
+      amplitude: 35,
+      freq: 2 * Math.PI / 35, 
+      showCenterLine: false
+    }
+  },
+  reception: {
+    title: "L ' antenne", 
+    description: "L’antenne capte le champ magnétique d’une onde électromagnétique. Le champ traverse la boucle et induit une tension de quelques micro Volt.",
+    curveConfig: {
+      amplitude: 35,
+      freq: 2 * Math.PI / 35,
+      showCenterLine: true
+    }
+  },
+
+    diode: {
+    title: "La diode", 
+    description: "La diode redresse le signal capté en ne laissant passer que les tension dans les +. ce qui rend le signal plus stable et plus facile à mesurer et amplifier par les composants suivants.",
+    curveConfig: {
+      amplitude: 35,
+      freq: 2 * Math.PI / 35,
+      showCenterLine: true
+    }
+  },
+
+
+      condensateur: {
+    title: "Le condensateur", 
+    description: "le condensateur agit comme un réservoir temporaire: il emmagasine l’énergie quand la tension monte et relâche doucement quand elle descend. le signal devient plus stable et plus lisse.",
+    curveConfig: {
+      color: "#ff5733",
+      amplitude: 35,
+      freq: 2 * Math.PI / 35,
+      showCenterLine: true
+    }
+  },
+
+      lm324: {
+    title: "Le circuit intégré LM324", 
+    description: "Le LM324 compare le signal capté (après redressement) à une tension de référence fixée à 7mV. Dès que le signal dépasse ce seuil, la sortie du LM324 passe à l’état haut (~9 V), ce qui active le transistor.",
+    curveConfig: {
+    }
+  },
+
+        transistor: {
+    title: "Le transistor", 
+    description: " Le transistor fonctionne comme un interrupteur pour les leds. ils les actives lorsqu’il reçoit 9v.",
+    curveConfig: {
+      color: "#ff5733",
+      amplitude: 35,
+      freq: 2 * Math.PI / 35,
+      showCenterLine: true
+    }
+  },
+
+
+  resistances: {
+    title: "Les résistances",
+    description: "Les résistances limitent le courant électrique dans le circuit et créent des tensions de référence précises pour le bon fonctionnement des composants actifs."
+  },
+
+leds: {
+  title: "",
+  description: "Les LEDs s'allument lorsque le transistor laisse passer le courant. Elles servent d'indicateurs visuels pour signaler la détection du signal. Elles peuvent être remplacer par un petit moteur, un buzzer, etc."
+},
+
+pile_positive: {
+  title: "",
+  description: "La borne positive de la pile 9V fournit l'énergie nécessaire au fonctionnement du circuit. Elle alimente le LM324 et permet au transistor de commander l'allumage des LEDs."
+},
+pile_negative: {
+  title: "",
+  description: "La borne négative de la pile 9V complète le circuit électrique. Elle sert de référence de tension (masse) pour tous les composants du détecteur d'ondes."
+}
+
+
+};
+
+let hoverCapacitorVoltages = new Array(121).fill(0); // Array pour les valeurs du condensateur dans l'encart
+const HOVER_RC_TIME_CONSTANT = 0.98; // Même constante que dans le schéma principal
+
+
+    window.addEventListener('DOMContentLoaded', function() {
+      
+      const arrow = document.getElementById('movingArrow');
+      const secondArrow = document.getElementById('secondArrow');
+      const thirdArrow = document.getElementById('thirdArrow');
+      const fourthArrow = document.getElementById('fourthArrow');
+      const fifthArrow = document.getElementById('fifthArrow');
+      const sixthArrow = document.getElementById('sixthArrow');
+      const seventhArrow = document.getElementById('seventhArrow');
+      const eighthArrow = document.getElementById('eighthArrow');
+      const path = document.getElementById('cablePath');
+      const panelState = {
+        displayedCurves: new Set(), // les courbes visibles
+        textFor: null               // laquelle affiche le texte
+      };
+
+let currentComponent = null;
+let hoverAnimationId = null;
+let hoverTime = 0;
+
+function showComponentPanel(componentKey) {
+  const component = componentData[componentKey];
+  if (!component) return;
+  
+  currentComponent = component;
+  
+  const panel = document.getElementById('hover-info-panel');
+  const title = document.getElementById('panel-title');
+  const description = document.getElementById('panel-description');
+  const receptionContainer = document.getElementById('hover-curve-container-reception');
+  const diodeContainer = document.getElementById('hover-curve-container-diode');
+  const condensateurContainer = document.getElementById('hover-curve-container-condensateur');
+    const lm324Container = document.getElementById('hover-curve-container-lm324');
+      const transistorContainer = document.getElementById('hover-curve-container-transistor');
+  const arrow1 = document.getElementById('arrow-down');
+  const arrow2 = document.getElementById('arrow-down-2');
+  const arrow3 = document.getElementById('arrow-down-3');
+    const arrow4 = document.getElementById('arrow-down-4');
+  
+  title.textContent = component.title;
+  description.textContent = component.description;
+  
+if (componentKey === 'resistances') {
+  title.textContent = ''; // Pas de titre
+  document.getElementById('hover-curve-container-antenne').style.display = 'none'; // Masquer aussi l'antenne
+  receptionContainer.style.display = 'none';
+  diodeContainer.style.display = 'none';
+  condensateurContainer.style.display = 'none';
+  lm324Container.style.display = 'none';
+  transistorContainer.style.display = 'none';
+  arrow1.style.display = 'none';
+  arrow2.style.display = 'none';
+  arrow3.style.display = 'none';
+  arrow4.style.display = 'none';
+} else if (componentKey === 'leds') {
+  title.textContent = ''; // Pas de titre
+  document.getElementById('hover-curve-container-antenne').style.display = 'none';
+  receptionContainer.style.display = 'none';
+  diodeContainer.style.display = 'none';
+  condensateurContainer.style.display = 'none';
+  lm324Container.style.display = 'none';
+  transistorContainer.style.display = 'none';
+  arrow1.style.display = 'none';
+  arrow2.style.display = 'none';
+  arrow3.style.display = 'none';
+  arrow4.style.display = 'none';
+} else if (componentKey === 'pile_positive' || componentKey === 'pile_negative') {
+  title.textContent = '';
+  document.getElementById('hover-curve-container-antenne').style.display = 'none';
+  receptionContainer.style.display = 'none';
+  diodeContainer.style.display = 'none';
+  condensateurContainer.style.display = 'none';
+  lm324Container.style.display = 'none';
+  transistorContainer.style.display = 'none';
+  arrow1.style.display = 'none';
+  arrow2.style.display = 'none';
+  arrow3.style.display = 'none';
+  arrow4.style.display = 'none';
+} else if (componentKey === 'antenne') {
+  document.getElementById('hover-curve-container-antenne').style.display = 'block';
+    receptionContainer.style.display = 'none';
+    diodeContainer.style.display = 'none';
+    condensateurContainer.style.display = 'none';
+    lm324Container.style.display = 'none';
+    arrow1.style.display = 'none';
+    arrow2.style.display = 'none';
+    arrow3.style.display = 'none';
+    arrow4.style.display = 'none';
+  } else if (componentKey === 'reception') {
+  document.getElementById('hover-curve-container-antenne').style.display = 'block';
+    receptionContainer.style.display = 'block';
+    diodeContainer.style.display = 'none';
+    condensateurContainer.style.display = 'none';
+    lm324Container.style.display = 'none';
+    transistorContainer.style.display = 'none';
+
+    arrow1.style.display = 'block';
+    arrow2.style.display = 'none';
+    arrow3.style.display = 'none';
+    arrow4.style.display = 'none';
+  } else if (componentKey === 'diode') {
+  document.getElementById('hover-curve-container-antenne').style.display = 'block';
+    receptionContainer.style.display = 'block';
+    diodeContainer.style.display = 'block';
+    condensateurContainer.style.display = 'none';
+    lm324Container.style.display = 'none';
+    transistorContainer.style.display = 'none';
+    arrow1.style.display = 'block';
+    arrow2.style.display = 'block';
+    arrow3.style.display = 'none';
+    arrow4.style.display = 'none';
+  } else if (componentKey === 'condensateur') {
+  document.getElementById('hover-curve-container-antenne').style.display = 'block';
+    receptionContainer.style.display = 'block';
+    diodeContainer.style.display = 'block';
+    condensateurContainer.style.display = 'block';
+    lm324Container.style.display = 'none';
+    transistorContainer.style.display = 'none';
+    arrow1.style.display = 'block';
+    arrow2.style.display = 'block';
+    arrow3.style.display = 'block';
+    arrow4.style.display = 'none';
+  } else if (componentKey === 'lm324') {
+  document.getElementById('hover-curve-container-antenne').style.display = 'block';
+    receptionContainer.style.display = 'block';
+    diodeContainer.style.display = 'block';
+    condensateurContainer.style.display = 'block';
+    lm324Container.style.display = 'block';
+    transistorContainer.style.display = 'none';
+    arrow1.style.display = 'block';
+    arrow2.style.display = 'block';
+    arrow3.style.display = 'block';
+    arrow4.style.display = 'block';
+  } else if (componentKey === 'transistor') {
+  document.getElementById('hover-curve-container-antenne').style.display = 'block';
+    receptionContainer.style.display = 'block';
+    diodeContainer.style.display = 'block';
+    condensateurContainer.style.display = 'block';
+    transistorContainer.style.display = 'block';
+    arrow1.style.display = 'block';
+    arrow2.style.display = 'block';
+    arrow3.style.display = 'block';
+    arrow4.style.display = 'block';
+  }
+  
+  panel.style.display = 'block';
+  startHoverAnimation();
+}
+
+function hideComponentPanel() {
+  const panel = document.getElementById('hover-info-panel');
+  if (panel) panel.style.display = 'none';
+  if (hoverAnimationId) {
+    cancelAnimationFrame(hoverAnimationId);
+    hoverAnimationId = null;
+  }
+  panelState.displayedCurves.clear();
+  panelState.textFor = null;
+}
+
+
+function updatePanel(curveId, withText = false) {
+  const panel = document.getElementById('hover-info-panel');
+  const title = document.getElementById('panel-title');
+  const description = document.getElementById('panel-description');
+
+  // ajouter la courbe dans l'état
+  panelState.displayedCurves.add(curveId);
+  panelState.textFor = withText ? curveId : panelState.textFor;
+
+  // vider le SVG et recréer les paths
+  const svg = document.getElementById('hover-curve');
+  //svg.querySelectorAll('path[data-curve-id]').forEach(p => p.remove());
+  
+
+
+
+  panelState.displayedCurves.forEach(id => {
+    const pathEl = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    pathEl.setAttribute('data-curve-id', id);
+    pathEl.setAttribute('fill', 'none');
+    pathEl.setAttribute('stroke-width', '1');
+    svg.appendChild(pathEl);
+  });
+
+  // mettre à jour le texte
+  if (panelState.textFor && componentData[panelState.textFor]) {
+    title.textContent = componentData[panelState.textFor].title || "";
+    description.textContent = componentData[panelState.textFor].description || "";
+  } else {
+    title.textContent = "";
+    description.textContent = "";
+  }
+
+  panel.style.display = 'block';
+  startHoverAnimation();
+}
+
+function animateHoverCurve() {
+  if (!currentComponent) return;
+  hoverTime += 0.016;
+  
+  // === SYNCHRONISATION AVEC LE SCHÉMA PRINCIPAL ===
+  const timeSinceCycleStart = frameCount - currentCycleStart;
+  let signalCutPosition = -1;
+  let signalReturnPosition = -1;
+
+  // Appliquer la même logique de coupure que le schéma principal
+  if (!isInOscillationPhase) {
+    const cutProgress = (timeSinceCycleStart - currentOscillationDuration) / currentCutDuration;
+    if (cutProgress < 0.5) {
+      signalCutPosition = 1 - (cutProgress * 2);
+    } else {
+      signalReturnPosition = 1 - ((cutProgress - 0.5) * 2);
+    }
+  }
+
+
+  const pathAntenne = document.getElementById('hover-sine-path-antenne');
+  const pathReception = document.getElementById('hover-sine-path-reception');
+  const pathDiode = document.getElementById('hover-sine-path-diode');
+  const pathCondensateur = document.getElementById('hover-sine-path-condensateur');
+  const pathTransistor = document.getElementById('hover-sine-path-transistor');
+
+
+// Courbe antenne (toujours visible mais avec coupures)
+if (pathAntenne) {
+  let pathDataAntenne = "";
+  let isDrawing = false;
+  
+  for (let i = 0; i <= 240; i += 2) {
+    const x = 20 + i;
+    
+    // Vérifier si on est dans une zone de coupure
+    const isInCut = 
+      (signalCutPosition >= 0 && i > 240 * signalCutPosition) ||
+      (signalReturnPosition >= 0 && i <= 240 * signalReturnPosition);
+    
+    if (isInCut) {
+      isDrawing = false;
+      continue;
+    }
+    
+    const phase = (i + time * 30) * componentData.antenne.curveConfig.freq;
+    const y = 30 + componentData.antenne.curveConfig.amplitude * 0.5 * Math.sin(phase);
+    
+    if (!isDrawing) {
+      pathDataAntenne += `M ${x} ${y} `;
+      isDrawing = true;
+    } else {
+      pathDataAntenne += `L ${x} ${y} `;
+    }
+  }
+  pathAntenne.setAttribute('d', pathDataAntenne);
+}
+  
+// Courbe réception (visible pour réception et diode)
+if (pathReception && (currentComponent === componentData.reception || currentComponent === componentData.diode || currentComponent === componentData.condensateur || currentComponent === componentData.lm324 || currentComponent === componentData.transistor)) {
+  let pathDataReception = "";
+  let isDrawing = false;
+  
+  for (let i = 0; i <= 240; i += 2) {
+    const x = 20 + i;
+    
+    // Vérifier si on est dans une zone de coupure
+    const isInCut = 
+      (signalCutPosition >= 0 && i > 240 * signalCutPosition) ||
+      (signalReturnPosition >= 0 && i <= 240 * signalReturnPosition);
+    
+    if (isInCut) {
+      isDrawing = false;
+      continue;
+    }
+    
+    const phase = (i + time * 30) * componentData.reception.curveConfig.freq;
+    const y = 30 + componentData.reception.curveConfig.amplitude * 0.5 * Math.sin(phase);
+    
+    if (!isDrawing) {
+      pathDataReception += `M ${x} ${y} `;
+      isDrawing = true;
+    } else {
+      pathDataReception += `L ${x} ${y} `;
+    }
+  }
+  pathReception.setAttribute('d', pathDataReception);  // pathReception (l'élément), pas pathDataReception (la chaîne)
+  pathReception.setAttribute('stroke', componentData.reception.curveConfig.color);
+}
+  
+// Courbe diode (visible seulement pour diode)
+if (pathDiode && (currentComponent === componentData.diode || currentComponent === componentData.condensateur || currentComponent === componentData.lm324 || currentComponent === componentData.transistor)) {
+  let pathDataDiode = "";
+  let isDrawing = false;
+  
+  for (let i = 0; i <= 240; i += 2) {
+    const x = 20 + i;
+    
+    // Vérifier si on est dans une zone de coupure
+    const isInCut = 
+      (signalCutPosition >= 0 && i > 240 * signalCutPosition) ||
+      (signalReturnPosition >= 0 && i <= 240 * signalReturnPosition);
+    
+    if (isInCut) {
+      isDrawing = false;
+      continue;
+    }
+    
+    const phase = (i + time * 30) * componentData.diode.curveConfig.freq;
+    let rawSine = Math.sin(phase);
+    
+    // Redressement comme la courbe satellite
+    rawSine = rawSine > 0 ? 0 : rawSine;
+    
+    const y = 30 + componentData.diode.curveConfig.amplitude * 0.5 * rawSine;
+    
+    if (!isDrawing) {
+      pathDataDiode += `M ${x} ${y} `;
+      isDrawing = true;
+    } else {
+      pathDataDiode += `L ${x} ${y} `;
+    }
+  }
+  pathDiode.setAttribute('d', pathDataDiode);
+  pathDiode.setAttribute('stroke', componentData.diode.curveConfig.color);
+}
+  
+// Courbe condensateur (visible seulement pour condensateur)
+if (pathCondensateur && (currentComponent === componentData.condensateur || currentComponent === componentData.lm324 || currentComponent === componentData.transistor)) {
+  let pathDataCondensateur = "";
+  let isDrawing = false;
+  
+  for (let i = 0; i <= 240; i += 2) {
+    const x = 20 + i;
+    
+    // Vérifier si on est dans une zone de coupure
+    const isInCut = 
+      (signalCutPosition >= 0 && i > 240 * signalCutPosition) ||
+      (signalReturnPosition >= 0 && i <= 240 * signalReturnPosition);
+    
+    if (isInCut) {
+      isDrawing = false;
+      continue;
+    }
+    
+    const phase = (i + hoverTime * 30) * componentData.condensateur.curveConfig.freq;
+    let rawSine = Math.sin(phase);
+    
+    // Redressement comme la diode
+    const rectifiedSine = rawSine > 0 ? 0 : rawSine;
+    const rectifiedValue = componentData.condensateur.curveConfig.amplitude * 0.5 * rectifiedSine;
+    
+    // Simulation condensateur comme dans le schéma principal
+    if (!hoverCapacitorVoltages[i]) hoverCapacitorVoltages[i] = 0;
+    
+    if (Math.abs(rectifiedValue) > Math.abs(hoverCapacitorVoltages[i])) {
+      hoverCapacitorVoltages[i] = rectifiedValue;
+    } else {
+      hoverCapacitorVoltages[i] *= HOVER_RC_TIME_CONSTANT;
+    }
+    
+    const y = 30 + hoverCapacitorVoltages[i];
+    
+    if (!isDrawing) {
+      pathDataCondensateur += `M ${x} ${y} `;
+      isDrawing = true;
+    } else {
+      pathDataCondensateur += `L ${x} ${y} `;
+    }
+  }
+  pathCondensateur.setAttribute('d', pathDataCondensateur);
+  pathCondensateur.setAttribute('stroke', '#ff5733');
+}
+
+// Courbe transistor (visible seulement pour transistor)
+if (pathTransistor && currentComponent === componentData.transistor) {
+  let pathDataTransistor = "";
+  let isDrawing = false;
+  
+  for (let i = 0; i <= 240; i += 2) {
+    const x = 20 + i;
+    
+    // Comportement transistor : INVERSÉ par rapport aux autres signaux
+    let transistorValue;
+    
+    // Vérifier si on est dans une zone de coupure des autres signaux
+    const isInCut = 
+      (signalCutPosition >= 0 && i > 240 * signalCutPosition) ||
+      (signalReturnPosition >= 0 && i <= 240 * signalReturnPosition);
+    
+    if (isInCut) {
+      // Quand les autres signaux sont coupés, le transistor est BAS
+      transistorValue = 0.6; // État bas
+    } else {
+      // Quand les autres signaux sont visibles, le transistor est HAUT
+      transistorValue = -1; // État haut
+    }
+    
+    const y = 30 + componentData.transistor.curveConfig.amplitude * 0.5 * transistorValue;
+    
+    if (!isDrawing) {
+      pathDataTransistor += `M ${x} ${y} `;
+      isDrawing = true;
+    } else {
+      pathDataTransistor += `L ${x} ${y} `;
+    }
+  }
+  pathTransistor.setAttribute('d', pathDataTransistor);
+  pathTransistor.setAttribute('stroke', componentData.transistor.curveConfig.color);
+}
+
+  
+  hoverAnimationId = requestAnimationFrame(animateHoverCurve);
+}
+
+function startHoverAnimation() {
+    if (!hoverAnimationId && currentComponent !== componentData.resistances) {
+        animateHoverCurve(); // cette fonction boucle via requestAnimationFrame
+    }
+}
+
+const antenneZone = document.getElementById('antenne-hover-zone');
+if (antenneZone) {
+    antenneZone.addEventListener('mouseenter', function() {
+        showComponentPanel('antenne');
+    });
+    antenneZone.addEventListener('mouseleave', hideComponentPanel);
+}
+
+const receptionZone = document.getElementById('reception-hover-zone');
+if (receptionZone) {
+    receptionZone.addEventListener('mouseenter', function() {
+        showComponentPanel('reception');
+    });
+    receptionZone.addEventListener('mouseleave', hideComponentPanel);
+}
+
+const diodeZone = document.getElementById('diode-hover-zone');
+if (diodeZone) {
+    diodeZone.addEventListener('mouseenter', function() {
+        showComponentPanel('diode');
+    });
+    diodeZone.addEventListener('mouseleave', hideComponentPanel);
+}
+
+const condensateurZone = document.getElementById('condensateur-hover-zone');
+if (condensateurZone) {
+    condensateurZone.addEventListener('mouseenter', function() {
+        console.log('Hover condensateur détecté !');
+        showComponentPanel('condensateur');
+    });
+    condensateurZone.addEventListener('mouseleave', hideComponentPanel);
+}
+
+const lm324Zone = document.getElementById('lm324-hover-zone');
+if (lm324Zone) {
+    lm324Zone.addEventListener('mouseenter', function() {
+        console.log('Hover LM324 détecté !');
+        showComponentPanel('lm324');
+        // Afficher les voltages 9V pour le LM324
+        if (lm324Voltage9v1 && lm324Voltage9v2) {
+            lm324Voltage9v1.style.display = 'block';
+            lm324Voltage9v2.style.display = 'block';
+        }
+    });
+    lm324Zone.addEventListener('mouseleave', function() {
+        hideComponentPanel();
+        // Cacher les voltages 9V du LM324
+        if (lm324Voltage9v1 && lm324Voltage9v2) {
+            lm324Voltage9v1.style.display = 'none';
+            lm324Voltage9v2.style.display = 'none';
+        }
+    });
+}
+
+const transistorZone = document.getElementById('transistor-hover-zone');
+if (transistorZone) {
+    transistorZone.addEventListener('mouseenter', function() {
+        console.log('Hover transistor détecté !');
+        showComponentPanel('transistor');
+    });
+    transistorZone.addEventListener('mouseleave', hideComponentPanel);
+}
+const resistanceZones = ['resistance1', 'resistance2', 'resistance3', 'resistance4', 'resistance5'];
+
+resistanceZones.forEach(resistanceId => {
+  const zone = document.getElementById(resistanceId + '-hover-zone');
+  if (zone) {
+    zone.addEventListener('mouseenter', function() {
+      showComponentPanel('resistances');
+    });
+    zone.addEventListener('mouseleave', hideComponentPanel);
+  }
+});
+
+
+const ledsZone = document.getElementById('leds-hover-zone');
+if (ledsZone) {
+  ledsZone.addEventListener('mouseenter', function() {
+    showComponentPanel('leds');
+  });
+  ledsZone.addEventListener('mouseleave', hideComponentPanel);
+}
+
+// Event listeners pour la pile
+const pilePositiveZone = document.getElementById('pile-positive-hover-zone');
+if (pilePositiveZone) {
+  pilePositiveZone.addEventListener('mouseenter', function() {
+    showComponentPanel('pile_positive');
+  });
+  pilePositiveZone.addEventListener('mouseleave', hideComponentPanel);
+}
+
+const pileNegativeZone = document.getElementById('pile-negative-hover-zone');
+if (pileNegativeZone) {
+  pileNegativeZone.addEventListener('mouseenter', function() {
+    showComponentPanel('pile_negative');
+  });
+  pileNegativeZone.addEventListener('mouseleave', hideComponentPanel);
+}
+
+
+function showPanel(panelId, componentKey) {
+  const panel = document.getElementById(panelId);
+  const titleEl = panel.querySelector('.panel-title');
+  const descEl = panel.querySelector('.panel-description');
+  const svg = panel.querySelector('.hover-curve');
+
+  const component = componentData[componentKey];
+  if (!component) return;
+
+  titleEl.textContent = component.title;
+  descEl.textContent = component.description;
+  panel.style.display = 'block';
+
+  // Crée un <path> pour cette sinusoïde
+  svg.innerHTML = '';
+  const pathEl = document.createElementNS("http://www.w3.org/2000/svg","path");
+  pathEl.setAttribute('stroke', component.curveConfig.color);
+  pathEl.setAttribute('stroke-width','1');
+  pathEl.setAttribute('fill','none');
+  svg.appendChild(pathEl);
+
+  // Animation simple
+  function animatePath() {
+    const curve = curves.find(c => c.id === "animated-sine-" + componentKey);
+    if (!curve) return;
+
+    let pathData = '';
+    for (let i=0;i<=240;i+=2){
+      const phase = (i*0.3 + (time + curve.offsetTime)*30) * curve.freq;
+      const y = 20 + 25*Math.sin(phase);
+      const x = 20+i;
+      pathData += (i===0?'M':'L') + x + ' ' + y + ' ';
+    }
+    pathEl.setAttribute('d', pathData);
+
+    requestAnimationFrame(animatePath);
+  }
+  animatePath();
+}
+
+
+
+      function isOnVisibleTrace(point) {
+        const tolerance = 8; // Tolérance pour considérer qu'on est "sur" le tracé
+        const fadeDistance = 15; // Distance pour faire disparaître/réapparaître les flèches aux extrémités
+        
+        // Récupérer tous les éléments avec la classe 'trace'
+        const traces = document.querySelectorAll('.trace');
+        
+        for (let trace of traces) {
+          const pathLength = trace.getTotalLength ? trace.getTotalLength() : 0;
+          
+          if (pathLength > 0) {
+            // Pour les éléments qui ont une longueur (line, polyline, path)
+            for (let i = fadeDistance; i <= pathLength - fadeDistance; i += 5) {
+              const tracePoint = trace.getPointAtLength(i);
+              const distance = Math.sqrt(
+                Math.pow(point.x - tracePoint.x, 2) + 
+                Math.pow(point.y - tracePoint.y, 2)
+              );
+              if (distance <= tolerance) {
+                return true;
+              }
+            }
+          }
+        }
+        return false;
+      }
+      
+      // Chemins pour les autres flèches
+      const secondPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      secondPath.setAttribute('d', 'M 484.42 292.39 L 369.78 246.46 L 89.4 378.96');
+      secondPath.setAttribute('fill', 'none');
+      secondPath.setAttribute('stroke', 'none');
+      document.getElementById('main-content').appendChild(secondPath);
+      
+      const thirdPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      thirdPath.setAttribute('d', 'M 392.19 335.64 L 392.19 422.46');
+      thirdPath.setAttribute('fill', 'none');
+      thirdPath.setAttribute('stroke', 'none');
+      document.getElementById('main-content').appendChild(thirdPath);
+      
+      const fourthPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      fourthPath.setAttribute('d', 'M 702.45 406.74 L 554.34 476.85 L 535.04 485.65 L 472.64 515.03 L 467.33 517.53 L 419.35 540.22 L 414.34 542.54 L 368.74 563.89 L 196.06 497.41 L 189.22 493.13 L 1.27 420.93 L 62.51 391.95');
+      fourthPath.setAttribute('fill', 'none');
+      fourthPath.setAttribute('stroke', 'none');
+      document.getElementById('main-content').appendChild(fourthPath);
+      
+      const fifthPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      fifthPath.setAttribute('d', 'M 591.46 458.43 L 475.24 413.92 L 455.96 406.39 L 385.1 379.41 L 384.96 378.66 L 384.96 425.6');
+      fifthPath.setAttribute('fill', 'none');
+      fifthPath.setAttribute('stroke', 'none');
+      document.getElementById('main-content').appendChild(fifthPath);
+      
+      const sixthPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      sixthPath.setAttribute('d', 'M 624.63 443.6 L 399.74 356.7 L 399.74 419.33 L 399.63 477.98 L 399.63 515.86 L 231.01 450.66 L 231.01 311.29 L 89.4 378.96');
+      sixthPath.setAttribute('fill', 'none');
+      sixthPath.setAttribute('stroke', 'none');
+      document.getElementById('main-content').appendChild(sixthPath);
+      
+      const seventhPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      seventhPath.setAttribute('d', 'M 384.72 378.96 L 297.93 345.94 L 278.74 338.18 L 221.6 316.22 L 89.4 378.96');
+      seventhPath.setAttribute('fill', 'none');
+      seventhPath.setAttribute('stroke', 'none');
+      document.getElementById('main-content').appendChild(seventhPath);
+      
+      const eighthPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      eighthPath.setAttribute('d', 'M 377.49 398 L 305.66 431.43 L 286.95 440.35 L 192.37 484.47 L 189.22 493.13 L 1.27 420.93 L 62.51 391.95');
+      eighthPath.setAttribute('fill', 'none');
+      eighthPath.setAttribute('stroke', 'none');
+      document.getElementById('main-content').appendChild(eighthPath);
+      
+      // Variables pour la première source
+      let secondArrowActive = false;
+      let secondArrowStartTime = 0;
+      let thirdArrowActive = false;
+      let thirdArrowStartTime = 0;
+      let eighthArrowActive = false;
+      let eighthArrowStartTime = 0;
+      
+      // Variables pour la deuxième source
+      let fourthArrowActive = false;
+      let fourthArrowStartTime = 0;
+      let fifthArrowActive = false;
+      let fifthArrowStartTime = 0;
+      let sixthArrowActive = false;
+      let sixthArrowStartTime = 0;
+      let seventhArrowActive = false;
+      let seventhArrowStartTime = 0;
+      let secondSourceActive = true;
+      const secondSourceDelay = 1.5;
+      
+      function animate() {
+        const t = performance.now() * 0.001;
+        const speed = 80;
+        const pauseTime = 1;
+        const pathLength = path.getTotalLength();
+        const cycleTime = pathLength / speed;
+        const totalTime = cycleTime + pauseTime;
+        
+        const totalCycle = (t % totalTime) / totalTime;
+        
+        if (totalCycle <= cycleTime / totalTime) {
+          const animationCycle = totalCycle / (cycleTime / totalTime);
+          const pos = pathLength * animationCycle;
+          
+          // DEUXIÈME SOURCE - Déclenchement avec délai
+          if (secondSourceActive && animationCycle > (secondSourceDelay / cycleTime) && !fourthArrowActive) {
+            fourthArrowActive = true;
+            fourthArrowStartTime = t;
+          }
+          
+          const point1 = path.getPointAtLength(pos);
+          const point2 = path.getPointAtLength(Math.min(pos + 5, pathLength));
+          
+          // Vérifier si on est sur un tracé visible
+          if (isOnVisibleTrace(point1)) {
+            arrow.style.display = "block";
+          } else {
+            arrow.style.display = "none";
+          }
+          
+          // Vérifier les points de déclenchement PREMIÈRE SOURCE
+          if (Math.abs(point1.x - 484.42) < 5 && Math.abs(point1.y - 292.39) < 5) {
+            if (!secondArrowActive) {
+              secondArrowActive = true;
+              secondArrowStartTime = t;
+            }
+          }
+          
+          if (Math.abs(point1.x - 392.19) < 5 && Math.abs(point1.y - 335.64) < 5) {
+            if (!thirdArrowActive) {
+              thirdArrowActive = true;
+              thirdArrowStartTime = t;
+            }
+          }
+          
+          const angle = Math.atan2(point2.y - point1.y, point2.x - point1.x);
+          const angleDegrees = (angle * 180 / Math.PI);
+          
+          arrow.setAttribute('transform', 
+            `translate(${point1.x}, ${point1.y}) rotate(${angleDegrees})`
+          );
+        } else {
+          arrow.style.display = "none";
+        }
+        
+        // Animation de la deuxième flèche
+        if (secondArrowActive) {
+          const secondElapsed = t - secondArrowStartTime;
+          const secondPathLength = secondPath.getTotalLength();
+          const secondCycleTime = secondPathLength / speed;
+          
+          if (secondElapsed < secondCycleTime) {
+            const secondCycle = secondElapsed / secondCycleTime;
+            const secondPos = secondPathLength * secondCycle;
+            
+            const secondPoint1 = secondPath.getPointAtLength(secondPos);
+            const secondPoint2 = secondPath.getPointAtLength(Math.min(secondPos + 5, secondPathLength));
+            
+            // Vérifier si on est sur un tracé visible
+            if (isOnVisibleTrace(secondPoint1)) {
+              secondArrow.style.display = "block";
+            } else {
+              secondArrow.style.display = "none";
+            }
+            
+            const secondAngle = Math.atan2(secondPoint2.y - secondPoint1.y, secondPoint2.x - secondPoint1.x);
+            const secondAngleDegrees = (secondAngle * 180 / Math.PI);
+            
+            secondArrow.setAttribute('transform', 
+              `translate(${secondPoint1.x}, ${secondPoint1.y}) rotate(${secondAngleDegrees})`
+            );
+          } else {
+            secondArrowActive = false;
+            secondArrow.style.display = "none";
+          }
+        }
+        
+        // Animation de la troisième flèche
+        if (thirdArrowActive) {
+          const thirdElapsed = t - thirdArrowStartTime;
+          const thirdPathLength = thirdPath.getTotalLength();
+          const thirdCycleTime = thirdPathLength / speed;
+          
+          if (thirdElapsed < thirdCycleTime) {
+            const thirdCycle = thirdElapsed / thirdCycleTime;
+            const thirdPos = thirdPathLength * thirdCycle;
+            
+            const thirdPoint1 = thirdPath.getPointAtLength(thirdPos);
+            const thirdPoint2 = thirdPath.getPointAtLength(Math.min(thirdPos + 5, thirdPathLength));
+            
+            // Vérifier si on est sur un tracé visible
+            if (isOnVisibleTrace(thirdPoint1)) {
+              thirdArrow.style.display = "block";
+            } else {
+              thirdArrow.style.display = "none";
+            }
+            
+            const thirdAngle = Math.atan2(thirdPoint2.y - thirdPoint1.y, thirdPoint2.x - thirdPoint1.x);
+            const thirdAngleDegrees = (thirdAngle * 180 / Math.PI);
+            
+            thirdArrow.setAttribute('transform', 
+              `translate(${thirdPoint1.x}, ${thirdPoint1.y}) rotate(${thirdAngleDegrees})`
+            );
+          } else {
+            // Troisième flèche terminée - déclencher la 8ème flèche
+            if (!eighthArrowActive) {
+              eighthArrowActive = true;
+              eighthArrowStartTime = t;
+            }
+            thirdArrowActive = false;
+            thirdArrow.style.display = "none";
+          }
+        }
+        
+        // Animation de la quatrième flèche
+        if (fourthArrowActive) {
+          const fourthElapsed = t - fourthArrowStartTime;
+          const fourthPathLength = fourthPath.getTotalLength();
+          const fourthCycleTime = fourthPathLength / speed;
+          
+          if (fourthElapsed < fourthCycleTime) {
+            const fourthCycle = fourthElapsed / fourthCycleTime;
+            const fourthPos = fourthPathLength * fourthCycle;
+            
+            const fourthPoint1 = fourthPath.getPointAtLength(fourthPos);
+            const fourthPoint2 = fourthPath.getPointAtLength(Math.min(fourthPos + 5, fourthPathLength));
+            
+            // Vérifier si on est sur un tracé visible
+            if (isOnVisibleTrace(fourthPoint1)) {
+              fourthArrow.style.display = "block";
+            } else {
+              fourthArrow.style.display = "none";
+            }
+            
+            // Déclenchement de la 5ème flèche
+            if (Math.abs(fourthPoint1.x - 591.46) < 5 && Math.abs(fourthPoint1.y - 458.43) < 5) {
+              if (!fifthArrowActive) {
+                fifthArrowActive = true;
+                fifthArrowStartTime = t;
+              }
+            }
+            
+            // Déclenchement de la 6ème flèche
+            if (Math.abs(fourthPoint1.x - 624.63) < 5 && Math.abs(fourthPoint1.y - 443.6) < 5) {
+              sixthArrowActive = true;
+              sixthArrowStartTime = t;
+            }
+            
+            const fourthAngle = Math.atan2(fourthPoint2.y - fourthPoint1.y, fourthPoint2.x - fourthPoint1.x);
+            const fourthAngleDegrees = (fourthAngle * 180 / Math.PI);
+            
+            fourthArrow.setAttribute('transform', 
+              `translate(${fourthPoint1.x}, ${fourthPoint1.y}) rotate(${fourthAngleDegrees})`
+            );
+          } else {
+            fourthArrowActive = false;
+            fourthArrow.style.display = "none";
+          }
+        }
+        
+        // Animation de la cinquième flèche
+        if (fifthArrowActive) {
+          const fifthElapsed = t - fifthArrowStartTime;
+          const fifthPathLength = fifthPath.getTotalLength();
+          const fifthCycleTime = fifthPathLength / speed;
+          
+          if (fifthElapsed < fifthCycleTime) {
+            const fifthCycle = fifthElapsed / fifthCycleTime;
+            const fifthPos = fifthPathLength * fifthCycle;
+            
+            const fifthPoint1 = fifthPath.getPointAtLength(fifthPos);
+            const fifthPoint2 = fifthPath.getPointAtLength(Math.min(fifthPos + 5, fifthPathLength));
+            
+            // Vérifier si on est sur un tracé visible
+            if (isOnVisibleTrace(fifthPoint1)) {
+              fifthArrow.style.display = "block";
+            } else {
+              fifthArrow.style.display = "none";
+            }
+            
+            // Déclenchement de la 7ème flèche
+            if (Math.abs(fifthPoint1.x - 384.72) < 5 && Math.abs(fifthPoint1.y - 378.96) < 5) {
+              if (!seventhArrowActive) {
+                seventhArrowActive = true;
+                seventhArrowStartTime = t;
+              }
+            }
+            
+            const fifthAngle = Math.atan2(fifthPoint2.y - fifthPoint1.y, fifthPoint2.x - fifthPoint1.x);
+            const fifthAngleDegrees = (fifthAngle * 180 / Math.PI);
+            
+            fifthArrow.setAttribute('transform', 
+              `translate(${fifthPoint1.x}, ${fifthPoint1.y}) rotate(${fifthAngleDegrees})`
+            );
+          } else {
+            fifthArrowActive = false;
+            fifthArrow.style.display = "none";
+          }
+        }
+        
+        // Animation de la sixième flèche
+        if (sixthArrowActive) {
+          const sixthElapsed = t - sixthArrowStartTime;
+          const sixthPathLength = sixthPath.getTotalLength();
+          const sixthCycleTime = sixthPathLength / speed;
+          
+          if (sixthElapsed < sixthCycleTime) {
+            const sixthCycle = sixthElapsed / sixthCycleTime;
+            const sixthPos = sixthPathLength * sixthCycle;
+            
+            const sixthPoint1 = sixthPath.getPointAtLength(sixthPos);
+            const sixthPoint2 = sixthPath.getPointAtLength(Math.min(sixthPos + 5, sixthPathLength));
+            
+            // Vérifier si on est sur un tracé visible
+            if (isOnVisibleTrace(sixthPoint1)) {
+              sixthArrow.style.display = "block";
+            } else {
+              sixthArrow.style.display = "none";
+            }
+            
+            const sixthAngle = Math.atan2(sixthPoint2.y - sixthPoint1.y, sixthPoint2.x - sixthPoint1.x);
+            const sixthAngleDegrees = (sixthAngle * 180 / Math.PI);
+            
+            sixthArrow.setAttribute('transform', 
+              `translate(${sixthPoint1.x}, ${sixthPoint1.y}) rotate(${sixthAngleDegrees})`
+            );
+          } else {
+            sixthArrowActive = false;
+            sixthArrow.style.display = "none";
+          }
+        }
+        
+        // Animation de la septième flèche
+        if (seventhArrowActive) {
+          const seventhElapsed = t - seventhArrowStartTime;
+          const seventhPathLength = seventhPath.getTotalLength();
+          const seventhCycleTime = seventhPathLength / speed;
+          
+          if (seventhElapsed < seventhCycleTime) {
+            const seventhCycle = seventhElapsed / seventhCycleTime;
+            const seventhPos = seventhPathLength * seventhCycle;
+            
+            const seventhPoint1 = seventhPath.getPointAtLength(seventhPos);
+            const seventhPoint2 = seventhPath.getPointAtLength(Math.min(seventhPos + 5, seventhPathLength));
+            
+            // Vérifier si on est sur un tracé visible
+            if (isOnVisibleTrace(seventhPoint1)) {
+              seventhArrow.style.display = "block";
+            } else {
+              seventhArrow.style.display = "none";
+            }
+            
+            const seventhAngle = Math.atan2(seventhPoint2.y - seventhPoint1.y, seventhPoint2.x - seventhPoint1.x);
+            const seventhAngleDegrees = (seventhAngle * 180 / Math.PI);
+            
+            seventhArrow.setAttribute('transform', 
+              `translate(${seventhPoint1.x}, ${seventhPoint1.y}) rotate(${seventhAngleDegrees})`
+            );
+          } else {
+            seventhArrowActive = false;
+            seventhArrow.style.display = "none";
+          }
+        }
+        
+        // Animation de la huitième flèche
+        if (eighthArrowActive) {
+          const eighthElapsed = t - eighthArrowStartTime;
+          const eighthPathLength = eighthPath.getTotalLength();
+          const eighthCycleTime = eighthPathLength / speed;
+          
+          if (eighthElapsed < eighthCycleTime) {
+            const eighthCycle = eighthElapsed / eighthCycleTime;
+            const eighthPos = eighthPathLength * eighthCycle;
+            
+            const eighthPoint1 = eighthPath.getPointAtLength(eighthPos);
+            const eighthPoint2 = eighthPath.getPointAtLength(Math.min(eighthPos + 5, eighthPathLength));
+            
+            // Vérifier si on est sur un tracé visible
+            if (isOnVisibleTrace(eighthPoint1)) {
+              eighthArrow.style.display = "block";
+            } else {
+              eighthArrow.style.display = "none";
+            }
+            
+            const eighthAngle = Math.atan2(eighthPoint2.y - eighthPoint1.y, eighthPoint2.x - eighthPoint1.x);
+            const eighthAngleDegrees = (eighthAngle * 180 / Math.PI);
+            
+            eighthArrow.setAttribute('transform', 
+              `translate(${eighthPoint1.x}, ${eighthPoint1.y}) rotate(${eighthAngleDegrees})`
+            );
+          } else {
+            eighthArrowActive = false;
+            eighthArrow.style.display = "none";
+          }
+        }
+        
+        requestAnimationFrame(animate);
+      }
+      
+      animate();
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Variables pour détecter les changements d'état
+let wasOscillating = null; // État précédent
+let ledsState = true; // État actuel des LEDs
+
+const curves = [
+  {
+    id: "animated-sine-antenne",
+    startX: 90,
+    startY: 57,
+    amplitude: 14,
+    sineLength: 95,
+    freq: 2 * Math.PI / 20,
+    diagonalAngle: 0.44,
+    skewX: 0.4,
+    offsetTime: 0,
+  },
+  {
+    id: "animated-sine-entree",
+    startX: 320,
+    startY: 70,
+    amplitude: 14,
+    sineLength: 95,
+    freq: 2 * Math.PI / 20,
+    diagonalAngle: -0.52,
+    skewX: -0.5,
+    offsetTime: 1.5,
+  },
+  {
+    id: "animated-sine-satellite",
+    startX: 235,
+    startY: 182,
+    amplitude: 16,
+    sineLength: 95,
+    freq: 2 * Math.PI / 20,
+    diagonalAngle: 0.44,
+    skewX: 0.4,
+    offsetTime: 2.8,
+  },
+  {
+    id: "animated-sine-condensateur",
+    startX: 495,
+    startY: 321,
+    amplitude: 16,
+    sineLength: 95,
+    freq: 2 * Math.PI / 20,
+    diagonalAngle: -0.52,
+    skewX: -0.4,
+    offsetTime: 2.8,
+  },
+  {
+    id: "animated-sine-transistor",
+    startX: -205,
+    startY: 530,
+    amplitude: 16,
+    sineLength: 95,
+    freq: 2 * Math.PI / 20,
+    diagonalAngle: 0.44,
+    skewX: 0.4,
+    offsetTime: 2.8,
+  }
+];
+
+let time = 0;
+const deltaTime = 1 / 60;
+
+// 🎯 PARAMÈTRES DE RANDOMISATION
+const RANDOM_CONFIG = {
+  minOscillationTime: 100,   // Temps mini d'oscillation (frames)
+  maxOscillationTime: 500,  // Temps maxi d'oscillation 
+  minCutTime: 100,          // Temps mini de coupure
+  maxCutTime: 500,         // Temps maxi de coupure
+};
+
+// Variables pour les cycles aléatoires
+let frameCount = 0;
+let currentCycleStart = 0;
+let currentOscillationDuration = 0;
+let currentCutDuration = 0;
+let isInOscillationPhase = true;
+
+// Variables pour simuler le comportement du condensateur
+let capacitorVoltages = new Array(96).fill(0);
+const RC_TIME_CONSTANT = 0.98;
+
+//: Récupération des divs d'indicateurs d'oscillation
+const oscillationIndicator1 = document.getElementById('oscillation-indicator-1');
+const oscillationIndicator2 = document.getElementById('oscillation-indicator-2');
+const voltage7mv1 = document.getElementById('voltage-7mv-1');
+const voltage7mv2 = document.getElementById('voltage-7mv-2');
+const voltage9v = document.getElementById('voltage-9v');
+const lm324Voltage9v1 = document.getElementById('lm324-voltage-9v-1');
+const lm324Voltage9v2 = document.getElementById('lm324-voltage-9v-2');
+
+function updateOscillationIndicators(isOscillating) {
+  if (oscillationIndicator1 && oscillationIndicator2) {
+    if (isOscillating) {
+      oscillationIndicator1.style.display = 'block';
+      oscillationIndicator2.style.display = 'block';
+    } else {
+      oscillationIndicator1.style.display = 'none';
+      oscillationIndicator2.style.display = 'none';
+    }
+  }
+  
+  // Synchroniser les textes de voltage avec les LEDs
+  if (voltage7mv1 && voltage7mv2 && voltage9v) {
+    if (isOscillating) {
+      voltage7mv1.style.display = 'block';
+      voltage7mv2.style.display = 'block';
+      voltage9v.style.display = 'block';
+    } else {
+      voltage7mv1.style.display = 'none';
+      voltage7mv2.style.display = 'none';
+      voltage9v.style.display = 'none';
+    }
+  }
+}
+
+// Fonction pour générer de nouveaux timings aléatoires
+function generateNewCycle() {
+  currentOscillationDuration = Math.random() * 
+    (RANDOM_CONFIG.maxOscillationTime - RANDOM_CONFIG.minOscillationTime) + 
+    RANDOM_CONFIG.minOscillationTime;
+  
+  currentCutDuration = Math.random() * 
+    (RANDOM_CONFIG.maxCutTime - RANDOM_CONFIG.minCutTime) + 
+    RANDOM_CONFIG.minCutTime;
+  
+  currentCycleStart = frameCount;
+  isInOscillationPhase = true;
+}
+
+// Initialiser le premier cycle
+generateNewCycle();
+
+
+
+function animateSinusoids() {
+  const timeSinceCycleStart = frameCount - currentCycleStart;
+  let signalCutPosition = -1;
+  let signalReturnPosition = -1;
+
+// Logique de cycle aléatoire améliorée
+if (isInOscillationPhase && timeSinceCycleStart > currentOscillationDuration) {
+  // Passer en phase de coupure
+  isInOscillationPhase = false;
+} else if (!isInOscillationPhase && timeSinceCycleStart > currentOscillationDuration + currentCutDuration) {
+  // Repasser en phase d'oscillation immédiatement
+  isInOscillationPhase = true;
+  generateNewCycle();
+}
+
+
+// --- Détection visuelle d'oscillation ---
+// On considère qu'il y a oscillation dès qu'on est en phase oscillante OU en phase de retour progressif
+let ledsOn = isInOscillationPhase;
+
+// Si on est en coupure, on regarde si la phase de retour a commencé
+if (!isInOscillationPhase) {
+  const cutProgress = (timeSinceCycleStart - currentOscillationDuration) / currentCutDuration;
+  if (cutProgress >= 0.5) {
+    ledsOn = true; // Allumer dès que ça recommence à bouger
+  }
+}
+
+// Mise à jour seulement si l'état change
+if (wasOscillating !== ledsOn) {
+  updateOscillationIndicators(ledsOn);
+  wasOscillating = ledsOn;
+}
+
+
+
+
+
+
+  // Appliquer la coupure si on est en phase de coupure
+  if (!isInOscillationPhase) {
+    const cutProgress = (timeSinceCycleStart - currentOscillationDuration) / currentCutDuration;
+    if (cutProgress < 0.5) {
+      // Phase de coupure progressive
+      signalCutPosition = 1 - (cutProgress * 2);
+    } else {
+      // Phase de retour progressif
+      signalReturnPosition = 1 - ((cutProgress - 0.5) * 2);
+    }
+  }
+
+  curves.forEach(curve => {
+    let path = "";
+    let isDrawing = false;
+
+    for (let i = 0; i <= curve.sineLength; i += 1) {
+      const phase = (i + (time + curve.offsetTime) * 30) * curve.freq;
+      let sineY;
+
+      const isInCut =
+        (signalCutPosition >= 0 && i > curve.sineLength * signalCutPosition) ||
+        (signalReturnPosition >= 0 && i <= curve.sineLength * signalReturnPosition);
+
+      if (curve.id === "animated-sine-entree" && isInCut) {
+        isDrawing = false;
+        continue;
+      }
+
+      let rawSine = Math.sin(phase);
+
+      // === REDRESSEMENT SIMPLE pour "satellite" ===
+      if (curve.id === "animated-sine-satellite") {
+        rawSine = rawSine > 0 ? 0 : rawSine;
+      }
+
+      // === COMPORTEMENT CONDENSATEUR pour "condensateur" ===
+      if (curve.id === "animated-sine-condensateur") {
+        const rectifiedSine = rawSine > 0 ? 0 : rawSine;
+        const rectifiedValue = curve.amplitude * rectifiedSine;
+        
+        if (!capacitorVoltages[i]) capacitorVoltages[i] = 0;
+        
+        if (Math.abs(rectifiedValue) > Math.abs(capacitorVoltages[i])) {
+          capacitorVoltages[i] = rectifiedValue;
+        } else {
+          capacitorVoltages[i] *= RC_TIME_CONSTANT;
+        }
+        
+        rawSine = capacitorVoltages[i] / curve.amplitude;
+      }
+
+      // === SIGNAL TRANSISTOR (état haut/bas) ===
+      if (curve.id === "animated-sine-transistor") {
+        // Signal haut quand les autres oscillent, signal bas pendant les coupures
+        if (isInCut) {
+          rawSine = 0.6; // État bas (mais pas complètement à 0 pour la visibilité)
+        } else {
+          rawSine = -1; // État haut (négatif pour suivre la logique des autres)
+        }
+      }
+
+      sineY = isInCut && curve.id !== "animated-sine-transistor" ? 0 : curve.amplitude * rawSine;
+
+      const x = curve.startX + i * Math.cos(curve.diagonalAngle) - sineY * Math.sin(curve.diagonalAngle);
+      const y = curve.startY + i * Math.sin(curve.diagonalAngle) + sineY * Math.cos(curve.diagonalAngle);
+
+      const finalX = x + y * curve.skewX;
+      const finalY = y;
+
+      if (!isDrawing) {
+        path += "M" + finalX + "," + finalY + " ";
+        isDrawing = true;
+      } else {
+        path += "L" + finalX + "," + finalY + " ";
+      }
+    }
+
+    document.getElementById(curve.id).setAttribute("d", path);
+  });
+
+  time += deltaTime;
+  frameCount++;
+  requestAnimationFrame(animateSinusoids);
+}
+
+animateSinusoids();
+
+
+
+
+
+
+
+// texte folo
+
+  const tooltip = document.getElementById("tooltip");
+
+  // Associe chaque zone à son texte
+  const zoneLegendes = {
+    "antenne-hover-zone": "L ' antenne entre en raisonnance avec un signal",
+    "reception-hover-zone": "L ' antenne capte des impulsions électriques",
+    "diode-hover-zone": "La diode redresse le signal",
+    "condensateur-hover-zone": "Le condensateur stocke l'énergie",
+    "lm324-hover-zone": "Le circuit intégré amplifie le signal",
+    "transistor-hover-zone": "Le transistor agit comme un intérrupteur",
+      "resistance1-hover-zone": "Les résistances",
+  "resistance2-hover-zone": "Les résistances", 
+  "resistance3-hover-zone": "Les résistances",
+  "resistance4-hover-zone": "Les résistances",
+  "resistance5-hover-zone": "Les résistances",
+  "leds-hover-zone": "Les LEDs",
+  "pile-positive-hover-zone": "Pile 9V +",
+"pile-negative-hover-zone": "Pile 9V -"
+  };
+
+  // Active les zones
+  Object.keys(zoneLegendes).forEach(id => {
+    const zone = document.getElementById(id);
+
+    if (!zone) return;
+
+    zone.addEventListener("mouseenter", () => {
+      tooltip.textContent = zoneLegendes[id];
+      tooltip.style.opacity = 1;
+    });
+
+    zone.addEventListener("mousemove", (e) => {
+      tooltip.style.left = e.clientX + 15 + "px";
+      tooltip.style.top = e.clientY + 15 + "px";
+    });
+
+    zone.addEventListener("mouseleave", () => {
+      tooltip.style.opacity = 0;
+    });
+  });
+  </script>
+</body>
+</html>

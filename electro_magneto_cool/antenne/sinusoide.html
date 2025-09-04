@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<title>Sinusoïde se propage vers la droite</title>    
+<script src="https://ajax.googleapis.com/libs/jquery/3.1.0/jquery.min.js"></script>
+<style>
+  body { margin:0; background:white; }
+  svg { width: 600px; height: 300px; display: block; }
+  path { fill: none; stroke: black; stroke-width: 1; }
+  line { fill: none; stroke: black; stroke-width: 1; }
+  rect { fill: white; stroke: black; stroke-width: 1; }
+  #longueur_onde{
+    top: 210px;
+    position: absolute;
+    left: 120px;
+  }
+  .antenna-highlight {
+    fill: grey !important;
+  }
+</style>
+</head>
+<body>
+<svg viewBox="0 0 600 400" id="waveSvg">
+  <path id="sineWave" />
+  <line x1="0" y1="290" x2="250" y2="290" />
+  <line x1="250" y1="130" x2="250" y2="290" style="stroke-dasharray:5,5;"/>
+  <line x1="0" y1="130" x2="0" y2="290" style="stroke-dasharray:5,5;"/>
+  <rect id="antenna" width="3" height="250" x="600" y="120" style="fill: none; stroke: black;" />
+</svg>
+<div id="longueur_onde"><p> longueur d'onde </div>
+
+
+<div id="info">
+  <div id="legende"></div>
+  <button>lancer le signal</button></div>
+<script>
+  const svgWidth = 600;
+  const svgHeight = 400;
+  const amplitude = 40;
+  const wavelength = 250; // longueur d'onde en pixels
+  const speed = 1; // pixels par frame (vitesse de décalage vers la droite)
+  const step = 2; // pas horizontal entre points
+  const frequency = 2 * Math.PI / wavelength;
+  const pathElem = document.getElementById('sineWave');
+  const antennaElem = document.getElementById('antenna');
+  const antennaX = 600; // position X de l'antenne
+  
+  let phase = 0;
+  let isHighlighted = false;
+  let highlightTimeout = null;
+  
+  function generatePath(phase) {
+    let d = "";
+    let started = false;
+    for(let x = 0; x <= svgWidth; x += step) {
+      let y = svgHeight / 2 + amplitude * Math.sin(frequency * (x - phase));
+      if (!started) {
+        d += `M ${x} ${y}`;
+        started = true;
+      } else {
+        d += ` L ${x} ${y}`;
+      }
+    }
+    return d;
+  }
+  
+  function checkWaveAtAntenna() {
+    // Calculer la valeur de la sinusoïde à la position de l'antenne
+    const waveValueAtAntenna = Math.sin(frequency * (antennaX - phase));
+    
+    // Détecter si on est proche du maximum OU du minimum (avec une petite tolérance)
+    if ((waveValueAtAntenna < -0.95) && !isHighlighted) {
+      // Activer le surlignage
+      antennaElem.classList.add('antenna-highlight');
+      isHighlighted = true;
+      
+      // Programmer l'arrêt du surlignage après 500ms
+      highlightTimeout = setTimeout(() => {
+        antennaElem.classList.remove('antenna-highlight');
+        isHighlighted = false;
+      }, 500);
+    }
+  }
+  
+  function animate() {
+    phase += speed;
+    pathElem.setAttribute('d', generatePath(phase));
+    checkWaveAtAntenna();
+    requestAnimationFrame(animate);
+  }
+  
+  animate();
+</script>
+</body>
+</html>

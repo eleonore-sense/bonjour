@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sinusoïde synchronisée</title>
+  <style>
+    body {
+      background: white;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    svg {
+      border: 1px solid #ccc;
+    }
+
+    circle, line, path {
+      stroke: black;
+      stroke-width: 1;
+      fill: none;
+    }
+
+    .dot {
+      fill: black;
+    }
+
+    .dashed {
+      stroke-dasharray: 4 2;
+    }
+  </style>
+</head>
+<body>
+
+<svg id="scene" width="400" height="400" viewBox="0 0 400 400">
+  <!-- Axes -->
+  <line x1="0" y1="200" x2="400" y2="200" />
+  <line x1="130" y1="0" x2="130" y2="400" />
+
+  <!-- Cercle -->
+  <circle id="circle" cx="130" cy="200" r="100" />
+
+  <!-- Point sur le cercle -->
+  <circle id="dot" class="dot" cx="130" cy="100" r="5" />
+
+  <!-- Ligne pointillée horizontale -->
+  <line id="dashed" class="dashed" x1="130" y1="100" x2="280" y2="100" />
+
+  <!-- Point de départ sinusoïde -->
+  <circle id="sineDot" class="dot" cx="280" cy="100" r="5" />
+
+  <!-- Sinusoïde -->
+  <path id="sine" />
+</svg>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  const amplitude = 100;
+  const centerY = 200;
+  const originX = 130;
+  const radius = 100;
+  const projectionX = 280;
+  const sineLength = 110;
+
+  let t = 0;
+
+  function animate() {
+    const angle = t;
+    const dotX = originX + radius * Math.cos(angle);
+    const dotY = centerY + radius * Math.sin(angle);
+
+    // Point tournant
+    $('#dot').attr({ cx: dotX, cy: dotY });
+
+    // Ligne pointillée horizontale
+    $('#dashed').attr({ x1: dotX, y1: dotY, x2: projectionX, y2: dotY });
+
+    // Point projeté sur l'axe Y
+    $('#sineDot').attr({ cx: projectionX, cy: dotY });
+
+    // Créer la sinusoïde synchronisée avec le point
+    let path = "";
+    for (let x = 0; x <= sineLength; x++) {
+      // Phase 0 = même valeur au départ que dotY
+      const y = dotY + amplitude * Math.sin((x) * 2 * Math.PI / 200);
+      const svgX = projectionX + x;
+      path += (x === 0 ? "M" : "L") + svgX + " " + y + " ";
+    }
+    $('#sine').attr('d', path);
+
+    t -= 0.02;
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+</script>
+
+</body>
+</html>

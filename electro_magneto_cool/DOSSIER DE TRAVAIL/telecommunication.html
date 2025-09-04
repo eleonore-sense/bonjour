@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+  
+  <title>👄↝🎤↝📈↝📡↝📡↝📈↝📻↝👂</title>
+  <link rel="icon" type="image/png" href="img_4.png" />
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <style>
+  @font-face {
+      font-family: 'Wingdings';
+      src: url('TYPO/wingding.ttf') format('truetype'),
+           url('wingding.svg') format('svg');
+      font-weight: normal;
+      font-style: normal;
+
+  }
+
+  @font-face {
+      font-family: 'alegreya';
+      src: url('../TYPO/Alegreya-Regular.ttf') format('truetype'),
+      font-weight: normal;
+      font-style: normal;
+
+  }
+
+
+html, body{
+margin: 0px;
+padding: 0px;
+ font-family: alegreya;
+color: rgb(0,0,0);
+overflow: hidden;
+ /*background-image:url("img/test_fond.jpg") ;*/
+ background-color: white;
+  background-size: cover;
+  background-position-y: center;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  font-size: 0.95em;
+  color: black;
+}
+
+
+.emoji{
+  font-family: Wingdings;
+  font-size: 1.3em;
+}
+
+
+.boite{
+    transform: translate(-50%, -50%);
+  left: 50vw;
+  top: 50vh;
+    position: absolute;
+}
+
+
+
+.txt_boite{
+  background-color: white;
+width: max-content;
+border: solid 1px black;
+margin-top: 10px;
+position: absolute;
+}
+
+p{
+  padding-left: 13px;
+  padding-right: 13px;
+  margin-top: 9px;
+  margin-bottom: 9px;
+
+}
+
+
+#legende{
+  width: max-content;
+  position: absolute;
+    transform: translate(-50%, -50%);
+  left: 50vw;
+  bottom: 5px;
+
+}
+
+
+#boite_anim{
+  margin-top:20px;
+margin-left: 40px;}
+
+#portable{
+  background-image:url("img/portable.gif");
+  width: 62px;
+  height: 95px;
+  background-size: contain ;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+    button {
+
+    }
+    button:hover {
+      cursor: pointer;
+    }
+
+#message_1{
+margin-top: -35px;
+margin-left: 41px;
+}
+
+#message_2{
+  display: none;
+max-width: 182px;
+margin-left: 83px;
+}
+
+
+
+
+#envoyer_bouton{
+  margin-top: 20px;
+  margin-left: 41px;
+}
+
+
+#numerique_bouton{
+  margin-top: 100px;
+  margin-left: 82px;
+}
+
+  </style> 
+</head>
+<body id="body">
+<div id="boite_anim">
+<div id="portable"></div>
+<div id="message_1" class="txt_boite"><p>message</p></div>
+<button id="envoyer_bouton" onclick="binaire()">envoyer le message</button>
+
+
+<!--message en binaire-->
+<div id="message_2" class="txt_boite"><p></p></div>
+<button id="numerique_bouton" style="display:none;" onclick="numerique()">transformer en signal numérique</button>
+</div>
+
+
+
+
+
+<div id="legende">un message est écrit sur un téléphone et va être envoyé</div>
+</body>
+<style>
+#message_2 {
+}
+</style>
+
+<script type="text/javascript">
+function binaire(){
+
+  $("#envoyer_bouton").css("display","none");
+    const message2 = document.getElementById('message_2');
+  $("#message_2").css("display","block");
+    
+         document.querySelector('#legende').textContent = "le message est traduit en language binaire composé de 0 et de 1";   
+    // Récupérer le texte du message_1
+    const message1Text = document.querySelector('#message_1 p').textContent;
+    const message2P = document.querySelector('#message_2 p');
+    
+    // Fonction pour convertir un caractère en binaire
+    function charToBinary(char) {
+        return char.charCodeAt(0).toString(2).padStart(8, '0');
+    }
+    
+    // Copier le texte initial dans message_2 avec espaces
+    message2P.textContent = message1Text.split('').join(' ');
+    
+    // Transformer lettre par lettre
+    let currentIndex = 0;
+    let displayText = message1Text.split(''); // Séparer en tableau de caractères
+    
+    function transformNextChar() {
+        if (currentIndex < message1Text.length) {
+            const char = message1Text[currentIndex];
+            const binary = charToBinary(char);
+            
+            // Remplacer le caractère par son binaire dans le tableau
+            displayText[currentIndex] = binary;
+            
+            // Joindre avec des espaces entre chaque élément
+            message2P.textContent = displayText.join(' ');
+            
+            currentIndex++;
+            
+            // Continuer avec le prochain caractère après 500ms
+            setTimeout(transformNextChar, 500);
+        }
+    }
+    
+function apparitionBoutonNumerique(){
+    $("#numerique_bouton").css("display","block")}
+    // Commencer la transformation après un petit délai
+    setTimeout(transformNextChar, 1500);
+    setTimeout(apparitionBoutonNumerique, 7000);
+}
+</script>
+</html>

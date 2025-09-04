@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>👄↝🎤↝📈↝📡↝📡↝📈↝📻↝👂</title>
+  <link rel="icon" type="image/png" href="img_4.png" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css"> 
+</head>
+
+<body id="body">
+
+
+  <div id="titre">Transmissions <br>&nbsp&nbsp&nbsp&nbsptéléphoniques</div>
+  <div id="boite_anim">
+<div id="telephone_emetteur"><p style="margin-left:49px">Téléphone émetteur</p></div>
+<div id="telephone_recepteur"><p>Téléphone recepteur</p></div>
+    <!-- portable -->
+    <div id="portable">
+    </div>
+    <div id="message_1" class="txt_boite"><p>Slt!</p></div>
+    <button id="envoyer_bouton">envoyer le message</button>
+
+    <!-- binaire -->
+    <div id="message_2" class="txt_boite"><p></p></div>
+    <button id="numerique_bouton" style="display:none;">transformer en signal électrique</button>
+
+    <!-- numérique -->
+    <svg id="signal_svg" width="200" height="80" class="signal_electrique" style="display:none;">
+      <g id="signal_path"></g>
+    </svg>
+    <button id="signal_bouton" style="display:none;">>>></button>
+
+    <!-- Signal électrique après antenne relais -->
+    <svg id="signal_electrique_svg" class="signal_electrique"width="200" height="80" style="display:none;">
+      <g id="signal_electrique_path"></g>
+    </svg>
+
+    <!-- Signal électrique qui se dessine à l'arrivée -->
+    <svg id="signal_electrique_arrivee_svg" class="signal_electrique"width="200" height="80" style="display:none;">
+      <g id="signal_electrique_arrivee_path"></g>
+    </svg>
+
+
+    <!-- Signal électrique qui se dessine à l'arrivée recepteur-->
+<svg id="signal_electrique_receptrice_svg" class="signal_electrique" width="200" height="80" style="display:none;">
+  <g id="signal_electrique_receptrice_path"></g>
+</svg>
+
+
+    <!-- pop up -->
+    <div id="message_pop_up" class="txt_boite"><p>l'onde porteuse qui va être émise sera d'une fréquence autour de 1800 Mega Hertz en ville. <br>La distinction entre les 0 et les 1 se fait par une variation de 0.01 MegaHz, pour que l'antenne receptrice capte toujours le signal tout en distinguant l'information</p>
+      <div id="boite_bas" style="display: flex; justify-content: space-around;">
+<div id="montrer_0">
+  <div id="frequence_0" class="legende_frequence">
+    <svg width="120" height="60" style="display: block; margin: 0 auto;">
+      <path id="wave_0" stroke="black" stroke-width="1" fill="none" />
+    </svg>
+  </div>
+  <p>fréquence 1799.99 Mhz <br>pour 0 bit.</p>
+</div>
+<div id="montrer_1">
+  <div id="frequence_1" class="legende_frequence">
+    <svg width="120" height="60" style="display: block; margin: 0 auto;">
+      <path id="wave_1" stroke="black" stroke-width="1" fill="none" />
+    </svg>
+  </div>
+  <p>fréquence 1800.01 Mhz <br>pour 1 bit.</p>
+</div>
+</div>        
+<a href="../frequence/bande de frequence.html" style="margin: 10px;">en apprendre plus sur les bandes de fréquences</a>
+      </div>
+    <button id="emettre_bouton" style="display:none;">émettre le signal</button>
+
+    <!-- antenne -->
+    <div id="antenne_emettrice" class="antenne">
+    <p class="txt_antenne" style="margin-left:-35px">antenne émettrice</p> </div>
+    <svg id="sinusoide" width="436" height="80" >
+      <path id="sineWave" stroke="black" stroke-width="1" fill="none" />
+    </svg>
+    <div id="antenne_relai_1" class="antenne">
+        <p class="txt_antenne" style="margin-left: -8px;">antenne relais</p>  </div>
+
+    <button id="retranscrire_bouton">retranscrire en signal électrique</button>
+    <button id="envoyer_relais_bouton">envoyer à l'antenne relais du récepteur</button>
+
+    <!-- Chemin SVG entre les antennes relais -->
+    <svg id="chemin_relais" width="260" height="400">
+      <polyline id="ligne_relais" points="3,90 145,90 145,350 85,350" stroke="black" stroke-width="1" fill="none"/>
+    </svg>
+
+
+<div id="legende-fibre" class="legende-dynamique">fibre optique</div>
+<div id="legende-impulsion" class="legende-dynamique">impulsion lumineuse</div>
+
+
+    <!-- antenne receptrice relai-->
+    <div id="antenne_relais_2" class="antenne">
+    <p class="txt_antenne" style="margin-left:-8px">antenne relais</p> </div>
+
+    <button id="continuer_bouton">continuer</button>
+    <button id="emettre_signal_relais2_bouton">émettre le signal</button>
+
+
+
+
+
+
+
+    <!-- antenne relai vers receptice-->
+
+
+    <div id="portable2"></div>
+    <svg id="sinusoide_2" width="391" height="80" >
+      <path id="sineWave_2" stroke="black" stroke-width="1" fill="none" />
+    </svg>
+    <div id="antenne_receptrice" class="antenne">
+        <p class="txt_antenne" style="margin-left: -35px;">antenne réceptrice</p>  </div>
+    <button id="decoder_bouton">décoder le signal</button>
+
+
+
+
+<!-- boite binaire recepteur -->
+<div id="binaire_decode" class="txt_boite" style="top: 497px; left: 198px; display: none;">
+  <p id="texte_binaire_decode" class="consolas"></p>
+</div>
+
+
+
+
+<div id="message_final" class="txt_boite" style="display: none;">
+  <p></p>
+</div>
+
+
+
+
+
+    <button id="traduire_binaire_bouton">traduire en message</button>
+
+
+
+ </div>
+
+
+
+<!-- Tes images de tooltip (cachées par défaut) -->
+<div id="tooltip"></div>
+
+  <div id="legende">un message est écrit sur un téléphone <br>et va être envoyé</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function () {
+    // Event listeners
+    document.getElementById("envoyer_bouton").addEventListener("click", binaire);
+    document.getElementById("numerique_bouton").addEventListener("click", numerique);
+    document.getElementById("signal_bouton").addEventListener("click", info_bit);
+    document.getElementById("emettre_bouton").addEventListener("click", prochaine_etape);
+    document.getElementById("retranscrire_bouton").addEventListener("click", retranscrire_signal);
+    document.getElementById("envoyer_relais_bouton").addEventListener("click", envoyer_vers_relais);
+    document.getElementById("emettre_signal_relais2_bouton").addEventListener("click", emettre_signal_relais2);
+    document.getElementById("decoder_bouton").addEventListener("click", decoder_signal);
+    document.getElementById("traduire_binaire_bouton").addEventListener("click", traduire_binaire);
+
+    // ===== FONCTIONS UTILITAIRES =====
+    
+    function getBits() {
+        const message2P = document.querySelector('#message_2 p');
+        let binaryText = '';
+        const spans = message2P.querySelectorAll('span');
+        spans.forEach((span, index) => {
+            if (index > 0) binaryText += ' ';
+            binaryText += span.textContent;
+        });
+        return binaryText.replace(/\s/g, '');
+    }
+
+    function binaryToText(binaryString) {
+        let result = '';
+        for (let i = 0; i < binaryString.length; i += 8) {
+            const byte = binaryString.substr(i, 8);
+            if (byte.length === 8) {
+                const charCode = parseInt(byte, 2);
+                result += String.fromCharCode(charCode);
+            }
+        }
+        return result;
+    }
+
+    function charToBinary(char) {
+        return char.charCodeAt(0).toString(2).padStart(8, '0');
+    }
+
+    // ===== FONCTION GÉNÉRIQUE POUR DESSINER SIGNAL ÉLECTRIQUE =====
+    
+    function drawSignalElectrique(config) {
+        const {
+            pathGroupId,
+            bits,
+            speed = 200,
+            enableScrolling = true,
+            onComplete,
+            width = 200,
+            highlightSpans = false,
+            binaireProgressElementId = null
+        } = config;
+
+        // Préparer l'affichage du binaire si demandé
+        if (binaireProgressElementId) {
+            const binaireElement = document.getElementById(binaireProgressElementId);
+            if (binaireElement) {
+                binaireElement.textContent = '';
+                document.getElementById('binaire_decode').style.display = 'block';
+            }
+        }
+
+        const pathGroup = document.getElementById(pathGroupId);
+        const baseY = 70;
+        const highY = 10;
+        
+        let x = 10;
+        let currentBitIndex = 0;
+        const bitWidth = 7;
+        let pathData = "";
+        
+        function drawNextBit() {
+    if (currentBitIndex >= bits.length) {
+        // Enlever le highlight du dernier bit avant de terminer
+        if (highlightSpans && currentBitIndex > 0) {
+            $(`#bit_${currentBitIndex - 1}`).removeClass('highlight');
+        }
+        if (onComplete) setTimeout(onComplete, 800);
+        return;
+            }
+            
+            // Gestion des spans colorés
+    if (highlightSpans) {
+        if (currentBitIndex > 0) {
+            $(`#bit_${currentBitIndex - 1}`).removeClass('highlight');
+        }
+        $(`#bit_${currentBitIndex}`).addClass('highlight');
+    }
+            
+            const bit = bits[currentBitIndex];
+            const y = bit === '1' ? highY : baseY;
+            
+            // Dessiner le path SVG
+            if (currentBitIndex > 0) {
+                const prevBit = bits[currentBitIndex - 1];
+                const prevY = prevBit === '1' ? highY : baseY;
+                if (prevY !== y) {
+                    pathData += `L${x} ${prevY} L${x} ${y} `;
+                }
+            } else {
+                pathData = `M${x} ${y} `;
+            }
+            
+            pathData += `L${x + bitWidth} ${y} `;
+            
+            // Mettre à jour le SVG seulement si pathGroup existe
+            if (pathGroup) {
+                const existingPath = pathGroup.querySelector('path');
+                if (existingPath) {
+                    existingPath.setAttribute('d', pathData);
+                } else {
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    path.setAttribute('d', pathData);
+                    path.setAttribute('stroke', 'black');
+                    path.setAttribute('stroke-width', '1');
+                    path.setAttribute('fill', 'none');
+                    pathGroup.appendChild(path);
+                }
+            }
+            
+            x += bitWidth;
+            currentBitIndex++;
+     
+            // Ajouter le bit au texte binaire si demandé
+            if (binaireProgressElementId) {
+                const binaireElement = document.getElementById(binaireProgressElementId);
+                if (binaireElement) {
+                    binaireElement.textContent += bit;
+                }
+            }
+
+            // Défilement si nécessaire
+            if (pathGroup && enableScrolling && x > width - 20) {
+                const newPathData = pathData.replace(/([ML])(\d+\.?\d*)/g, (match, command, xVal) => {
+                    const newX = parseFloat(xVal) - bitWidth;
+                    return command + newX;
+                });
+                pathData = newPathData;
+                x = width - 20;
+            }
+            
+            setTimeout(drawNextBit, speed);
+        }
+        
+        setTimeout(drawNextBit, 500);
+    }
+
+    // ===== FONCTION GÉNÉRIQUE POUR DÉFILEMENT =====
+    
+    function defilerSignalElectrique(config) {
+        const {
+            pathGroupId,
+            bits,
+            direction = 'left',
+            speed = 200,
+            bitWidth = 7,
+            onBitChange = null,
+            onComplete = null
+        } = config;
+        
+        const pathGroup = document.getElementById(pathGroupId);
+        const existingPath = pathGroup.querySelector('path');
+        
+        if (existingPath) {
+            let currentBitIndex = 0;
+            
+            function faireDefiler() {
+                if (currentBitIndex >= bits.length) {
+                    if (onComplete) onComplete();
+                    return;
+                }
+                
+                const bit = bits[currentBitIndex];
+                
+                // Appeler la fonction personnalisée si fournie
+                if (onBitChange) onBitChange(bit, currentBitIndex);
+                
+                // Faire défiler
+                const currentPath = existingPath.getAttribute('d');
+                if (currentPath) {
+                    const multiplier = direction === 'left' ? -1 : 1;
+                    const newPathData = currentPath.replace(/([ML])(\d+\.?\d*)/g, (match, command, xVal) => {
+                        const newX = parseFloat(xVal) + (bitWidth * multiplier);
+                        return command + newX;
+                    });
+                    existingPath.setAttribute('d', newPathData);
+                }
+                
+                currentBitIndex++;
+                setTimeout(faireDefiler, speed);
+            }
+            
+            faireDefiler();
+        }
+    }
+
+    // ===== FONCTION GÉNÉRIQUE POUR PROPAGATION D'ONDE =====
+    
+    function propagateWaveSignal(config) {
+        const {
+            svgId,
+            pathId, 
+            bits,
+            width = 436,
+            height = 80,
+            propagationSpeed = 8,
+            bitDuration = 13,
+            direction = 'leftToRight',
+            onComplete
+        } = config;
+        
+        const svg = document.getElementById(svgId);
+        const path = document.getElementById(pathId);
+        
+        const centerY = height / 2;
+        const amplitude = 25;
+        
+        let frame = 0;
+        let waveData = [];
+        const maxPoints = Math.ceil(width / propagationSpeed);
+        
+        function animatePropagation() {
+            frame++;
+            
+            const currentBitIndex = Math.floor(frame / bitDuration);
+            const bitProgress = (frame % bitDuration) / bitDuration;
+            
+            if (currentBitIndex < bits.length) {
+                const currentBit = bits[currentBitIndex];
+                
+                let oscillationsForThisBit = currentBit === '0' ? 1 : 2;
+                const bitPhase = bitProgress * oscillationsForThisBit * 2 * Math.PI;
+                const y = centerY + (amplitude * 0.7) * Math.sin(bitPhase);
+                
+                if (direction === 'leftToRight') {
+                    waveData.unshift({ x: 0, y: y, bit: currentBit });
+                    for (let i = 1; i < waveData.length; i++) {
+                        waveData[i].x += propagationSpeed;
+                    }
+                    waveData = waveData.filter(point => point.x < width);
+                } else {
+                    waveData.unshift({ x: width, y: y, bit: currentBit });
+                    for (let i = 1; i < waveData.length; i++) {
+                        waveData[i].x -= propagationSpeed;
+                    }
+                    waveData = waveData.filter(point => point.x >= 0);
+                }
+                
+                if (waveData.length > maxPoints) {
+                    waveData = waveData.slice(0, maxPoints);
+                }
+                
+                let pathData = "";
+                for (let i = 0; i < waveData.length; i++) {
+                    const point = waveData[i];
+                    pathData += (i === 0 ? "M" : "L") + point.x + " " + point.y + " ";
+                }
+                
+                path.setAttribute('d', pathData);
+                path.setAttribute('stroke', 'black');
+                path.setAttribute('stroke-width', '1');
+                
+                requestAnimationFrame(animatePropagation);
+            } else {
+                // Animation de fin - faire disparaître les dernières ondes
+                if (waveData.length > 0) {
+                    if (direction === 'leftToRight') {
+                        for (let i = 0; i < waveData.length; i++) {
+                            waveData[i].x += propagationSpeed;
+                        }
+                        waveData = waveData.filter(point => point.x < width);
+                    } else {
+                        for (let i = 0; i < waveData.length; i++) {
+                            waveData[i].x -= propagationSpeed;
+                        }
+                        waveData = waveData.filter(point => point.x >= 0);
+                    }
+                    
+                    let pathData = "";
+                    for (let i = 0; i < waveData.length; i++) {
+                        const point = waveData[i];
+                        pathData += (i === 0 ? "M" : "L") + point.x + " " + point.y + " ";
+                    }
+                    path.setAttribute('d', pathData);
+                    
+                    if (waveData.length > 0) {
+                        requestAnimationFrame(animatePropagation);
+                    } else {
+                        if (onComplete) setTimeout(onComplete, 500);
+                    }
+                }
+            }
+        }
+        
+        animatePropagation();
+    }
+
+    // ===== FONCTION GÉNÉRIQUE POUR POINTS LUMINEUX =====
+    
+function creerPointLumineux(chemin, cheminLength, callback = null, isFirstBit = false) {
+    const point = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    point.setAttribute('r', '4');
+    point.setAttribute('fill', 'black');
+    point.setAttribute('opacity', '1');
+    
+    const svg = document.getElementById('chemin_relais');
+    svg.appendChild(point);
+    
+    // Si c'est le premier bit, créer la légende "impulsion lumineuse"
+    let legendeImpulsion = null;
+    if (isFirstBit) {
+        legendeImpulsion = document.getElementById('legende-impulsion');
+        legendeImpulsion.style.display = 'block';
+    }
+    
+    let distance = 0;
+    const speed = cheminLength / 300;
+    
+function animer() {
+    if (distance <= cheminLength) {
+        const pointSurChemin = chemin.getPointAtLength(distance);
+        point.setAttribute('cx', pointSurChemin.x);
+        point.setAttribute('cy', pointSurChemin.y);
+        
+        // Faire suivre la légende "impulsion lumineuse" plus simplement
+        if (legendeImpulsion) {
+            // Position absolue par rapport à la page
+            legendeImpulsion.style.left = (1215 + pointSurChemin.x + 15) + 'px';
+            legendeImpulsion.style.top = (138 + pointSurChemin.y - 25) + 'px';
+        }
+        
+        distance += speed;
+        requestAnimationFrame(animer);
+    } else {
+        svg.removeChild(point);
+        
+        // Cacher la légende quand la boule arrive
+        if (legendeImpulsion) {
+            legendeImpulsion.style.display = 'none';
+        }
+        
+        if (callback) callback();
+    }
+}
+    
+    animer();
+}
+
+    // ===== FONCTION POUR DESSINER LES FRÉQUENCES =====
+    
+    function dessinerFrequences() {
+        const width = 120;
+        const height = 60;
+        
+        // Bit 0 - 1 oscillation
+        let pathData0 = "";
+        for (let x = 0; x <= width; x++) {
+            const phase = (x / width) * 1 * 2 * Math.PI;
+            const y = height/2 + 20 * Math.sin(phase);
+            pathData0 += (x === 0 ? "M" : "L") + x + " " + y + " ";
+        }
+        document.getElementById('wave_0').setAttribute('d', pathData0);
+        
+        // Bit 1 - 3 oscillations
+        let pathData1 = "";
+        for (let x = 0; x <= width; x++) {
+            const phase = (x / width) * 3 * 2 * Math.PI;
+            const y = height/2 + 20 * Math.sin(phase);
+            pathData1 += (x === 0 ? "M" : "L") + x + " " + y + " ";
+        }
+        document.getElementById('wave_1').setAttribute('d', pathData1);
+    }
+
+    // ===== FONCTION POUR CONTRÔLER LES FRÉQUENCES =====
+    
+    function controlerFrequences(bit) {
+        if (bit === '0') {
+            document.getElementById('wave_0').style.strokeWidth = '2.5';
+            document.getElementById('wave_1').style.strokeWidth = '1';
+        } else {
+            document.getElementById('wave_0').style.strokeWidth = '1';
+            document.getElementById('wave_1').style.strokeWidth = '2.5';
+        }
+    }
+
+    function resetFrequences() {
+        document.getElementById('wave_0').style.strokeWidth = '1';
+        document.getElementById('wave_1').style.strokeWidth = '1';
+    }
+
+    // ===== FONCTIONS PRINCIPALES =====
+
+    function binaire() {
+        $("#envoyer_bouton").css("display", "none");
+        $("#message_2").css("display", "block");
+
+        document.querySelector('#legende').textContent = "le message est traduit en language binaire\ncomposé de 0 et de 1.";
+
+        const message1Text = document.querySelector('#message_1 p').textContent;
+        const message2P = document.querySelector('#message_2 p');
+
+        let spanText = '';
+        for (let i = 0; i < message1Text.length; i++) {
+            spanText += `<span id="letter_${i}">${message1Text[i]}</span>`;
+            if (i < message1Text.length - 1) {
+                spanText += ' ';
+            }
+        }
+        message2P.innerHTML = spanText;
+        
+        let currentIndex = 0;
+
+        function transformNextChar() {
+            if (currentIndex < message1Text.length) {
+                const char = message1Text[currentIndex];
+                const binary = charToBinary(char);
+                const letterSpan = document.getElementById(`letter_${currentIndex}`);
+                
+                letterSpan.classList.add('letter-highlight');
+                
+                setTimeout(() => {
+                    letterSpan.innerHTML = binary;
+                    letterSpan.classList.remove('letter-highlight');
+                    letterSpan.classList.add('bold-text');
+                    
+                    setTimeout(() => {
+                        letterSpan.classList.remove('bold-text');
+                        letterSpan.classList.add('consolas');
+                    }, 300);
+                }, 300);
+                
+                currentIndex++;
+                setTimeout(transformNextChar, 700);
+            } else {
+                setTimeout(() => $("#numerique_bouton").css("display", "block"), 800);
+            }
+        }
+
+        setTimeout(transformNextChar, 1500);
+    }
+
+    function numerique() {
+        $("#numerique_bouton").css("display", "none");
+        $("#signal_svg").css("display", "block");
+
+        $('#legende').text("le signal numérique est généré: \n,1 = haut, 0 = bas.");
+
+        const message2P = document.querySelector('#message_2 p');
+        const binaryText = message2P.innerHTML.replace(/<span[^>]*>/g, '').replace(/<\/span>/g, '').replace(/\s+/g, ' ').trim();
+        const allBits = binaryText.replace(/\s/g, '');
+        
+        let spanText = '';
+        let bitIndex = 0;
+
+        for (let i = 0; i < binaryText.length; i++) {
+            if (binaryText[i] === ' ') {
+                spanText += ' ';
+            } else {
+                spanText += `<span id="bit_${bitIndex}" class="consolas">${binaryText[i]}</span>`;
+                bitIndex++;
+            }
+        }
+        message2P.innerHTML = spanText;
+
+        drawSignalElectrique({
+            pathGroupId: 'signal_path',
+            bits: allBits,
+            speed: 200,
+            highlightSpans: true,
+            onComplete: () => $("#signal_bouton").css("display", "block")
+        });
+    }
+
+    function info_bit() {
+        $("#message_pop_up").css("display", "block");
+        $("#signal_bouton").css("display", "none");
+        
+        dessinerFrequences();
+        
+        setTimeout(() => {
+            $("#emettre_bouton").css("display", "block");
+            $("#antenne_emettrice").css("display", "block");
+            $("#antenne_relai_1").css("display", "block");
+        }, 800);
+    }
+
+function prochaine_etape() {
+    $('#legende').text("transmission sur 1.8 GigaHz: \nla sinusoïde se propage vers l'antenne relais");
+    $("#sinusoide").css("display", "block");
+    
+    const allBits = getBits();
+    
+    // Cacher immédiatement le bouton et le pop-up
+    $("#emettre_bouton").css("display", "none");
+
+   
+
+
+    propagateWaveSignal({
+        svgId: 'sinusoide',
+        pathId: 'sineWave',
+        bits: allBits,
+        width: 436,
+        propagationSpeed: 8,
+        bitDuration: 13,
+        direction: 'leftToRight',
+        onComplete: () => {
+            $('#legende').text("Signal reçu par l'antenne relais");
+            setTimeout(() => {
+                $("#retranscrire_bouton").css("display", "block");
+    $("#message_pop_up").css("display", "none");
+            }, 1000);
+        }
+    });
+    
+    // Faire défiler le signal électrique en même temps
+    defilerSignalElectrique({
+        pathGroupId: 'signal_path',
+        bits: allBits,
+        direction: 'right',
+        speed: 150,
+        onBitChange: (bit) => {
+            if (bit === '0') {
+                document.getElementById('wave_0').style.strokeWidth = '2.5';
+                document.getElementById('wave_1').style.strokeWidth = '1';
+            } else {
+                document.getElementById('wave_0').style.strokeWidth = '1';
+                document.getElementById('wave_1').style.strokeWidth = '2.5';
+            }
+        },
+        onComplete: () => {
+            // Remettre les fréquences normales
+            document.getElementById('wave_0').style.strokeWidth = '1';
+            document.getElementById('wave_1').style.strokeWidth = '1';
+            
+// Après 3 secondes, remettre le signal comme à la fin de sa création
+setTimeout(() => {
+    // 1. Rendre invisible
+    const pathGroup = document.getElementById('signal_path');
+    const existingPath = pathGroup.querySelector('path');
+    if (existingPath) {
+        existingPath.style.opacity = '0';
+    }
+    
+    // 2. Redessiner avec scrolling
+    drawSignalElectrique({
+        pathGroupId: 'signal_path',
+        bits: allBits,
+        speed: 0,
+        enableScrolling: true,
+        onComplete: () => {
+            // 3. Rendre visible une fois en position finale
+            if (existingPath) {
+                existingPath.style.opacity = '1';
+            }
+        }
+    });
+}, 1000);
+        }
+    });
+}
+    function retranscrire_signal() {
+        $("#retranscrire_bouton").css("display", "none");
+        $('#legende').text("Le signal est maintenant \nreconverti en signal électrique.");
+        $("#signal_electrique_svg").css("display", "block");
+        
+        const allBits = getBits();
+        
+        setTimeout(() => {
+            drawSignalElectrique({
+                pathGroupId: 'signal_electrique_path',
+                bits: allBits,
+                speed: 70,
+                onComplete: () => {
+                    $('#legende').text("Signal électrique prêt à être transmis \nvers l'antenne relais du récepteur");
+                    $("#envoyer_relais_bouton").css("display", "block");
+                }
+            });
+        }, 0);
+    }
+
+    function envoyer_vers_relais() {
+        $('#legende').text("Le signal traverse \nla fibre optique: un bits \ncorrespond à \nune impulsion lumineuse");
+        $("#envoyer_relais_bouton").css("display", "none");
+        $("#antenne_relais_2").css("display", "block");
+        $("#chemin_relais").css("display", "block");
+        $("#signal_electrique_arrivee_svg").css("display", "block");
+$("#chemin_relais").css("display", "block");
+$("#signal_electrique_arrivee_svg").css("display", "block");
+
+// Afficher la légende "fibre optique"
+$("#legende-fibre").css("display", "block");
+
+
+        const allBits = getBits();
+        animationFibreOptique(allBits);
+    }
+
+    function animationFibreOptique(bits) {
+        const chemin = document.getElementById('ligne_relais');
+        const cheminLength = chemin.getTotalLength();
+        
+        let currentBitIndex = 0;
+        const bitInterval = 200;
+
+        // Variables pour la boîte d'arrivée
+        const pathGroup = document.getElementById('signal_electrique_arrivee_path');
+        const width = 200;
+        const height = 80;
+        const baseY = height - 10;
+        const highY = 10;
+        let x = 10;
+        let currentBitArrivee = 0;
+        const bitWidth = 7;
+        let pathData = "";
+        let animationStarted = false;
+
+        // Variables pour faire défiler la boîte signal électrique relais 1
+        const pathGroupRelais1 = document.getElementById('signal_electrique_path');
+        const existingPathRelais1 = pathGroupRelais1.querySelector('path');
+
+        function drawNextBitArrivee() {
+            if (currentBitArrivee >= bits.length) {
+                setTimeout(() => {
+                    $('#legende').text("Signal électrique prêt \nà être transmis vers \nl'antenne réceptrice");
+                    $("#emettre_signal_relais2_bouton").css("display", "block");
+                }, 500);
+                return;
+            }
+
+            const bit = bits[currentBitArrivee];
+            const y = bit === '1' ? highY : baseY;
+
+            if (currentBitArrivee > 0) {
+                const prevBit = bits[currentBitArrivee - 1];
+                const prevY = prevBit === '1' ? highY : baseY;
+                if (prevY !== y) {
+                    pathData += `L${x} ${prevY} L${x} ${y} `;
+                }
+            } else {
+                pathData = `M${x} ${y} `;
+            }
+
+            pathData += `L${x + bitWidth} ${y} `;
+
+            const existingPath = pathGroup.querySelector('path');
+            if (existingPath) {
+                existingPath.setAttribute('d', pathData);
+            } else {
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', pathData);
+                path.setAttribute('stroke', 'black');
+                path.setAttribute('stroke-width', '1');
+                path.setAttribute('fill', 'none');
+                pathGroup.appendChild(path);
+            }
+
+            x += bitWidth;
+            currentBitArrivee++;
+
+            if (x > width - 20) {
+                const newPathData = pathData.replace(/([ML])(\d+\.?\d*)/g, (match, command, xVal) => {
+                    const newX = parseFloat(xVal) - bitWidth;
+                    return command + newX;
+                });
+                pathData = newPathData;
+                x = width - 20;
+            }
+
+            setTimeout(drawNextBitArrivee, 200);
+        }
+
+        function startAnimationQuandPremiereBouleArrive() {
+            if (!animationStarted) {
+                animationStarted = true;
+                $('#legende').text("Signal reçu et converti en temps réel");
+                setTimeout(drawNextBitArrivee, 3000);
+            }
+        }
+
+        function envoyerProchainBit() {
+            if (currentBitIndex >= bits.length) return;
+            
+            const bit = bits[currentBitIndex];
+            
+            // Faire défiler la boîte signal électrique relais 1
+            if (existingPathRelais1) {
+                const currentPath = existingPathRelais1.getAttribute('d');
+                if (currentPath) {
+                    const newPathData = currentPath.replace(/([ML])(\d+\.?\d*)/g, (match, command, xVal) => {
+                        const newX = parseFloat(xVal) + bitWidth;
+                        return command + newX;
+                    });
+                    existingPathRelais1.setAttribute('d', newPathData);
+                }
+            }
+            
+            if (bit === '1') {
+    const isFirstBit = (currentBitIndex === 0);
+    creerPointLumineux(chemin, cheminLength, startAnimationQuandPremiereBouleArrive, isFirstBit);
+} else {
+    setTimeout(startAnimationQuandPremiereBouleArrive, 300);
+}
+            
+            currentBitIndex++;
+            setTimeout(envoyerProchainBit, bitInterval);
+        }
+        
+        envoyerProchainBit();
+    }
+
+    function emettre_signal_relais2() {
+        $('#legende').text("Transmission depuis l'antenne relais \nvers l'antenne réceptrice");
+        $("#emettre_signal_relais2_bouton").css("display", "none");
+        $("#telephone_recepteur").css("display", "block");      
+        $("#antenne_receptrice").css("display", "block");
+        $("#portable2").css("display", "block");
+        $("#sinusoide_2").css("display", "block");
+        $("#signal_electrique_receptrice_svg").css("display", "block");
+        
+        const allBits = getBits();
+// Copier l'état du premier signal vers le deuxième
+const firstSignalPath = document.querySelector('#signal_path path');
+const secondSignalGroup = document.getElementById('signal_electrique_path');
+
+if (firstSignalPath && secondSignalGroup) {
+    // Supprimer l'ancien path s'il existe
+    const oldPath = secondSignalGroup.querySelector('path');
+    if (oldPath) oldPath.remove();
+    
+    // Créer un nouveau path identique
+    const newPath = firstSignalPath.cloneNode(true);
+    secondSignalGroup.appendChild(newPath);
+    
+    // Afficher la deuxième boîte
+    $("#signal_electrique_svg").css("display", "block");
+}
+        propagateWaveSignal({
+            svgId: 'sinusoide_2',
+            pathId: 'sineWave_2',
+            bits: allBits,
+            width: 391,
+            propagationSpeed: 8,
+            bitDuration: 13,
+            direction: 'rightToLeft',
+            onComplete: () => {
+                $('#legende').text("Signal reçu par l'antenne réceptrice");
+                $("#decoder_bouton").css("display", "block");
+            }
+        });
+
+        setTimeout(() => {
+            $('#legende').text("Signal reçu et converti par l'antenne réceptrice");
+            drawSignalElectrique({
+                pathGroupId: 'signal_electrique_receptrice_path',
+                bits: allBits,
+                speed: 200,
+                onComplete: () => {}
+            });
+        }, 1000);
+    }
+
+    function decoder_signal() {
+        $('#legende').text("Décodage du signal en signal électrique");
+        $("#decoder_bouton").css("display", "none");
+        
+        const allBits = getBits();
+        
+        setTimeout(() => {
+            drawSignalElectrique({
+                pathGroupId: null,
+                bits: allBits,
+                speed: 200,
+                binaireProgressElementId: 'texte_binaire_decode',
+                onComplete: () => {
+                    $('#legende').text("Signal électrique reçu \nConversion en binaire...");
+                    $("#traduire_binaire_bouton").css("display", "block");
+                }
+            });
+            
+            defilerSignalElectrique({
+                pathGroupId: 'signal_electrique_receptrice_path',
+                bits: allBits,
+                direction: 'left',
+                speed: 200
+            });
+        }, 1000);
+    }
+
+    function traduire_binaire() {
+        $('#legende').text("Traduction du binaire \nen message original");
+        $("#traduire_binaire_bouton").css("display", "none");
+        $("#message_final").css("display", "block");
+        
+        const allBits = getBits();
+        const message = binaryToText(allBits);
+        
+        const messageFinalP = document.querySelector('#message_final p');
+        
+        let spanText = '';
+        for (let i = 0; i < allBits.length; i += 8) {
+            const byte = allBits.substr(i, 8);
+            spanText += `<span id="final_group_${Math.floor(i/8)}" class="consolas">${byte}</span>`;
+            if (i + 8 < allBits.length) spanText += ' ';
+        }
+        
+        messageFinalP.innerHTML = spanText;
+        
+        setTimeout(() => {
+            animerTraductionBinaireVersTexte(allBits, message);
+        }, 1000);
+    }
+
+    function animerTraductionBinaireVersTexte(bits, finalMessage) {
+        let currentCharIndex = 0;
+        
+        function transformNextChar() {
+            if (currentCharIndex < finalMessage.length) {
+                const char = finalMessage[currentCharIndex];
+                const groupSpan = document.getElementById(`final_group_${currentCharIndex}`);
+                
+                if (groupSpan) {
+                    groupSpan.classList.add('letter-highlight');
+                    
+                    setTimeout(() => {
+                        groupSpan.textContent = char;
+                        groupSpan.classList.remove('letter-highlight', 'consolas');
+                        groupSpan.classList.add('bold-text');
+                        
+                        setTimeout(() => {
+                            groupSpan.classList.remove('bold-text');
+                        }, 300);
+                    }, 500);
+                }
+                
+                currentCharIndex++;
+                setTimeout(transformNextChar, 800);
+            } else {
+                setTimeout(() => {
+                    $('#legende').text("Message décodé avec succès \nCommunication terminée.");
+                }, 1000);
+            }
+        }
+        
+        setTimeout(transformNextChar, 500);
+    }
+});
+
+
+
+// ===== TOOLTIPS ET LIENS =====
+
+function createTooltip(element, text, link) {
+    const tooltip = document.getElementById('tooltip');
+    
+    element.classList.add('clickable-element');
+    
+    element.addEventListener('mouseenter', (e) => {
+        tooltip.innerHTML = `<img src="${text}" style="max-width: 130px; height: auto;">`;
+        tooltip.style.display = 'block';
+        tooltip.style.left = e.pageX + 10 + 'px';
+        tooltip.style.top = e.pageY + 100 + 'px';
+    });
+    
+    element.addEventListener('mousemove', (e) => {
+        tooltip.style.left = e.pageX + 10 + 'px';
+        tooltip.style.top = e.pageY + 100 + 'px';
+    });
+    
+    element.addEventListener('mouseleave', () => {
+        tooltip.style.display = 'none';
+    });
+    
+    element.addEventListener('click', () => {
+        window.open(link, '_blank');
+    });
+}
+// Appliquer aux antennes relais et fibre optique
+const antenneRelais1 = document.getElementById('antenne_relai_1');
+const antenneRelais2 = document.getElementById('antenne_relais_2');
+const fibreOptique = document.getElementById('chemin_relais');
+
+
+createTooltip(antenneRelais1, 'img/antenne.jpg', 'https://example.com/antennes-relais');
+createTooltip(antenneRelais2, 'img/antenne.jpg', 'https://example.com/antennes-relais');
+createTooltip(fibreOptique, 'img/fibre.jpg', 'https://example.com/fibre-optique');
+
+
+
+
+// Gestionnaire pour faire suivre la légende à la souris
+document.addEventListener('mousemove', function(e) {
+    const legende = document.getElementById('legende');
+    
+    // Positionner la légende près du curseur avec un petit décalage
+    legende.style.left = (e.pageX+25) + 'px';
+    legende.style.top = (e.pageY + 10) + 'px';
+});
+
+
+
+
+
+  </script>
+</body>
+</html>

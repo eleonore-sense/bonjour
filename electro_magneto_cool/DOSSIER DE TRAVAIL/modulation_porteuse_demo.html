@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modulation Porteuse</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .header {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .wave-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border: 2px solid #e9ecef;
+        }
+        
+        .wave-title {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .wave-canvas {
+            width: 100%;
+            height: 120px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .frequency-display {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            margin: 15px 0;
+            font-size: 18px;
+        }
+        
+        .binary-display {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin: 15px 0;
+        }
+        
+        .bit-display {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #667eea;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            background: white;
+            transition: all 0.3s;
+        }
+        
+        .bit-display.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .explanation {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📡 Modulation GSM - Comment ça marche vraiment</h1>
+            <p>Porteuse fixe + micro-variations = transmission de données</p>
+        </div>
+        
+        <div class="frequency-display" id="freqDisplay">
+            Fréquence porteuse: 900.000 MHz
+        </div>
+        
+        <div class="binary-display" id="binaryDisplay">
+            <div class="bit-display">1</div>
+            <div class="bit-display">0</div>
+            <div class="bit-display">1</div>
+            <div class="bit-display">1</div>
+            <div class="bit-display">0</div>
+            <div class="bit-display">1</div>
+            <div class="bit-display">0</div>
+            <div class="bit-display">1</div>
+        </div>
+        
+        <div class="wave-section">
+            <div class="wave-title">🌊 Porteuse pure (900 MHz)</div>
+            <canvas class="wave-canvas" id="carrierCanvas"></canvas>
+        </div>
+        
+        <div class="wave-section">
+            <div class="wave-title">📊 Signal numérique (données binaires)</div>
+            <canvas class="wave-canvas" id="dataCanvas"></canvas>
+        </div>
+        
+        <div class="wave-section">
+            <div class="wave-title">📡 Signal modulé final (FSK)</div>
+            <canvas class="wave-canvas" id="modulatedCanvas"></canvas>
+        </div>
+        
+        <div class="controls">
+            <button class="btn" id="playBtn">▶️ Démarrer l'animation</button>
+            <div class="control-group">
+                <label>Vitesse :</label>
+                <input type="range" id="speedSlider" min="1" max="10" value="3">
+            </div>
+        </div>
+        
+        <div class="explanation">
+            <h3>🔍 Ce que tu vois :</h3>
+            <p><strong>Ligne 1 :</strong> La porteuse à 900 MHz - elle reste constante</p>
+            <p><strong>Ligne 2 :</strong> Tes données binaires (0 et 1)</p>
+            <p><strong>Ligne 3 :</strong> Le résultat : la porteuse avec de micro-variations de fréquence selon les bits</p>
+            <p><strong>L'astuce :</strong> L'antenne reste accordée sur 900 MHz mais capte les petites variations !</p>
+        </div>
+    </div>
+
+    <script>
+        const carrierCanvas = document.getElementById('carrierCanvas');
+        const dataCanvas = document.getElementById('dataCanvas');
+        const modulatedCanvas = document.getElementById('modulatedCanvas');
+        const playBtn = document.getElementById('playBtn');
+        const speedSlider = document.getElementById('speedSlider');
+        const freqDisplay = document.getElementById('freqDisplay');
+        const binaryDisplay = document.getElementById('binaryDisplay');
+        
+        const carrierCtx = carrierCanvas.getContext('2d');
+        const dataCtx = dataCanvas.getContext('2d');
+        const modulatedCtx = modulatedCanvas.getContext('2d');
+        
+        let time = 0;
+        let isPlaying = false;
+        let animationId = null;
+        const binaryData = [1, 0, 1, 1, 0, 1, 0, 1];
+        let currentBitIndex = 0;
+        
+        // Initialisation des canvas
+        function setupCanvas() {
+            [carrierCanvas, dataCanvas, modulatedCanvas].forEach(canvas => {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+            });
+        }
+        
+        window.addEventListener('resize', setupCanvas);
+        setupCanvas();
+        
+        function drawCarrier() {
+            carrierCtx.clearRect(0, 0, carrierCanvas.width, carrierCanvas.height);
+            
+            // Porteuse pure à haute fréquence
+            carrierCtx.strokeStyle = '#667eea';
+            carrierCtx.lineWidth = 2;
+            carrierCtx.beginPath();
+            
+            for (let x = 0; x < carrierCanvas.width; x++) {
+                const y = carrierCanvas.height / 2 + Math.sin((x + time) * 0.3) * (carrierCanvas.height * 0.3);
+                if (x === 0) carrierCtx.moveTo(x, y);
+                else carrierCtx.lineTo(x, y);
+            }
+            carrierCtx.stroke();
+            
+            // Texte explicatif
+            carrierCtx.fillStyle = '#333';
+            carrierCtx.font = '14px Arial';
+            carrierCtx.fillText('900.000000 MHz (constante)', 10, 25);
+        }
+        
+        function drawData() {
+            dataCtx.clearRect(0, 0, dataCanvas.width, dataCanvas.height);
+            
+            const bitWidth = dataCanvas.width / binaryData.length;
+            const bitDuration = 60; // frames per bit
+            currentBitIndex = Math.floor(time / bitDuration) % binaryData.length;
+            
+            // Dessiner le signal numérique
+            dataCtx.strokeStyle = '#e74c3c';
+            dataCtx.lineWidth = 3;
+            dataCtx.beginPath();
+            
+            for (let i = 0; i < binaryData.length; i++) {
+                const x = i * bitWidth;
+                const y = binaryData[i] === 1 ? dataCanvas.height * 0.2 : dataCanvas.height * 0.8;
+                
+                if (i === 0) dataCtx.moveTo(x, y);
+                else {
+                    dataCtx.lineTo(x, y);
+                }
+                dataCtx.lineTo((i + 1) * bitWidth, y);
+            }
+            dataCtx.stroke();
+            
+            // Surligner le bit actuel
+            dataCtx.fillStyle = 'rgba(231, 76, 60, 0.3)';
+            dataCtx.fillRect(currentBitIndex * bitWidth, 0, bitWidth, dataCanvas.height);
+            
+            // Mettre à jour l'affichage binaire
+            const bitElements = binaryDisplay.querySelectorAll('.bit-display');
+            bitElements.forEach((bit, index) => {
+                bit.classList.toggle('active', index === currentBitIndex);
+            });
+            
+            // Texte
+            dataCtx.fillStyle = '#333';
+            dataCtx.font = '14px Arial';
+            dataCtx.fillText(`Bit actuel: ${binaryData[currentBitIndex]}`, 10, 25);
+        }
+        
+        function drawModulated() {
+            modulatedCtx.clearRect(0, 0, modulatedCanvas.width, modulatedCanvas.height);
+            
+            const bitDuration = 60;
+            const currentBit = binaryData[Math.floor(time / bitDuration) % binaryData.length];
+            
+            // FSK: fréquence légèrement différente selon le bit
+            const baseFreq = 0.3;
+            const freqDeviation = 0.05; // Petite variation
+            const frequency = baseFreq + (currentBit === 1 ? freqDeviation : -freqDeviation);
+            
+            // Dessiner le signal modulé
+            modulatedCtx.strokeStyle = '#28a745';
+            modulatedCtx.lineWidth = 2;
+            modulatedCtx.beginPath();
+            
+            for (let x = 0; x < modulatedCanvas.width; x++) {
+                const y = modulatedCanvas.height / 2 + Math.sin((x + time) * frequency) * (modulatedCanvas.height * 0.3);
+                if (x === 0) modulatedCtx.moveTo(x, y);
+                else modulatedCtx.lineTo(x, y);
+            }
+            modulatedCtx.stroke();
+            
+            // Afficher la fréquence actuelle
+            const actualFreq = currentBit === 1 ? 900.005 : 899.995;
+            freqDisplay.textContent = `Fréquence actuelle: ${actualFreq} MHz (bit=${currentBit})`;
+            
+            // Texte
+            modulatedCtx.fillStyle = '#333';
+            modulatedCtx.font = '14px Arial';
+            modulatedCtx.fillText(`${actualFreq} MHz`, 10, 25);
+        }
+        
+        function animate() {
+            drawCarrier();
+            drawData();
+            drawModulated();
+            
+            time += parseFloat(speedSlider.value);
+            
+            if (isPlaying) {
+                animationId = requestAnimationFrame(animate);
+            }
+        }
+        
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                isPlaying = false;
+                playBtn.textContent = '▶️ Démarrer l\'animation';
+                if (animationId) cancelAnimationFrame(animationId);
+            } else {
+                isPlaying = true;
+                playBtn.textContent = '⏸️ Arrêter l\'animation';
+                animate();
+            }
+        });
+        
+        // Animation initiale (statique)
+        animate();
+    </script>
+</body>
+</html>

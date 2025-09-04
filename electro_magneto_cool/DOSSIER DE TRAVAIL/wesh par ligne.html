@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>👄↝🎤↝📈↝📡↝📡↝📈↝📻↝👂</title>
+  <link rel="icon" type="image/png" href="img_4.png" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <style>
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    #fond {
+      margin-top: 95px;
+      z-index: 3;
+    }
+
+    #courbe {
+      scale: 76%;
+      margin-left: -65px;
+    }
+
+    .svg-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .svg-container svg {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .e {
+      fill: none;
+      stroke-width: 1.2;
+    }
+
+    #animated-sine-antenne { stroke: red; }
+    #animated-sine-entree { stroke: blue; }
+    #animated-sine-satellite { stroke: green; }
+    #animated-sine-condensateur { stroke: orange; }
+    #animated-sine-transistor { stroke: black; }
+
+    .f, .g {
+      stroke: #272525;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .f {
+      stroke-width: 0.25px;
+    }
+
+    .g {
+      stroke-width: 0.5px;
+    }
+
+    .fleche {
+      fill: black;
+      stroke: #000;
+      stroke-miterlimit: 10;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="svg-container">
+    <svg id="fond" width="1212.9" height="796"></svg>
+
+    <svg id="courbe" width="170.69mm" height="209.39mm" viewBox="0 0 483.84 593.55">
+      <g id="geometric-frames">
+        <polyline class="g" points="108.8 32.81 222.63 77.03 222.63 122.74 108.8 78.52 108.8 32.81 108.8 78.52"/>
+      </g>
+      <g id="connection-lines">
+        <line class="f" x1="408.9" y1="221.08" x2="306.48" y2="180.84"/>
+      </g>
+      <g id="sine-waves">
+        <path id="animated-sine-antenne" class="e" />
+        <path id="animated-sine-entree" class="e" />
+        <path id="animated-sine-satellite" class="e" />
+        <path id="animated-sine-condensateur" class="e" />
+        <path id="animated-sine-transistor" class="e" />
+      </g>
+    </svg>
+  </div>
+
+  <script>
+    const curves = [
+      {
+        id: "animated-sine-antenne",
+        startX: 90,
+        startY: 60,
+        amplitude: 14,
+        sineLength: 95,
+        freq: 2 * Math.PI / 20,
+        diagonalAngle: 0.4,
+        skewX: 0.4,
+        offsetTime: 0,
+      },
+      {
+        id: "animated-sine-entree",
+        startX: 150,
+        startY: 120,
+        amplitude: 14,
+        sineLength: 95,
+        freq: 2 * Math.PI / 20,
+        diagonalAngle: -0.3,
+        skewX: -0.2,
+        offsetTime: 1.5,
+      },
+      {
+        id: "animated-sine-satellite",
+        startX: 60,
+        startY: 250,
+        amplitude: 16,
+        sineLength: 95,
+        freq: 2 * Math.PI / 20,
+        diagonalAngle: 0.4,
+        skewX: 0.4,
+        offsetTime: 2.8,
+      },
+      {
+        id: "animated-sine-condensateur",
+        startX: 60,
+        startY: 320,
+        amplitude: 16,
+        sineLength: 95,
+        freq: 2 * Math.PI / 20,
+        diagonalAngle: 0.4,
+        skewX: 0.4,
+        offsetTime: 2.8,
+      },
+      {
+        id: "animated-sine-transistor",
+        startX: 60,
+        startY: 390,
+        amplitude: 16,
+        sineLength: 95,
+        freq: 2 * Math.PI / 20,
+        diagonalAngle: 0.4,
+        skewX: 0.4,
+        offsetTime: 2.8,
+      }
+    ];
+
+    let time = 0;
+    const deltaTime = 1 / 60;
+    let frameCount = 0;
+
+    // 🎯 PARAMÈTRES DE RANDOMISATION
+    const RANDOM_CONFIG = {
+      minOscillationTime: 80,   // Temps mini d'oscillation (frames)
+      maxOscillationTime: 200,  // Temps maxi d'oscillation 
+      minCutTime: 60,          // Temps mini de coupure
+      maxCutTime: 150,         // Temps maxi de coupure
+      cutIntensity: 0.8        // Intensité de la coupure (0-1)
+    };
+
+    // Variables pour les cycles aléatoires
+    let currentCycleStart = 0;
+    let currentOscillationDuration = 0;
+    let currentCutDuration = 0;
+    let isInOscillationPhase = true;
+
+    // Variables pour simuler le comportement du condensateur
+    let capacitorVoltages = new Array(96).fill(0);
+    const RC_TIME_CONSTANT = 0.98;
+
+    // Fonction pour générer de nouveaux timings aléatoires
+    function generateNewCycle() {
+      currentOscillationDuration = Math.random() * 
+        (RANDOM_CONFIG.maxOscillationTime - RANDOM_CONFIG.minOscillationTime) + 
+        RANDOM_CONFIG.minOscillationTime;
+      
+      currentCutDuration = Math.random() * 
+        (RANDOM_CONFIG.maxCutTime - RANDOM_CONFIG.minCutTime) + 
+        RANDOM_CONFIG.minCutTime;
+      
+      currentCycleStart = frameCount;
+      isInOscillationPhase = true;
+    }
+
+    // Initialiser le premier cycle
+    generateNewCycle();
+
+    function animate() {
+      const timeSinceCycleStart = frameCount - currentCycleStart;
+      let signalCutPosition = -1;
+      let signalReturnPosition = -1;
+
+      // Logique de cycle aléatoire
+      if (isInOscillationPhase && timeSinceCycleStart > currentOscillationDuration) {
+        // Passer en phase de coupure
+        isInOscillationPhase = false;
+      } else if (!isInOscillationPhase && timeSinceCycleStart > currentOscillationDuration + currentCutDuration) {
+        // Générer un nouveau cycle
+        generateNewCycle();
+      }
+
+      // Appliquer la coupure si on est en phase de coupure
+      if (!isInOscillationPhase) {
+        const cutProgress = (timeSinceCycleStart - currentOscillationDuration) / currentCutDuration;
+        if (cutProgress < 0.5) {
+          // Phase de coupure progressive
+          signalCutPosition = 1 - (cutProgress * 2);
+        } else {
+          // Phase de retour progressif
+          signalReturnPosition = 1 - ((cutProgress - 0.5) * 2);
+        }
+      }
+
+      curves.forEach(curve => {
+        let path = "";
+        let isDrawing = false;
+
+        for (let i = 0; i <= curve.sineLength; i += 1) {
+          const phase = (i + (time + curve.offsetTime) * 30) * curve.freq;
+          let sineY;
+
+          const isInCut =
+            (signalCutPosition >= 0 && i > curve.sineLength * signalCutPosition) ||
+            (signalReturnPosition >= 0 && i <= curve.sineLength * signalReturnPosition);
+
+          if (curve.id === "animated-sine-entree" && isInCut) {
+            isDrawing = false;
+            continue;
+          }
+
+          let rawSine = Math.sin(phase);
+
+          // === REDRESSEMENT SIMPLE pour "satellite" ===
+          if (curve.id === "animated-sine-satellite") {
+            rawSine = rawSine > 0 ? 0 : rawSine;
+          }
+
+          // === COMPORTEMENT CONDENSATEUR pour "condensateur" ===
+          if (curve.id === "animated-sine-condensateur") {
+            const rectifiedSine = rawSine > 0 ? 0 : rawSine;
+            const rectifiedValue = curve.amplitude * rectifiedSine;
+            
+            if (!capacitorVoltages[i]) capacitorVoltages[i] = 0;
+            
+            if (Math.abs(rectifiedValue) > Math.abs(capacitorVoltages[i])) {
+              capacitorVoltages[i] = rectifiedValue;
+            } else {
+              capacitorVoltages[i] *= RC_TIME_CONSTANT;
+            }
+            
+            rawSine = capacitorVoltages[i] / curve.amplitude;
+          }
+
+          // === SIGNAL TRANSISTOR (état haut/bas) ===
+          if (curve.id === "animated-sine-transistor") {
+            // Signal haut quand les autres oscillent, signal bas pendant les coupures
+            if (isInCut) {
+              rawSine = 0.6; // État bas (mais pas complètement à 0 pour la visibilité)
+            } else {
+              rawSine = -1; // État haut (négatif pour suivre la logique des autres)
+            }
+          }
+
+          sineY = isInCut && curve.id !== "animated-sine-transistor" ? 0 : curve.amplitude * rawSine;
+
+          const x = curve.startX + i * Math.cos(curve.diagonalAngle) - sineY * Math.sin(curve.diagonalAngle);
+          const y = curve.startY + i * Math.sin(curve.diagonalAngle) + sineY * Math.cos(curve.diagonalAngle);
+
+          const finalX = x + y * curve.skewX;
+          const finalY = y;
+
+          if (!isDrawing) {
+            path += "M" + finalX + "," + finalY + " ";
+            isDrawing = true;
+          } else {
+            path += "L" + finalX + "," + finalY + " ";
+          }
+        }
+
+        document.getElementById(curve.id).setAttribute("d", path);
+      });
+
+      time += deltaTime;
+      frameCount++;
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+
+</body>
+</html>

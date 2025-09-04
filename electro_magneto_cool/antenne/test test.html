@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sinusoïde fluide</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: white;
+    }
+
+    svg {
+      border: 1px solid #ccc;
+    }
+
+    path {
+      stroke: black;
+      stroke-width: 1;
+      fill: none;
+    }
+  </style>
+</head>
+<body>
+
+<svg width="400" height="400" viewBox="0 0 400 400">
+  <path id="sine" />
+</svg>
+
+<script>
+  const centerY = 200;
+  const amplitude = 100;
+  const projectionX = 150;
+  const sineLength = 200;
+  const freq = 2 * Math.PI / 200;
+  let time = 0;
+
+  function animate() {
+    let path = "";
+    for (let x = 0; x <= sineLength; x++) {
+      const phase = (x + time * 100) * freq;
+      const y = centerY + amplitude * Math.sin(phase);
+      path += (x === 0 ? "M" : "L") + (projectionX + x) + " " + y + " ";
+    }
+    document.getElementById("sine").setAttribute("d", path);
+    time -= 0.02;
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+</script>
+
+</body>
+</html>

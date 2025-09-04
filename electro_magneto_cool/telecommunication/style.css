@@ -1,0 +1,440 @@
+    @font-face {
+    font-family: 'Wingdings';
+    src: url('TYPO/wingding.ttf') format('truetype'),
+         url('wingding.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'alegreya';
+    src: url('../TYPO/Alegreya-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+
+    @font-face {
+    font-family: 'palace';
+    src: url('../TYPO/Palace script.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: alegreya, serif;
+    color: black;
+    overflow: hidden;
+    background-color: white;
+    background-size: cover;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100vh;
+    font-size: 0.95em;
+  }
+
+  .emoji {
+    font-family: Wingdings;
+    font-size: 1.3em;
+  }
+
+  .boite {
+    transform: translate(-50%, -50%);
+    left: 50vw;
+    top: 50vh;
+    position: absolute;
+  }
+
+  .txt_boite {
+    background-color: white;
+    width: max-content;
+    border: solid 1px black;
+    margin-top: 10px;
+    position: absolute;
+  }
+
+  #telephone_emetteur{
+        background-color: white;
+    width: 517px;
+    border: solid 1px black;
+    height: 242px;
+    position: absolute;
+left: 46px;
+top: 36px;
+  }
+
+#titre{
+    font-family: palace;
+  font-size: 13em;
+  position: absolute;
+  line-height: 90px;
+  color: white;
+-webkit-text-stroke: 1px black;
+left: 790px;
+opacity: 0.1;
+}
+
+#titre_bis{
+  font-family: palace;
+  font-size: 18em;
+  position: absolute;
+  line-height: 130px;
+  color: white;
+  left: 487px;
+  top: 339px;
+
+text-shadow: #FFF 0px 0px 5px, #FFF 0px 0px 10px, #FFF 0px 0px 15px, #FFF 0px 0px 20px, #FF2D95 0px 0px 20px, #FF2D95 0px 0px 30px, #FF2D95 0px 0px 40px, #FF2D95 0px 0px 50px, #FF2D95 0px 0px 75px;
+}
+
+  #telephone_recepteur{
+        background-color: white;
+    width: 497px;
+    border: solid 1px black;
+    height: 257px;
+    position: absolute;
+left: 173px;
+top: 410px;
+display: none;
+  }
+
+button{
+  position: absolute;
+}
+  p {
+    padding-left: 13px;
+    padding-right: 13px;
+    margin-top: 9px;
+    margin-bottom: 9px;
+  }
+
+  #legende {
+    width: max-content;
+    position: absolute;
+    font-size: 2.5em;
+    pointer-events: none; 
+    transition: opacity 0.2s ease;
+    z-index: 1000;
+    font-family: palace;
+  color: white;
+  -webkit-text-stroke: 0.7px white;
+text-shadow: #FFF 0px 0px 5px, #FF00E7 0px 0px 20px, #FF00E7 0px 0px 30px, #FF00E7 0px 0px 5px, #FF00E7 0px 0px 10px ;
+line-height: 0.6;
+    white-space: pre-line; /* Interprète les \n comme des sauts de ligne */
+
+  }
+
+
+
+#telephone_emetteur, #telephone_recepteur{
+      font-family: palace;
+  color: black;
+  -webkit-text-stroke: 0.5px black;
+  font-size: 2.2em;
+}
+
+
+  #boite_anim {
+    margin-top: 20px;
+    margin-left: 40px;
+  }
+
+  #portable {
+    background-image: url("img/portable.gif");
+    width: 62px;
+    height: 95px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: relative;
+  }
+
+  button:hover {
+    cursor: pointer;
+  }
+
+  #message_1 {
+    margin-top: -35px;
+    margin-left: 41px;
+  }
+
+  #message_2 {
+    display: none;
+    width: 157px;
+    height: 59px;
+    margin-left: 83px;
+  }
+
+  #message_2 .highlight {
+    background-color: black;
+    transition: background-color 0.3s ease;
+  }
+
+  .highlight {
+    background-color: black;
+    font-weight: bold;
+    color: white;
+  }
+
+  .letter-highlight {
+    background-color: black;
+    font-weight: bold;
+    color: white;
+    transition: background-color 0.3s ease;
+    font-family: Consolas;
+
+  }
+
+  .bold-text {
+    font-weight: bold;
+    transition: font-weight 0.3s ease;
+        font-family: Consolas;
+
+  }
+
+.consolas{        
+  font-family: Consolas;}
+
+
+  #envoyer_bouton {
+    margin-top: 20px;
+    margin-left: 41px;
+  }
+
+  #numerique_bouton {
+    margin-top: 78px;
+    margin-left: 82px;
+  }
+
+
+.signal_electrique{
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    border: 1px solid black;
+    background-color: white;
+    display: none;
+    overflow: hidden;
+position: absolute; 
+}
+
+
+  #signal_svg {
+    margin-top: 20px;
+    margin-left: 234px;
+
+  }
+
+  #signal_bouton {
+    margin-top: 125px;
+    margin-left: 243px;
+    display: none;
+  }
+
+  #signal_electrique_svg {
+    margin-top: 70px;
+    margin-left: 956px;
+
+  }
+
+  #signal_electrique_arrivee_svg {
+    margin-top: 328px;
+    margin-left: 1038px;
+
+  }
+
+#signal_electrique_receptrice_svg {
+  margin-top: 416px;
+  margin-left: 357px;
+
+}
+
+
+
+  .antenne{
+    border: 1px solid black;
+    background-color: white;
+    width: 2px;
+    height: 200px;  
+    position: absolute;
+    display: none;
+  }
+
+  #antenne_emettrice{
+    left: 542px;
+    top: 63px;
+  }
+
+  #antenne_relai_1{
+    left: 982px;
+    top: 82px;
+  }
+
+  #antenne_receptrice{
+    left: 649px;
+    top: 425px;
+  }
+
+  #antenne_relais_2{
+    left: 1046px;
+    top: 430px;
+  }
+
+  #sinusoide{
+    left: 547px;
+    top: 82px;
+    position: absolute;
+    display: none;
+    overflow: hidden;
+  }
+
+  #sinusoide_2{
+    left: 654px;
+    top: 430px;
+    position: absolute;
+    display: none;
+    overflow: hidden;
+  }
+
+  #message_pop_up{
+    display: none;
+    max-width: 400px;
+    padding-bottom: 15px;
+    left: 120px;
+    top: 230px;
+  }
+
+  #emettre_bouton {
+    margin-top: 414px;
+    margin-left: 283px;
+    display: none;
+  }
+
+  #continuer_bouton {
+    margin-top: 65px;
+    margin-left: 942px;
+    display: none;
+  }
+  #retranscrire_bouton {
+    margin-top: 177px;
+    margin-left: 942px;
+    display: none;
+  }
+
+  #envoyer_relais_bouton {
+    margin-top: 170px;
+    margin-left: 942px;
+    display: none;
+  }
+
+  .txt_antenne{
+    writing-mode: sideways-lr;
+    text-orientation: mixed;
+    margin:0px;
+  }
+
+  #emettre_signal_relais2_bouton {
+    margin-top: 434px;
+    margin-left: 1017px;
+    display: none;
+  }
+
+  #signal_electrique_final_svg {
+    margin-top: 438px;
+    margin-left: 166px;
+  }
+
+  #message_final {
+    margin-top: 348px;
+    margin-left: 417px;
+    width: fit-content;
+    height: fit-content;
+    display: none;
+  }
+
+  #decoder_bouton {
+    margin-top: 521px;
+    margin-left: 355px;
+    display: none;
+  }
+
+  #traduire_binaire_bouton {
+    margin-top: 436px;
+    margin-left: 163px;
+    display: none;
+  }
+
+  #chemin_relais {
+    position: absolute;
+    left: 1215px;
+    top: 138px;
+    display: none;
+  }
+
+  .legende_frequence{
+    text-align: center;
+    margin-bottom: 5px;
+    padding: 5px;
+  }  
+
+  #portable2 {
+    background-image: url("img/tel_rose.gif");
+    width: 62px;
+    height: 95px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    left: 505px;
+    top: 421px;
+    display: none;
+  }
+
+
+a{
+  color: black;
+  font-style: italic;
+  cursor: alias;
+}
+
+
+#tooltip {
+    position: fixed;
+    background-color: white;
+    font-size: 0.9em;
+    z-index: 900;
+    pointer-events: none;
+    display: none;
+    font-style: italic;
+}
+
+.tooltip-image {
+    position: absolute;
+    display: none;
+    max-width: 200px;
+    z-index: 1000;
+}
+
+
+.clickable-element {
+    cursor: pointer;
+}
+
+
+.legende-dynamique {
+    position: absolute;
+    padding: 3px 8px;
+    font-size: 0.8em;
+    z-index: 10;
+    display: none;
+}
+
+#legende-fibre {
+    left: 1278px;
+    top: 197px;
+}
+
+#legende-impulsion {
+    font-size: 0.8em;
+}

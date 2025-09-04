@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+  <title>👄↝🎤↝📈↝📡↝📡↝📈↝📻↝👂</title>
+  <link rel="icon" type="image/png" href="img_4.png" />
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style_menu.css"> 
+
+<style>
+.partie {
+  display: inline-block;
+  width: 80%;
+  vertical-align: top;
+  margin: 20px;
+}
+
+#sineWave {
+  fill: none;
+  stroke: black;
+  stroke-width: 1;
+}
+
+#horizontalWave {
+  fill: none;
+  stroke: black;
+  stroke-width: 1;
+  stroke-dasharray:2,2;
+}
+
+#waveSvg line {
+  stroke: black;
+  stroke-width: 1;
+}
+
+.antenna-highlight {
+  fill:green !important;
+}
+
+.legende {
+  position: absolute;
+  padding: 5px;
+}
+
+
+
+.tableau_ligne {
+  margin: 10px 0;
+}
+
+#info {
+  margin-top: 20px;
+}
+
+.sous_texte {
+  padding: 15px;
+  margin: 10px 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #ccc;
+}
+
+.d {
+  fill: black;
+}
+</style>
+
+</head>
+
+<body id="body">
+
+<div id="gauche" style="justify-content:center; display:grid" class="partie">
+  
+
+  <svg viewBox="0 0 800 600" id="waveSvg">
+  <path id="sineWave" />
+  <path id="horizontalWave" />
+    <line x1="0" y1="300" x2="950" y2="300" />
+  <line x1="0" y1="590" x2="350" y2="590" />
+  <line x1="350" y1="550" x2="350" y2="590" style="stroke-dasharray:5,5;"/>
+  <line x1="0" y1="550" x2="0" y2="590" style="stroke-dasharray:5,5;"/>
+</svg>
+<div id="longueur_onde"><p> longueur d'onde </div>
+
+
+<div id="info" style="display: grid; justify-content: center; margin-top: -220px;">
+  <div class="sous_texte" style="width:500px;"><p>la longueur d'onde est la distance entre deux points identiques (comme deux crêtes) d'une onde périodique.</p></div>
+  <button id="bouton_signal" style="" onclick='antenne()'>lancer le signal</button>
+
+</div>
+
+
+
+
+
+</div>
+
+<rect class="d" x=".5" y=".5" width="3" height="115.92"/>
+
+
+ </div>
+
+
+
+<script type="text/javascript">
+
+  ///////////////////////ANIM LONGUEUR D'ONDE//////////////////////////////////
+
+const svgWidth = 800;
+  const svgHeight = 600;
+  const amplitude = 80;
+  const wavelength = 350; // longueur d'onde en pixels
+  const speed = 1; // pixels par frame (vitesse de décalage vers la droite)
+  const step = 2; // pas horizontal entre points
+  const frequency = 2 * Math.PI / wavelength;
+  const pathElem = document.getElementById('sineWave');
+  const horizontalPathElem = document.getElementById('horizontalWave');
+  
+  let phase = 0;
+  let isAnimating = false; // Variable pour contrôler l'animation
+  let antennaVisible = false; // Variable pour savoir si l'antenne est visible
+  let waveExtent = 250; // Nouvelle variable pour contrôler l'étendue de l'onde
+  
+  function generatePath(phase, maxX) {
+    let d = "";
+    let started = false;
+    // Utiliser waveExtent au lieu de maxX fixe
+    const endX = maxX || waveExtent;
+    
+    for(let x = 0; x <= endX; x += step) {
+      let y = svgHeight / 2 + amplitude * Math.sin(frequency * (x - phase));
+      if (!started) {
+        d += `M ${x} ${y}`;
+        started = true;
+      } else {
+        d += ` L ${x} ${y}`;
+      }
+    }
+    return d;
+  }
+  
+  function generateHorizontalPath(phase, maxX) {
+    let d = "";
+    let started = false;
+    // Utiliser waveExtent au lieu de maxX fixe
+    const endX = maxX || waveExtent;
+    const centerY = svgHeight / 2;
+    
+    for(let x = 0; x <= endX; x += step) {
+      // Onde qui reste alignée horizontalement mais très penchée (vue iso)
+      let waveValue = Math.sin(frequency * (x - phase));
+      
+      // EFFET PENCHÉ ACCENTUÉ : transformation isométrique
+      let verticalOscillation = amplitude * 0.9 * waveValue; // oscillation verticale
+      let horizontalShear = amplitude * -0.8 * waveValue; // GROS effet de cisaillement horizontal
+      
+      // Position finale avec effet très penché
+      let finalX = x + horizontalShear; // fort décalage horizontal selon l'oscillation
+      let finalY = centerY + verticalOscillation ; // centré vers le haut
+      
+      // CORRECTION : forcer le premier point à x=0 pour garder le départ fixe
+      if (x === 0) {
+        finalX = 0;
+      }
+      
+      if (!started) {
+        d += `M ${finalX} ${finalY}`;
+        started = true;
+      } else {
+        d += ` L ${finalX} ${finalY}`;
+      }
+    }
+    return d;
+  }
+  
+
+  
+  function animate() {
+    if (isAnimating) {
+      phase += speed;
+      // Faire grandir l'onde progressivement jusqu'à l'antenne
+      if (waveExtent < 900) { // +50 pour dépasser un peu l'antenne
+        waveExtent += speed; // L'onde grandit à la même vitesse que la phase
+      }
+      pathElem.setAttribute('d', generatePath(phase));
+      horizontalPathElem.setAttribute('d', generateHorizontalPath(phase));
+    } else {
+      // Onde statique au départ, limitée à 250px
+      pathElem.setAttribute('d', generatePath(0, 250));
+      horizontalPathElem.setAttribute('d', generateHorizontalPath(0, 250));
+    }
+    requestAnimationFrame(animate);
+  }
+  
+  // Initialiser l'onde statique
+  animate();
+
+
+
+
+
+
+
+  ///////////////////////POSITION texte//////////////////////////////////
+
+// Attendre que jQuery soit chargé
+function initMouseMove() {
+  if (typeof $ !== 'undefined') {
+    $(function() {
+      $('#body').mousemove(function(e) {
+        var x = e.pageX;
+        var y = e.pageY;
+        var mid = $(window).height();
+        var midW =$(window).width()/2;
+        // var docHeight = $(document).height();
+
+        $('.legende').css('top', y+50+'px');
+        $('.legende').css('left', x-20+'px');
+      });
+    });
+  } else {
+    // Réessayer dans 100ms si jQuery n'est pas encore chargé
+    setTimeout(initMouseMove, 100);
+  }
+}
+
+// Lancer l'initialisation
+initMouseMove();
+
+
+
+
+
+
+////////////////////////APPARITION ET BOUTON////////////////////
+function antenne(){
+
+    isAnimating = true;
+    waveExtent = 250; // Réinitialiser l'étendue de l'onde au démarrage
+    document.getElementById("bouton_signal").textContent = "signal lancé";
+    document.getElementById("bouton_signal").disabled = true;
+  }
+
+
+function signal(){
+
+
+
+}
+</script>
+</body>
+  </html>
