@@ -15,9 +15,10 @@
 
   <div id="titre">Transmissions <br>&nbsp&nbsp&nbsp&nbsptéléphoniques</div>
   <div id="boite_anim">
-<div id="telephone_emetteur"><p style="margin-left:49px">Téléphone émetteur</p></div>
+<div id="telephone_emetteur" class="boite_floue"></div>
 <div id="telephone_recepteur"><p>Téléphone recepteur</p></div>
     <!-- portable -->
+        <p class="petit_titre" style="margin-left: 73px; top: 34px">Téléphone émetteur</p>
     <div id="portable">
     </div>
     <div id="message_1" class="txt_boite"><p>Slt!</p></div>
@@ -76,11 +77,13 @@
 
     <!-- antenne -->
     <div id="antenne_emettrice" class="antenne">
-    <p class="txt_antenne" style="margin-left:-35px">antenne émettrice</p> </div>
+    <p class="txt_antenne_fond" style="margin-left:-42px;">antenne émettrice</p> 
+    <p class="txt_antenne" style="margin-left:-42px; z-index: 20;">antenne émettrice</p> </div>
     <svg id="sinusoide" width="436" height="80" >
       <path id="sineWave" stroke="black" stroke-width="1" fill="none" />
     </svg>
     <div id="antenne_relai_1" class="antenne">
+        <p class="txt_antenne_fond" style="margin-left: -8px;">antenne relais</p>
         <p class="txt_antenne" style="margin-left: -8px;">antenne relais</p>  </div>
 
     <button id="retranscrire_bouton">retranscrire en signal électrique</button>

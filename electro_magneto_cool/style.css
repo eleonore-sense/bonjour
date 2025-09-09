@@ -15,14 +15,24 @@
 
 	}
 
+  @font-face {
+      font-family: 'narrow';
+      src: url('TYPO/arialnarrow.ttf') format('truetype'),
+      font-weight: normal;
+      font-style: normal;
+
+  }
+
 
 html, body{
 margin: 0px;
 padding: 0px;
- font-family: alegreya;
+font-size: 1.2em;
+  font-family: narrow;
+  letter-spacing: 0.1em;  
+      transform: scaleX(0.8);
 color: rgb(0,0,0);
 overflow: hidden;
- /*background-image:url("img/test_fond.jpg") ;*/
  background-color: rgb(220,220,220);
   background-size: cover;
 	background-position-y: center;

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+  <title>👄↝🎤↝📈↝📡↝📡↝📈↝📻↝👂</title>
+  <link rel="icon" type="image/png" href="img_4.png" />
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style_menu.css"> 
+
+
+</head>
+
+<body id="body">
+
+<div id="gauche" style="justify-content:center; display:grid" class="partie">
+  
+
+  <svg viewBox="0 0 600 400" id="waveSvg">
+  <path id="sineWave" />
+  <path id="horizontalWave" />
+  <line x1="0" y1="290" x2="250" y2="290" />
+  <line x1="250" y1="130" x2="250" y2="290" style="stroke-dasharray:5,5;"/>
+  <line x1="0" y1="130" x2="0" y2="290" style="stroke-dasharray:5,5;"/>
+  <rect id="antenna" width="3" height="250" x="600" y="120" style="fill: none; stroke: black; display: none;" />
+</svg>
+<div id="longueur_onde"><p> longueur d'onde </div>
+
+
+<div id="info" style="display: grid; justify-content: center; margin-top: -220px;">
+  <div class="sous_texte" style="width:500px;"><p>la longueur d'onde est la distance entre deux points identiques (comme deux crêtes) d'une onde périodique.</p></div>
+  <button id="bouton_signal" style="" onclick='antenne()'>ajouter une antenne</button>
+
+</div>
+
+
+
+
+
+</div>
+
+<rect class="d" x=".5" y=".5" width="3" height="115.92"/>
+
+
+<div id="droite" class="partie">
+<div id="ligne1" class="tableau_ligne">
+
+
+<div id="monopole" class="famille_antenne">
+  <a href="monopole/monopole.html" style="height: fit-content;">
+    <p class="legende">les monopôles</p>
+    <svg class="antenne_svg" viewBox="" style="stroke:black; stroke-width: 1px; width: 4px; height: 140px;">
+      <rect class="d" x=".53" y=".53" width="3" height="131.9"/></svg>
+    </a>
+</div>
+
+
+<div  class="famille_antenne">
+    <a href="dipole/dipole.html" style="height: fit-content;">
+        <p class="legende">les dipôles</p>
+        <div class="img_antenne" id="dipole"></div>
+    </a>
+</div>
+
+
+
+<div id="quart_onde" class="famille_antenne"><a href="quart_onde/quart_onde.html" style="height: fit-content;"><p class="legende">les quarts d'onde</p><svg class="antenne_svg" viewBox="" style="stroke:black; stroke-width: 1px; width: 40px; height: 130px;"><path class="d" d="M15.98,110.73c-8.68,.28-15.48,2.72-15.48,5.68,0,3.15,7.67,5.71,17.13,5.71s17.13-2.56,17.13-5.71-6.9-5.45-15.69-5.69"/><polyline points="16.13 116.42 16.13 .5 19.13 .5 19.13 116.42"/></svg></a>
+</div>
+</div>
+
+
+
+
+<div id="ligne2" class="tableau_ligne">
+<div  class="famille_antenne">
+    <a href="yagi/yagi.html" style="height: fit-content;">
+        <p class="legende">les yagi</p>
+        <div class="img_antenne" id="yagi"></div>
+    </a>
+</div>
+
+
+<div id="boucles" class="famille_antenne"><a href="boucles/boucles.html" style="height: fit-content;"><p class="legende">les boucles</p><svg class="antenne_svg" viewBox="" style="stroke:black; stroke-width: 1px; width:60px; height: 115px;"><path class="d" d="M54.95,32.23C54.95,14.73,42.74,.5,27.73,.5S.5,14.73,.5,32.23s11.41,30.77,25.73,31.68v45.05h3V63.91c14.32-.91,25.73-14.77,25.73-31.68Zm-27.23,28.73c-13.36,0-24.23-12.89-24.23-28.73S14.37,3.5,27.73,3.5s24.23,12.89,24.23,28.73-10.87,28.73-24.23,28.73Z"/></svg></a>
+</div>
+<div id="j_pole" class="famille_antenne"><a href="j_pole/j_pole.html" style="height: fit-content;"><p class="legende">les j-pôles</p><svg class="antenne_svg" viewBox="" style="stroke:black; stroke-width: 1px; width:25px; height: 160px;"><path  d="M17.53,.5V124.1h-7.69c-3.5,0-6.34-2.85-6.34-6.34v-23.53H.5v23.53c0,5.15,4.19,9.34,9.34,9.34h7.69v26.66h3V.5h-3Z"/></svg></a>
+</div>
+
+</div>
+
+<div id="ligne3" class="tableau_ligne">
+  <div id="trombonne" class="famille_antenne"><a href="trombonne/trombonne.html" style="height: fit-content;"><p class="legende">les trombonnes</p><svg class="antenne_svg" viewBox="" style="stroke:black; stroke-width: 1px; width: 115px; height: 67px;">
+<path class="d" d="M64.2,55.78h-3V23.21h38.2c5.43,0,9.85-4.42,9.85-9.85s-4.42-9.85-9.85-9.85H13.35C7.92,3.5,3.5,7.92,3.5,13.35s4.42,9.85,9.85,9.85H51.55V55.78h-3V26.21H13.35C6.27,26.21,.5,20.44,.5,13.35S6.27,.5,13.35,.5H99.39c7.09,0,12.85,5.77,12.85,12.85s-5.77,12.85-12.85,12.85h-35.2v29.57Z"/></svg></a>
+</div>
+
+<div  class="famille_antenne"><a href="dipole/dipole.html">les cierges</a>
+</div>
+<div  class="famille_antenne"><a href="dipole/dipole.html">les paraboliques</a>
+</div>
+
+</div>
+
+<div id="ligne4" class="tableau_ligne">
+<div  class="famille_antenne"><a href="dipole/dipole.html">les hélices</a>
+</div>
+<div  class="famille_antenne"><a href="dipole/dipole.html">les fractales</a>
+</div>
+<div  class="famille_antenne"><a href="dipole/dipole.html">les patch</a>
+</div>
+</div>
+
+
+</div>
+
+ </div>
+
+
+
+<script type="text/javascript">
+
+  ///////////////////////ANIM LONGUEUR D'ONDE//////////////////////////////////
+
+const svgWidth = 600;
+  const svgHeight = 400;
+  const amplitude = 40;
+  const wavelength = 250; // longueur d'onde en pixels
+  const speed = 2; // pixels par frame (vitesse de décalage vers la droite)
+  const step = 2; // pas horizontal entre points
+  const frequency = 2 * Math.PI / wavelength;
+  const pathElem = document.getElementById('sineWave');
+  const horizontalPathElem = document.getElementById('horizontalWave');
+  const antennaElem = document.getElementById('antenna');
+  const antennaX = 600; // position X de l'antenne
+  
+  let phase = 0;
+  let isHighlighted = false;
+  let highlightTimeout = null;
+  let isAnimating = false; // Variable pour contrôler l'animation
+  let antennaVisible = false; // Variable pour savoir si l'antenne est visible
+  let waveExtent = 250; // Nouvelle variable pour contrôler l'étendue de l'onde
+  
+  function generatePath(phase, maxX) {
+    let d = "";
+    let started = false;
+    // Utiliser waveExtent au lieu de maxX fixe
+    const endX = maxX || waveExtent;
+    
+    for(let x = 0; x <= endX; x += step) {
+      let y = svgHeight / 2 + amplitude * Math.sin(frequency * (x - phase));
+      if (!started) {
+        d += `M ${x} ${y}`;
+        started = true;
+      } else {
+        d += ` L ${x} ${y}`;
+      }
+    }
+    return d;
+  }
+  
+  function checkWaveAtAntenna() {
+    // Vérifier seulement si l'onde a atteint l'antenne
+    if (waveExtent >= antennaX && antennaVisible) {
+      // Calculer la valeur de la sinusoïde à la position de l'antenne
+      const waveValueAtAntenna = Math.sin(frequency * (antennaX - phase));
+      
+      // Détecter si on est proche du maximum OU du minimum (avec une petite tolérance)
+      if ((waveValueAtAntenna < -0.95) && !isHighlighted) {
+        // Activer le surlignage
+        antennaElem.classList.add('antenna-highlight');
+        isHighlighted = true;
+        
+        // Programmer l'arrêt du surlignage après 500ms
+        highlightTimeout = setTimeout(() => {
+          antennaElem.classList.remove('antenna-highlight');
+          isHighlighted = false;
+        }, 500);
+      }
+    }
+  }
+  
+  function animate() {
+    if (isAnimating) {
+      phase += speed;
+      // Faire grandir l'onde progressivement jusqu'à l'antenne
+      if (waveExtent < antennaX) { // +50 pour dépasser un peu l'antenne
+        waveExtent += speed; // L'onde grandit à la même vitesse que la phase
+      }
+      pathElem.setAttribute('d', generatePath(phase));
+      checkWaveAtAntenna();
+    } else {
+      // Onde statique au départ, limitée à 250px
+      pathElem.setAttribute('d', generatePath(0, 250));
+    }
+    requestAnimationFrame(animate);
+  }
+  
+  // Initialiser l'onde statique
+  animate();
+
+
+
+
+
+
+
+  ///////////////////////POSITION texte//////////////////////////////////
+
+// Attendre que jQuery soit chargé
+function initMouseMove() {
+  if (typeof $ !== 'undefined') {
+    $(function() {
+      $('#body').mousemove(function(e) {
+        var x = e.pageX;
+        var y = e.pageY;
+        var mid = $(window).height();
+        var midW =$(window).width()/2;
+        // var docHeight = $(document).height();
+
+        $('.legende').css('top', y+50+'px');
+        $('.legende').css('left', x-20+'px');
+      });
+    });
+  } else {
+    // Réessayer dans 100ms si jQuery n'est pas encore chargé
+    setTimeout(initMouseMove, 100);
+  }
+}
+
+// Lancer l'initialisation
+initMouseMove();
+
+
+
+
+
+
+////////////////////////APPARITION ET BOUTON////////////////////
+function antenne(){
+  if (!antennaVisible) {
+    // Premier clic : ajouter l'antenne
+    $('#antenna').css('display','block');
+    antennaVisible = true;
+    document.querySelector('.sous_texte p').textContent = "l'antenne entre en résonnance avec la longueur d'onde du signal émis si elle est proportionnelle à sa longueur d'onde";
+    document.getElementById("bouton_signal").textContent = "lancer le signal";
+  } else {
+    // Deuxième clic : lancer le signal
+    isAnimating = true;
+    waveExtent = 250; // Réinitialiser l'étendue de l'onde au démarrage
+    document.getElementById("bouton_signal").textContent = "signal lancé";
+    document.getElementById("bouton_signal").disabled = true;
+  }
+}
+
+
+function signal(){
+
+
+
+}
+</script>
+</body>
+  </html>

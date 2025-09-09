@@ -125,3 +125,23 @@ button{
   margin-left: 250px;
   transform: translate(-50%);
 }
+
+.img_antenne {
+    height: 150px;
+    width: 150px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50px;
+    position: relative;
+  box-shadow: 0 0 10px 10px white ;
+
+}
+
+
+
+#dipole {
+    background-image: url('img/dipole.jpg');
+}
+#yagi {
+    background-image: url('img/yagi.jpg');
+}
