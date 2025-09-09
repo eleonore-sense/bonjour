@@ -48,8 +48,15 @@
     width: 100vw;
     height: 100vh;
     font-size: 0.95em;
+    font-family: narrow;
+    letter-spacing: 0.12em;
+    word-spacing: 0.2em;
   }
 
+
+p{
+
+}
 .boite_floue{
   border-radius: 50%;
   background-image: radial-gradient(ellipse farthest-side, rgba(255, 255, 255, 1) 0%, rgba(180, 180, 180, 1) 100%);
@@ -168,6 +175,7 @@ line-height: 0.6;
     background-size: contain;
     background-repeat: no-repeat;
     position: relative;
+    top: 30px;
   }
 
   button:hover {
@@ -175,7 +183,7 @@ line-height: 0.6;
   }
 
   #message_1 {
-    margin-top: -35px;
+    margin-top: -10px;
     margin-left: 41px;
   }
 
@@ -218,7 +226,7 @@ line-height: 0.6;
 
 
   #envoyer_bouton {
-    margin-top: 20px;
+    margin-top: 40px;
     margin-left: 41px;
   }
 
@@ -238,6 +246,7 @@ line-height: 0.6;
     display: none;
     overflow: hidden;
 position: absolute; 
+z-index: 20;
 }
 
 
@@ -254,14 +263,14 @@ position: absolute;
   }
 
   #signal_electrique_svg {
-    margin-top: 70px;
+    margin-top: 90px;
     margin-left: 956px;
 
   }
 
   #signal_electrique_arrivee_svg {
     margin-top: 328px;
-    margin-left: 1038px;
+    margin-left: 1047px;
 
   }
 
@@ -293,7 +302,7 @@ position: absolute;
   }
 
   #antenne_receptrice{
-    left: 649px;
+    left: 655px;
     top: 425px;
   }
 
@@ -327,8 +336,8 @@ position: absolute;
       background: #f0f0f0;
   border-radius: 17px;
   border :none;
--webkit-box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), inset 0px -10px 23px 4px #313131, inset 0px 20px 23px 0px #BFBFBF, inset 0px 50px 23px 16px #FFFFFF; 
-box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), inset 0px -20px 23px 4px #313131, inset 0px 20px 23px 0px #BFBFBF, inset 0px 50px 23px 16px #FFFFFF;
+-webkit-box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), inset 0px -10px 23px 4px #313131, inset 0px 10px 23px 0px #BFBFBF, inset 0px 50px 23px 16px #FFFFFF; 
+box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), inset 0px -10px 23px 4px #313131, inset 0px 20px 23px 0px #BFBFBF, inset 0px 50px 23px 16px #FFFFFF;
   }
 
   #emettre_bouton {
@@ -349,19 +358,27 @@ box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), inset 0px -20px 23px 4px #3
   }
 
   #envoyer_relais_bouton {
-    margin-top: 170px;
+    margin-top: 194px;
     margin-left: 942px;
     display: none;
   }
 
 
 .txt_antenne_fond{
+      writing-mode: sideways-lr;
+    text-orientation: mixed;
+    margin:0px;
+    font-family: narrow;
+    letter-spacing: 0.12em;
+    word-spacing: 0.2em;
+  color: black;
   z-index: 1;
   position: absolute;
-  -web-text-stroke: 14.5px black;
+  -webkit-text-stroke: 14.5px black;
 }
 
   .txt_antenne{
+    position: relative;
     writing-mode: sideways-lr;
     text-orientation: mixed;
     margin:0px;
@@ -371,6 +388,7 @@ box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), inset 0px -20px 23px 4px #3
   -webkit-text-stroke: 13px white;
   paint-order: stroke fill;
   color: black;
+  z-index: 20;
   }
 
   #emettre_signal_relais2_bouton {
@@ -385,10 +403,11 @@ box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), inset 0px -20px 23px 4px #3
   }
 
   #message_final {
-    margin-top: 348px;
-    margin-left: 417px;
+    margin-top: 304px;
+    margin-left: 349px;
     width: fit-content;
     height: fit-content;
+    z-index: 20;
     display: none;
   }
 
@@ -471,6 +490,9 @@ a{
 #legende-fibre {
     left: 1278px;
     top: 197px;
+    font-family: narrow;
+    letter-spacing: 0.12em;
+    word-spacing: 0.2em;
 }
 
 #legende-impulsion {
