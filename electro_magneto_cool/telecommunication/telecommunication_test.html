@@ -7,7 +7,7 @@
   <title>👄↝🎤↝📈↝📡↝📡↝📈↝📻↝👂</title>
   <link rel="icon" type="image/png" href="img_4.png" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="style.css"> 
+    <link rel="stylesheet" type="text/css" href="style-new.css"> 
 </head>
 
 <body id="body">
@@ -16,16 +16,19 @@
   <div id="titre">Transmissions <br>&nbsp&nbsp&nbsp&nbsptéléphoniques</div>
   <div id="boite_anim">
 <div id="telephone_emetteur" class="boite_floue"></div>
-<div id="telephone_recepteur"><p>Téléphone recepteur</p></div>
+<div id="telephone_recepteur" class="boite_floue"></div>
     <!-- portable -->
-        <p class="petit_titre" style="margin-left: 73px; top: 34px">Téléphone émetteur</p>
+        <p class="petit_titre" style="margin-left: 73px; top: 34px; position:absolute;">Téléphone émetteur</p>
+<p id="petit_titre_tel_recepteur" class="petit_titre" style="position
+absolute; margin-left: 169px; top: 395px; display:none">Téléphone recepteur</p>
     <div id="portable">
     </div>
     <div id="message_1" class="txt_boite"><p>Slt!</p></div>
     <button id="envoyer_bouton">envoyer le message</button>
 
     <!-- binaire -->
-    <div id="message_2" class="txt_boite"><p></p></div>
+    <div id="message_2" class="txt_boite" style="    letter-spacing: 0em;
+    word-spacing: 0em;"><p></p></div>
     <button id="numerique_bouton" style="display:none;">transformer en signal électrique</button>
 
     <!-- numérique -->
@@ -83,8 +86,8 @@
       <path id="sineWave" stroke="black" stroke-width="1" fill="none" />
     </svg>
     <div id="antenne_relai_1" class="antenne">
-        <p class="txt_antenne_fond" style="margin-left: -8px;">antenne relais</p>
-        <p class="txt_antenne" style="margin-left: -8px;">antenne relais</p>  </div>
+        <p class="txt_antenne_fond" style="margin-left: -4px;">antenne relais</p>
+        <p class="txt_antenne" style="margin-left: -4px;">antenne relais</p>  </div>
 
     <button id="retranscrire_bouton">retranscrire en signal électrique</button>
     <button id="envoyer_relais_bouton">envoyer à l'antenne relais du récepteur</button>
@@ -101,7 +104,8 @@
 
     <!-- antenne receptrice relai-->
     <div id="antenne_relais_2" class="antenne">
-    <p class="txt_antenne" style="margin-left:-8px">antenne relais</p> </div>
+      <p class="txt_antenne_fond" style="margin-left:-4px">antenne relais</p>    
+    <p class="txt_antenne" style="margin-left:-4px">antenne relais</p> </div>
 
     <button id="continuer_bouton">continuer</button>
     <button id="emettre_signal_relais2_bouton">émettre le signal</button>
@@ -120,6 +124,7 @@
       <path id="sineWave_2" stroke="black" stroke-width="1" fill="none" />
     </svg>
     <div id="antenne_receptrice" class="antenne">
+                <p class="txt_antenne_fond" style="margin-left: -35px;">antenne réceptrice</p>
         <p class="txt_antenne" style="margin-left: -35px;">antenne réceptrice</p>  </div>
     <button id="decoder_bouton">décoder le signal</button>
 
@@ -852,7 +857,7 @@ $("#legende-fibre").css("display", "block");
         function startAnimationQuandPremiereBouleArrive() {
             if (!animationStarted) {
                 animationStarted = true;
-                $('#legende').text("Signal reçu et converti en temps réel");
+                $('#legende').text("Signal reçu et converti \nen temps réel");
                 setTimeout(drawNextBitArrivee, 3000);
             }
         }
@@ -924,7 +929,7 @@ if (firstSignalPath && secondSignalGroup) {
             direction: 'rightToLeft',
             onComplete: () => {
                 $('#legende').text("Signal reçu par l'antenne réceptrice");
-                $("#decoder_bouton").css("display", "block");
+                $("#petit_titre_tel_recepteur").css("display", "block");                $("#decoder_bouton").css("display", "block");
             }
         });
 
