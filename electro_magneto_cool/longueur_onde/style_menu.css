@@ -127,16 +127,13 @@ button{
 }
 
 .img_antenne {
-    height: 180px;
-    width: 120px;
+    height: 150px;
+    width: 150px;
     background-size: cover;
     background-position: center;
-    border-radius: 100%;
+    border-radius: 50px;
     position: relative;
-
--webkit-box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), inset 0px 0px 20px 0px #FFF, inset 0px 00px 23px 16px #FFF;
-box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), inset 0px 0px 20px 0px #FFF, inset 0px 00px 23px 16px #FFF;
-
+  box-shadow: 0 0 10px 10px white ;
 
 }
 
