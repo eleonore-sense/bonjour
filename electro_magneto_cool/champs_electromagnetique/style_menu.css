@@ -1,0 +1,42 @@
+	@font-face {
+	    font-family: 'Wingdings';
+	    src: url('TYPO/wingding.ttf') format('truetype'),
+	         url('wingding.svg') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+
+	}
+
+	@font-face {
+	    font-family: 'alegreya';
+	    src: url('../TYPO/Alegreya-Regular.ttf') format('truetype'),
+	    font-weight: normal;
+	    font-style: normal;
+
+	}
+
+
+  @font-face {
+      font-family: 'narrow';
+      src: url('../TYPO/arialnarrow.ttf') format('truetype'),
+      font-weight: normal;
+      font-style: normal;
+
+  }
+
+html, body{
+margin: 0px;
+padding: 0px;
+ font-family: narrow;
+   letter-spacing: 0.1em;  
+   word-spacing: 0.2em;
+color: rgb(0,0,0);
+overflow: hidden;
+	background-position-y: center;
+	background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  font-size: 0.95em;
+  color: black;
+}
+
