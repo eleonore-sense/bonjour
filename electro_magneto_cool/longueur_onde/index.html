@@ -49,7 +49,13 @@
  </div>
 
 
-
+<div id="controls" style="margin-top: 20px;">
+  <label for="wavelengthSlider">Longueur d'onde : </label>
+  <input type="range" id="wavelengthSlider" min="100" max="400" value="250" step="10">
+  <span id="wavelengthValue">250</span> px
+  <br>
+  <small>Taille antenne : <span id="antennaSize">125</span> px (λ/2)</small>
+</div>
 <script type="text/javascript">
 
   ///////////////////////ANIM LONGUEUR D'ONDE//////////////////////////////////
@@ -57,7 +63,7 @@
 const svgWidth = 600;
   const svgHeight = 400;
   const amplitude = 40;
-  const wavelength = 250; // longueur d'onde en pixels
+  let wavelength = 250; // longueur d'onde en pixels
   const speed = 2; // pixels par frame (vitesse de décalage vers la droite)
   const step = 2; // pas horizontal entre points
   const frequency = 2 * Math.PI / wavelength;
@@ -73,6 +79,32 @@ const svgWidth = 600;
   let antennaVisible = false; // Variable pour savoir si l'antenne est visible
   let waveExtent = 250; // Nouvelle variable pour contrôler l'étendue de l'onde
   
+
+  // Nouvelle fonction pour mettre à jour l'onde
+function updateWave() {
+  wavelength = parseInt(document.getElementById('wavelengthSlider').value);
+  frequency = 2 * Math.PI / wavelength;
+  
+  // Mettre à jour l'affichage
+  document.getElementById('wavelengthValue').textContent = wavelength;
+  document.getElementById('antennaSize').textContent = Math.round(wavelength * antennaRatio);
+  
+  // Redimensionner l'antenne
+  if (antennaVisible) {
+    const newAntennaHeight = wavelength * antennaRatio;
+    antennaElem.setAttribute('height', newAntennaHeight);
+  }
+  
+  // Si l'animation n'est pas en cours, redessiner l'onde statique
+  if (!isAnimating) {
+    pathElem.setAttribute('d', generatePath(phase, Math.min(waveExtent, wavelength * 2)));
+  }
+}
+
+// Event listener pour le slider
+document.getElementById('wavelengthSlider').addEventListener('input', updateWave);
+
+
   function generatePath(phase, maxX) {
     let d = "";
     let started = false;
@@ -171,10 +203,12 @@ initMouseMove();
 ////////////////////////APPARITION ET BOUTON////////////////////
 function antenne(){
   if (!antennaVisible) {
-    // Premier clic : ajouter l'antenne
+    const antennaHeight = wavelength * antennaRatio;
+    antennaElem.setAttribute('height', antennaHeight);
     $('#antenna').css('display','block');
     antennaVisible = true;
-    document.querySelector('.sous_texte p').textContent = "l'antenne entre en résonnance avec la longueur d'onde du signal émis si elle est proportionnelle à sa longueur d'onde";
+    document.querySelector('.sous_texte p').textContent = 
+      "l'antenne mesure λ/2 pour entrer en résonance optimale avec l'onde";
     document.getElementById("bouton_signal").textContent = "lancer le signal";
   } else {
     // Deuxième clic : lancer le signal

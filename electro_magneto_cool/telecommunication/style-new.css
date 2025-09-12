@@ -158,7 +158,7 @@ line-height: 0.6;
       font-family: palace;
   color: black;
   font-size: 2.2em;
-  position: relative;
+  position: absolute;
   top: 34px;
   -webkit-text-stroke: black 0.5px;
 }
@@ -403,7 +403,7 @@ box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), inset 0px -10px 23px 4px #3
   }
 
   #message_final {
-    margin-top: 304px;
+    margin-top: 346px;
     margin-left: 349px;
     width: fit-content;
     height: fit-content;

@@ -124,8 +124,8 @@ absolute; margin-left: 169px; top: 395px; display:none">Téléphone recepteur</p
       <path id="sineWave_2" stroke="black" stroke-width="1" fill="none" />
     </svg>
     <div id="antenne_receptrice" class="antenne">
-                <p class="txt_antenne_fond" style="margin-left: -35px;">antenne réceptrice</p>
-        <p class="txt_antenne" style="margin-left: -35px;">antenne réceptrice</p>  </div>
+                <p class="txt_antenne_fond" style="margin-left: -40px;">antenne réceptrice</p>
+        <p class="txt_antenne" style="margin-left: -40px;">antenne réceptrice</p>  </div>
     <button id="decoder_bouton">décoder le signal</button>
 
 
@@ -954,7 +954,7 @@ if (firstSignalPath && secondSignalGroup) {
             drawSignalElectrique({
                 pathGroupId: null,
                 bits: allBits,
-                speed: 200,
+                speed: 250,
                 binaireProgressElementId: 'texte_binaire_decode',
                 onComplete: () => {
                     $('#legende').text("Signal électrique reçu \nConversion en binaire...");
