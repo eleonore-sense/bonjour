@@ -18,69 +18,141 @@
 <div id="gauche" style="justify-content:center; display:grid" class="partie">
   
 
-  <svg viewBox="0 0 600 400" id="waveSvg">
+  <svg viewBox="0 0 700 600" id="waveSvg">
   <path id="sineWave" />
   <path id="horizontalWave" />
-  <line x1="0" y1="290" x2="250" y2="290" />
-  <line x1="250" y1="130" x2="250" y2="290" style="stroke-dasharray:5,5;"/>
+<line id="horizontalLine" x1="0" y1="290" x2="250" y2="290" />
+<line id="verticalLineRight" x1="250" y1="130" x2="250" y2="290" style="stroke-dasharray:5,5;"/>
   <line x1="0" y1="130" x2="0" y2="290" style="stroke-dasharray:5,5;"/>
-  <rect id="antenna" width="3" height="250" x="600" y="120" style="fill: none; stroke: black; display: none;" />
+  <rect id="antenna" width="3" height="250" x="600" y="140" style="fill: white; stroke: black; display: none;" />
 </svg>
-<div id="longueur_onde"><p> longueur d'onde </div>
+<div id="longueur_onde"><p>la longueur d'onde </div>
 
 
-<div id="info" style="display: grid; justify-content: center; margin-top: -220px;">
-  <div class="sous_texte" style="width:500px;"><p>la longueur d'onde est la distance entre deux points identiques (comme deux crêtes) d'une onde périodique.</p></div>
+<div id="info"  style=" ">
+  <div  class="legende sous_texte" style=""><p>la longueur d'onde est la distance entre deux points identiques d'une onde périodique.</p></div>
   <button id="bouton_signal" style="" onclick='antenne()'>ajouter une antenne</button>
 
 </div>
 
 
+<rect class="d" x=".5" y=".5" width="3" height="115.92"/></rect>
+
+
+<div id="controls" style="margin-top: 40px;">
+  <label for="wavelengthSlider">Longueur d'onde : </label>
+  <input type="range" id="wavelengthSlider" min="100" max="400" value="250" step="10">
+  <span id="wavelengthValue">250</span> px
+  <br>
+  <small>taille de l'antenne : <span id="antennaSize">125</span> px</small>
+<div id="antennaTypes" style="margin-top: 15px; display: none;">
+  <p><strong>Type d'antenne :</strong></p>
+  <button id="btnHalfWave" class="antenna-btn active" onclick="changeAntennaType(0.5)">Demi-onde</button>
+  <button id="btnQuarterWave" class="antenna-btn" onclick="changeAntennaType(0.25)">Quart d'onde</button>
+  <button id="btnFullWave" class="antenna-btn" onclick="changeAntennaType(1)">Onde complète</button>
+</div>
 
 
 
 </div>
 
-<rect class="d" x=".5" y=".5" width="3" height="115.92"/>
 
-
+</div>
 
 
  </div>
 
 
-<div id="controls" style="margin-top: 20px;">
-  <label for="wavelengthSlider">Longueur d'onde : </label>
-  <input type="range" id="wavelengthSlider" min="100" max="400" value="250" step="10">
-  <span id="wavelengthValue">250</span> px
-  <br>
-  <small>Taille antenne : <span id="antennaSize">125</span> px (λ/2)</small>
-</div>
+
+
+
+
+
 <script type="text/javascript">
 
   ///////////////////////ANIM LONGUEUR D'ONDE//////////////////////////////////
 
-const svgWidth = 600;
-  const svgHeight = 400;
-  const amplitude = 40;
-  let wavelength = 250; // longueur d'onde en pixels
-  const speed = 2; // pixels par frame (vitesse de décalage vers la droite)
-  const step = 2; // pas horizontal entre points
-  const frequency = 2 * Math.PI / wavelength;
-  const pathElem = document.getElementById('sineWave');
-  const horizontalPathElem = document.getElementById('horizontalWave');
-  const antennaElem = document.getElementById('antenna');
-  const antennaX = 600; // position X de l'antenne
-  
-  let phase = 0;
-  let isHighlighted = false;
-  let highlightTimeout = null;
-  let isAnimating = false; // Variable pour contrôler l'animation
-  let antennaVisible = false; // Variable pour savoir si l'antenne est visible
-  let waveExtent = 250; // Nouvelle variable pour contrôler l'étendue de l'onde
-  
+const svgWidth = 700;
+const svgHeight = 600;
+const amplitude = 40;
+let wavelength = 250; // maintenant variable
+const waveCenter = 200;
+const speed = 2; // pixels par frame (vitesse de décalage vers la droite)
+const step = 2; // pas horizontal entre points
+let frequency = 2 * Math.PI / wavelength; // sera recalculé
+let antennaRatio = 1; // λ/2 pour une antenne dipôle
 
-  // Nouvelle fonction pour mettre à jour l'onde
+const pathElem = document.getElementById('sineWave');
+const horizontalPathElem = document.getElementById('horizontalWave');
+const antennaElem = document.getElementById('antenna');
+const horizontalLineElem = document.getElementById('horizontalLine');
+const verticalLineRightElem = document.getElementById('verticalLineRight');
+const antennaX = 600; // position X de l'antenne
+
+let phase = 0;
+let isHighlighted = false;
+let highlightTimeout = null;
+let isAnimating = false; // Variable pour contrôler l'animation
+let antennaVisible = false; // Variable pour savoir si l'antenne est visible
+let waveExtent = 250; // Nouvelle variable pour contrôler l'étendue de l'onde
+
+function generatePath(phase, maxX) {
+  let d = "";
+  let started = false;
+  // Utiliser waveExtent au lieu de maxX fixe
+  const endX = maxX || waveExtent;
+  
+  for(let x = 0; x <= endX; x += step) {
+    let y = waveCenter + amplitude * Math.sin(frequency * (x - phase));
+    if (!started) {
+      d += `M ${x} ${y}`;
+      started = true;
+    } else {
+      d += ` L ${x} ${y}`;
+    }
+  }
+  return d;
+}
+
+function checkWaveAtAntenna() {
+  // Vérifier seulement si l'onde a atteint l'antenne
+  if (waveExtent >= antennaX && antennaVisible) {
+    // Calculer la valeur de la sinusoïde à la position de l'antenne
+    const waveValueAtAntenna = Math.sin(frequency * (antennaX - phase));
+    
+    // Détecter si on est proche du maximum OU du minimum (avec une petite tolérance)
+    if ((waveValueAtAntenna < -0.95) && !isHighlighted) {
+      // Activer le surlignage
+      antennaElem.classList.add('antenna-highlight');
+      isHighlighted = true;
+      
+      // Programmer l'arrêt du surlignage après 500ms
+      highlightTimeout = setTimeout(() => {
+      antennaElem.style.transition = 'all 0.2s ease';
+        antennaElem.classList.remove('antenna-highlight');
+        isHighlighted = false;
+      }, 200);
+    }
+  }
+}
+
+function animate() {
+  if (isAnimating) {
+    phase += speed;
+    // Faire grandir l'onde progressivement jusqu'à l'antenne
+    if (waveExtent < antennaX) { // +50 pour dépasser un peu l'antenne
+      waveExtent += speed; // L'onde grandit à la même vitesse que la phase
+    }
+    pathElem.setAttribute('d', generatePath(phase));
+    checkWaveAtAntenna();
+  } else {
+    // Onde statique au départ, limitée à la longueur d'onde visible
+    pathElem.setAttribute('d', generatePath(0, Math.min(waveExtent, wavelength * 2)));
+  }
+  requestAnimationFrame(animate);
+}
+
+// Fonction pour mettre à jour l'onde quand on change la longueur d'onde
 function updateWave() {
   wavelength = parseInt(document.getElementById('wavelengthSlider').value);
   frequency = 2 * Math.PI / wavelength;
@@ -88,12 +160,21 @@ function updateWave() {
   // Mettre à jour l'affichage
   document.getElementById('wavelengthValue').textContent = wavelength;
   document.getElementById('antennaSize').textContent = Math.round(wavelength * antennaRatio);
+
+// Animer les barres de longueur d'onde
+horizontalLineElem.setAttribute('x2', wavelength);
+verticalLineRightElem.setAttribute('x1', wavelength);
+verticalLineRightElem.setAttribute('x2', wavelength);
+
   
-  // Redimensionner l'antenne
-  if (antennaVisible) {
-    const newAntennaHeight = wavelength * antennaRatio;
-    antennaElem.setAttribute('height', newAntennaHeight);
-  }
+  // Redimensionner l'antenne si elle est visible
+// Redimensionner l'antenne si elle est visible
+if (antennaVisible) {
+  const newAntennaHeight = wavelength * antennaRatio;
+  antennaElem.setAttribute('height', newAntennaHeight);
+  // Garder le haut fixe à y=120
+  antennaElem.setAttribute('y', 120);
+}
   
   // Si l'animation n'est pas en cours, redessiner l'onde statique
   if (!isAnimating) {
@@ -104,72 +185,10 @@ function updateWave() {
 // Event listener pour le slider
 document.getElementById('wavelengthSlider').addEventListener('input', updateWave);
 
+// Initialiser l'onde statique
+animate();
 
-  function generatePath(phase, maxX) {
-    let d = "";
-    let started = false;
-    // Utiliser waveExtent au lieu de maxX fixe
-    const endX = maxX || waveExtent;
-    
-    for(let x = 0; x <= endX; x += step) {
-      let y = svgHeight / 2 + amplitude * Math.sin(frequency * (x - phase));
-      if (!started) {
-        d += `M ${x} ${y}`;
-        started = true;
-      } else {
-        d += ` L ${x} ${y}`;
-      }
-    }
-    return d;
-  }
-  
-  function checkWaveAtAntenna() {
-    // Vérifier seulement si l'onde a atteint l'antenne
-    if (waveExtent >= antennaX && antennaVisible) {
-      // Calculer la valeur de la sinusoïde à la position de l'antenne
-      const waveValueAtAntenna = Math.sin(frequency * (antennaX - phase));
-      
-      // Détecter si on est proche du maximum OU du minimum (avec une petite tolérance)
-      if ((waveValueAtAntenna < -0.95) && !isHighlighted) {
-        // Activer le surlignage
-        antennaElem.classList.add('antenna-highlight');
-        isHighlighted = true;
-        
-        // Programmer l'arrêt du surlignage après 500ms
-        highlightTimeout = setTimeout(() => {
-          antennaElem.classList.remove('antenna-highlight');
-          isHighlighted = false;
-        }, 500);
-      }
-    }
-  }
-  
-  function animate() {
-    if (isAnimating) {
-      phase += speed;
-      // Faire grandir l'onde progressivement jusqu'à l'antenne
-      if (waveExtent < antennaX) { // +50 pour dépasser un peu l'antenne
-        waveExtent += speed; // L'onde grandit à la même vitesse que la phase
-      }
-      pathElem.setAttribute('d', generatePath(phase));
-      checkWaveAtAntenna();
-    } else {
-      // Onde statique au départ, limitée à 250px
-      pathElem.setAttribute('d', generatePath(0, 250));
-    }
-    requestAnimationFrame(animate);
-  }
-  
-  // Initialiser l'onde statique
-  animate();
-
-
-
-
-
-
-
-  ///////////////////////POSITION texte//////////////////////////////////
+///////////////////////POSITION texte//////////////////////////////////
 
 // Attendre que jQuery soit chargé
 function initMouseMove() {
@@ -195,36 +214,47 @@ function initMouseMove() {
 // Lancer l'initialisation
 initMouseMove();
 
-
-
-
-
-
 ////////////////////////APPARITION ET BOUTON////////////////////
 function antenne(){
   if (!antennaVisible) {
+    // Premier clic : ajouter l'antenne avec la bonne taille
     const antennaHeight = wavelength * antennaRatio;
+    
     antennaElem.setAttribute('height', antennaHeight);
+    antennaElem.setAttribute('y', 140);
     $('#antenna').css('display','block');
+    document.getElementById("bouton_signal").textContent = ">>>";
     antennaVisible = true;
+    $('#antennaTypes').css('display', 'flex');
     document.querySelector('.sous_texte p').textContent = 
-      "l'antenne mesure λ/2 pour entrer en résonance optimale avec l'onde";
+      "l'antenne mesure la taille de pour entrer en résonance optimale avec l'onde. Changez la longueur d'onde pour voir l'antenne s'adapter !";
     document.getElementById("bouton_signal").textContent = "lancer le signal";
   } else {
     // Deuxième clic : lancer le signal
     isAnimating = true;
-    waveExtent = 250; // Réinitialiser l'étendue de l'onde au démarrage
+    waveExtent = Math.min(250, wavelength); // Réinitialiser l'étendue de l'onde au démarrage
     document.getElementById("bouton_signal").textContent = "signal lancé";
-    document.getElementById("bouton_signal").disabled = true;
+    document.getElementById("bouton_signal").style.opacity = "0";
+    document.querySelector('.sous_texte p').textContent = 
+      "Plus la longueur d'onde est grande, plussa vitesse de propagation est lente mais ira plus loin et inversement.";
   }
 }
 
 
-function signal(){
-
-
-
+function changeAntennaType(ratio) {
+  antennaRatio = ratio;
+  
+  // Mettre à jour l'affichage
+  updateWave();
+  
+  // Changer le bouton actif
+  document.querySelectorAll('.antenna-btn').forEach(btn => btn.classList.remove('active'));
+  if (ratio === 0.5) document.getElementById('btnHalfWave').classList.add('active');
+  else if (ratio === 0.25) document.getElementById('btnQuarterWave').classList.add('active');
+  else if (ratio === 1) document.getElementById('btnFullWave').classList.add('active');
 }
+
+
 </script>
 </body>
   </html>

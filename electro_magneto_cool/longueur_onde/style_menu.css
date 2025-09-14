@@ -15,31 +15,38 @@
 
 	}
 
+  @font-face {
+      font-family: 'narrow';
+      src: url('../TYPO/arialnarrow.ttf') format('truetype'),
+      font-weight: normal;
+      font-style: normal;
+
+  }
+
+      @font-face {
+    font-family: 'palace';
+    src: url('../TYPO/Palace script.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+  }
+
 
 html, body{
 margin: 0px;
 padding: 0px;
- font-family: alegreya;
+font-size: 1.2em;
+  font-family: narrow;
+  letter-spacing: 0.1em;
+    word-spacing: 0.2em;  
 color: rgb(0,0,0);
 overflow: hidden;
- /*background-image:url("img/test_fond.jpg") ;*/
- background-color: white;
   background-size: cover;
-	background-position-y: center;
-	background-repeat: no-repeat;
+  background-position-y: center;
+  background-repeat: no-repeat;
   width: 100vw;
   height: 100vh;
   font-size: 0.95em;
   color: black;
-  justify-content: space-between;
-  display: flex;
-}
-
-.partie{
-  top: 0px;
-  left: 0px;
-  height: 100vh;
-  width: 50vw;
 }
 
 
@@ -59,18 +66,37 @@ overflow: hidden;
 
 
 
-  svg { width: 600px; height: 300px; display: block; }
-  path { fill: none; stroke: black; stroke-width: 1; }
-  line { fill: none; stroke: black; stroke-width: 1; }
-  rect { fill: white; stroke: black; stroke-width: 1; }
+  svg { 
+    width: 600px; 
+    height: 400px; 
+    display: block; 
+  }
+  path { 
+    fill: none; 
+    stroke: black; 
+    stroke-width: 1; 
+  }
+  line { 
+    fill: none; 
+    stroke: black; 
+    stroke-width: 1; 
+  }
+  rect { 
+
+    fill: white; 
+    stroke: black; 
+    stroke-width: 1; 
+  }  
+  
+
   #longueur_onde{
     top: 210px;
     position: absolute;
-    left: 120px;
+    left: 495px;
   }
   .antenna-highlight {
-    fill: grey !important;
-  }
+  filter: drop-shadow(0 0 4px black);
+  fill: white;}
 
 
 
@@ -95,6 +121,19 @@ overflow: hidden;
   .legende{
   height: 20px;
   width: 200px;
+  position: absolute;
+  width: 500px;
+      position: absolute;
+    font-size: 2.5em;
+    pointer-events: none; 
+    transition: opacity 0.2s ease;
+    z-index: 1000;
+    font-family: palace;
+  color: white;
+  -webkit-text-stroke: 0.7px white;
+text-shadow: #FFF 0px 0px 5px, #FF00E7 0px 0px 20px, #FF00E7 0px 0px 30px, #FF00E7 0px 0px 5px, #FF00E7 0px 0px 10px ;
+line-height: 0.6;
+    white-space: pre-line; /* Interprète les \n comme des sauts de ligne */
 }
 
 .famille_antenne p {
@@ -121,9 +160,11 @@ button{
   width: fit-content;
   height: fit-content;
   cursor: pointer;
-  margin-top: -186px;
-  margin-left: 250px;
+  margin-top: 20px;
   transform: translate(-50%);
+      font-family: narrow;
+  letter-spacing: 0.1em;  
+  word-spacing: 0.2em;
 }
 
 .img_antenne {
@@ -138,10 +179,12 @@ button{
 }
 
 
+#horizontalLine, #verticalLineRight {
+  transition: all 0.3s ease;
+}
 
-#dipole {
-    background-image: url('img/dipole.jpg');
+#antennaTypes{
+ justify-content: space-around; 
 }
-#yagi {
-    background-image: url('img/yagi.jpg');
-}
+
+
