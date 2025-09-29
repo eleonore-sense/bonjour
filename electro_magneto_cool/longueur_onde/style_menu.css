@@ -93,6 +93,10 @@ overflow: hidden;
     top: 210px;
     position: absolute;
     left: 495px;
+  -webkit-text-stroke: 14.5px white;
+  paint-order: stroke fill;
+  color: black;
+  z-index: 20;
   }
   .antenna-highlight {
   filter: drop-shadow(0 0 4px black);
@@ -188,3 +192,15 @@ button{
 }
 
 
+
+
+#longueur_onde_fond{
+    font-family: narrow;
+    letter-spacing: 0.12em;
+    word-spacing: 0.2em;
+  color: black;
+  z-index: 1;
+  position: absolute;
+  -webkit-text-stroke: 16px black;
+  max-width: 300px;
+}
