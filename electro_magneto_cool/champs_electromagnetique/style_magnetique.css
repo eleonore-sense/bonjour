@@ -1,0 +1,243 @@
+	@font-face {
+	    font-family: 'Wingdings';
+	    src: url('TYPO/wingding.ttf') format('truetype'),
+	         url('wingding.svg') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+
+	}
+
+
+  @font-face {
+      font-family: 'narrow';
+      src: url('../TYPO/arialnarrow.ttf') format('truetype'),
+      font-weight: normal;
+      font-style: normal;
+
+  }
+
+
+#retour{
+  font-family: narrow;
+  letter-spacing: 0.1em;  
+      transform: scaleX(0.7);
+}
+
+    @font-face {
+    font-family: 'palace';
+    src: url('../TYPO/Palace script.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+  }
+
+   * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #ffffff;
+      color: #000000;
+      font-family: narrow;
+      padding: 20px;
+      overflow-x: hidden;
+    font-size: 0.95em;
+    letter-spacing: 0.12em;
+    word-spacing: 0.2em;
+    }
+
+    .boite {
+display: flex;
+position: absolute;
+      width: 100vw;
+      min-height: 400px;
+    }
+
+
+    #gauche{
+width: 50vw;
+    }
+
+    #droite{
+width: 50vw;
+    }
+
+
+/*    .txt_boite {
+      font-size: 0.95em;
+      line-height: 1.6;
+      color: #000;
+      width: 450px;
+      margin-top: 200px;
+    }*/
+
+    #mysvg {
+      display: block;
+      margin: 20px auto;
+      background-color: #ffffff;
+    }
+
+
+
+svg > g {
+      transition: opacity 1s ease-out;
+}
+
+
+    .electron-circle {
+      fill: #ffffff;
+      stroke: #000000;
+      stroke-width: 1;
+      transition: opacity 1s ease-out;
+    }
+
+    .electron-symbol {
+      font-size: 16px;
+      font-weight: bold;
+      fill: #000000;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+      font-family: 'Courier New', monospace;
+      transition: opacity 1s ease-out;
+    }
+
+    .proton-symbol {
+      font-size: 14px;
+      font-weight: bold;
+      fill: #000000;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+      font-family: 'Courier New', monospace;
+      transition: opacity 1s ease-out;
+    }
+
+    #matter-circle {
+      fill: none;
+      stroke: #000000;
+      stroke-width: 1;
+    }
+
+    #nucleus {
+      fill: none;
+      stroke: #000000;
+      stroke-width: 1;
+      transition: opacity 1s ease-out;
+    }
+
+
+    #mini-nucleus {
+      fill: none;
+      stroke: #000000;
+      stroke-width: 1;
+            transition: opacity 1s ease-out;
+    }
+
+    .mini-nucleus {
+      fill: none;
+      stroke: #000000;
+      stroke-width: 1;
+    }
+
+    .next-button {
+      cursor: pointer;
+      position: absolute;
+        font-family: narrow;
+  letter-spacing: 0.12em;
+  left: 500px;
+    }
+
+    .current-loop {
+      fill: none;
+      stroke: #000000;
+      stroke-width: 1;
+  transition: opacity 1s ease-out;  /* Ajoute cette ligne */
+    }
+
+    .loop-arrow {
+      fill: #000000;
+  transition: opacity 1s ease-out;  /* Ajoute cette ligne */
+    }
+
+    .pole-legend {
+      fill: #ffffff;
+      stroke: #000000;
+      stroke-width: 1;
+    }
+
+    .pole-legend-south {
+      fill: #000000;
+      stroke: #000000;
+      stroke-width: 1;
+    }
+
+    .pole-legend-label {
+      fill: #000000;
+      font-size: 14px;
+      font-weight: bold;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      font-family: 'Courier New', monospace;
+    }
+
+    .pole-legend-label-south {
+      fill: #ffffff;
+      font-size: 14px;
+      font-weight: bold;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      font-family: 'Courier New', monospace;
+    }
+
+    path.field-line {
+      fill: none;
+      stroke: #000000;
+      stroke-width: 1;
+  transition: opacity 1s ease-out;  /* Ajoute cette ligne */
+    }
+
+    .field-arrow {
+      fill: #000000;
+  transition: opacity 1s ease-out;  /* Ajoute cette ligne */
+    }
+
+
+/* Contour noir extérieur (1px) */
+.txt_contour_noir {
+  font-family: narrow;
+  letter-spacing: 0.12em;
+  word-spacing: 0.2em;
+  stroke: black;
+  stroke-width: 27px;  /* Contour gris (8px) + contour noir (2x1px) */
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  fill: none;
+  font-size: 24px;
+    shape-rendering: geometricPrecision;
+}
+
+/* Contour dégradé de gris */
+.txt_contour_gris {
+  font-family: narrow;
+  letter-spacing: 0.12em;
+  word-spacing: 0.2em;
+  stroke: url(#degrade_gris);
+  stroke-width: 25px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  fill: none;
+  font-size: 24px;
+    shape-rendering: geometricPrecision;
+}
+
+/* Remplissage noir */
+.txt_remplissage {
+  font-family: narrow;
+  letter-spacing: 0.12em;
+  word-spacing: 0.2em;
+  stroke: none;
+  fill: black;
+  font-size: 24px;
+}

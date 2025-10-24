@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style_magnetique.css"> 
+  <title>🧲⁘⁕¨⊹🌍⁑¨‸⁗⁎🧭⁂°⁛¨🧲</title>
+  <style>
+ 
+  </style>
+</head>
+
+<body>
+        <div><a id="retour" href="index.html">retour</a>
+  <div class="boite">
+    
+
+
+    <div id="gauche">
+      <svg id="mysvg" width="600" height="350"></svg>
+
+      <button id="button1" class="next-button">>>></button>
+
+      <button id="button2" class="next-button" style="display: none;">>>></button>
+
+      <button id="button3" class="next-button" style="display: none;">>>></button>
+
+      <button id="button4" class="next-button" style="display: none;">>>></button>
+
+      <button id="button4b" class="next-button" style="display: none;">>>></button>
+
+      <button id="button5" class="next-button" style="display: none;">>>></button>
+
+
+      <button id="button6" class="next-button" style="display: none;">>>></button>
+  </div>
+
+
+
+    <div id="droite">
+
+<svg viewBox="0 0 800 120">
+  <defs>
+    <linearGradient id="degrade_gris" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ff6b6b" />
+      <stop offset="50%" style="stop-color:#4ecdc4" />
+      <stop offset="100%" style="stop-color:#45b7d1" />
+    </linearGradient>
+  </defs>
+  
+
+  <text id="text1" class="txt_degrade txt_boite" x="50%" y="50" text-anchor="middle" dominant-baseline="middle">
+    dans la matière, les électrons tournent sur eux-mêmes <br>de manière aléatoire. Leurs rotations désordonnées <br>ne crée pas de champ magnétique.
+  </text>
+</svg>
+
+
+
+
+    <div class="txt_boite" id="text3" style="margin-top: 20px; display: none;">
+      <p>dans certains matériaux, les électrons peuvent se synchroniser et tourner tous dans le même sens</p>
+    </div>
+
+
+    <div class="txt_boite" id="text4" style="margin-top: 20px; display: none;">
+      <p>cette rotation synchronisée crée une boucle de courant circulaire</p>
+    </div>
+
+
+    <div class="txt_boite" id="text4b" style="margin-top: 20px; display: none;">
+      <p>dans la matière, des millions de ces boucles sont alignées</p>
+    </div>
+
+    <div class="txt_boite" id="text4c" style="margin-top: 20px; display: none;">
+      <p>toutes ces boucles s'additionnent pour former un grand courant circulaire</p>
+    </div>
+
+
+    <div class="txt_boite" id="text5" style="margin-top: 20px; display: none;">
+      <p>le champ magnétique se propage autour de la matière</p>
+    </div>
+
+
+    <div class="txt_boite" id="text6" style="margin-top: 20px; display: none;">
+      <p>cela crée deux pôles : nord (N) et sud (S)</p>
+      <p style="margin-top: 10px;">on dit que la matière est polarisée</p>
+    </div>
+  </div>
+  </div>
+
+
+
+
+
+
+
+
+  <script>
+    const svg = document.getElementById("mysvg");
+    const centerX = 300;
+    const centerY = 175;
+    const radius = 100;
+
+    // Créer un groupe pour tout le système "matière" qui sera zoomé/dézoomé
+    const matterGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    matterGroup.setAttribute("id", "matter-group");
+    svg.appendChild(matterGroup);
+
+    // Cercle représentant la matière
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("id", "matter-circle");
+    circle.setAttribute("cx", centerX);
+    circle.setAttribute("cy", centerY);
+    circle.setAttribute("r", radius);
+    circle.setAttribute("fill", "#ffffff");
+    svg.appendChild(circle);
+
+    // Noyau au centre (sans contour)
+    const nucleus = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    nucleus.setAttribute("id", "nucleus");
+    nucleus.setAttribute("cx", centerX);
+    nucleus.setAttribute("cy", centerY);
+    nucleus.setAttribute("r", 25);
+    svg.appendChild(nucleus);
+
+    // Protons dans le noyau (fixes)
+    const numProtons = 4;
+    for (let i = 0; i < numProtons; i++) {
+      const angle = (Math.PI * 2 * i) / numProtons;
+      const dist = 10;
+      const px = centerX + Math.cos(angle) * dist;
+      const py = centerY + Math.sin(angle) * dist;
+
+      const proton = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      proton.setAttribute("class", "proton-symbol");
+      proton.setAttribute("x", px);
+      proton.setAttribute("y", py);
+      proton.textContent = "+";
+      svg.appendChild(proton);
+    }
+
+    const electrons = [];
+    const numElectrons = 8;
+    const electronRadius = 8;
+    let currentStep = 1;
+    let fieldPaths = [];
+    let fieldArrows = [];
+    let currentLoop = null;
+    let loopArrow = null;
+    let multipleLoops = [];
+    let multipleLoopArrows = [];
+    let matterContainer = null;
+    let bigLoop = null;
+    let bigLoopArrow = null;
+    let bigLoopBack = null;
+
+    function createElectron(index) {
+      const orbitRadius = 40 + (index % 3) * 20;
+      const orbitSpeed = 0.01 + Math.random() * 0.005;
+      const startAngle = Math.random() * Math.PI * 2;
+      const spinSpeed = (index % 2 === 0 ? 1 : -1) * (0.03 + Math.random() * 0.02);
+      
+      const electron = {
+        x: centerX + Math.cos(startAngle) * orbitRadius,
+        y: centerY + Math.sin(startAngle) * orbitRadius,
+        orbitRadius: orbitRadius,
+        orbitAngle: startAngle,
+        orbitSpeed: orbitSpeed,
+        spinAngle: Math.random() * Math.PI * 2,
+        spinSpeed: spinSpeed,
+        group: null,
+        circle: null,
+        symbol: null,
+        isSyncing: false
+      };
+
+      const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      svg.appendChild(group);
+      electron.group = group;
+
+      const circleElem = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circleElem.setAttribute("class", "electron-circle");
+      circleElem.setAttribute("cx", 0);
+      circleElem.setAttribute("cy", 0);
+      circleElem.setAttribute("r", electronRadius);
+      group.appendChild(circleElem);
+      electron.circle = circleElem;
+
+      const symbolElem = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      symbolElem.setAttribute("class", "electron-symbol");
+      symbolElem.setAttribute("x", 0);
+      symbolElem.setAttribute("y", 0);
+      symbolElem.textContent = "−";
+      group.appendChild(symbolElem);
+      electron.symbol = symbolElem;
+
+      return electron;
+    }
+
+    for (let i = 0; i < numElectrons; i++) {
+      electrons.push(createElectron(i));
+    }
+
+// ========== BOUTON 1 : Synchronisation des électrons ==========
+document.getElementById('button1').addEventListener('click', function() {
+  if (currentStep === 1) {
+    currentStep = 2;
+    document.getElementById('text1').style.display = 'none';
+    this.style.display = 'none';
+    document.getElementById('text3').style.display = 'block';
+    document.getElementById('button2').style.display = 'block';
+    
+    electrons.forEach(electron => {
+      electron.spinAngle = 0;
+      electron.spinSpeed = 0.03;
+    });
+  }
+});
+
+// ========== BOUTON 2 : Apparition de l'orbite ==========
+document.getElementById('button2').addEventListener('click', function() {
+  if (currentStep === 2) {
+    currentStep = 2.5;
+    this.style.display = 'none';
+    document.getElementById('text4').style.display = 'block';
+    document.getElementById('button3').style.display = 'block';
+    createCurrentLoop();
+  }
+});
+
+// ========== BOUTON 3 : Disparition électrons/protons + Structure + Zoom ==========
+document.getElementById('button3').addEventListener('click', function() {
+  if (currentStep === 2.5) {
+    currentStep = 2.75;
+    this.style.display = 'none';
+    document.getElementById('text4').style.display = 'none';
+    document.getElementById('text4c').style.display = 'block';
+    document.getElementById('button4b').style.display = 'block';
+    
+    // Faire disparaître électrons, protons, nucleus
+    electrons.forEach(electron => {
+      electron.group.style.opacity = "0";
+    });
+    document.querySelectorAll('.proton-symbol').forEach(p => {
+      p.style.opacity = "0";
+    });
+    nucleus.style.opacity = "0";
+    
+    // Après 0.5s, créer structure puis zoomer
+    setTimeout(() => {
+      circle.style.display = "none";
+      currentLoop.style.display = 'none';
+      loopArrow.style.display = 'none';
+      createLargeStructure();
+      
+      setTimeout(() => {
+        animateZoomOut();
+      }, 500);
+    }, 500);
+  }
+});
+
+// ========== BOUTON 4B : Grande orbite + Disparition petites orbites ==========
+document.getElementById('button4b').addEventListener('click', function() {
+  if (currentStep === 2.85) {
+    currentStep = 3;
+    this.style.display = 'none';
+    document.getElementById('text4c').style.display = 'none';
+    document.getElementById('text5').style.display = 'block';
+    document.getElementById('button5').style.display = 'block';
+    
+    createBigLoop();
+    
+    // Après 1 seconde, faire disparaître les petites orbites
+    setTimeout(() => {
+      multipleLoops.forEach(loop => {
+        loop.style.opacity = "0";
+      });
+      multipleLoopArrows.forEach(arrow => {
+        arrow.style.opacity = "0";
+      });
+      document.querySelectorAll('.mini-nucleus').forEach(n => {
+        n.style.opacity = "0";
+      });
+    }, 1000);
+  }
+});
+
+// ========== BOUTON 5 : Champ magnétique ==========
+document.getElementById('button5').addEventListener('click', function() {
+  if (currentStep === 3) {
+    currentStep = 4;
+    this.style.display = 'none';
+    document.getElementById('text5').style.display = 'none';
+    document.getElementById('text6').style.display = 'block';
+    document.getElementById('button6').style.display = 'block';  // Ajoute cette ligne
+    
+createFieldLines();
+
+// Faire apparaître progressivement
+setTimeout(() => {
+  fieldPaths.forEach(path => {
+    path.style.opacity = "1";
+  });
+  fieldArrows.forEach(({arrow}) => {
+    arrow.style.opacity = "1";
+  });
+}, 50);
+
+  }
+});
+
+// ========== BOUTON 6 : Pôles N/S + Disparition bigLoop ==========
+document.getElementById('button6').addEventListener('click', function() {
+  if (currentStep === 4) {
+    currentStep = 5;
+    this.style.display = 'none';
+    document.getElementById('text6').style.display = 'none';
+  //  document.getElementById('text7').style.display = 'block';  // Si tu as un text7
+    
+    // Faire disparaître bigLoop progressivement
+    if (bigLoop) bigLoop.style.opacity = "0";
+    if (bigLoopBack) bigLoopBack.style.opacity = "0";
+    if (bigLoopArrow) bigLoopArrow.style.opacity = "0";
+    
+    // Après 1 seconde, créer les pôles
+    setTimeout(() => {
+      createPoleLegend();
+    }, 1000);
+  }
+});
+
+    function createCurrentLoop() {
+      currentLoop = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
+      currentLoop.setAttribute("class", "current-loop");
+      currentLoop.setAttribute("cx", centerX);
+      currentLoop.setAttribute("cy", centerY);
+      currentLoop.setAttribute("rx", "250");
+      currentLoop.setAttribute("ry", "62");
+      currentLoop.style.opacity = "0";
+      svg.appendChild(currentLoop);
+
+      loopArrow = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+      loopArrow.setAttribute("class", "loop-arrow");
+      loopArrow.style.opacity = "0";
+      svg.appendChild(loopArrow);
+      
+      // Animation d'apparition progressive
+      const startTime = performance.now();
+      const duration = 1000;
+      
+      function fadeIn() {
+        const elapsed = performance.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        currentLoop.style.opacity = progress;
+        loopArrow.style.opacity = progress;
+        
+        if (progress < 1) {
+          requestAnimationFrame(fadeIn);
+        }
+      }
+      
+      fadeIn();
+    }
+
+    function createLargeStructure() {
+      // Créer le rectangle de matière dans le groupe
+      matterContainer = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      matterContainer.setAttribute("x", centerX - 60);
+      matterContainer.setAttribute("y", centerY - 90);
+      matterContainer.setAttribute("width", "120");
+      matterContainer.setAttribute("height", "180");
+      matterContainer.setAttribute("rx", "5");
+      matterContainer.setAttribute("ry", "5");
+      matterContainer.setAttribute("fill", "#ffffff");
+      matterContainer.setAttribute("stroke", "#000000");
+      matterContainer.setAttribute("stroke-width", "1");
+      matterContainer.setAttribute("vector-effect", "non-scaling-stroke");
+      matterContainer.style.opacity = "0";
+      matterGroup.appendChild(matterContainer);
+      
+      const positions = [
+        {x: centerX - 32, y: centerY - 72},
+        {x: centerX + 5, y: centerY - 35},
+        {x: centerX + 25, y: centerY - 65},
+        {x: centerX - 28, y: centerY - 20},
+        {x: centerX + 10, y: centerY - 2},
+        {x: centerX + 20, y: centerY + 20},
+        {x: centerX - 15, y: centerY + 50},
+        {x: centerX + 10, y: centerY + 72}
+      ];
+      
+      const atomCircleRadius = 100;
+      const finalOrbitRadius = 25;
+      const currentLoopRadius = 250;
+      const currentLoopRy = 62; 
+      const scale = currentLoopRadius / finalOrbitRadius;
+      const miniNucleusRadius = atomCircleRadius / scale;
+        const finalOrbitRy = finalOrbitRadius * (currentLoopRy / currentLoopRadius);
+      
+      positions.forEach((pos, index) => {
+        // Mini nucleus avec fond blanc et contour noir
+        const miniNucleus = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        miniNucleus.setAttribute("class", "mini-nucleus");
+        miniNucleus.setAttribute("cx", pos.x);
+        miniNucleus.setAttribute("cy", pos.y);
+        miniNucleus.setAttribute("r", miniNucleusRadius);
+        miniNucleus.setAttribute("vector-effect", "non-scaling-stroke");
+miniNucleus.style.transition = "opacity 1s ease-out";  // AJOUTE CETTE LIGNE
+        if (index > 0) {
+          miniNucleus.style.opacity = "0";
+        }
+        matterGroup.appendChild(miniNucleus);
+        
+        // Orbite
+        const loop = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
+        loop.setAttribute("class", "current-loop");
+        loop.setAttribute("cx", pos.x);
+        loop.setAttribute("cy", pos.y);
+        loop.setAttribute("rx", finalOrbitRadius);
+        loop.setAttribute("ry", finalOrbitRy);
+        loop.setAttribute("vector-effect", "non-scaling-stroke");
+        if (index > 0) {
+          loop.style.opacity = "0";
+        }
+        matterGroup.appendChild(loop);
+        multipleLoops.push(loop);
+        
+        // Flèche HORS du groupe pour garder sa taille
+        const arrow = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        arrow.setAttribute("class", "loop-arrow");
+        arrow.dataset.loopX = pos.x;
+        arrow.dataset.loopY = pos.y;
+        arrow.dataset.rx = finalOrbitRadius;
+        arrow.dataset.ry = finalOrbitRy;
+        if (index > 0) {
+          arrow.style.opacity = "0";
+        }
+        svg.appendChild(arrow); // Ajouter au SVG, pas au groupe
+        multipleLoopArrows.push(arrow);
+      });
+      
+      const firstAtomX = positions[0].x;
+      const firstAtomY = positions[0].y;
+      
+      const translateX = centerX - firstAtomX * scale;
+      const translateY = centerY - firstAtomY * scale;
+      
+      matterGroup.setAttribute("transform", `translate(${translateX}, ${translateY}) scale(${scale})`);
+    }
+
+    function animateZoomOut() {
+       currentStep = 2.85;
+      const startTime = performance.now();
+      const duration = 2000;
+      
+      const positions = [
+        {x: centerX - 32, y: centerY - 72},
+        {x: centerX + 5, y: centerY - 35},
+        {x: centerX + 25, y: centerY - 65},
+        {x: centerX - 28, y: centerY - 20},
+        {x: centerX + 10, y: centerY - 2},
+        {x: centerX + 20, y: centerY + 20},
+        {x: centerX - 15, y: centerY + 50},
+        {x: centerX + 10, y: centerY + 72}
+      ];
+      
+      const firstAtomX = positions[0].x;
+      const firstAtomY = positions[0].y;
+      const startScale = 260 / 25;
+      const endScale = 1;
+      
+      const startTranslateX = centerX - firstAtomX * startScale;
+      const startTranslateY = centerY - firstAtomY * startScale;
+      const endTranslateX = 0;
+      const endTranslateY = 0;
+      
+      const otherAtoms = [];
+      document.querySelectorAll('.mini-nucleus').forEach((nucleus, idx) => {
+        if (idx > 0) {
+          otherAtoms.push({
+            nucleus: nucleus,
+            loop: multipleLoops[idx],
+            arrow: multipleLoopArrows[idx]
+          });
+        }
+      });
+      
+      function zoomStep() {
+        const elapsed = performance.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        const eased = progress < 0.5 
+          ? 2 * progress * progress 
+          : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+        
+        const currentScale = startScale + (endScale - startScale) * eased;
+        const currentTranslateX = startTranslateX + (endTranslateX - startTranslateX) * eased;
+        const currentTranslateY = startTranslateY + (endTranslateY - startTranslateY) * eased;
+        
+        matterGroup.setAttribute("transform", 
+          `translate(${currentTranslateX}, ${currentTranslateY}) scale(${currentScale})`
+        );
+        
+        // Faire apparaître le rectangle et les autres atomes
+        matterContainer.style.opacity = eased;
+        otherAtoms.forEach(({ nucleus, loop, arrow }) => {
+          nucleus.style.opacity = eased;
+          loop.style.opacity = eased;
+          arrow.style.opacity = eased;
+        });
+        
+
+        
+        if (progress < 1) {
+          requestAnimationFrame(zoomStep);
+        } else {
+          finishZoomOut();
+        }
+      }
+      
+      zoomStep();
+    }
+
+    function finishZoomOut() {
+      matterGroup.setAttribute("transform", "translate(0, 0) scale(1)");
+      matterContainer.style.opacity = "1";
+      
+      // Masquer complètement circle, nucleus, +, -
+      circle.style.display = 'none';
+      nucleus.style.display = 'none';
+      document.querySelectorAll('.proton-symbol').forEach(p => {
+        p.style.display = 'none';
+      });
+      electrons.forEach(electron => {
+        electron.group.style.opacity = '0';
+        electron.group.style.display = 'none';
+      });
+      
+      document.querySelectorAll('.mini-nucleus').forEach(n => {
+        n.style.opacity = "1";
+      });
+      multipleLoops.forEach(loop => {
+        loop.style.opacity = "1";
+      });
+      multipleLoopArrows.forEach(arrow => {
+        arrow.style.opacity = "1";
+      });
+
+    }
+
+    function createBigLoop() {
+      const rx = 100;
+      const ry = 25;
+      const rectRight = centerX + 60;
+      const angleCut = Math.acos((rectRight - centerX) / rx);
+      
+      const defs = svg.querySelector('defs') || document.createElementNS("http://www.w3.org/2000/svg", "defs");
+      if (!svg.querySelector('defs')) {
+        svg.appendChild(defs);
+      }
+      
+      const filter = document.createElementNS("http://www.w3.org/2000/svg", "filter");
+      filter.setAttribute("id", "pinkGlow");
+      filter.setAttribute("x", "-50%");
+      filter.setAttribute("y", "-50%");
+      filter.setAttribute("width", "200%");
+      filter.setAttribute("height", "200%");
+      
+      const blur = document.createElementNS("http://www.w3.org/2000/svg", "feGaussianBlur");
+      blur.setAttribute("in", "SourceAlpha");
+      blur.setAttribute("stdDeviation", "15");
+      blur.setAttribute("result", "blur");
+      
+      const colorMatrix = document.createElementNS("http://www.w3.org/2000/svg", "feColorMatrix");
+      colorMatrix.setAttribute("in", "blur");
+      colorMatrix.setAttribute("type", "matrix");
+      colorMatrix.setAttribute("values", "0 0 0 0 1  0 0 0 0 0.4  0 0 0 0 0.8  0 0 0 1 0");
+      colorMatrix.setAttribute("result", "pinkBlur");
+      
+      const merge = document.createElementNS("http://www.w3.org/2000/svg", "feMerge");
+      const mergeNode1 = document.createElementNS("http://www.w3.org/2000/svg", "feMergeNode");
+      mergeNode1.setAttribute("in", "pinkBlur");
+      const mergeNode2 = document.createElementNS("http://www.w3.org/2000/svg", "feMergeNode");
+      mergeNode2.setAttribute("in", "SourceGraphic");
+      
+      merge.appendChild(mergeNode1);
+      merge.appendChild(mergeNode2);
+      filter.appendChild(blur);
+      filter.appendChild(colorMatrix);
+      filter.appendChild(merge);
+      defs.appendChild(filter);
+      
+      bigLoopBack = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
+      bigLoopBack.setAttribute("class", "current-loop");
+      bigLoopBack.setAttribute("cx", centerX);
+      bigLoopBack.setAttribute("cy", centerY);
+      bigLoopBack.setAttribute("rx", rx);
+      bigLoopBack.setAttribute("ry", ry);
+      bigLoopBack.setAttribute("filter", "url(#pinkGlow)");
+      svg.insertBefore(bigLoopBack, matterGroup);
+      
+      bigLoop = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      bigLoop.setAttribute("class", "current-loop");
+      bigLoop.setAttribute("d", `
+        M ${centerX + rx * Math.cos(angleCut)},${centerY + ry * Math.sin(angleCut)}
+        A ${rx},${ry} 0 0,1 ${centerX - rx * Math.cos(angleCut)},${centerY + ry * Math.sin(angleCut)}
+      `);
+      bigLoop.setAttribute("filter", "url(#pinkGlow)");
+      svg.appendChild(bigLoop);
+
+      bigLoopArrow = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+      bigLoopArrow.setAttribute("class", "loop-arrow");
+      svg.appendChild(bigLoopArrow);
+    }
+
+    function computeMagneticField(x, y) {
+      let fx = 0, fy = 0;
+      
+      const northX = centerX;
+      const northY = centerY - 90;
+      const dxN = x - northX;
+      const dyN = y - northY;
+      const distSqN = dxN * dxN + dyN * dyN;
+      if (distSqN > 100) {
+        const distN = Math.sqrt(distSqN);
+        const forceN = 1 / (distSqN * 0.002);
+        fx += forceN * dxN / distN;
+        fy += forceN * dyN / distN;
+      }
+      
+      const southX = centerX;
+      const southY = centerY + 90;
+      const dxS = x - southX;
+      const dyS = y - southY;
+      const distSqS = dxS * dxS + dyS * dyS;
+      if (distSqS > 100) {
+        const distS = Math.sqrt(distSqS);
+        const forceS = -1 / (distSqS * 0.002);
+        fx += forceS * dxS / distS;
+        fy += forceS * dyS / distS;
+      }
+      
+      return { fx, fy };
+    }
+
+    function traceMagneticLine(x, y, reverse = false) {
+      let points = [`M${x},${y}`];
+      let steps = 250;
+      let stepSize = 1.5;
+      let prevDir = null;
+
+      for (let i = 0; i < steps; i++) {
+        const { fx, fy } = computeMagneticField(x, y);
+        const len = Math.sqrt(fx * fx + fy * fy);
+        if (len === 0) break;
+
+        let dx = fx / len;
+        let dy = fy / len;
+        
+        if (reverse) {
+          dx = -dx;
+          dy = -dy;
+        }
+
+        if (prevDir) {
+          const curveStrength = 0.5;
+          dx = (1 - curveStrength) * prevDir.dx + curveStrength * dx;
+          dy = (1 - curveStrength) * prevDir.dy + curveStrength * dy;
+          const dlen = Math.sqrt(dx * dx + dy * dy);
+          if (dlen > 0) {
+            dx /= dlen;
+            dy /= dlen;
+          }
+        }
+
+        x += dx * stepSize;
+        y += dy * stepSize;
+
+        if (x < 50 || x > 550 || y < 20 || y > 330) break;
+
+        const distToSouth = Math.sqrt((x - centerX) ** 2 + (y - (centerY + 90)) ** 2);
+        if (!reverse && distToSouth < 15) break;
+        
+        const distToNorth = Math.sqrt((x - centerX) ** 2 + (y - (centerY - 90)) ** 2);
+        if (reverse && distToNorth < 15) break;
+
+        points.push(`L${x},${y}`);
+        prevDir = { dx, dy };
+      }
+
+      return points.join(" ");
+    }
+
+    function shouldHideSouthLine(pathData) {
+      const coords = pathData.match(/[\d.]+/g);
+      let maxDist = 0;
+      let allPointsAboveSouth = true;
+      const southY = centerY + 90;
+      
+      for (let i = 0; i < coords.length; i += 2) {
+        const x = parseFloat(coords[i]);
+        const y = parseFloat(coords[i + 1]);
+        const dist = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2);
+        maxDist = Math.max(maxDist, dist);
+        
+        if (y > southY) {
+          allPointsAboveSouth = false;
+        }
+      }
+      
+      return maxDist < 170 && allPointsAboveSouth;
+    }
+
+function createFieldLines() {
+  const linesCount = 20;
+  const offsetRadius = 15;
+
+  // Lignes partant du NORD
+  for (let i = 0; i < linesCount; i++) {
+    const angle = (2 * Math.PI * i) / linesCount;
+    const startX = centerX + Math.cos(angle) * offsetRadius;
+    const startY = (centerY - 90) + Math.sin(angle) * offsetRadius;
+
+    const pathData = traceMagneticLine(startX, startY, false);
+    
+    if (pathData && pathData.length > 10) {
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("class", "field-line");
+      path.setAttribute("d", pathData);
+      path.style.opacity = "0";  // AJOUTE CETTE LIGNE
+      svg.appendChild(path);
+      fieldPaths.push(path);
+
+      const arrow = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+      arrow.setAttribute("class", "field-arrow");
+      arrow.style.opacity = "0";  // AJOUTE CETTE LIGNE
+      svg.appendChild(arrow);
+      fieldArrows.push({ arrow, path, fromSouth: false });
+    }
+  }
+
+  // Lignes partant du SUD
+  for (let i = 0; i < linesCount; i++) {
+    const angle = (2 * Math.PI * i) / linesCount;
+    const startX = centerX + Math.cos(angle) * offsetRadius;
+    const startY = (centerY + 90) + Math.sin(angle) * offsetRadius;
+
+    const pathData = traceMagneticLine(startX, startY, true);
+    
+    if (pathData && pathData.length > 10) {
+      const shouldHide = shouldHideSouthLine(pathData);
+      
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("class", "field-line");
+      path.setAttribute("d", pathData);
+      path.style.opacity = "0";  // C'ÉTAIT DÉJÀ LÀ, GARDE-LE
+      
+      if (shouldHide) {
+        path.style.display = "none";
+      }
+      
+      svg.appendChild(path);
+      fieldPaths.push(path);
+
+      const arrow = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+      arrow.setAttribute("class", "field-arrow");
+      arrow.style.opacity = "0";  // C'ÉTAIT DÉJÀ LÀ, GARDE-LE
+      svg.appendChild(arrow);
+      fieldArrows.push({ arrow, path, fromSouth: true, hidden: shouldHide });
+    }
+  }
+}
+
+function createPoleLegend() {
+  const poleRadius = 20;
+  const northX = centerX;
+  const northY = centerY - 90;
+  const southX = centerX;
+  const southY = centerY + 90;
+
+  // Cercle Nord (blanc avec contour noir)
+  const circleN = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  circleN.setAttribute("class", "pole-legend");
+  circleN.setAttribute("cx", northX);
+  circleN.setAttribute("cy", northY);
+  circleN.setAttribute("r", poleRadius);
+  svg.appendChild(circleN);
+
+  // Label N
+  const labelN = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  labelN.setAttribute("class", "pole-legend-label");
+  labelN.setAttribute("x", northX);
+  labelN.setAttribute("y", northY);
+  labelN.textContent = "N";
+  svg.appendChild(labelN);
+
+  // Cercle Sud (noir)
+  const circleS = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  circleS.setAttribute("class", "pole-legend-south");
+  circleS.setAttribute("cx", southX);
+  circleS.setAttribute("cy", southY);
+  circleS.setAttribute("r", poleRadius);
+  svg.appendChild(circleS);
+
+  // Label S (blanc)
+  const labelS = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  labelS.setAttribute("class", "pole-legend-label-south");
+  labelS.setAttribute("x", southX);
+  labelS.setAttribute("y", southY);
+  labelS.textContent = "S";
+  svg.appendChild(labelS);
+}
+
+    function animateLoopArrow() {
+      if (!currentLoop) return;
+      
+      const t = performance.now() * 0.001;
+      const cycleTime = 3;
+      const angle = (t % cycleTime) / cycleTime * Math.PI * 2;
+      
+      const x = centerX + 250 * Math.cos(angle);
+      const y = centerY + 62 * Math.sin(angle);
+      
+      const dx = -250 * Math.sin(angle);
+      const dy = 62 * Math.cos(angle);
+      const tangentAngle = Math.atan2(dy, dx);
+      
+      const size = 6;
+      const cos = Math.cos(tangentAngle);
+      const sin = Math.sin(tangentAngle);
+      
+      const points = [
+        [x + cos * size, y + sin * size],
+        [x - sin * size * 0.5, y + cos * size * 0.5],
+        [x + sin * size * 0.5, y - cos * size * 0.5]
+      ];
+      loopArrow.setAttribute("points", points.map(p => p.join(",")).join(" "));
+    }
+
+    function animateMultipleLoopArrows() {
+      if (multipleLoopArrows.length === 0) return;
+      
+      const t = performance.now() * 0.001;
+      const cycleTime = 3;
+      const angle = (t % cycleTime) / cycleTime * Math.PI * 2;
+      
+      // Récupérer le transform actuel du groupe
+      const transform = matterGroup.getAttribute("transform");
+      let currentScale = 1;
+      let translateX = 0;
+      let translateY = 0;
+      
+      if (transform) {
+        const scaleMatch = transform.match(/scale\(([^)]+)\)/);
+        const translateMatch = transform.match(/translate\(([^,]+),\s*([^)]+)\)/);
+        if (scaleMatch) {
+          currentScale = parseFloat(scaleMatch[1]);
+        }
+        if (translateMatch) {
+          translateX = parseFloat(translateMatch[1]);
+          translateY = parseFloat(translateMatch[2]);
+        }
+      }
+      
+      multipleLoopArrows.forEach(arrow => {
+        const loopX = parseFloat(arrow.dataset.loopX);
+        const loopY = parseFloat(arrow.dataset.loopY);
+        const rx = parseFloat(arrow.dataset.rx);
+        const ry = parseFloat(arrow.dataset.ry);
+        
+        // Position sur l'orbite dans l'espace local (avant scale)
+        const localX = loopX + rx * Math.cos(angle);
+        const localY = loopY + ry * Math.sin(angle);
+        
+        // Transformer en coordonnées écran (appliquer scale et translate)
+        const screenX = translateX + localX * currentScale;
+        const screenY = translateY + localY * currentScale;
+        
+        // Calculer la tangente APRÈS le scale (l'ellipse est déformée)
+        const dx = -rx * currentScale * Math.sin(angle);
+        const dy = ry * currentScale * Math.cos(angle);
+        const tangentAngle = Math.atan2(dy, dx);
+        
+        // Taille fixe de 6px
+        const size = 6;
+        const cos = Math.cos(tangentAngle);
+        const sin = Math.sin(tangentAngle);
+        
+        const points = [
+          [screenX + cos * size, screenY + sin * size],
+          [screenX - sin * size * 0.5, screenY + cos * size * 0.5],
+          [screenX + sin * size * 0.5, screenY - cos * size * 0.5]
+        ];
+        arrow.setAttribute("points", points.map(p => p.join(",")).join(" "));
+      });
+    }
+
+    function animateBigLoopArrow() {
+      if (!bigLoop) return;
+      
+      const t = performance.now() * 0.001;
+      const cycleTime = 3;
+      const angle = (t % cycleTime) / cycleTime * Math.PI * 2;
+      
+      const x = centerX + 100 * Math.cos(angle);
+      const y = centerY + 25 * Math.sin(angle);
+      
+      const rectLeft = centerX - 60;
+      const rectRight = centerX + 60;
+      const rectTop = centerY - 90;
+      const rectBottom = centerY + 90;
+      
+      if (x >= rectLeft && x <= rectRight && y >= rectTop && y <= rectBottom && y < centerY) {
+        bigLoopArrow.setAttribute("points", "");
+        return;
+      }
+      
+      const dx = -100 * Math.sin(angle);
+      const dy = 25 * Math.cos(angle);
+      const tangentAngle = Math.atan2(dy, dx);
+      
+      const size = 6;
+      const cos = Math.cos(tangentAngle);
+      const sin = Math.sin(tangentAngle);
+      
+      const points = [
+        [x + cos * size, y + sin * size],
+        [x - sin * size * 0.5, y + cos * size * 0.5],
+        [x + sin * size * 0.5, y - cos * size * 0.5]
+      ];
+      bigLoopArrow.setAttribute("points", points.map(p => p.join(",")).join(" "));
+    }
+
+    function animateFieldArrows() {
+      if (fieldArrows.length === 0) return;
+      
+      const t = performance.now() * 0.001;
+      const cycleTime = 3;
+      
+      fieldArrows.forEach(({ arrow, path, fromSouth, hidden }) => {
+        if (hidden) {
+          arrow.setAttribute("points", "");
+          return;
+        }
+        
+        if (!path || !path.getTotalLength) return;
+        const len = path.getTotalLength();
+        const cycle = (t % cycleTime) / cycleTime;
+        
+        let pos = len * cycle;
+        
+        if (fromSouth) {
+          pos = len * (1 - cycle);
+        }
+        
+        const p1 = path.getPointAtLength(pos);
+        const p2 = path.getPointAtLength(fromSouth ? Math.max(pos - 8, 0) : Math.min(pos + 8, len));
+        
+        const angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+        const size = 6;
+        const cos = Math.cos(angle), sin = Math.sin(angle);
+        
+        const points = [
+          [p1.x + cos * size, p1.y + sin * size],
+          [p1.x - sin * size * 0.5, p1.y + cos * size * 0.5],
+          [p1.x + sin * size * 0.5, p1.y - cos * size * 0.5]
+        ];
+        arrow.setAttribute("points", points.map(p => p.join(",")).join(" "));
+      });
+    }
+
+    function animate() {
+      const now = performance.now();
+      
+      if (currentStep <= 2.85) {
+        electrons.forEach(electron => {
+          electron.orbitAngle += electron.orbitSpeed;
+          electron.x = centerX + Math.cos(electron.orbitAngle) * electron.orbitRadius;
+          electron.y = centerY + Math.sin(electron.orbitAngle) * electron.orbitRadius;
+          electron.spinAngle += electron.spinSpeed;
+
+          electron.group.setAttribute("transform", 
+            `translate(${electron.x},${electron.y}) rotate(${electron.spinAngle * 180 / Math.PI})`
+          );
+        });
+      }
+      
+if (currentStep === 2.5 || currentStep === 2.75) {
+        animateLoopArrow();
+      } else if (currentStep === 2.75 || currentStep === 2.85 ) {
+        animateMultipleLoopArrows(); // Animer pendant 2.75 ET 2.85 (pendant le zoom)
+      } else if (currentStep === 3) {
+        animateMultipleLoopArrows(); 
+        animateBigLoopArrow();
+        animateFieldArrows();
+      } else if (currentStep >= 4) {
+        animateFieldArrows();
+        animateBigLoopArrow();
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>

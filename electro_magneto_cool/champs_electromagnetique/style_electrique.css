@@ -1,0 +1,316 @@
+	@font-face {
+	    font-family: 'Wingdings';
+	    src: url('TYPO/wingding.ttf') format('truetype'),
+	         url('wingding.svg') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+
+	}
+
+  @font-face {
+      font-family: 'narrow';
+      src: url('../TYPO/arialnarrow.ttf') format('truetype'),
+      font-weight: normal;
+      font-style: normal;
+
+  }
+
+
+#retour{
+  font-family: narrow;
+  letter-spacing: 0.1em;  
+      transform: scaleX(0.7);
+}
+
+    @font-face {
+    font-family: 'palace';
+    src: url('../TYPO/Palace script.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+  }
+
+html, body{
+margin: 0px;
+padding: 0px;
+ font-family: narrow;
+color: rgb(0,0,0);
+overflow: hidden;
+ /*background-image:url("img/test_fond.jpg") ;*/
+ background-color: white;
+  background-size: cover;
+	background-position-y: center;
+	background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+    font-size: 0.95em;
+    letter-spacing: 0.12em;
+    word-spacing: 0.2em;
+  color: black;
+}
+
+
+.emoji{
+	font-family: Wingdings;
+	font-size: 1.3em;
+}
+
+
+.boite{
+	  transform: translate(-50%, -50%);
+  left: 50vw;
+  top: 50vh;
+  	position: absolute;
+}
+
+#anim_raquette{
+	width: 277px;
+	height: 163px;
+	cursor: zoom-in;
+	margin-top: 75px;
+	margin-left: -224px;
+}
+
+
+#raquette{
+	background-image:url("img/ballon.png");
+	width: 100px;
+	height: 300px;
+	background-size: contain ;
+	background-repeat: no-repeat;
+	position: relative;
+}
+
+
+#cercle_zoom{
+	width: 65px;
+	height: 40px;
+border: solid 1px black;
+top: -2px;
+left: 39px;
+position: absolute;
+}
+
+#baton {
+    min-height: 200px;
+    min-width: 200px;
+}
+
+
+#baton:after {
+    content: ''; 
+    height: 1px;
+    width: 264px;
+    background-color: black;
+    position: absolute;
+    left:106px;
+    top: 12px; 
+    transform: rotate(-22deg);
+    transform-origin: 1px 1px;
+}
+
+
+.txt_boite{
+	background-color: white;
+width: max-content;
+border: solid 1px black;
+margin-top: 10px;
+position: absolute;
+}
+
+p{
+	padding-left: 13px;
+	padding-right: 13px;
+	margin-top: 9px;
+	margin-bottom: 9px;
+
+}
+
+.charge{
+	z-index: 2;
+	border-radius: 14px;
+padding-bottom: 1px;
+padding-left: 5px;
+padding-right: 5px;
+border: solid 1px black;
+width: fit-content;
+position: absolute;
+color: black;
+background-color:white;
+font-size: 11px;  
+    font-family: arial;
+    letter-spacing: 0em;
+    word-spacing: 0em;
+}
+
+
+
+.negatif{
+animation: ;
+padding-left: 6px;
+padding-right: 6px;
+animation-composition: add;
+animation-iteration-count: 1;
+background-color: black;
+color: white;
+font-size: 11px;  
+    font-family: arial;
+    letter-spacing: 0em;
+    word-spacing: 0em;
+
+}
+
+#boite_charge{
+	width: 250px;
+	height: 250px;
+	border: solid 1px black;
+	position: absolute;
+	left: 35px;
+	border-radius: 200px;
+
+}
+
+#noyau{
+z-index: 1;
+width: 85px;
+height: 85px;
+top: 82px;
+left: 82px;
+position: relative;
+border: solid 1px black;
+border-radius: 100px;}
+
+
+@keyframes negatif_bouge {
+  from {top: 0px;}
+  to {top: -700px;}
+}
+
+
+
+#boite_charge #txt_souris {
+  pointer-events: none;
+  display: none; }
+
+
+#boite_charge:hover #txt_souris {
+  display: block;
+  position: absolute;
+  margin-top: -100px;
+  margin-left: 30px;
+}
+
+
+
+
+
+
+/*anim charges*/
+
+
+    /* Style du conteneur SVG */
+    #anim_charges {
+    	cursor: auto;
+      background: white;
+      border: 1px solid black;
+      padding: 10px;
+      position: absolute;
+      transform: translate(-50%,-23%);
+      z-index: 12;
+      left: -231px;
+      top: 42px;
+    }
+
+    #blabla_haut{
+      display: flex;
+      justify-content: space-between;
+    }
+    /* Style des lignes de champ électrique */
+    path {
+      stroke: black;
+      stroke-width: 1;
+      fill: none;
+    }
+    /* Style de la charge positive (rouge) */
+    circle.charge1 {
+      fill: white;
+      stroke: black;
+      stroke-width: 1;
+      color: black;
+      cursor: grab;
+    }
+    /* Style de la charge négative (bleue) */
+    circle.charge2 {
+      fill: black;
+      stroke: white;
+      stroke-width: 1;
+      cursor: grab;
+      color: white;
+    }
+    /* Style des flèches animées sur les trajectoires */
+    polygon.arrow {
+      fill: black;
+      stroke: white;
+      stroke-width: 0.5;
+    }
+    /* Style des symboles + et - au centre des charges */
+    text.charge-symbol {
+      font-family: sans-serif;
+      font-size: 14px;
+      text-anchor: middle;
+      dominant-baseline: central;
+      pointer-events: none;
+    }
+
+
+.charge2 + .charge-symbol {
+  fill: white !important;
+}
+
+
+    /* Style des boutons */
+    .button-container {
+      margin-bottom: 10px;
+      gap: 10px;
+      text-align: center;
+        font-family: narrow;
+  letter-spacing: 0.12em;
+    }
+
+
+    #next
+  {display: none;}
+
+  #bouton_ajout{
+    display: flex;
+    justify-content: space-around;
+  }
+
+    button {
+
+    }
+    button:hover {
+      cursor: pointer;
+    }
+
+
+
+
+#cheveux{
+	position: absolute;
+	left: 17vw;
+	top: 26vh;
+	width: 300px;
+
+
+}
+
+    #cheveux_electrique{
+
+	background-image:url("img/chien-elec.gif");
+	width: 150px;
+	height: 177px;
+	background-size: contain ;
+	background-repeat: no-repeat;
+	position: relative;
+
+    }
