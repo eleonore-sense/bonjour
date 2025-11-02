@@ -241,3 +241,21 @@ svg > g {
   fill: black;
   font-size: 24px;
 }
+
+.txt_degrade{
+   stroke-width: 26px;
+  fill: none; 
+  stroke: blueviolet;
+}
+
+
+#titre_fond{
+    background-image: url('img/titre_champs_magnetique.svg');
+  background-size: contain;
+  width:638px;
+  height: 200px;
+  position: fixed;
+  background-repeat: no-repeat;
+  bottom: 57px;
+  right: -30px;
+}
