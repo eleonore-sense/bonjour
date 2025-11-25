@@ -43,19 +43,21 @@
     <div id="droite">
 
 
-
-  <text id="text1" class="txt_degrade txt_boite">
+<div id="boite1">
+  <div id="boite_floue"></div>
+  <text id="text1" class="txt">
     dans la matière, les électrons tournent sur eux-mêmes <br>de manière aléatoire. Leurs rotations désordonnées <br>ne crée pas de champ magnétique.
   </text>
+</div>
 
 
 
-
-
-    <div class="txt_boite" id="text3" style="margin-top: 20px; display: none;">
+<div id="boite2">
+  <div id="boite_floue"></div>
+    <div class="txt_boite txt" id="text3" style="margin-top: 20px; display: none;">
       <p>dans certains matériaux, les électrons peuvent se synchroniser et tourner tous dans le même sens</p>
     </div>
-
+</div>
 
     <div class="txt_boite" id="text4" style="margin-top: 20px; display: none;">
       <p>cette rotation synchronisée crée une boucle de courant circulaire</p>
@@ -200,7 +202,6 @@
 document.getElementById('button1').addEventListener('click', function() {
   if (currentStep === 1) {
     currentStep = 2;
-    document.getElementById('text1').style.display = 'none';
     this.style.display = 'none';
     document.getElementById('text3').style.display = 'block';
     document.getElementById('button2').style.display = 'block';

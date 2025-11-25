@@ -259,3 +259,34 @@ svg > g {
   bottom: 57px;
   right: -30px;
 }
+
+
+  #boite_floue{
+  border-radius: 50%;
+  background-image: radial-gradient(ellipse farthest-side, rgba(255, 255, 255, 1) 0%, rgba(180, 180, 180, 1) 100%);
+  filter: blur(9px);
+  width: 500px;
+  height: 100px;
+  z-index: 1;
+  position: absolute;
+}
+
+
+.txt{
+  position: absolute;
+  font-size: 0.9em;
+  z-index: 2;
+
+}
+
+#text1{
+  text-align: center;
+  top: 28px;
+  margin-left: 44px;
+}
+
+#text3{
+  text-align: center;
+  top: 28px;
+  margin-left: 44px;
+}
