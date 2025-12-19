@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>p1_ texte ondulation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  @font-face {
+      font-family: 'Lagarto';
+      src: url('Lagarto.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+  }
+
+    @font-face {
+      font-family: 'Abordage';
+      src: url('Abordage-Regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+  }
+
+
+body { font-family: system-ui, sans-serif; background: #f7f7f7; display: flex; flex-direction: column; align-items: center; padding: 40px 0; }
+.editor { position: relative; width: calc(100vw - 30px); max-width: calc(100vw - 30px); cursor: text; }
+#hiddenInput { position: absolute; inset: 0; opacity: 0; caret-color: transparent; z-index: 2; }
+svg { width: 100%; height: auto; pointer-events: none; display: block; }
+path { 
+  opacity: 0;
+}
+text { 
+  font-family: Lagarto; 
+  font-size: 5.4em; 
+  fill: #f7f7f7; 
+  stroke: black; 
+  stroke-width: 1px; 
+  text-anchor: middle; 
+  paint-order: stroke fill;
+  letter-spacing: -0.02em; /* Resserrer l'espacement entre lettres */
+}
+
+span{
+z-index: 1000;font-family: Abordage ; color: #333; white-space: nowrap; font-size: 0.9em}
+</style>
+</head>
+<body>
+
+<div style="position: fixed; bottom: 8px; right: 20px; z-index: 2000; display: flex; align-items: center; gap: 15px;">
+  <img src="logo pompidou.png" style="height: 25px; width: auto;" alt="Logo 1">
+  <img src="logo kadist.png" style="height: 20px; width: auto;" alt="Logo 2">
+</div>
+
+<div style="position: fixed; top: 20px; right: 20px; z-index: 2000; display: flex; align-items: center; gap: 10px;">
+  <span style="font-weight: 500;">Index</span>
+  <div style="width: 15px; height: 15px; border-radius: 50%; background: linear-gradient(90deg, black 50%, white 50%); border: 1px solid #000;"></div>
+</div>
+
+<div class="editor" onclick="hiddenInput.focus()">
+<input id="hiddenInput" type="text" autocomplete="off" spellcheck="false" value="DO our chimeras most resemble us?" />
+ 
+<svg viewBox="0 0 600 320" preserveAspectRatio="xMinYMid meet">
+  <path id="wave1" d="M0 80 L600 80"/>
+  <text><textPath id="text1" href="#wave1" startOffset="50%"></textPath></text>
+  <path id="wave2" d="M0 150 L600 150"/>
+  <text><textPath id="text2" href="#wave2" startOffset="50%"></textPath></text>
+  <path id="wave3" d="M0 220 L600 220"/>
+  <text><textPath id="text3" href="#wave3" startOffset="50%"></textPath></text>
+</svg>
+</div>
+
+
+</div>
+
+<div style="width: 100vw; bottom: 40px; padding-left: 20px; padding-right: 20px; box-sizing: border-box; position: fixed;">
+  <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+    <span>Agnieszka Polska</span>
+    <span>—</span>
+    <span>Egor Kraft</span>
+    <span>—</span>
+    <span>Elsa Werth</span>
+    <span>—</span>
+    <span>Emmanuel Van der Auwera</span>
+    <span>—</span>
+    <span>Entangled Others</span>
+    <span>—</span>
+    <span>Ho Tzu Nyen</span>
+    <span>—</span>
+    <span>Interspecifics</span>
+    <span>—</span>
+    <span>John Menick</span>
+    <span>—</span>
+    <span>Ayoung Kim</span>
+  </div>
+</div>
+
+</body>
+</html>
+
+
+
+<script>
+const input = document.getElementById("hiddenInput");
+const textPaths = [
+  document.getElementById("text1"),
+  document.getElementById("text2"),
+  document.getElementById("text3")
+];
+const paths = [
+  document.getElementById("wave1"),
+  document.getElementById("wave2"),
+  document.getElementById("wave3")
+];
+const MAX_CHARS_PER_LINE = 18;
+
+// Configuration des lignes avec leurs paramètres d'ondulation
+const lines = [
+  { y: 80, amplitude: 16, frequency: 2 },  // Ligne 1 descendue
+  { y: 150, amplitude: 13, frequency: 4 }, // Interlignage réduit
+  { y: 220, amplitude: 12, frequency: 2.5 }
+];
+
+let glitchProgress = 0;
+let isGlitching = false;
+let targetProgress = 0;
+let animationSpeed = 0.001;
+let glitchDuration = 4; // en secondes
+let pauseDuration = 7; // pause au maximum en secondes
+let glitchFrequency = 20; // en secondes
+let nextGlitchTimeout;
+let isPausing = false;
+
+// Fonction d'easing (lent -> rapide -> lent)
+function easeInOutQuad(t) {
+  return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+}
+
+
+function capitalizeWords(text) {
+  return text.split(' ').map(word => {
+    if (word.length === 0) return word;
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  }).join(' ');
+}
+
+function updateText() {
+  const words = input.value.split(' ');
+  textPaths.forEach(tp => tp.textContent = '');
+  let lineIndex = 0;
+  let currentLine = '';
+  words.forEach((word, i) => {
+    if(currentLine === ''){
+      currentLine = word;
+    } else {
+      if((currentLine + ' ' + word).length <= MAX_CHARS_PER_LINE){
+        currentLine += ' ' + word;
+      } else {
+        textPaths[lineIndex].textContent = capitalizeWords(currentLine);
+        lineIndex++;
+        if(lineIndex < textPaths.length){
+          currentLine = word;
+        }
+      }
+    }
+  });
+  if(lineIndex < textPaths.length){
+    textPaths[lineIndex].textContent = capitalizeWords(currentLine);
+  }
+}
+
+function generateWavyPath(lineConfig, progress) {
+  const { y, amplitude, frequency } = lineConfig;
+  const amp = amplitude * progress;
+  
+  if (progress === 0) {
+    return `M0 ${y} L600 ${y}`;
+  }
+  
+  let path = `M0 ${y}`;
+  const steps = 60;
+  
+  for (let i = 1; i <= steps; i++) {
+    const x = (i / steps) * 600;
+    const offset = Math.sin((i / steps) * Math.PI * frequency) * amp;
+    path += ` L${x} ${y + offset}`;
+  }
+  
+  return path;
+}
+
+function updatePaths() {
+  paths.forEach((path, i) => {
+    const d = generateWavyPath(lines[i], glitchProgress);
+    path.setAttribute('d', d);
+  });
+}
+
+function animate() {
+  if (isPausing) {
+    requestAnimationFrame(animate);
+    return;
+  }
+  
+  // Appliquer l'easing pour accélération douce
+  const diff = targetProgress - glitchProgress;
+  const easedSpeed = animationSpeed * (1 + Math.abs(diff) * 0.5);
+  
+  glitchProgress += diff * easedSpeed;
+  
+  if (Math.abs(diff) < 0.001) {
+    glitchProgress = targetProgress;
+    if (!isGlitching && glitchProgress === 0) {
+      return;
+    }
+  }
+  
+  updatePaths();
+  requestAnimationFrame(animate);
+}
+
+function glitch() {
+  isGlitching = true;
+  isPausing = false;
+  targetProgress = 1;
+  animate();
+  
+  // Atteindre le max puis pause
+  setTimeout(() => {
+    isPausing = true;
+    
+    // Après la pause, revenir à 0
+    setTimeout(() => {
+      isPausing = false;
+      targetProgress = 0;
+      isGlitching = false;
+      animate();
+    }, pauseDuration * 1000);
+    
+  }, glitchDuration * 1000);
+}
+
+function randomGlitch() {
+  glitch();
+  const randomDelay = (glitchFrequency + Math.random() * 10) * 1000;
+  nextGlitchTimeout = setTimeout(randomGlitch, randomDelay);
+}
+
+input.addEventListener("input", updateText);
+
+updateText();
+setTimeout(randomGlitch, 5000);
+</script>
+</body>
+</html>
