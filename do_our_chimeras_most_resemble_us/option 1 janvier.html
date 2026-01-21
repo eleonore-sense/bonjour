@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>option 1 janvier</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="script_1.js" defer></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="style_1.css"> 
+
+</head>
+<body>
+
+<!-- PART 1 -->
+<div style="position: fixed; top: 15px; right: 15px; z-index: 2000; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <img src="logo pompidou.png" style="height: 20px; width: auto;" alt="Logo Pompidou">
+    <img src="logo kadist.png" style="height: 14px; width: auto;" alt="Logo Kadist">
+  </div>
+<span id="top_right_part1_actions">
+  <span id="btn_restart_part1">restart</span>
+    <span class="sep">/</span>
+  <span id="index-start"> <a href="index.html">index</a></span>
+</span>
+  </div>
+
+<div id="top_right_part2">
+  <span id="btn_index"><a href="index.html">index</a></span>
+
+<div id="part2_actions">
+    <span id="btn_restart">restart</span>
+  <span class="sep">/</span>
+  <span id="btn_return">return</span>
+</div>
+</div>
+
+<!-- NOM DES ARTISTES -->
+<div id="artistes-container">
+  <div style="display: flex; width: 100%; position: relative;">
+    <span id="artiste_1" class="artiste_accueil" style="flex: 1; text-align: left;">Agnieszka Polska</span>
+    <span class="separator" style="position: absolute; left: 33.33%; transform: translateX(-50%);">—</span>
+    <span id="artiste_2" class="artiste_accueil" style="flex: 1; text-align: center;">Egor Kraft</span>
+    <span class="separator" style="position: absolute; left: 66.66%; transform: translateX(-50%);">—</span>
+    <span id="artiste_3" class="artiste_accueil" style="flex: 1; text-align: right;">Elsa Werth</span>
+  </div>
+
+  <div style="display: flex; width: 100%; position: relative; margin-top: 15px;">
+    <span id="artiste_4" class="artiste_accueil" style="flex: 1; text-align: left;">Emmanuel Van der Auwera</span>
+    <span class="separator" style="position: absolute; left: 33.33%; transform: translateX(-50%);">—</span>
+    <span id="artiste_5" class="artiste_accueil" style="flex: 1; text-align: center;">Entangled Others</span>
+    <span class="separator" style="position: absolute; left: 33.33%; transform: translateX(-50%);">—</span>
+    <span id="artiste_6" class="artiste_accueil" style="flex: 1; text-align: right;">Ho Tzu Nyen</span>
+  </div>
+
+  <div style="display: flex; width: 100%; position: relative; margin-top: 15px;">
+    <span id="artiste_7" class="artiste_accueil" style="flex: 1; text-align: left;">Interspecifics</span>
+    <span class="separator" style="position: absolute; left: 33.33%; transform: translateX(-50%);">—</span>
+    <span id="artiste_8" class="artiste_accueil" style="flex: 1; text-align: center;">John Menick</span>
+    <span class="separator" style="position: absolute; left: 33.33%; transform: translateX(-50%);">—</span>
+    <span id="artiste_9" class="artiste_accueil" style="flex: 1; text-align: right;">Ayoung Kim</span>
+  </div>
+</div>
+
+<div class="editor" onclick="hiddenInput.focus()">
+  <input id="hiddenInput" type="text" autocomplete="off" spellcheck="false" value="Do our chimeras most resemble us?" />
+  
+<svg id="main-svg" viewBox="0 0 600 320" preserveAspectRatio="xMinYMid meet">
+  <path id="wave1" d="M0 100 L600 100"/>
+  <text><textPath id="text1" href="#wave1" startOffset="50%"></textPath></text>
+  <path id="wave2" d="M0 170 L600 170"/>
+  <text><textPath id="text2" href="#wave2" startOffset="50%"></textPath></text>
+  <path id="wave3" d="M0 240 L600 240"/>
+  <text><textPath id="text3" href="#wave3" startOffset="50%"></textPath></text>
+  <image id="cursor" href="SVG/curseur.svg" width="7" height="55" x="0" y="0" opacity="1"/>
+</svg>
+</div>
+
+
+<div id="edit-hint" >
+  Type to change the prompt and press Enter
+</div>
+
+
+<div id="artistes-liste" style="">
+  
+  <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 15px;">
+    <span class="artiste-liste-item" style="flex: 1; text-align: left;"></span>
+    <span class="artiste-liste-item" style="flex: 1; text-align: center;"></span>
+    <span class="artiste-liste-item" style="flex: 1; text-align: right;"></span>
+  </div>
+  
+  <div style="display: flex; justify-content: space-between; width: 100%;">
+    <span class="artiste-liste-item" style="flex: 1; text-align: left;"></span>
+    <span class="artiste-liste-item" style="flex: 1; text-align: center;"></span>
+    <span class="artiste-liste-item" style="flex: 1; text-align: right;"></span>
+  </div>
+  
+</div>
+
+<!-- PART 2 -->
+<div id="gradient-initial"></div>
+<div id="gradient-overlay"></div>
+<div id="cinema-overlay"></div>
+<div id="titre-haut"></div>
+
+<div id="nom_artiste_menu">
+  <span class="artiste_menu"><span id="artiste_1_b" class="artiste_text">Agnieszka Polska</span></span>
+  <span class="artiste_menu"><span id="artiste_2_b" class="artiste_text">Egor Kraft</span></span>
+  <span class="artiste_menu"><span id="artiste_3_b" class="artiste_text">Elsa Werth</span></span>
+  <span class="artiste_menu"><span id="artiste_4_b" class="artiste_text">Emmanuel Van der Auwera</span></span>
+  <span class="artiste_menu"><span id="artiste_5_b" class="artiste_text">Entangled Others</span></span>
+  <span class="artiste_menu"><span id="artiste_6_b" class="artiste_text">Ho Tzu Nyen</span></span>
+  <span class="artiste_menu"><span id="artiste_7_b" class="artiste_text">Interspecifics</span></span>
+  <span class="artiste_menu"><span id="artiste_8_b" class="artiste_text">John Menick</span></span>
+  <span class="artiste_menu"><span id="artiste_9_b" class="artiste_text">Ayoung Kim</span></span>
+</div>
+
+<img src="img/img1.jpg" class="artiste-image" id="img-artiste-1" alt="">
+<img src="img/img2.jpg" class="artiste-image" id="img-artiste-2" alt="">
+<img src="img/img3.jpg" class="artiste-image" id="img-artiste-3" alt="">
+<img src="img/img4.jpg" class="artiste-image" id="img-artiste-4" alt="">
+<img src="img/img5.jpg" class="artiste-image" id="img-artiste-5" alt="">
+<img src="img/img6.jpg" class="artiste-image" id="img-artiste-6" alt="">
+<img src="img/img7.jpg" class="artiste-image" id="img-artiste-7" alt="">
+<img src="img/img8.jpg" class="artiste-image" id="img-artiste-8" alt="">
+<img src="img/img9.jpg" class="artiste-image" id="img-artiste-9" alt="">
+
+
+
+
+
+
+
+
+
+
+
+<!-- PART 3 -->
+<div id="part_3">
+<div id="gauche">
+  <span id="artiste_1_c" class="titre">Agnieszka Polska - Project Title</span>
+  <span id="info" class="btn">+</span>
+</div>
+<div id="droite">
+    <div id="video-container">
+  <div id="haut_video" >
+    <span id="btn_cine"class="btn">cinema view</span>
+    <div id="gauche_du_cine">
+      <span id="btn_next" class="btn">next</span>
+      <span>/</span>
+      <span id="btn_close" class="btn">close</span>
+    </div>
+  </div>
+
+<img id="video" src="img/img1.jpg" >
+
+</div>
+</div>
+
+</div>
+
+<div id="artist-hint"></div>
+
+<div id="rules-overlay">
+  Rules to respect to create a prompt
+</div>
+
+
+
+
+
+
+<div id="about-drawer">
+
+  <div class="about-content">
+      Lectur asptitiis aut aut ma quis nis et aut lame veribusamet
+      diligent ecatio. Ut volori offic tem aut poribus imolore
+      heniti tecus sunt aut voluptas patern harius prate magrisci iatus.
+      <br><br>
+      texte to complet
+  </div>
+    <div class="about-label">about</div>
+</div>
+
+
+
+
+
+
+
+</body>
+</html>
