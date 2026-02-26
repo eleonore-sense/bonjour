@@ -15,7 +15,11 @@
 </head>
 
 <body id="body">
-      <div><a id="retour" href="../index.html">retour</a>
+  <div id="titre_fond"></div>
+  <div id="gradient_initial"></div>
+
+  <div>
+    <a id="retour" href="index.html">retour</a>
 <div id="anim_raquette" class="boite" onclick="apparition_charge()">
 <div id="raquette"> </div>
 <div id="obj_raquette" class="txt_boite" style="margin-top:-157px;">
@@ -52,9 +56,15 @@
 
 </div>
 </div>
-<div class="txt_boite les_charges" id="blabla_charge_neutre" onclick="zoom_charge_neutre()" style="pointer-events:none;margin-top: 270px;">
+  <!-- <div class="txt_boite les_charges" id="blabla_charge_neutre" onclick="zoom_charge_neutre()" style="pointer-events:none;margin-top: 270px;">
   <p>à l'échelle des atomes qui composent <br>la matière, il y a autant de chages positives<br> (protons) que négatives (électrons).</p>
-</div>
+</div> -->
+
+          <div id="blabla_charge_neutre" onclick="zoom_charge_neutre()">
+            <img id="text4" src="img/electron_proton.svg" >
+          </div>
+
+
 
 <div class="txt_boite" id="blabla_arrache_electron" style="display: none; margin-top: 270px;">
   <p>des électrons sont arrachés de la matière, <br> elle devient chargée positivement.</p>
@@ -62,7 +72,7 @@
 
 
 <div>
-    <select id="question" onchange="selection()" style="margin-top:360px; margin-left:120px; font-size: 0.95em;">
+    <select id="question" onchange="selection()" >
       <option value="" selected>...</option>
       <option value="">frotter le ballon</option>
       <option value="">faire passer un courant electrique</option>
@@ -80,9 +90,9 @@
   <div id="anim_charges" style="display:none;">
     <div id="blabla_haut">
 <p> *bouger les charges en les attrappant</p>
-           <button id="next" style="height:min-content;" href="../index.html">passer à la suite</button>
+           <button id="next" style="height:min-content;" onclick="window.location.href='champs_magnetique.html'">passer aux champs magnétiques</button>
     </div>
-  <!-- Zone SVG pour dessiner les charges et trajectoires -->
+
   <svg id="mysvg" width="750" height="500"></svg>
 <div id="blabla_bas">
         <div class="button-container">

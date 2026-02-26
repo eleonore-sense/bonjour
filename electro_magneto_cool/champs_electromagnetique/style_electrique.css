@@ -29,14 +29,14 @@
     font-style: italic;
   }
 
-html, body{
+ body{
 margin: 0px;
-padding: 0px;
+padding: 20px;
  font-family: narrow;
 color: rgb(0,0,0);
 overflow: hidden;
  /*background-image:url("img/test_fond.jpg") ;*/
- background-color: white;
+      background-color: #ffffff;
   background-size: cover;
 	background-position-y: center;
 	background-repeat: no-repeat;
@@ -48,7 +48,18 @@ overflow: hidden;
   color: black;
 }
 
-
+  #gradient_initial {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 50px;
+    background: linear-gradient(to top, rgba(255, 0, 231, 0.7) 0%, rgba(255, 0, 231, 0.65) 20%, rgba(255, 0, 231, 0.4) 40%, rgba(255, 0, 231, 0.25) 60%, rgba(255, 0, 231, 0.1) 80%, transparent 100%);
+    pointer-events: none;
+    opacity: 0.5;
+    transition: opacity 2s ease-out;
+    z-index: 0;
+  }
 .emoji{
 	font-family: Wingdings;
 	font-size: 1.3em;
@@ -80,6 +91,22 @@ overflow: hidden;
 	position: relative;
 }
 
+#question{
+  position: relative;
+  top:-25px; 
+  margin-left:166px; 
+  font-size: 0.95em;
+}
+/*#titre_fond{
+    background-image: url('img/titre_champs_magnetique.svg');
+  background-size: contain;
+  width:638px;
+  height: 200px;
+  position: fixed;
+  background-repeat: no-repeat;
+  bottom: 57px;
+  right: -30px;
+}*/
 
 #cercle_zoom{
 	width: 65px;
@@ -112,7 +139,11 @@ position: absolute;
 .txt_boite{
 	background-color: white;
 width: max-content;
-border: solid 1px black;
+   background: radial-gradient(ellipse at 32% 28%, #ffffff 0%, #e8e8e8 30%, #b0b0b0 70%, #888888 100%);
+    box-shadow:
+      inset 5px 5px 10px rgba(255,255,255,0.95),
+      inset -5px -5px 10px rgba(0,0,0,0.58);
+    border-radius: 15px;
 margin-top: 10px;
 position: absolute;
 }
@@ -218,6 +249,7 @@ border-radius: 100px;}
       z-index: 12;
       left: -231px;
       top: 42px;
+      border-radius: 15px;
     }
 
     #blabla_haut{
@@ -313,4 +345,12 @@ border-radius: 100px;}
 	background-repeat: no-repeat;
 	position: relative;
 
+    }
+
+
+
+    #blabla_charge_neutre{
+      scale: 42%;
+      pointer-events:none;
+      margin-top: 219px;
     }
