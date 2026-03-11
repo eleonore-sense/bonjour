@@ -103,6 +103,8 @@ margin-left: 50vw;
   stroke: black;
   stroke-width: 1;
   fill: none;
+    transition: y1 0.4s ease-in-out, y2 0.4s ease-in-out;
+      shape-rendering: crispEdges;
 }
 
   .fil {
@@ -115,31 +117,53 @@ margin-left: 50vw;
   stroke: black;
   stroke-width: 1;
   fill: white;
+    transition: r 0.4s ease-in-out;
 }
 
 .electron text {
   fill: black;
   font-size: 13px;
+    transition: opacity 0.4s ease-in-out;
 }
 
 
-#bas{
-    display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  margin-top: 20px;
-  width: 100vw;
+
+
+
+    #pile_group { cursor: grab; }
+#pile_group:active { cursor: grabbing; }
+
+#bas {
+  display:flex; flex-direction:column;
+  align-items:center; gap:10px; margin-top:12px;
 }
 
-#legende{
-  max-width: 50%;
+
+
+#legende {
+  font-size: 0.88rem;
+  letter-spacing: 0.07em;
   text-align: center;
 }
+.btn {
+  padding:5px 16px; 
+    font-size: 0.95em;
+    letter-spacing: 0.12em;
+    word-spacing: 0.2em;
+  cursor:pointer; 
+  font-family: narrow;
+}
 
 
-    .next-button {
-      cursor: pointer;
-        font-family: narrow;
-  letter-spacing: 0.12em;
-    }
+#tooltip_pile{
+  display: none;
+  position: fixed;
+    font-family: palace;
+  color: white;
+  -webkit-text-stroke: 0.7px white;
+  text-shadow: #FFF 0px 0px 5px, #FF00E7 0px 0px 20px, #FF00E7 0px 0px 30px,
+               #FF00E7 0px 0px 5px, #FF00E7 0px 0px 10px;
+  font-size: 2em;
+  line-height: 0.6;
+  white-space: pre-line;
+}

@@ -18,78 +18,128 @@
   </div>
 
 <div id="anim">
-<svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+<svg id="scene" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
 
   <!-- Le fil : 2 traits horizontaux -->
-  <line class="bord_matos" x1="40" y1="130" x2="760" y2="130"/>
-  <line class="bord_matos" x1="40" y1="170" x2="760" y2="170"/>
+  <line id="fil_haut" class="bord_matos" x1="40" y1="130" x2="760" y2="130"/>
+  <line id="fil_bas" class="bord_matos" x1="40" y1="170" x2="760" y2="170"/>
 
 
   <!-- Électrons : groupe parent positionne, groupe enfant anime -->
 
 <g class="electron e1" transform="translate(120, 150)">
   <g class="wiggle">
-    <circle r="6"/>
-    <text dy="4" dx="1" text-anchor="middle">−</text>
+    <circle id="c1" r="6"/>
+    <text id="t1" dy="4" dx="1" text-anchor="middle">−</text>
   </g>
 </g>
 
   <g class="electron e2" transform="translate(220, 150)">
   <g class="wiggle">
-    <circle r="6"/>
-    <text dy="4" dx="1" text-anchor="middle">−</text>
+    <circle id="c2" r="6"/>
+    <text id="t2" dy="4" dx="1" text-anchor="middle">−</text>
   </g>
   </g>
 
   <g class="electron e3" transform="translate(320, 150)">
   <g class="wiggle">
-    <circle r="6"/>
-    <text dy="4" dx="1" text-anchor="middle">−</text>
+    <circle id="c3" r="6"/>
+    <text id="t3" dy="4" dx="1" text-anchor="middle">−</text>
   </g>
   </g>
 
   <g class="electron e4" transform="translate(420, 150)">
   <g class="wiggle">
-    <circle r="6"/>
-    <text dy="4" dx="1" text-anchor="middle">−</text>
+    <circle id="c4" r="6"/>
+    <text id="t4" dy="4" dx="1" text-anchor="middle">−</text>
   </g>
   </g>
 
   <g class="electron e5" transform="translate(520, 150)">
   <g class="wiggle">
-    <circle r="6"/>
-    <text dy="4" dx="1" text-anchor="middle">−</text>
+    <circle id="c5" r="6"/>
+    <text id="t5" dy="4" dx="1" text-anchor="middle">−</text>
   </g>
   </g>
 
   <g class="electron e6" transform="translate(620, 150)">
   <g class="wiggle">
-    <circle r="6"/>
-    <text dy="4" dx="1" text-anchor="middle">−</text>
+    <circle id="c6" r="6"/>
+    <text id="t6" dy="4" dx="1" text-anchor="middle">−</text>
   </g>
   </g>
 
   <g class="electron e7" transform="translate(170, 150)">
   <g class="wiggle">
-    <circle r="6"/>
-    <text dy="4" dx="1" text-anchor="middle">−</text>
+    <circle id="c7" r="6"/>
+    <text id="t7" dy="4" dx="1" text-anchor="middle">−</text>
   </g>
   </g>
 
   <g class="electron e8" transform="translate(570, 150)">
   <g class="wiggle">
-    <circle r="6"/>
-    <text dy="4" dx="1" text-anchor="middle">−</text>
+    <circle id="c8" r="6"/>
+    <text id="t8" dy="4" dx="1" text-anchor="middle">−</text>
   </g>
   </g>
 
+
+  <!-- BORNES FIXES (apres separation) -->
+  <g id="borne_gauche" opacity="0">
+    <rect x="8" y="130" width="32" height="40" rx="8" fill="white" stroke="black" stroke-width="1"/>
+    <text x="24" y="146" text-anchor="middle" font-size="8" fill="black">borne</text>
+    <text x="24" y="162" text-anchor="middle" font-size="15" fill="black">+</text>
+  </g>
+  <g id="borne_droite" opacity="0">
+    <rect x="760" y="130" width="32" height="40" rx="8" fill="white" stroke="black" stroke-width="1"/>
+    <text x="776" y="146" text-anchor="middle" font-size="8" fill="black">borne</text>
+    <text x="776" y="162" text-anchor="middle" font-size="15" fill="black">-</text>
+  </g>
+
+  <!-- CHAMP du fil (4 fleches a queue, generees en JS) -->
+  <g id="champ_fil" opacity="0"></g>
+
+  <!-- PILE DRAGGABLE -->
+  <g id="pile_group" opacity="0" transform="translate(400,370)">
+
+    <!-- demi gauche : borne + -->
+<g id="demi_plus">
+<path d="M -70,-22 H 0 V 22 H -70 Q -80,22 -80,12 V -12 Q -80,-22 -70,-22 Z"        
+fill="white" stroke="black" stroke-width="1"/>
+  <text x="-40" y="-6" text-anchor="middle" font-size="9" fill="black">borne</text>
+  <text x="-40" y="12" text-anchor="middle" font-size="16" fill="black">+</text>
+</g>
+
+<!-- demi droite : coins droits arrondis, gauches carrés -->
+<g id="demi_moins">
+  <path d="M 0,-22 H 70 Q 80,-22 80,-12 V 12 Q 80,22 70,22 H 0 V -22 Z"
+        fill="black" stroke="black" stroke-width="1"/>
+  <text x="40" y="-6" text-anchor="middle" font-size="9" fill="white">borne</text>
+  <text x="40" y="12" text-anchor="middle" font-size="16" fill="white">-</text>
+</g>
+
+
+    <!-- lignes de champ rayonnantes de la pile (JS) -->
+    <g id="champ_pile_lines"></g>
+  </g>
+
+  <!-- zone snap visuelle -->
+  <rect id="snap_zone" x="38" y="118" width="724" height="64"
+        fill="none" stroke="black" stroke-width="1"
+        stroke-dasharray="5 4" opacity="0" rx="4"/>
+
 </svg>
-</div>
 
 
 <div id="bas">
-<div id="legende">dans la matière, les electrons ne bougent principalement pas </div>
-<button id="button1" class="next-button">envoyer un courant électrique ⚡</button>
+  <div id="legende">dans la matiere, les electrons ne bougent principalement pas</div>
+  <button id="btn_pile" class="btn" >approcher une pile</button>
 </div>
+
+
+
+<div id="tooltip_pile">glisser sur le fil pour brancher</div>
+
+
 </body>
 </html>
