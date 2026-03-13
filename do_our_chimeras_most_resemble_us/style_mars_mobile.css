@@ -41,7 +41,7 @@
   #header-buttons {
     top: 30px !important;
     right: 27px !important;
-    font-size: 1.2em;
+    font-size: 1.1em;
   }
 
   #boite_about {
@@ -143,6 +143,9 @@
 
   text {
     font-size: 3.8em;
+        -webkit-text-stroke-width: 0.7px;
+
+
   }
 
 
@@ -171,7 +174,7 @@
     z-index: 600;
     padding-bottom: 1vh;
     font-family: Abordage;
-    font-size: 1.5em;
+    font-size: 1.2em;
     text-decoration: underline;
     color: var(--typo);
     cursor: pointer;
