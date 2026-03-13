@@ -3,6 +3,24 @@
    Breakpoint : max-width 768px
    ══════════════════════════════════════════════ */
 
+/* ── Transitions hors media query (s'appliquent partout) ── */
+#editor-mobile,
+#about,
+#logos-container,
+div[style*="top:15px"] {
+  transition: opacity 0.7s ease;
+}
+
+#editor-mobile.appearing {
+  transition: opacity 1.5s ease;
+}
+
+/* desktop — caché */
+#about-close-mobile {
+  display: none;
+}
+
+
 @media (max-width: 768px) {
 
   /* ══════════════════════════════════════════════
@@ -26,7 +44,6 @@
     align-items: start !important;
     gap: 8px !important;
   }
-
 
   #logo-pompidou svg,
   #logo-kadist svg {
@@ -52,47 +69,26 @@
   }
 
   #boite_about.open {
-  width: 84vw;
-  height: 100vh;
-  padding-top: 18px;
-  padding-left: 18px;
-  margin-right: 0;
-  border-radius: 0;
-  top: -18px;
+    width: 84vw;
+    height: 100vh;
+    padding-top: 18px;
+    padding-left: 18px;
+    margin-right: 0;
+    border-radius: 0;
+    top: -18px;
   }
 
   #about-content {
     font-size: 0.85em;
     line-height: 1.5;
-
-    -webkit-mask: linear-gradient(
-    to bottom,
-    black 0%,
-    black 70%,
-    transparent 90%
-  );
-
-  mask: linear-gradient(
-    to bottom,
-    black 0%,
-    black 70%,
-    transparent 90%
-  );
+    -webkit-mask: linear-gradient(to bottom, black 0%, black 70%, transparent 90%);
+    mask: linear-gradient(to bottom, black 0%, black 70%, transparent 90%);
   }
 
-#about-label{
-  text-decoration: underline !important;
-}
+  #about-label {
+    text-decoration: underline !important;
+  }
 
-
-
-
-/* desktop — caché */
-#about-close-mobile {
-  display: none;
-}
-
-@media (max-width: 768px) {
   #about-close-mobile {
     display: block;
     position: fixed;
@@ -111,41 +107,24 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.5s ease;
-
   }
-
-  /* visible seulement quand about est ouvert */
-  #boite_about.open ~ * #about-close-mobile,
-  #boite_about.show-text #about-close-mobile {
-    opacity: 1;
-    pointer-events: auto;
-  }
-}
-
 
 
   /* ══════════════════════════════════════════════
-     PART 1 — TITRE WAVE
+     PART 1 — TITRE WAVE MOBILE
      ══════════════════════════════════════════════ */
 
   .editor-mobile {
     top: 17%;
     width: calc(100vw - 20px);
-      transition: opacity 2s ease;
+    transition: opacity 2s ease;
   }
 
-  /* Le SVG du titre mobile sera dessiné par l'utilisateur
-     — on garde juste la taille et le positionnement */
-  .editor svg {
-    width: 100%;
-    height: auto;
-  }
-
+  /* Épaisseur du contour titre mobile — modifier stroke-width ici */
+  .editor-mobile text,
   text {
-    font-size: 3.8em;
-        -webkit-text-stroke-width: 0.7px;
-
-
+    font-size: 5.5em;
+    stroke-width: 0.8px;
   }
 
 
@@ -157,7 +136,6 @@
     display: none;
   }
 
-  /* Images vignettes hover → désactivées sur mobile */
   #hover-previews {
     display: none;
   }
@@ -207,14 +185,13 @@
     align-items: flex-start;
     padding: 0 24px;
     gap: 25px;
-   background: transparent;
+    background: transparent;
     opacity: 0;
     pointer-events: none;
     clip-path: inset(100% 0 0% 0);
     transition:
       clip-path 0.7s var(--ease-in-out),
       opacity 0s linear 0.7s;
-
   }
 
   #mobile-artists-list.visible {
@@ -246,7 +223,6 @@
     height: 1px;
     background: currentColor;
     opacity: 0;
-    gap: 18px;
     transform: scaleX(0.92);
     transform-origin: left center;
     transition:
@@ -259,29 +235,19 @@
     transform: scaleX(1);
   }
 
-  /* Bouton fermer la liste */
-#mobile-close-list {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  bottom: auto;
-  left: auto;
-  z-index: 600;
-  padding: 0;
-  font-family: Abordage;
-  font-size: 1em;
-  color: var(--typo);
-  cursor: pointer;
-  background: none;
-  border: none;
-  opacity: 1;
-  pointer-events: auto;
-  text-decoration: underline;
-}
-
-  #mobile-close-list.visible {
-    opacity: 1;
-    pointer-events: auto;
+  #mobile-close-list {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 600;
+    padding: 0;
+    font-family: Abordage;
+    font-size: 1em;
+    color: var(--typo);
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-decoration: underline;
   }
 
   #mobile-close-list:active {
@@ -292,229 +258,11 @@
 
 
   /* ══════════════════════════════════════════════
-     PART 3 — STRUCTURE GÉNÉRALE
-     ══════════════════════════════════════════════ */
-
-  #part_3 {
-    position: fixed;
-    top: 0;
-    flex-direction: column;
-    height: 100vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-
-  #part_3::-webkit-scrollbar {
-    display: none;
-  }
-
-  #titre-haut {
-    font-size: 3.5em;
-    top: 30px;
-    left: 17px;
-    -webkit-text-stroke-width: 0.7px;
-          line-height: 0.8em;
-  }
-
-
-  /* ══════════════════════════════════════════════
-     PART 3 — NAVIGATION HAUT
-     ══════════════════════════════════════════════ */
-
-  #p2_haut_gauche {
-    position: absolute;
-top: calc(30px + 3.5em + 44px);
-    right: 17px;
-    display: flex;
-    flex-direction: row;
-    gap: 6px;
-height: fit-content;
-  }
-
-  #p2_haut_gauche .nav_link {
-    font-size: 1em;
-    text-decoration: underline;
-  }
-
-
-  /* ══════════════════════════════════════════════
-     PART 3 — GAUCHE (titre + texte)
-     ══════════════════════════════════════════════ */
-
-  #gauche {
-    position: relative;
-    width: 93vw;
-    height: auto;
-    min-height: 25vh;
-    padding-left: 13px;
-    padding-right: 0px;
-    padding-top: 19px;
-    padding-bottom: 20px;
-    flex-direction: column;
-    gap: 10px;
-    font-size: 1.2em;
-    order: 2;
-  }
-
-  #texte-wrapper {
-    height: auto;
-    max-height: 30vh;
-    overflow-y: auto;
-    -webkit-mask: linear-gradient(to bottom, black 60%, transparent 100%);
-    mask: linear-gradient(to bottom, black 60%, transparent 100%);
-  }
-
-  #texte-oeuvre {
-    font-size: 0.85em;
-  }
-
-
-  /* ══════════════════════════════════════════════
-     PART 3 — DROITE (vidéo)
-     ══════════════════════════════════════════════ */
-.titre{font-size:1.1en;}
-#info{font-size: 2.2em;}
-  #droite {
-    position:relative;
-    width: 100vw;
-    height: auto;
-    padding-top: 20vh;
-    order: 1;
-    top: 0
-  }
-
-#video-container {
-  position: relative;
-  right: auto;
-  width: 100vw;
-  height: auto;
-}
-
-#video {
-  width: 100vw;
-  height: auto;
-  max-height: 75vh;
-  object-fit: contain;
-  object-position: center center;
-}
-
-.video-hover-preview {
-  width: 100vw;
-  height: auto;
-  max-height: 75vh;
-  object-position: center center;
-}
-  #video-wrapper {
-    width: 100vw;
-  }
-
-
-  #btn-play {
-    width: 100vw;
-    text-align: center;
-    font-size: 5em;
-    top: 50% !important;
-    left: 50% !important;
-    right: auto !important;
-    transform: translate(-50%, -50%) !important;
-  }
-
-
-  /* ══════════════════════════════════════════════
-     PART 3 — BOUTONS BAS
-     ══════════════════════════════════════════════ */
-
-  #fullscreen {
-  display: block;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s ease;  }
-
-  #list_artist {
-    /* remplacé par #mobile-see-artists sur la part 1
-       — masqué en part 3 pour éviter doublon */
-    display: none;
-  }
-
-  #next_artist {
-    right: 20px;
-    bottom: 6;
-    padding-bottom: 1vh;
-    font-size: 1.2em;
-  }
-
-
-  /* ══════════════════════════════════════════════
-     PART 3 — CURATED ARTISTS LIST (mobile, part 3)
-     ══════════════════════════════════════════════ */
-
-  #artists-list {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
-    padding: 0 24px;
-    z-index: 400;
-    justify-content: center;
-  }
-
-  .artist-list-item {
-    font-size: 1.2em;
-  }
-
-
-  /* ══════════════════════════════════════════════
-     PART 3 — CINEMA OVERLAY (inchangé, juste s'assure
-     que le fond noir couvre bien tout l'écran)
-     ══════════════════════════════════════════════ */
-
-  #cinema-overlay.active {
-    width: 200vw;
-    height: 200vh;
-  }
-
-
-  /* ══════════════════════════════════════════════
-     TOUCH — SUPPRESSION DES HOVER STATES
-     (évite les états "stuck" sur touch)
-     ══════════════════════════════════════════════ */
-
-  @media (hover: none) {
-    .artiste_accueil:hover,
-    .btn_hover:hover,
-    .nav_link:hover,
-    .artist-list-item:hover {
-      text-shadow: none;
-    }
-  }
-
-
-
-
-
-
-
-#editor-mobile,
-#about,
-div[style*="top:15px"] {
-  transition: opacity 0.7s ease;
-
-}
-#editor-mobile.appearing {
-  transition: opacity 1.5s ease; /* apparition plus lente */
-}
-
-
-
-  /* ══════════════════════════════════════════════
      SLIDESHOW BACKGROUND MOBILE
      ══════════════════════════════════════════════ */
 
   .mobile-bg-layer {
     position: fixed;
-    inset: 0;
     z-index: 1;
     width: 40vw;
     height: auto;
@@ -536,24 +284,253 @@ div[style*="top:15px"] {
     opacity: 0.9;
   }
 
-  /* Text shadow sur le nom correspondant dans la liste */
-  .mobile-artist-item.bg-highlighted {
-    text-shadow:
-      0 0 11px #ffffff,
-      0 0 13px #ffffff,
-      0 0 20px #ffffff;
-    transition:
-      text-shadow 1.2s ease;
-  }
-
   .mobile-artist-item {
     transition:
       text-shadow 1.2s ease,
       opacity var(--t-fast) var(--ease);
   }
 
+  .mobile-artist-item.bg-highlighted {
+    text-shadow:
+      0 0 11px #ffffff,
+      0 0 13px #ffffff,
+      0 0 20px #ffffff;
+    transition: text-shadow 1.2s ease;
+  }
 
 
+  /* ══════════════════════════════════════════════
+     PART 3 — STRUCTURE GÉNÉRALE
+     ══════════════════════════════════════════════ */
 
-/* fin @media max-width: 768px */
-}
+  #part_3 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  #part_3::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* masque haut — couvre la vidéo, sous titres et boutons */
+  #part_3::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 22vh;
+#part_3::before {
+  background: linear-gradient(to top, black 0%, transparent 100%);
+}    pointer-events: none;
+    z-index: 201;
+  }
+
+  /* masque bas — très fin, derrière #next_artist */
+  #part_3::after {
+    content: '';
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 170px;
+    background: linear-gradient(to top, black 20%, transparent 80%);
+    pointer-events: none;
+    z-index: 201;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 3 — TITRES ET NAVIGATION FIXES
+     ══════════════════════════════════════════════ */
+
+  #titre-haut {
+    font-size: 3.5em;
+    top: 30px;
+    left: 17px;
+    -webkit-text-stroke-width: 0.7px;
+    line-height: 0.8em;
+  }
+
+  #p2_haut_gauche {
+    position: fixed;
+    top: calc(30px + 3.5em + 44px);
+    right: 17px;
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    height: fit-content;
+    z-index: 300;
+  }
+
+  #p2_haut_gauche .nav_link {
+    font-size: 1em;
+    text-decoration: underline;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 3 — DROITE (vidéo)
+     ══════════════════════════════════════════════ */
+
+  #droite {
+    position: relative;
+    width: 100vw;
+    height: auto;
+    padding-top: 20vh;
+    order: 1;
+    flex-shrink: 0;
+  }
+
+  #video-container {
+    position: relative;
+    right: auto;
+    width: 100vw;
+    height: auto;
+  }
+
+  #video {
+    width: 100vw;
+    height: auto;
+    max-height: 75vh;
+    object-fit: contain;
+    object-position: center center;
+  }
+
+  .video-hover-preview {
+    width: 100vw;
+    height: auto;
+    max-height: 75vh;
+    object-position: center center;
+  }
+
+  #video-wrapper {
+    width: 100vw;
+  }
+
+  #btn-play {
+    width: 100vw;
+    text-align: center;
+    font-size: 5em;
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translate(-50%, -50%) !important;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 3 — GAUCHE (titre + texte)
+     ══════════════════════════════════════════════ */
+
+  #gauche {
+    position: relative;
+    width: 93vw;
+    height: auto;
+    min-height: 25vh;
+    padding: 19px 0 80px 13px;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 1.2em;
+    order: 2;
+    flex-shrink: 0;
+  }
+
+  .titre {
+    font-size: 1.1em;
+  }
+
+  #info {
+    font-size: 2.2em;
+  }
+
+  #texte-wrapper {
+    height: auto;
+    max-height: none;
+    overflow-y: visible;
+    -webkit-mask: none;
+    mask: none;
+  }
+
+  #texte-oeuvre {
+    font-size: 0.85em;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 3 — BOUTONS BAS
+     ══════════════════════════════════════════════ */
+
+  #fullscreen {
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+
+  #list_artist {
+    display: none;
+  }
+
+  #next_artist {
+    position: fixed;
+    right: 20px;
+    bottom: 0;
+    padding-bottom: 1vh;
+    font-size: 1.2em;
+    z-index: 202;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 3 — CURATED ARTISTS LIST
+     ══════════════════════════════════════════════ */
+
+  #artists-list {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    padding: 0 24px;
+    z-index: 400;
+    justify-content: center;
+  }
+
+  .artist-list-item {
+    font-size: 1.2em;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 3 — CINEMA OVERLAY
+     ══════════════════════════════════════════════ */
+
+  #cinema-overlay.active {
+    width: 200vw;
+    height: 200vh;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     TOUCH — SUPPRESSION DES HOVER STATES
+     ══════════════════════════════════════════════ */
+
+  @media (hover: none) {
+    .artiste_accueil:hover,
+    .btn_hover:hover,
+    .nav_link:hover,
+    .artist-list-item:hover {
+      text-shadow: none;
+    }
+  }
+
+} /* fin @media max-width: 768px */

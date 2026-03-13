@@ -1000,7 +1000,7 @@ document.getElementById('next_artist').addEventListener('click', () => {
     }
 
     const next2 = (next % 10) + 1;
-    document.getElementById('next_artist').textContent = `see ${artistes[next2].nom}'s work`;
+    document.getElementById('next_artist').textContent = `${artistes[next2].nom}`;
 
     video.style.transition = 'opacity 0.8s ease';
     video.style.opacity = '1';

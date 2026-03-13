@@ -69,7 +69,7 @@ function initMobileArtistsList() {
 
   const btnSee = document.createElement('button');
   btnSee.id = 'mobile-see-artists';
-  btnSee.textContent = 'see curated artists';
+  btnSee.textContent = 'artists';
   document.body.appendChild(btnSee);
 
   const list = document.createElement('div');
@@ -101,7 +101,7 @@ function initMobileArtistsList() {
     document.getElementById('titre-haut')?.style.setProperty('opacity', '1');
     document.documentElement.style.setProperty('--p2typo', 'black');
 
-    btnSee.textContent = 'close curated artists';
+    btnSee.textContent = 'close artists list';
     btnSee.style.fontSize = '1em';
 
     updateMobileActiveItem();
@@ -131,7 +131,7 @@ function closeMobileList() {
   document.documentElement.style.setProperty('--p2typo', 'white');
 
   if (btnSee) {
-    btnSee.textContent = 'see curated artists';
+    btnSee.textContent = 'artists';
     btnSee.style.fontSize = '';
   }
 }
@@ -185,7 +185,7 @@ document.getElementById('mobile-bg-2')?.classList.remove('visible');
     enterCinemaFromHome();
 
     const next = (id % 10) + 1;
-    document.getElementById('next_artist').textContent = `see ${artistes[next].nom}'s work`;
+    document.getElementById('next_artist').textContent = `> ${artistes[next].nom}`;
 
     setTimeout(() => {
       part3.classList.add('visible');
@@ -221,7 +221,7 @@ document.getElementById('mobile-bg-2')?.classList.remove('visible');
       if (info3AlreadyShown) showInfo3();
 
       const next = (id % 10) + 1;
-      document.getElementById('next_artist').textContent = `see ${artistes[next].nom}'s work`;
+      document.getElementById('next_artist').textContent = `${artistes[next].nom}`;
 
       video.style.transition = 'opacity 0.8s ease';
       video.style.opacity = '1';
@@ -365,6 +365,37 @@ if (isMobile()) {
     });
   }
 }
+
+// ══════════════════════════════════════════════
+// ── SCROLL MASK VIDÉO
+// ══════════════════════════════════════════════
+
+function initMobileScrollMask() {
+  if (!isMobile()) return;
+
+  const part3 = document.getElementById('part_3');
+  if (!part3) return;
+
+  part3.addEventListener('scroll', () => {
+    const scrollY = part3.scrollTop;
+    const videoContainer = document.getElementById('video-container');
+    if (!videoContainer) return;
+
+    const videoH = videoContainer.offsetHeight;
+
+    // progress : 0 = pas scrollé, 1 = vidéo complètement masquée
+    const progress = Math.min(scrollY / videoH, 1);
+
+    // masque qui monte par le bas
+    const maskStop = Math.round((1 - progress) * 100);
+    videoContainer.style.webkitMaskImage = 
+      `linear-gradient(to top, black 0%, black ${maskStop}%, transparent ${maskStop + 5}%)`;
+    videoContainer.style.maskImage = 
+      `linear-gradient(to top, black 0%, black ${maskStop}%, transparent ${maskStop + 5}%)`;
+  });
+}
+
+initMobileScrollMask();
 
 
 
