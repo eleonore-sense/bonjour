@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="style_mars.css"> 
+  <link rel="stylesheet" type="text/css" href="style_mars_mobile.css"> 
+    <script src="script_mars.js" defer></script>
+    <script src="script_mars_mobile.js" defer></script>
+  <title>Do Our Chimeras - mars 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+
+<div id="gradient_fond"></div>
+<div id="cinema-overlay"></div>
+
+<!-- Logos -->
+<div id="logos-container"  style="position:fixed;top:15px;left:15px;z-index:2000;display:flex;align-items:center;gap:15px;">
+  <span id="logo-pompidou" data-h="1.9vh"></span>
+  <span id="logo-kadist" data-h="2.3vh"></span>
+</div>
+
+<!-- Header buttons -->
+<div id="header-buttons" style="position:fixed;top:50px;right:50px;z-index:2000;display:flex;align-items:center;gap:10px;">
+<div id="about">
+  <div id="boite_about">
+    <span id="about-label">about</span>
+    <div id="about-panel">
+      <div id="about-content">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+        crédit:
+        XXXX
+        XXXXX
+        XXXX
+      </div>
+    </div>
+  </div>
+
+              <button id="about-close-mobile">close</button>
+</div>
+  <div style="display:none ;width:15px;height:15px;border-radius:50%;background:linear-gradient(90deg,black 50%,white 50%);border:1px solid white;"></div>
+</div>
+
+
+
+
+<!-- PART 1 : Titre wave -->
+<div class="editor" id="editor">
+  <svg viewBox="0 0 600 320" preserveAspectRatio="xMinYMid meet">
+    <path id="wave1" d="M0 80 L600 80"/>
+    <text><textPath id="text1" href="#wave1" startOffset="50%">Do Our Chimeras</textPath></text>
+    <path id="wave2" d="M0 160 L600 160"/>
+    <text><textPath id="text2" href="#wave2" startOffset="50%">Most Resemble Us?</textPath></text>
+  <path id="wave3" d="M0 240 L600 240"/>
+  </svg>
+</div>
+
+
+
+<!-- ══════════════════════════════════════════════
+     MOBILE ONLY — Titre wave 5 lignes
+     À insérer juste après le div#editor existant
+
+     RÉGLAGES :
+     - startOffset="50%" sur chaque textPath = position horizontale du texte
+       (ex: "40%" pour décaler à gauche, "60%" pour droite)
+     - dy="0" sur chaque text = position verticale sur le chemin
+       (ex: dy="-5" monte le texte, dy="5" le descend)
+     ══════════════════════════════════════════════ -->
+
+<div class="editor-mobile" id="editor-mobile">
+
+  <!-- Ligne 1 : "Do Our" -->
+  <svg viewBox="0 0 283.13 33.46" preserveAspectRatio="xMidYMid meet">
+    <path id="m-wave1" d="M0,16.73 L283.13,16.73"/>
+    <text><textPath id="m-text1" href="#m-wave1" startOffset="50%" dy="0">Do Our</textPath></text>
+  </svg>
+
+  <!-- Ligne 2 : "Chimeras" -->
+  <svg viewBox="0 0 283.13 37.07" preserveAspectRatio="xMidYMid meet">
+    <path id="m-wave2" d="M0,18.535 L283.13,18.535"/>
+    <text><textPath id="m-text2" href="#m-wave2" startOffset="50%" dy="0">Chimeras</textPath></text>
+  </svg>
+
+  <!-- Ligne 3 : "Most" -->
+  <svg viewBox="0 0 283.13 32.36" preserveAspectRatio="xMidYMid meet">
+    <path id="m-wave3" d="M0,16.18 L283.13,16.18"/>
+    <text><textPath id="m-text3" href="#m-wave3" startOffset="50%" dy="0">Most</textPath></text>
+  </svg>
+
+  <!-- Ligne 4 : "Resemble" -->
+  <svg viewBox="0 0 283.13 41.53" preserveAspectRatio="xMidYMid meet">
+    <path id="m-wave4" d="M0,20.765 L283.13,20.765"/>
+    <text><textPath id="m-text4" href="#m-wave4" startOffset="50%" dy="0">Resemble</textPath></text>
+  </svg>
+
+  <!-- Ligne 5 : "Us?" -->
+  <svg viewBox="0 0 283.13 33.76" preserveAspectRatio="xMidYMid meet">
+    <path id="m-wave5" d="M0,16.88 L283.13,16.88"/>
+    <text><textPath id="m-text5" href="#m-wave5" startOffset="50%" dy="0">Us?</textPath></text>
+  </svg>
+
+</div>
+
+
+
+<!-- PART 1 : Carrousel artistes -->
+<div id="artistes-container" style="width:100vw;bottom:30px;padding-left:20px;box-sizing:border-box;position:fixed;">
+  <div class="carrousel-wrapper vitesse-9" id="carrousel">
+    <span class="artiste_accueil" data-artiste="1">Agnieszka Polska</span><span style="margin-top:20px">—</span>
+    <span class="artiste_accueil" data-artiste="2">Lu Yang</span><span style="margin-top:20px">—</span>
+    <span class="artiste_accueil" data-artiste="3">Jonas Lund</span><span style="margin-top:20px">—</span>
+    <span class="artiste_accueil" data-artiste="4">Egor Kraft</span><span style="margin-top:20px">—</span>
+    <span class="artiste_accueil" data-artiste="5">Elsa Werth</span><span style="margin-top:20px">—</span>
+    <span class="artiste_accueil" data-artiste="6">Emmanuel Van der Auwera</span><span style="margin-top:20px">—</span>
+    <span class="artiste_accueil" data-artiste="7">Jon Rafman</span><span style="margin-top:20px">—</span>
+    <span class="artiste_accueil" data-artiste="8">Ho Tzu Nyen</span><span style="margin-top:20px">—</span>
+    <span class="artiste_accueil" data-artiste="9">John Menick</span><span style="margin-top:20px">—</span>
+    <span class="artiste_accueil" data-artiste="10">Ayoung Kim</span><span style="margin-top:20px">—</span>
+    <!-- Duplication pour boucle infinie -->
+    <span class="artiste_accueil" data-artiste="1">Agnieszka Polska</span><span style="margin-top:20px">—</span>
+    <span class="artiste_accueil" data-artiste="2">Lu Yang</span><span style="margin-top:20px">—</span>
+    <span class="artiste_accueil" data-artiste="3">Jonas Lund</span><span style="margin-top:20px">—</span>
+    <span class="artiste_accueil" data-artiste="4">Egor Kraft</span><span style="margin-top:20px">—</span>
+    <span class="artiste_accueil" data-artiste="5">Elsa Werth</span><span style="margin-top:20px">—</span>
+    <span class="artiste_accueil" data-artiste="6">Emmanuel Van der Auwera</span><span style="margin-top:20px">—</span>
+    <span class="artiste_accueil" data-artiste="7">Jon Rafman</span><span style="margin-top:20px">—</span>
+    <span class="artiste_accueil" data-artiste="8">Ho Tzu Nyen</span><span style="margin-top:20px">—</span>
+    <span class="artiste_accueil" data-artiste="9">John Menick</span><span style="margin-top:20px">—</span>
+    <span class="artiste_accueil" data-artiste="10">Ayoung Kim</span><span style="margin-top:20px">—</span>
+  </div>
+</div>
+
+
+<div id="hover-previews"></div>
+
+
+
+
+<!-- PART 2 -->
+<div id="titre-haut">Do Our Chimeras Most Resemble Us?</div>
+
+
+<div id="part_3">
+
+  <div id="p2_haut_gauche" class="info1">
+    <button id="btn_cine_switch" class="nav_link info3 btn_hover">exit cinema view</button>
+    <span class="nav_link info3">/</span>
+    <button id="btn_home" class="nav_link btn_hover">exhibition entrance</button>
+  </div>
+
+  <div id="gauche">
+    <span class="titre info1"></span>
+    <span id="info" class="btn info1 btn_hover">+</span>
+<div id="texte-wrapper">
+  <div id="texte-oeuvre" class="info1"></div>
+</div>
+  </div>
+
+  <div id="droite">
+    <div id="video-container">
+      <div id="video-wrapper" class="video-pack">
+        <video id="video" playsinline></video>
+<img class="video-hover-preview" id="video-hover-preview-1" alt="">
+<img class="video-hover-preview" id="video-hover-preview-2" alt="">
+        <div id="btn-play" class="info1">Play Video</div>
+        <button id="btn-restart" class="bas nav_link btn_hover">restart</button>
+        <div id="timeline-fullscreen">
+          <div id="timeline-fullscreen-fill"></div>
+        </div>
+        <button id="fullscreen-exit" class="bas nav_link btn_hover">exit fullscreen</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="list_artist" class=" btn_hover info3">artists</div>
+  <div id="fullscreen" class="bas btn_hover">fullscreen</div>
+  <div id="next_artist" class=" btn_hover info3"></div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,556 @@
+/* ══════════════════════════════════════════════
+   STYLE_MARS_MOBILE.CSS
+   Breakpoint : max-width 768px
+   ══════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  /* ══════════════════════════════════════════════
+     BASE
+     ══════════════════════════════════════════════ */
+
+  body {
+    padding: 0;
+    overflow: hidden;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     LOGOS
+     ══════════════════════════════════════════════ */
+
+  div[style*="top:15px"] {
+    top: 15px !important;
+    left: 15px !important;
+    flex-direction: column !important;
+    align-items: start !important;
+    gap: 8px !important;
+  }
+
+
+  #logo-pompidou svg,
+  #logo-kadist svg {
+    height: 3.2vw !important;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     ABOUT PANEL
+     ══════════════════════════════════════════════ */
+
+  #header-buttons {
+    top: 30px !important;
+    right: 27px !important;
+    font-size: 1.2em;
+  }
+
+  #boite_about {
+    width: 76px;
+    height: 42px;
+    padding-top: 14px;
+    padding-left: 18px;
+  }
+
+  #boite_about.open {
+  width: 84vw;
+  height: 100vh;
+  padding-top: 18px;
+  padding-left: 18px;
+  margin-right: 0;
+  border-radius: 0;
+  top: -18px;
+  }
+
+  #about-content {
+    font-size: 0.85em;
+    line-height: 1.5;
+
+    -webkit-mask: linear-gradient(
+    to bottom,
+    black 0%,
+    black 70%,
+    transparent 90%
+  );
+
+  mask: linear-gradient(
+    to bottom,
+    black 0%,
+    black 70%,
+    transparent 90%
+  );
+  }
+
+#about-label{
+  text-decoration: underline !important;
+}
+
+
+
+
+/* desktop — caché */
+#about-close-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  #about-close-mobile {
+    display: block;
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4000;
+    background: none;
+    border: none;
+    font-family: Abordage;
+    font-size: 1em;
+    color: black;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+
+  }
+
+  /* visible seulement quand about est ouvert */
+  #boite_about.open ~ * #about-close-mobile,
+  #boite_about.show-text #about-close-mobile {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+
+
+  /* ══════════════════════════════════════════════
+     PART 1 — TITRE WAVE
+     ══════════════════════════════════════════════ */
+
+  .editor-mobile {
+    top: 17%;
+    width: calc(100vw - 20px);
+      transition: opacity 2s ease;
+  }
+
+  /* Le SVG du titre mobile sera dessiné par l'utilisateur
+     — on garde juste la taille et le positionnement */
+  .editor svg {
+    width: 100%;
+    height: auto;
+  }
+
+  text {
+    font-size: 3.8em;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 1 — CARROUSEL → MASQUÉ SUR MOBILE
+     ══════════════════════════════════════════════ */
+
+  #artistes-container {
+    display: none;
+  }
+
+  /* Images vignettes hover → désactivées sur mobile */
+  #hover-previews {
+    display: none;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 1 — BOUTON "SEE CURATED ARTISTS"
+     ══════════════════════════════════════════════ */
+
+  #mobile-see-artists {
+    position: fixed;
+    bottom: 16px;
+    left: 20px;
+    z-index: 600;
+    padding-bottom: 1vh;
+    font-family: Abordage;
+    font-size: 1.5em;
+    text-decoration: underline;
+    color: var(--typo);
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition:
+      text-shadow var(--t-base) var(--ease),
+      opacity var(--t-base) var(--ease);
+  }
+
+  #mobile-see-artists:hover,
+  #mobile-see-artists:active {
+    text-shadow:
+      0 0 11px #ffffff,
+      0 0 13px #ffffff;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 1 — LISTE ARTISTES MOBILE (plein écran)
+     ══════════════════════════════════════════════ */
+
+  #mobile-artists-list {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 24px;
+    gap: 25px;
+   background: transparent;
+    opacity: 0;
+    pointer-events: none;
+    clip-path: inset(100% 0 0% 0);
+    transition:
+      clip-path 0.7s var(--ease-in-out),
+      opacity 0s linear 0.7s;
+
+  }
+
+  #mobile-artists-list.visible {
+    opacity: 1;
+    pointer-events: auto;
+    clip-path: inset(0% 0 0% 0);
+    transition:
+      clip-path 0.7s var(--ease-in-out),
+      opacity 0s linear 0s;
+  }
+
+  #mobile-artists-list .mobile-artist-item {
+    font-family: Abordage;
+    font-size: 1.4em;
+    color: var(--typo);
+    cursor: pointer;
+    position: relative;
+    transition:
+      text-shadow var(--t-base) var(--ease),
+      opacity var(--t-fast) var(--ease);
+  }
+
+  #mobile-artists-list .mobile-artist-item::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.08em;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    opacity: 0;
+    gap: 18px;
+    transform: scaleX(0.92);
+    transform-origin: left center;
+    transition:
+      opacity var(--t-underline) var(--ease),
+      transform var(--t-underline) var(--ease);
+  }
+
+  #mobile-artists-list .mobile-artist-item.active::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  /* Bouton fermer la liste */
+#mobile-close-list {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  bottom: auto;
+  left: auto;
+  z-index: 600;
+  padding: 0;
+  font-family: Abordage;
+  font-size: 1em;
+  color: var(--typo);
+  cursor: pointer;
+  background: none;
+  border: none;
+  opacity: 1;
+  pointer-events: auto;
+  text-decoration: underline;
+}
+
+  #mobile-close-list.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  #mobile-close-list:active {
+    text-shadow:
+      0 0 11px #ffffff,
+      0 0 13px #ffffff;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 3 — STRUCTURE GÉNÉRALE
+     ══════════════════════════════════════════════ */
+
+  #part_3 {
+    position: fixed;
+    top: 0;
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  #part_3::-webkit-scrollbar {
+    display: none;
+  }
+
+  #titre-haut {
+    font-size: 3.5em;
+    top: 30px;
+    left: 17px;
+    -webkit-text-stroke-width: 0.7px;
+          line-height: 0.8em;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 3 — NAVIGATION HAUT
+     ══════════════════════════════════════════════ */
+
+  #p2_haut_gauche {
+    position: absolute;
+top: calc(30px + 3.5em + 44px);
+    right: 17px;
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+height: fit-content;
+  }
+
+  #p2_haut_gauche .nav_link {
+    font-size: 1em;
+    text-decoration: underline;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 3 — GAUCHE (titre + texte)
+     ══════════════════════════════════════════════ */
+
+  #gauche {
+    position: relative;
+    width: 93vw;
+    height: auto;
+    min-height: 25vh;
+    padding-left: 13px;
+    padding-right: 0px;
+    padding-top: 19px;
+    padding-bottom: 20px;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 1.2em;
+    order: 2;
+  }
+
+  #texte-wrapper {
+    height: auto;
+    max-height: 30vh;
+    overflow-y: auto;
+    -webkit-mask: linear-gradient(to bottom, black 60%, transparent 100%);
+    mask: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+
+  #texte-oeuvre {
+    font-size: 0.85em;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 3 — DROITE (vidéo)
+     ══════════════════════════════════════════════ */
+.titre{font-size:1.1en;}
+#info{font-size: 2.2em;}
+  #droite {
+    position:relative;
+    width: 100vw;
+    height: auto;
+    padding-top: 20vh;
+    order: 1;
+    top: 0
+  }
+
+#video-container {
+  position: relative;
+  right: auto;
+  width: 100vw;
+  height: auto;
+}
+
+#video {
+  width: 100vw;
+  height: auto;
+  max-height: 75vh;
+  object-fit: contain;
+  object-position: center center;
+}
+
+.video-hover-preview {
+  width: 100vw;
+  height: auto;
+  max-height: 75vh;
+  object-position: center center;
+}
+  #video-wrapper {
+    width: 100vw;
+  }
+
+
+  #btn-play {
+    width: 100vw;
+    text-align: center;
+    font-size: 5em;
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translate(-50%, -50%) !important;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 3 — BOUTONS BAS
+     ══════════════════════════════════════════════ */
+
+  #fullscreen {
+  display: block;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;  }
+
+  #list_artist {
+    /* remplacé par #mobile-see-artists sur la part 1
+       — masqué en part 3 pour éviter doublon */
+    display: none;
+  }
+
+  #next_artist {
+    right: 20px;
+    bottom: 6;
+    padding-bottom: 1vh;
+    font-size: 1.2em;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 3 — CURATED ARTISTS LIST (mobile, part 3)
+     ══════════════════════════════════════════════ */
+
+  #artists-list {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    padding: 0 24px;
+    z-index: 400;
+    justify-content: center;
+  }
+
+  .artist-list-item {
+    font-size: 1.2em;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 3 — CINEMA OVERLAY (inchangé, juste s'assure
+     que le fond noir couvre bien tout l'écran)
+     ══════════════════════════════════════════════ */
+
+  #cinema-overlay.active {
+    width: 200vw;
+    height: 200vh;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     TOUCH — SUPPRESSION DES HOVER STATES
+     (évite les états "stuck" sur touch)
+     ══════════════════════════════════════════════ */
+
+  @media (hover: none) {
+    .artiste_accueil:hover,
+    .btn_hover:hover,
+    .nav_link:hover,
+    .artist-list-item:hover {
+      text-shadow: none;
+    }
+  }
+
+
+
+
+
+
+
+#editor-mobile,
+#about,
+div[style*="top:15px"] {
+  transition: opacity 0.7s ease;
+
+}
+#editor-mobile.appearing {
+  transition: opacity 1.5s ease; /* apparition plus lente */
+}
+
+
+
+  /* ══════════════════════════════════════════════
+     SLIDESHOW BACKGROUND MOBILE
+     ══════════════════════════════════════════════ */
+
+  .mobile-bg-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    width: 40vw;
+    height: auto;
+    object-fit: contain;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.2s ease;
+    -webkit-mask:
+      linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%),
+      linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask:
+      linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%),
+      linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    mask-composite: intersect;
+  }
+
+  .mobile-bg-layer.visible {
+    opacity: 0.9;
+  }
+
+  /* Text shadow sur le nom correspondant dans la liste */
+  .mobile-artist-item.bg-highlighted {
+    text-shadow:
+      0 0 11px #ffffff,
+      0 0 13px #ffffff,
+      0 0 20px #ffffff;
+    transition:
+      text-shadow 1.2s ease;
+  }
+
+  .mobile-artist-item {
+    transition:
+      text-shadow 1.2s ease,
+      opacity var(--t-fast) var(--ease);
+  }
+
+
+
+
+/* fin @media max-width: 768px */
+}
