@@ -916,7 +916,7 @@ const next = getNextArtisteId(artisteCourant);
   document.getElementById('next_artist').textContent = `${artistes[next].nom}`;
   if (!data) return;
 
-  document.querySelector('#gauche .titre').textContent = `${data.nom} — ${data.titre}`;
+document.querySelector('#gauche .titre').innerHTML = `<span class="artiste-nom">${data.nom}</span> — <span class="artiste-titre">${data.titre}</span>`;
   video.src    = data.video;
   video.poster = data.poster;
   video.load();
@@ -1258,7 +1258,7 @@ document.getElementById('next_artist').addEventListener('click', () => {
   }
 
   setTimeout(() => {
-    document.querySelector('#gauche .titre').textContent = `${data.nom} — ${data.titre}`;
+document.querySelector('#gauche .titre').innerHTML = `<span class="artiste-nom">${data.nom}</span> — <span class="artiste-titre">${data.titre}</span>`;
     video.src = data.video;
     video.poster = data.poster;
     video.load();
@@ -1647,7 +1647,7 @@ artistsList.addEventListener('click', (e) => {
   }
 
   setTimeout(() => {
-    document.querySelector('#gauche .titre').textContent = `${data.nom} — ${data.titre}`;
+document.querySelector('#gauche .titre').innerHTML = `<span class="artiste-nom">${data.nom}</span> — <span class="artiste-titre">${data.titre}</span>`;
     video.src = data.video;
     video.poster = data.poster;
     video.load();

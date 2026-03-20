@@ -583,9 +583,11 @@ body.cinema-mode .btn {
   padding: 0 20px;
   font-size: 1.5em;
 }
+.artiste-nom{  color: inherit;}
 
-.titre {
-  text-decoration: underline;
+.artiste-titre {
+font-style: italic;
+  color: inherit;
 }
 
 #info {

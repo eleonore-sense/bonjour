@@ -207,7 +207,7 @@ const next = getNextArtisteId(id);
     titre.style.opacity = '0';
 
     setTimeout(() => {
-      titre.textContent = `${data.nom} — ${data.titre}`;
+document.querySelector('#gauche .titre').innerHTML = `<span class="artiste-nom">${data.nom}</span> — <span class="artiste-titre">${data.titre}</span>`;
       video.src = data.video;
       video.poster = data.poster;
       video.load();
