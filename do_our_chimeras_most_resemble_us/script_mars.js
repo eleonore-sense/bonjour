@@ -1,3 +1,203 @@
+// ═══════════════════════════════════════════
+// LANGUE
+// ═══════════════════════════════════════════
+
+const translations = {
+  FR: {
+    titre: "Nos Chimères Sont-Elles Ce Qui Nous Ressemble Le Mieux\u00a0?",
+    titreWave: ["Nos Chimères Sont-elles", "Ce Qui Nous Ressemble", "Le Mieux\u00a0?"],
+    titreWaveMobile: ["Nos chimères", "Sont-Elles", "Ce Qui Nous", "Ressemble", "Le Mieux\u00a0?"],
+    about: "à propos",
+    exitCinema: "quitter la vue cinéma",
+    exhibitionEntrance: "entrée de l'exposition",
+    playVideo: "Lire la vidéo",
+    restart: "recommencer",
+    exitFullscreen: "quitter le plein écran",
+    fullscreen: "plein écran",
+    artists: "artistes",
+  },
+  EN: {
+    titre: "Do Our Chimeras Most Resemble Us?",
+    titreWave: ["Do Our Chimeras", "Most Resemble Us?", ""],
+    titreWaveMobile: ["Do Our", "Chimeras", "Most", "Resemble", "Us?"],
+    about: "about",
+    exitCinema: "exit cinema view",
+    exhibitionEntrance: "exhibition entrance",
+    playVideo: "Play Video",
+    restart: "restart",
+    exitFullscreen: "exit fullscreen",
+    fullscreen: "fullscreen",
+    artists: "artists",
+  }
+};
+
+// Détection langue : URL > navigateur > EN par défaut
+const params = new URLSearchParams(window.location.search);
+const urlLang = params.get("lang");
+let currentLang;
+if (urlLang) {
+  currentLang = urlLang === "fr" ? "FR" : "EN";
+} else if (navigator.language.startsWith("fr")) {
+  currentLang = "FR";
+} else {
+  currentLang = "EN";
+}
+
+const linesConfig = {
+  EN: [
+    { y: 80,  amplitude: 16, frequency: 2   },
+    { y: 160, amplitude: 13, frequency: 4   },
+    { y: 240, amplitude: 12, frequency: 2.5 },
+  ],
+  FR: [
+    { y: 60,  amplitude: 16, frequency: 2   },
+    { y: 130, amplitude: 13, frequency: 4   },
+    { y: 200, amplitude: 12, frequency: 2.5 },
+  ]
+};
+
+let lines = linesConfig[currentLang];
+
+function applyLang() {
+  const t = translations[currentLang];
+  const part3 = document.getElementById('part_3');
+  const isPage2 = part3.classList.contains('visible');
+  document.querySelectorAll('.editor-mobile text').forEach(el => {
+  el.style.fontSize = currentLang === "FR" ? "4em" : "5.5em";
+});
+
+  const els = [
+    document.querySelector('.editor'),
+        document.getElementById('editor-mobile'),
+    document.getElementById('titre-haut'),
+    document.getElementById('about-label'),
+    document.getElementById('btn-lang'),
+    document.getElementById('artistes-container'),
+    document.querySelector('#gauche .titre'),
+    document.getElementById('btn-play'),
+    document.getElementById('fullscreen'),
+  ];
+
+  // Fade out
+  els.forEach(el => {
+    if (el) {
+      el.style.transition = "opacity 0.8s ease";
+      el.style.opacity = "0";
+    }
+  });
+
+  setTimeout(() => {
+
+    function setText(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    }
+
+    // Boutons et textes UI
+    setText("btn-lang", currentLang === "EN" ? "→fr" : "→en");
+if (isMobile()) {
+  const titreHaut = document.getElementById('titre-haut');
+  if (titreHaut) {
+    titreHaut.innerHTML = currentLang === "FR" 
+      ? 'Nos Chimères sont-elles<br>Ce Qui Nous Ressemble<br>Le Mieux\u00a0?' 
+      : 'Do Our Chimeras<br>Most Resemble Us?';
+    titreHaut.style.fontSize = currentLang === "FR" ? "3em" : "";
+      titreHaut.style.lineHeight = currentLang === "FR" ? "1em" : "0.85em";}
+} else {
+  setText("titre-haut", t.titre);
+}
+    setText("about-label", t.about);
+    setText("btn_home", t.exhibitionEntrance);
+    setText("btn-play", t.playVideo);
+    setText("btn-restart", t.restart);
+    setText("fullscreen-exit", t.exitFullscreen);
+    setText("fullscreen", t.fullscreen);
+    const mobileSeeArtists = document.getElementById('mobile-see-artists');
+if (mobileSeeArtists && !mobileSeeArtists.classList.contains('open')) {
+  mobileSeeArtists.textContent = currentLang === "FR" ? "artistes" : "artists";
+}
+    setText("list_artist", t.artists);
+
+    // Titre wave desktop
+    ["text1","text2","text3"].forEach((id, i) => {
+      const el = document.getElementById(id);
+      const wave = document.getElementById("wave" + (i + 1));
+      const val = t.titreWave[i] ?? "";
+      if (el) el.textContent = val;
+      if (el) el.closest("text").style.visibility = val ? "visible" : "hidden";
+      if (wave) wave.style.visibility = val ? "visible" : "hidden";
+    });
+
+    // Titre wave mobile
+    ["m-text1","m-text2","m-text3","m-text4","m-text5"].forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = t.titreWaveMobile[i] ?? "";
+    });
+
+    // Taille typo selon langue
+    document.querySelectorAll('.editor text').forEach(el => {
+      el.style.fontSize = currentLang === "FR" ? "4.5em" : "5.4em";
+    });
+
+    // Largeur boite about sans transition
+    const boiteAbout = document.getElementById("boite_about");
+    if (boiteAbout) {
+      boiteAbout.style.transition = "none";
+      boiteAbout.style.width = currentLang === "FR" ? "90px" : "70px";
+      setTimeout(() => { boiteAbout.style.transition = ""; }, 300);
+    }
+
+    // Repositionner les paths SVG
+    const waveY = linesConfig[currentLang].map(l => l.y);
+    document.getElementById("wave1")?.setAttribute("d", `M0 ${waveY[0]} L600 ${waveY[0]}`);
+    document.getElementById("wave2")?.setAttribute("d", `M0 ${waveY[1]} L600 ${waveY[1]}`);
+    document.getElementById("wave3")?.setAttribute("d", `M0 ${waveY[2]} L600 ${waveY[2]}`);
+
+    // Mise à jour positions waves pour l'animation
+    lines = linesConfig[currentLang];
+
+    // Si on est en page 2, mettre à jour le texte de l'artiste
+    if (isPage2 && artisteCourant) {
+      const data = artistes[artisteCourant];
+      if (data) {
+        const texteOeuvre = document.getElementById('texte-oeuvre');
+        if (texteOeuvre) {
+          texteOeuvre.textContent = currentLang === "FR" && data.textFR ? data.textFR : data.text;
+        }
+      }
+    }
+
+    // URL sans rechargement
+    const url = new URL(window.location);
+    url.searchParams.set("lang", currentLang.toLowerCase());
+    window.history.replaceState({}, "", url);
+
+    // Fade in
+    els.forEach(el => {
+      if (el) {
+        el.style.transition = "opacity 0.8s ease";
+        if (el.id === "titre-haut") {
+          el.style.opacity = isPage2 ? "1" : "0";
+        } else {
+          el.style.opacity = "1";
+        }
+      }
+    });
+
+  }, 800);
+}
+// Init au chargement + clic bouton
+document.addEventListener("DOMContentLoaded", () => {
+  applyLang();
+  const btnLang = document.getElementById("btn-lang");
+  if (btnLang) {
+    btnLang.addEventListener("click", () => {
+      currentLang = currentLang === "EN" ? "FR" : "EN";
+      applyLang();
+    });
+  }
+});
+
 // ══════════════════════════════════════════════
 // ── DONNÉES ARTISTES ──────────────────────────
 // ══════════════════════════════════════════════
@@ -9,6 +209,12 @@ const artistes = {
     video: "img/agnieszka_polska.mp4",
     poster: "img/agnieszka_polska.jpg",
     text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
+nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
+
+Curabitur vel augue non neque tristique tincidunt. 
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
+    textFR: `txt fr Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
 nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
 
@@ -31,6 +237,12 @@ nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
 
 Curabitur vel augue non neque tristique tincidunt. 
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
+    textFR: `txt fr Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
+nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
+
+Curabitur vel augue non neque tristique tincidunt. 
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
     x: "60%", y: "15%"
   },
   3: {
@@ -45,6 +257,12 @@ Curabitur vel augue non neque tristique tincidunt.
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem.
 Curabitur vel augue non neque tristique tincidunt. 
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
+    textFR: `txt fr Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
+nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
+
+Curabitur vel augue non neque tristique tincidunt. 
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
     x: "10%", y: "50%"
   },
   4: {
@@ -56,6 +274,12 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem.
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
+nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
+
+Curabitur vel augue non neque tristique tincidunt. 
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
+    textFR: `txt fr Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
 nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
 
@@ -80,6 +304,12 @@ nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
 
 Curabitur vel augue non neque tristique tincidunt. 
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
+    textFR: `txt fr Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
+nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
+
+Curabitur vel augue non neque tristique tincidunt. 
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
     x: "20%", y: "70%"
   },
   6: {
@@ -93,6 +323,12 @@ nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
 
 Curabitur vel augue non neque tristique tincidunt. 
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
+    textFR: `txt fr Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
+nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
+
+Curabitur vel augue non neque tristique tincidunt. 
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
     x: "80%", y: "70%"
   },
   7: {
@@ -100,7 +336,7 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
     titre: "Catastrophonics I–IV",
     video: "img/jon_rafman.mp4",
     poster: "img/jon_rafman.jpg",
-    text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+    text: `txt fr Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
 nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
 
@@ -113,6 +349,12 @@ nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
 Curabitur vel augue non neque tristique tincidunt. 
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem.
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
+nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
+
+Curabitur vel augue non neque tristique tincidunt. 
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
+    textFR: `txt fr Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
 nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
 
@@ -131,6 +373,12 @@ nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
 
 Curabitur vel augue non neque tristique tincidunt. 
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
+    textFR: `txt fr Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
+nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
+
+Curabitur vel augue non neque tristique tincidunt. 
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
     x: "60%", y: "10%"
   },
   9: {
@@ -138,7 +386,13 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
     titre: "Telharmonium",
     video: "img/john_menick.mp4",
     poster: "img/john_menick.jpg",
-    text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+    text: `txt fr Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
+nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
+
+Curabitur vel augue non neque tristique tincidunt. 
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
+    textFR: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
 nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
 
@@ -157,11 +411,51 @@ nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
 
 Curabitur vel augue non neque tristique tincidunt. 
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
+    textFR: `txt fr Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
+nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
+
+Curabitur vel augue non neque tristique tincidunt. 
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
     x: "30%", y: "60%"
   }
 };
 
 
+// Ordre aléatoire des artistes
+const artistesIds = Object.keys(artistes).map(Number);
+for (let i = artistesIds.length - 1; i > 0; i--) {
+  const j = Math.floor(Math.random() * (i + 1));
+  [artistesIds[i], artistesIds[j]] = [artistesIds[j], artistesIds[i]];
+}
+
+
+function getNextArtisteId(currentId) {
+  const idx = artistesIds.indexOf(currentId);
+  return artistesIds[(idx + 1) % artistesIds.length];
+}
+
+// Randomiser le carrousel
+document.addEventListener('DOMContentLoaded', () => {
+  const carrouselEl = document.getElementById('carrousel');
+  if (carrouselEl) {
+    carrouselEl.innerHTML = '';
+    [artistesIds, artistesIds].forEach(ids => {
+      ids.forEach(id => {
+        const span = document.createElement('span');
+        span.className = 'artiste_accueil';
+        span.dataset.artiste = id;
+        span.textContent = artistes[id].nom;
+        carrouselEl.appendChild(span);
+
+        const sep = document.createElement('span');
+        sep.style.marginTop = '20px';
+        sep.textContent = '—';
+        carrouselEl.appendChild(sep);
+      });
+    });
+  }
+});
 // ══════════════════════════════════════════════
 // ── ÉLÉMENTS DOM ──────────────────────────────
 // ══════════════════════════════════════════════
@@ -280,7 +574,6 @@ function enterCinemaFromHome() {
   cinemaOverlay.classList.add('active');
 
   document.body.classList.add('cinema-mode');
-  switchCine.textContent = 'exit cinema view';
   document.documentElement.style.setProperty('--p2typo', 'white');
   btnPlay.style.color = 'black';
 }
@@ -293,7 +586,6 @@ function setCinemaMode(enabled) {
 
   if (enabled) {
     document.body.classList.add('cinema-mode');
-    switchCine.textContent = 'exit cinema view';
     document.documentElement.style.setProperty('--p2typo', 'white');
     btnPlay.style.color = 'black';
 
@@ -312,7 +604,6 @@ function setCinemaMode(enabled) {
 
 } else {
   document.body.classList.remove('cinema-mode');
-  switchCine.textContent = 'cinema view';
   document.documentElement.style.setProperty('--p2typo', 'black');
   btnPlay.style.color = 'white';
 
@@ -332,7 +623,6 @@ function exitCinemaMode() {
   cinemaIntroPlayed = false;
 
   document.body.classList.remove('cinema-mode');
-  switchCine.textContent = 'cinema view';
   document.documentElement.style.setProperty('--p2typo', 'black');
   btnPlay.style.color = 'white';
 
@@ -452,11 +742,6 @@ const paths = [
   document.getElementById('wave3'),
 ];
 
-const lines = [
-  { y: 80,  amplitude: 16, frequency: 2   },
-  { y: 160, amplitude: 13, frequency: 4   },
-  { y: 240, amplitude: 12, frequency: 2.5 },
-];
 
 let glitchProgress = 0;
 let targetProgress = 0;
@@ -626,7 +911,7 @@ artistesContainer.addEventListener('click', (e) => {
   const id = e.target.dataset.artiste;
   artisteCourant = parseInt(id, 10);
   const data = artistes[id];
-  const next = (artisteCourant % 10) + 1;
+const next = getNextArtisteId(artisteCourant);
 
   document.getElementById('next_artist').textContent = `${artistes[next].nom}`;
   if (!data) return;
@@ -636,7 +921,7 @@ artistesContainer.addEventListener('click', (e) => {
   video.poster = data.poster;
   video.load();
 
-  document.getElementById('texte-oeuvre').textContent = data.text;
+document.getElementById('texte-oeuvre').textContent = currentLang === "FR" && data.textFR ? data.textFR : data.text;
   document.getElementById('texte-oeuvre').classList.remove('visible');
 
   if (!info3AlreadyShown) hideInfo3();
@@ -647,7 +932,7 @@ artistesContainer.addEventListener('click', (e) => {
   about.classList.add('hidden-content');
 
 enterCinemaFromHome();
-
+document.getElementById('btn-lang').classList.add('nav_link');
   const part3 = document.getElementById('part_3');
 
   setTimeout(() => {
@@ -688,7 +973,6 @@ if (btnHome) {
     video.src = '';
     video.poster = '';
     info3AlreadyShown = false;
-    switchCine.textContent = 'exit cinema view';
     btnPlay.textContent = 'Play Video';
     btnPlay.classList.remove('playing');
 
@@ -708,9 +992,10 @@ if (btnHome) {
       document.exitFullscreen();
       isFullscreen = false;
     }
-
+document.getElementById('btn_home').style.opacity = "0";
+document.getElementById('btn_home').style.pointerEvents = "none";
     exitCinemaMode();
-
+document.getElementById('btn-lang').classList.remove('nav_link');
     setTimeout(() => {
       editor.classList.remove('hidden-content');
       artistesContainer.classList.remove('hidden-content');
@@ -949,7 +1234,7 @@ document.getElementById('info').addEventListener('click', () => {
 // ══════════════════════════════════════════════
 
 document.getElementById('next_artist').addEventListener('click', () => {
-  const next = (artisteCourant % 10) + 1;
+  const next = getNextArtisteId(artisteCourant);
   artisteCourant = next;
   const data = artistes[next];
 
@@ -969,6 +1254,7 @@ document.getElementById('next_artist').addEventListener('click', () => {
   if (texte.classList.contains('visible')) {
     texte.style.transition = 'opacity 0.5s ease';
     texte.style.opacity = '0';
+      texte.scrollTop = 0; 
   }
 
   setTimeout(() => {
@@ -977,8 +1263,7 @@ document.getElementById('next_artist').addEventListener('click', () => {
     video.poster = data.poster;
     video.load();
 
-    texte.textContent = data.text;
-
+texte.textContent = currentLang === "FR" && data.textFR ? data.textFR : data.text;
     if (!info3AlreadyShown) {
       texte.classList.remove('visible');
       infoBtn.textContent = '+';
@@ -999,7 +1284,7 @@ document.getElementById('next_artist').addEventListener('click', () => {
       fullscreenBtn.style.opacity = '0';
     }
 
-    const next2 = (next % 10) + 1;
+    const next2 = getNextArtisteId(next);
     document.getElementById('next_artist').textContent = `${artistes[next2].nom}`;
 
     video.style.transition = 'opacity 0.8s ease';
@@ -1044,7 +1329,7 @@ let aboutTextTimer = null;
 function openAbout() {
   if (aboutOpen) return;
   aboutOpen = true;
-
+  boiteAbout.style.width = "";
   clearTimeout(aboutTextTimer);
 
   boiteAbout.classList.add('open');
@@ -1068,8 +1353,10 @@ function closeAbout() {
 
   boiteAbout.classList.remove('show-text');
   boiteAbout.classList.remove('open');
+   boiteAbout.style.width = currentLang === "FR" ? "90px" : "70px"; // ← ajoute ça
   document.getElementById('about-close-mobile')?.style.setProperty('opacity', '0');
 document.getElementById('about-close-mobile')?.style.setProperty('pointer-events', 'none');
+document.getElementById('about-content').scrollTop = 0;
 }
 
 boiteAbout.addEventListener('click', (e) => {
@@ -1097,11 +1384,11 @@ const part3 = document.getElementById('part_3');
 const artistsList = document.createElement('div');
 artistsList.id = 'artists-list';
 
-Object.entries(artistes).forEach(([id, data]) => {
+artistesIds.forEach(id => {
   const item = document.createElement('span');
   item.className = 'artist-list-item info1';
   item.dataset.artiste = id;
-  item.textContent = data.nom;
+  item.textContent = artistes[id].nom;
   artistsList.appendChild(item);
 });
 
@@ -1365,8 +1652,7 @@ artistsList.addEventListener('click', (e) => {
     video.poster = data.poster;
     video.load();
 
-    texte.textContent = data.text;
-
+texte.textContent = currentLang === "FR" && data.textFR ? data.textFR : data.text;
     if (!info3AlreadyShown) {
       texte.classList.remove('visible');
       infoBtn.textContent = '+';
@@ -1388,8 +1674,8 @@ artistsList.addEventListener('click', (e) => {
       fullscreenBtn.style.opacity = '0';
     }
 
-    const next2 = (id % 10) + 1;
-    nextArtistBtn.textContent = `see ${artistes[next2].nom}'s work`;
+const next2 = getNextArtisteId(id);
+    nextArtistBtn.textContent = `${artistes[next2].nom}`;
 
     video.style.transition = 'opacity 0.8s ease';
     video.style.opacity = '1';
@@ -1410,8 +1696,6 @@ artistsList.addEventListener('click', (e) => {
     closeArtistsList();
   }, 500);
 });
-
-
 
 
 

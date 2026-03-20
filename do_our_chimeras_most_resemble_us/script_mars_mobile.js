@@ -164,7 +164,7 @@ function openArtisteMobile(id) {
     video.poster = data.poster;
     video.load();
 
-    document.getElementById('texte-oeuvre').textContent = data.text;
+document.getElementById('texte-oeuvre').textContent = data.text;
     document.getElementById('texte-oeuvre').classList.remove('visible');
 
     if (!info3AlreadyShown) hideInfo3();
@@ -183,8 +183,8 @@ function openArtisteMobile(id) {
 document.getElementById('mobile-bg-1')?.classList.remove('visible');
 document.getElementById('mobile-bg-2')?.classList.remove('visible');
     enterCinemaFromHome();
-
-    const next = (id % 10) + 1;
+document.getElementById('btn-lang').classList.add('nav_link');
+const next = getNextArtisteId(id);
     document.getElementById('next_artist').textContent = `> ${artistes[next].nom}`;
 
     setTimeout(() => {
@@ -220,7 +220,7 @@ document.getElementById('mobile-bg-2')?.classList.remove('visible');
       if (!info3AlreadyShown) hideInfo3();
       if (info3AlreadyShown) showInfo3();
 
-      const next = (id % 10) + 1;
+const next = getNextArtisteId(id);
       document.getElementById('next_artist').textContent = `${artistes[next].nom}`;
 
       video.style.transition = 'opacity 0.8s ease';
@@ -250,6 +250,7 @@ btnHome.addEventListener('click', () => {
   if (logosCont) logosCont.style.opacity = '1';
 
   // Relancer le slideshow
+  document.getElementById('btn-lang').classList.remove('nav_link');
   mobileSlideshowIndex = 0;
   initMobileSlideshow();
 });
@@ -260,8 +261,13 @@ btnHome.addEventListener('click', () => {
 // ══════════════════════════════════════════════
 
 if (isMobile()) {
+if (currentLang === 'FR') {
+  document.getElementById('titre-haut').innerHTML = 'Nos Chimères sont-Elles <br>Ce Qui Nous Ressemble<br>Le Mieux\u00a0?';
+  document.getElementById('titre-haut').style.fontSize = '2.8em';
+} else {
   document.getElementById('titre-haut').innerHTML = 'Do Our Chimeras<br>Most Resemble Us?';
-}
+  document.getElementById('titre-haut').style.fontSize = '';
+}}
 
 
 // ══════════════════════════════════════════════

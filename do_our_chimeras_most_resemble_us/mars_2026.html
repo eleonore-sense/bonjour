@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
   <link rel="stylesheet" type="text/css" href="style_mars.css"> 
   <link rel="stylesheet" type="text/css" href="style_mars_mobile.css"> 
+
     <script src="script_mars.js" defer></script>
     <script src="script_mars_mobile.js" defer></script>
   <title>Do Our Chimeras - mars 2026</title>
@@ -21,9 +22,25 @@
   <span id="logo-kadist" data-h="2.3vh"></span>
 </div>
 
+
+
 <!-- Header buttons -->
+
+<div id="top-right-buttons">
+  <div style="display:flex;align-items:center;gap:15px;">
+<button id="btn_cine_switch" class="nav_link info3 btn_hover">
+  <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 73.29 73.29">
+    <circle cx="36.65" cy="36.65" r="34.15" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="5"/>
+    <path d="M36.65,70.79c-18.86,0-34.15-15.29-34.15-34.15S17.79,2.5,36.65,2.5V70.79Z" fill="currentColor"/>
+  </svg>
+</button>
+        <button id="btn-lang" class="btn_hover">→fr</button>
+  </div>
+  <button id="btn_home" class="nav_link btn_hover">exhibition entrance</button>
+</div>
+
 <div id="header-buttons" style="position:fixed;top:50px;right:50px;z-index:2000;display:flex;align-items:center;gap:10px;">
-<div id="about">
+    <div id="about">
   <div id="boite_about">
     <span id="about-label">about</span>
     <div id="about-panel">
@@ -62,26 +79,30 @@
 
 <!-- PART 1 : Titre wave -->
 <div class="editor" id="editor">
-  <svg viewBox="0 0 600 320" preserveAspectRatio="xMinYMid meet">
-    <path id="wave1" d="M0 80 L600 80"/>
-    <text><textPath id="text1" href="#wave1" startOffset="50%">Do Our Chimeras</textPath></text>
-    <path id="wave2" d="M0 160 L600 160"/>
-    <text><textPath id="text2" href="#wave2" startOffset="50%">Most Resemble Us?</textPath></text>
+<svg id="main-svg" viewBox="0 0 600 320" preserveAspectRatio="xMinYMid meet">
+  <path id="wave1" d="M0 80 L600 80"/>
+  <text><textPath id="text1" href="#wave1" startOffset="50%">Do Our Chimeras</textPath></text>
+  <path id="wave2" d="M0 160 L600 160"/>
+  <text><textPath id="text2" href="#wave2" startOffset="50%">Most Resemble Us?</textPath></text>
   <path id="wave3" d="M0 240 L600 240"/>
-  </svg>
+  <text><textPath id="text3" href="#wave3" startOffset="50%"></textPath></text>
+</svg>
 </div>
 
-
-
+  <script>
+  // inline, s'exécute immédiatement
+  (function() {
+    const p = new URLSearchParams(window.location.search).get("lang");
+    const lang = p === "fr" ? "FR" : (navigator.language.startsWith("fr") ? "FR" : "EN");
+    if (lang === "FR") {
+      document.getElementById("wave1")?.setAttribute("d", "M0 60 L600 60");
+      document.getElementById("wave2")?.setAttribute("d", "M0 130 L600 130");
+      document.getElementById("wave3")?.setAttribute("d", "M0 200 L600 200");
+    }
+  })();
+</script>
 <!-- ══════════════════════════════════════════════
-     MOBILE ONLY — Titre wave 5 lignes
-     À insérer juste après le div#editor existant
-
-     RÉGLAGES :
-     - startOffset="50%" sur chaque textPath = position horizontale du texte
-       (ex: "40%" pour décaler à gauche, "60%" pour droite)
-     - dy="0" sur chaque text = position verticale sur le chemin
-       (ex: dy="-5" monte le texte, dy="5" le descend)
+     MOBILE ONLY 
      ══════════════════════════════════════════════ -->
 
 <div class="editor-mobile" id="editor-mobile">
@@ -122,29 +143,7 @@
 
 <!-- PART 1 : Carrousel artistes -->
 <div id="artistes-container" style="width:100vw;bottom:30px;padding-left:20px;box-sizing:border-box;position:fixed;">
-  <div class="carrousel-wrapper vitesse-9" id="carrousel">
-    <span class="artiste_accueil" data-artiste="1">Agnieszka Polska</span><span style="margin-top:20px">—</span>
-    <span class="artiste_accueil" data-artiste="2">Lu Yang</span><span style="margin-top:20px">—</span>
-    <span class="artiste_accueil" data-artiste="3">Jonas Lund</span><span style="margin-top:20px">—</span>
-    <span class="artiste_accueil" data-artiste="4">Egor Kraft</span><span style="margin-top:20px">—</span>
-    <span class="artiste_accueil" data-artiste="5">Elsa Werth</span><span style="margin-top:20px">—</span>
-    <span class="artiste_accueil" data-artiste="6">Emmanuel Van der Auwera</span><span style="margin-top:20px">—</span>
-    <span class="artiste_accueil" data-artiste="7">Jon Rafman</span><span style="margin-top:20px">—</span>
-    <span class="artiste_accueil" data-artiste="8">Ho Tzu Nyen</span><span style="margin-top:20px">—</span>
-    <span class="artiste_accueil" data-artiste="9">John Menick</span><span style="margin-top:20px">—</span>
-    <span class="artiste_accueil" data-artiste="10">Ayoung Kim</span><span style="margin-top:20px">—</span>
-    <!-- Duplication pour boucle infinie -->
-    <span class="artiste_accueil" data-artiste="1">Agnieszka Polska</span><span style="margin-top:20px">—</span>
-    <span class="artiste_accueil" data-artiste="2">Lu Yang</span><span style="margin-top:20px">—</span>
-    <span class="artiste_accueil" data-artiste="3">Jonas Lund</span><span style="margin-top:20px">—</span>
-    <span class="artiste_accueil" data-artiste="4">Egor Kraft</span><span style="margin-top:20px">—</span>
-    <span class="artiste_accueil" data-artiste="5">Elsa Werth</span><span style="margin-top:20px">—</span>
-    <span class="artiste_accueil" data-artiste="6">Emmanuel Van der Auwera</span><span style="margin-top:20px">—</span>
-    <span class="artiste_accueil" data-artiste="7">Jon Rafman</span><span style="margin-top:20px">—</span>
-    <span class="artiste_accueil" data-artiste="8">Ho Tzu Nyen</span><span style="margin-top:20px">—</span>
-    <span class="artiste_accueil" data-artiste="9">John Menick</span><span style="margin-top:20px">—</span>
-    <span class="artiste_accueil" data-artiste="10">Ayoung Kim</span><span style="margin-top:20px">—</span>
-  </div>
+<div class="carrousel-wrapper vitesse-9" id="carrousel"></div>
 </div>
 
 
@@ -158,12 +157,6 @@
 
 
 <div id="part_3">
-
-  <div id="p2_haut_gauche" class="info1">
-    <button id="btn_cine_switch" class="nav_link info3 btn_hover">exit cinema view</button>
-    <span class="nav_link info3">/</span>
-    <button id="btn_home" class="nav_link btn_hover">exhibition entrance</button>
-  </div>
 
   <div id="gauche">
     <span class="titre info1"></span>

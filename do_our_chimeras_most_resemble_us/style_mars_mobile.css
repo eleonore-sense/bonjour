@@ -361,23 +361,22 @@ div[style*="top:15px"] {
     line-height: 0.8em;
   }
 
-  #p2_haut_gauche {
-    position: fixed;
-    top: calc(30px + 3.5em + 44px);
-    right: 17px;
-    display: flex;
-    flex-direction: row;
-    gap: 6px;
-    height: fit-content;
-    z-index: 300;
-  }
+#top-right-buttons {
+  position: fixed;
+  top: calc(30px + 3.5em + 44px);
+  right: 17px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  height: fit-content;
+  z-index: 300;
+}
 
-  #p2_haut_gauche .nav_link {
-    font-size: 1em;
-    text-decoration: underline;
-  }
-
-
+#top-right-buttons .nav_link {
+  font-size: 1em;
+  text-decoration: underline;
+}
   /* ══════════════════════════════════════════════
      PART 3 — DROITE (vidéo)
      ══════════════════════════════════════════════ */
