@@ -621,6 +621,7 @@ body.cinema-mode .btn {
 }
 
 #texte-oeuvre {
+  font-family: Abordage;
   padding-bottom: 20px;
   font-size: 0.8em;
   line-height: 1.5;
