@@ -357,6 +357,7 @@ div[style*="top:15px"] {
     font-size: 3.5em;
     top: 30px;
     left: 17px;
+      white-space: pre-wrap;
     -webkit-text-stroke-width: 0.7px;
     line-height: 0.8em;
   }
