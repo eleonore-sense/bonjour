@@ -1,3 +1,6 @@
+:root {
+  --couleur_txt: green;
+}
 	@font-face {
 	    font-family: 'Wingdings';
 	    src: url('TYPO/wingding.ttf') format('truetype'),
@@ -25,31 +28,22 @@
 
 
 html, body{
+background: linear-gradient(180deg,rgba(222, 255, 91, 1) 35%, rgba(107, 107, 107, 1) 100%);
+
 margin: 0px;
 padding: 0px;
 font-size: 1.2em;
   font-family: narrow;
   letter-spacing: 0.1em;  
-color: rgb(0,0,0);
 overflow: hidden;
-  background-size: cover;
-	background-position-y: center;
-	background-repeat: no-repeat;
   width: 100vw;
   height: 100vh;
-  font-size: 0.95em;
-  color: black;
+  font-size: 0.92em;
+    color: var(--couleur_txt);
+
+
 }
-.chapitre{
-	position:absolute;
-	transform: translate(-50%,50%);
-  background-size: cover;
-	background-position-y: center;
-	background-repeat: no-repeat;
-	top: 50vh;
-	left: 50vw;
-	cursor: pointer;
-}
+
 
 #antenne{
 background-image:url("img/antenne.gif") ;
@@ -60,22 +54,215 @@ width: 100px;
 
 
 
-.legende{
-	height: 20px;
-	width: 200px;
+#fond_eclair {
+	z-index: 1;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;  
+  height: 0;
 }
 
-.chapitre p {
-  pointer-events: none;
-  display: none; }
 
-
-.chapitre:hover p {
-  display: block;
+#eclair_1 svg {
+  width: 192px;
+  height: auto;
   position: absolute;
-  margin-top: -100px;
-  margin-left: 30px;
+   transform: translate(-50%, -50%); 
+   left: -438px;
+   top: -62px;
+}
+
+
+#eclair_2 svg {
+  width: 208px;
+  height: auto;
+  position: absolute;
+   transform: translate(-50%, -50%); 
+   left: -68px;
+   top: -152px;
+}
+
+#eclair_3 svg {
+  width: 272px;
+  height: auto;
+  position: absolute;
+   transform: translate(-50%, -50%); 
+   left: -136px;
+   top: 214px;
+}
+
+#eclair_4 svg {
+  width: 193px;
+  height: auto;
+  position: absolute;
+   transform: translate(-50%, -50%); 
+   left: 205px;
+   top: -52px;
+}
+
+
+.eclair svg{
+
+filter:
+        drop-shadow(3px 3px 3px #9878FF80)  
+        drop-shadow(3px 3px 7px #9878FF)
+        drop-shadow(0px 0px 32px #ffffff)
+        drop-shadow(0px 0px 32px #ffffff)
+        drop-shadow(8px 13px 20px #ffffff)
+        drop-shadow(5px 5px 20px #ffffff)
+;
 }
 
 
 
+.eclair svg path{
+ fill: #D8D8D8;}
+
+
+@keyframes foudre {
+  0%   { filter: drop-shadow(3px 3px 3px #9878FF80) drop-shadow(3px 3px 7px #9878FF) drop-shadow(0px 0px 32px #ffffff) drop-shadow(5px 5px 20px #ffffff); }
+  92%  { filter: drop-shadow(3px 3px 3px #9878FF80) drop-shadow(3px 3px 7px #9878FF) drop-shadow(0px 0px 32px #ffffff) drop-shadow(5px 5px 20px #ffffff); }
+  93%  { filter: drop-shadow(0px 0px 40px #ffffff) drop-shadow(0px 0px 60px #ffffff) drop-shadow(0px 0px 20px #00ffff);}
+  94%  { filter: drop-shadow(3px 3px 3px #9878FF80) drop-shadow(3px 3px 7px #9878FF); opacity: 1; }
+  95%  { filter: drop-shadow(0px 0px 80px #ffffff) drop-shadow(0px 0px 40px #ff00ff) drop-shadow(0px 0px 60px #ffffff);}
+  96%  { filter: drop-shadow(3px 3px 3px #9878FF80) drop-shadow(3px 3px 7px #9878FF) drop-shadow(0px 0px 32px #ffffff);}
+  100% { filter: drop-shadow(3px 3px 3px #9878FF80) drop-shadow(3px 3px 7px #9878FF) drop-shadow(0px 0px 32px #ffffff) drop-shadow(5px 5px 20px #ffffff); }
+}
+
+
+
+#dessus{
+	z-index: 1;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;  
+  height: 0;
+}
+
+
+#img_champs_elec{
+	width: 83px;
+	height: auto;
+	position: absolute;
+	  content: url('img/electromagnetic.png');
+left:-629px;
+top: -191px;}
+
+#img_champs_elec:hover {
+  content: url('img/electromagnetic.gif');
+}
+
+
+#img_longueur_onde{
+	width: 94px;
+	height: auto;
+	position: absolute;
+	  content: url('img/frequence.png');
+left:-513px;
+top: 77px;}
+
+#img_longueur_onde:hover {
+  content: url('img/frequence.gif');
+}
+
+#img_radio{
+	width: 93px;
+	height: auto;
+	position: absolute;
+	  content: url('img/radio.png');
+left:-360px;
+top: -218px;}
+
+#img_radio:hover {
+  content: url('img/radio.gif');
+}
+
+
+
+
+
+#img_antenne{
+	width: 144px;
+	height: auto;
+	position: absolute;
+	top: -90px;
+	left: 7px;
+	  content: url('img/antenne2.png');
+}
+
+#img_antenne:hover {
+  content: url('img/antenne2.gif');
+}
+
+
+
+#img_terre{
+	width: 69px;
+	height: auto;
+	position: absolute;
+	top: 276px;
+	left: -262px;
+	  content: url('img/terre2.png');
+}
+
+#img_terre:hover {
+  content: url('img/terre2.gif');
+}
+
+
+#img_tel{
+	width: 60px;
+	height: auto;
+	position: absolute;
+	top: 162px;
+	left:-10px;
+	  content: url('img/tel.png');
+}
+
+#img_tel:hover {
+  content: url('img/tel.gif');
+}
+
+
+
+#img_requin{
+	width: 102px;
+	height: auto;
+	position: absolute;
+	top: -320px;
+	left: -76px;
+	  content: url('img/requin.png');
+}
+
+#img_requin:hover {
+  content: url('img/requin.gif');
+}
+
+
+#menu{
+
+	z-index: 3;
+		  position: fixed; 
+  left: 78vw;
+  top: 20px;
+
+}
+
+a{text-decoration: none;
+  color: var(--couleur_txt);
+}
+
+
+a:hover{
+	text-decoration: underline;
+	font-weight: 900;
+}
+
+
+.img_link {
+  transition: transform 0.3s ease;
+}

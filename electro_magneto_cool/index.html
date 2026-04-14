@@ -15,73 +15,163 @@
 </head>
 
 <body id="body">
+<div id="fond_eclair" >
+<div class="eclair" id="eclair_1"></div>
+<div class="eclair" id="eclair_2"></div>
+<div class="eclair" id="eclair_3"></div>
+<div class="eclair" id="eclair_4"></div>
+  </div>
 
-<div><a href="champs_electromagnetique/index.html">les champs electromagnétiques</a>
+<div id= "dessus">
+  <a href="champs_electromagnetique/index.html">
+  <img id="img_champs_elec" class="img_link"  />
+</a>
+
+  <a href="longueur_onde/index.html">
+  <img id="img_longueur_onde" class="img_link"  />
+</a>
+
+  <a href="radio/index.html">
+  <img id="img_radio" class="img_link"  />
+</a>
+
+
+
+  <a href="antenne/index.html">
+  <img id="img_antenne" class="img_link"  />
+</a>
+
+  <a href="terre/index.html">
+  <img id="img_terre" class="img_link"  />
+</a>
+
+  <a href="telecommunication/index.html">
+  <img id="img_tel" class="img_link"  />
+</a>
+
+  <a href="vivant/index.html">
+  <img id="img_requin" class="img_link"  />
+</a>
+
+
 </div>
 
-<div>la communication par radio
+<div id="menu">
+  <div> ★ <a id="lien_champs" href="champs_electromagnetique/index.html">les champs electromagnétiques</a>
+  </div>
+
+  <!--<div><a id="lien_radio" href="radio/index.html">★ la communication par radio</a>
+  </div>-->
+
+<div>★ <a id="lien_frequence" href="frequence/index.html">les fréquences</a>
 </div>
 
-<div>les fréquences
-</div>
-
-<div><a href="telecommunication/index.html">la communication par téléphone</a>
+<div>★ <a id="lien_tel" href="telecommunication/index.html">la communication par téléphone</a>
 </div>
 <div>
-  <a id="capteur"href="capteur_emf/index.html">le fonctionnement des capteurs
+  ★ <a id="lien_capteur" href="capteur_emf/index.html">le fonctionnement des capteurs
 </a>
 </div>
 <div>
-  <!-- <a id="capteur"href="longueur_onde/index.html">les longueurs d'onde </a> -->
-les longueurs d'ondes
+  ★ <a id="lien_longueur_onde" href="longueur_onde/index.html">les longueurs d'onde </a> 
 </div>
+
 <div>
-  <!-- <a href="antenne/menu_antenne_photo.html">les antennes</a> -->
-  les antennes
+  ★ <a id="lien_antenne" href="antenne/menu_antenne_photo.html">les antennes</a>
 </div>
 
 
-<div><a href="antenne_camoufle/index.html">les antennes camouflées</a>
+<div>★ <a id="lien_antenne_camoufle" href="antenne_camoufle/index.html">les antennes camouflées</a>
 </div>
 
-<div>les ondes et le vivant
+<div>★ <a id="lien_vivant" href="vivant/index.html">les ondes et le vivant
 </div>
 
-<div>le champ electromagnétique de la terre
+<div>★ <a id="lien_terre" href="terre/index.html">le champ electromagnétique de la terre</a>
 </div>
-<div>croyances et imaginaires des ondes
+<div>★ <a id="lien_croyance" href="croyance/index.html">croyances et imaginaires des ondes</a>
 </div>
 
-
+</div>
 
 
 <script type="text/javascript">
+// CHARGEMENT SVG
+function chargerSVG(fichier, id) {
+  return fetch(fichier)
+    .then(r => r.text())
+    .then(svg => {
+      document.getElementById(id).innerHTML = svg;
+    });
+}
 
+// ANIMATION FOUDRE
+function declencherFoudre(id) {
+  const el = document.querySelector('#' + id + ' svg');
+  el.style.animation = 'foudre 0.5s';
+  
+  el.addEventListener('animationend', () => {
+    el.style.animation = 'none';
+    const delai = Math.random() * 8000 + 4000;
+    setTimeout(() => declencherFoudre(id), delai);
+  }, { once: true });
+}
 
+function declencherTous() {
+  ['eclair_1', 'eclair_2', 'eclair_3', 'eclair_4'].forEach(id => declencherFoudre(id));
+}
 
-  ///////////////////////POSITION texte//////////////////////////////////
+function boucle() {
+  if (Math.random() < 0.7) {
+    declencherTous();
+  }
+  const delai = Math.random() * 10000 + 5000;
+  setTimeout(boucle, delai);
+}
 
-$(function() {
- 
-  $('#body').mousemove(function(e) {
-    var x = e.pageX;
-    var y = e.pageY;
-    var mid = $(window).height();
-    var midW =$(window).width()/2;
-    // var docHeight = $(document).height();
+// HOVER IMAGE → SOULIGNER MENU
+const couples = [
+  ['img_champs_elec', 'lien_champs'],
+  ['img_longueur_onde', 'lien_longueur_onde'],
+  ['img_antenne', 'lien_antenne'],
+  ['img_terre', 'lien_terre'],
+  ['img_tel', 'lien_tel'],
+  ['img_requin', 'lien_vivant'],
+  ['img_radio', 'lien_frequence'],
+];
 
-    $('.legende').css('top', y-350+'px');
+couples.forEach(([imgId, lienId]) => {
+  const img = document.getElementById(imgId);
+  const lien = document.getElementById(lienId);
+  img.addEventListener('mouseover', () => {
+    lien.style.textDecoration = 'underline';
+    lien.style.fontWeight = '900';
+    lien.style.fontStyle = 'italic';
+  });
+  img.addEventListener('mouseout', () => {
+    lien.style.textDecoration = 'none';
+    lien.style.fontWeight = 'normal';
+    lien.style.fontStyle = 'normal';
+  });
 
-    $('.legende').css('left', (x-midW+20)+'px');
-
+  // HOVER MENU → GROSSIR IMAGE
+  lien.addEventListener('mouseover', () => img.style.transform = 'scale(1.2)');
+  lien.addEventListener('mouseout', () => img.style.transform = 'scale(1)');
 });
 
+// CHARGEMENT ET LANCEMENT
+Promise.all([
+  chargerSVG('img/eclair_1b.svg', 'eclair_1'),
+  chargerSVG('img/eclair_2.svg', 'eclair_2'),
+  chargerSVG('img/eclair_3.svg', 'eclair_3'),
+  chargerSVG('img/eclair_4.svg', 'eclair_4'),
+]).then(() => {
+  declencherFoudre('eclair_1');
+  declencherFoudre('eclair_2');
+  declencherFoudre('eclair_3');
+  declencherFoudre('eclair_4');
+  boucle();
 });
-
-
-
-
-
 </script>
 </body>
 	</html>
