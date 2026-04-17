@@ -1,14 +1,14 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="fr">
 <head>
-	<meta charset="utf-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device_width, initial-scale=1.0">
 
   
-	<title>👄↝🎤↝📈↝📡↝📡↝📈↝📻↝👂</title>
+  <title>👄↝🎤↝📈↝📡↝📡↝📈↝📻↝👂</title>
   <link rel="icon" type="image/png" href="img_4.png" />
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="style.css"> 
+  <link rel="stylesheet" type="text/css" href="style.css"> 
 
 
 
@@ -20,37 +20,51 @@
 <div class="eclair" id="eclair_2"></div>
 <div class="eclair" id="eclair_3"></div>
 <div class="eclair" id="eclair_4"></div>
+<div class="eclair" id="eclair_5"></div>
   </div>
 
 <div id= "dessus">
   <a href="champs_electromagnetique/index.html">
-  <img id="img_champs_elec" class="img_link"  />
+  <img id="img_champs_elec" class="img_link" src="img/electromagnetic.png" />
 </a>
 
   <a href="longueur_onde/index.html">
-  <img id="img_longueur_onde" class="img_link"  />
+  <img id="img_longueur_onde" class="img_link"  src="img/frequence.png"/>
 </a>
 
   <a href="radio/index.html">
-  <img id="img_radio" class="img_link"  />
+  <img id="img_radio" class="img_link"  src="img/radio.png"/>
 </a>
 
 
 
   <a href="antenne/index.html">
-  <img id="img_antenne" class="img_link"  />
+  <img id="img_antenne" class="img_link" src="img/antenne2.png" />
 </a>
 
   <a href="terre/index.html">
-  <img id="img_terre" class="img_link"  />
+  <img id="img_terre" class="img_link" src="img/terre2.png" />
 </a>
 
   <a href="telecommunication/index.html">
-  <img id="img_tel" class="img_link"  />
+  <img id="img_tel" class="img_link" src="img/tel.png" />
+</a>
+
+  <a href="capteur_emf/index.html">
+  <img id="img_capteur" class="img_link" src="img/capteur.png" />
 </a>
 
   <a href="vivant/index.html">
-  <img id="img_requin" class="img_link"  />
+  <img id="img_requin" class="img_link" src="img/requin.png" />
+</a>
+
+  <a href="croyance/index.html">
+  <img id="img_croyance" class="img_link" src="img/power.png" />
+</a>
+
+
+  <a href="antenne_camouflee/index.html">
+  <img id="img_arbre" class="img_link" src="img/tree.png" />
 </a>
 
 
@@ -81,7 +95,7 @@
 </div>
 
 
-<div>★ <a id="lien_antenne_camoufle" href="antenne_camoufle/index.html">les antennes camouflées</a>
+<div>★ <a id="lien_antenne_camouflee" href="antenne_camoufle/index.html">les antennes camouflées</a>
 </div>
 
 <div>★ <a id="lien_vivant" href="vivant/index.html">les ondes et le vivant
@@ -96,48 +110,88 @@
 
 
 <script type="text/javascript">
-// CHARGEMENT SVG
+// CHARGEMENT SVG + DUPLICATION DU PATH (core + glow)
 function chargerSVG(fichier, id) {
   return fetch(fichier)
     .then(r => r.text())
-    .then(svg => {
-      document.getElementById(id).innerHTML = svg;
+    .then(svgText => {
+      const container = document.getElementById(id);
+      container.innerHTML = svgText;
+
+      const svg = container.querySelector('svg');
+      const paths = svg.querySelectorAll('path');
+
+      if (paths.length === 0) {
+        console.log('pas de path dans', id);
+        return;
+      }
+
+      paths.forEach(path => {
+        const glow = path.cloneNode(true);
+        glow.classList.add('glow');
+        path.classList.add('core');
+
+        path.parentNode.insertBefore(glow, path);
+      });
     });
 }
 
-// ANIMATION FOUDRE
-function declencherFoudre(id) {
-  const el = document.querySelector('#' + id + ' svg');
-  el.style.animation = 'foudre 0.5s';
-  
-  el.addEventListener('animationend', () => {
-    el.style.animation = 'none';
+
+// ⚡ ANIMATION FOUDRE (appliquée au GLOW uniquement)
+/*function declencherFoudre(id) {
+  const glows = document.querySelectorAll('#' + id + ' .glow');
+
+  if (glows.length === 0) {
+    console.log('pas de glow pour', id);
+    return;
+  }
+
+  glows.forEach(glow => {
+    glow.style.animation = 'foudre 0.5s';
+  });
+
+  setTimeout(() => {
+    glows.forEach(glow => {
+      glow.style.animation = 'none';
+    });
+
     const delai = Math.random() * 8000 + 4000;
     setTimeout(() => declencherFoudre(id), delai);
-  }, { once: true });
+
+  }, 600);
 }
 
+
+// ⚡ LANCER TOUS LES ÉCLAIRS
 function declencherTous() {
-  ['eclair_1', 'eclair_2', 'eclair_3', 'eclair_4'].forEach(id => declencherFoudre(id));
+  ['eclair_1', 'eclair_2', 'eclair_3', 'eclair_4']
+    .forEach(declencherFoudre);
 }
 
+
+// ⚡ BOUCLE ALÉATOIRE
 function boucle() {
   if (Math.random() < 0.7) {
     declencherTous();
   }
+
   const delai = Math.random() * 10000 + 5000;
   setTimeout(boucle, delai);
 }
 
-// HOVER IMAGE → SOULIGNER MENU
+
+*/
 const couples = [
   ['img_champs_elec', 'lien_champs'],
   ['img_longueur_onde', 'lien_longueur_onde'],
   ['img_antenne', 'lien_antenne'],
   ['img_terre', 'lien_terre'],
   ['img_tel', 'lien_tel'],
-  ['img_requin', 'lien_vivant'],
   ['img_radio', 'lien_frequence'],
+  ['img_requin', 'lien_vivant'],
+  ['img_arbre', 'lien_antenne_camouflee'],
+  ['img_croyance', 'lien_croyance'],
+  ['img_capteur', 'lien_capteur'],
 ];
 
 couples.forEach(([imgId, lienId]) => {
@@ -146,32 +200,41 @@ couples.forEach(([imgId, lienId]) => {
   img.addEventListener('mouseover', () => {
     lien.style.textDecoration = 'underline';
     lien.style.fontWeight = '900';
-    lien.style.fontStyle = 'italic';
   });
   img.addEventListener('mouseout', () => {
     lien.style.textDecoration = 'none';
     lien.style.fontWeight = 'normal';
-    lien.style.fontStyle = 'normal';
   });
-
-  // HOVER MENU → GROSSIR IMAGE
   lien.addEventListener('mouseover', () => img.style.transform = 'scale(1.2)');
   lien.addEventListener('mouseout', () => img.style.transform = 'scale(1)');
 });
 
-// CHARGEMENT ET LANCEMENT
+
+// ⚡ INIT
 Promise.all([
   chargerSVG('img/eclair_1b.svg', 'eclair_1'),
   chargerSVG('img/eclair_2.svg', 'eclair_2'),
   chargerSVG('img/eclair_3.svg', 'eclair_3'),
   chargerSVG('img/eclair_4.svg', 'eclair_4'),
+  chargerSVG('img/eclair_5.svg', 'eclair_5'),
 ]).then(() => {
-  declencherFoudre('eclair_1');
-  declencherFoudre('eclair_2');
-  declencherFoudre('eclair_3');
-  declencherFoudre('eclair_4');
+  declencherTous();
   boucle();
 });
+
+
+document.querySelectorAll('.img_link').forEach(img => {
+  const src = img.id; // utilise l'id pour retrouver le nom du fichier
+  img.addEventListener('mouseover', () => {
+    img.style.content = ''; // reset le content CSS
+    img.src = img.currentSrc.replace('.png', '.gif');
+  });
+  img.addEventListener('mouseout', () => {
+    img.src = img.currentSrc.replace('.gif', '.png');
+  });
+});
+
+
 </script>
 </body>
-	</html>
+  </html>

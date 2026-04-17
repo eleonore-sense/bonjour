@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>coption 2 janvier</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  @font-face {
+      font-family: 'Lagarto';
+      src: url('Lagarto.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+  }
+
+    @font-face {
+      font-family: 'Abordage';
+      src: url('Abordage-Regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+  }
+
+
+body { 
+  font-family: system-ui, sans-serif; background: #f7f7f7; display: flex; flex-direction: column; align-items: center; padding: 40px 0; }
+
+
+.editor { 
+  position: fixed; 
+  top: 40px;    
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100vw - 30px); 
+  max-width: calc(100vw - 30px); 
+  cursor: text; 
+z-index: 10}
+
+#hiddenInput { 
+  position: absolute; inset: 0; opacity: 0; caret-color: transparent; z-index: 2; 
+}
+
+svg { width: 100%; height: auto; pointer-events: none; display: block; }
+path { 
+  opacity: 0;
+}
+text { 
+  font-family: Lagarto; 
+  font-size: 5.4em; 
+  fill: var(--couleur-fond); 
+  stroke: black; 
+  stroke-width: 1px; 
+  text-anchor: middle; 
+  paint-order: stroke fill;
+  letter-spacing: -0.02em; 
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+#cursor {
+  animation: blink 1s infinite;
+}
+
+
+span{
+z-index: 1000;font-family: Abordage ; color: black; white-space: nowrap;}
+
+.artiste_accueil{
+  font-size: 0.9em;
+}
+
+
+
+
+/*fond violet*/
+  #gradient_fond {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to bottom, 
+      transparent 0%, 
+      rgba(201, 174, 255, 0.1) 10px,
+      rgba(201, 174, 255, 0.3) 20px,
+      rgba(201, 174, 255, 0.5) 30px,
+      rgba(201, 174, 255, 0.7) 40px,
+      rgba(201, 174, 255, 0.85) 50px,
+      rgba(201, 174, 255, 0.95) 60px,
+      #c9aeff 70px, 
+      #c9aeff calc(100% - 70px),
+      rgba(201, 174, 255, 0.95) calc(100% - 60px),
+      rgba(201, 174, 255, 0.85) calc(100% - 50px),
+      rgba(201, 174, 255, 0.7) calc(100% - 40px),
+      rgba(201, 174, 255, 0.5) calc(100% - 30px),
+      rgba(201, 174, 255, 0.3) calc(100% - 20px),
+      rgba(201, 174, 255, 0.1) calc(100% - 10px),
+      transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+
+    box-shadow: inset 100px 0 80px -50px rgba(247, 247, 247, 1), 
+                inset -100px 0 80px -50px rgba(247, 247, 247, 1);
+    transition: opacity 1.5s ease-in-out;
+  }
+
+
+#artistes-container {
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+    z-index: 15;
+}
+
+.carrousel-wrapper {
+  display: inline-flex;
+  gap: 20px;
+  will-change: transform;
+  opacity: 1;
+  transition: opacity 0.75s ease-in-out; 
+}
+
+.carrousel-wrapper.fade-out {
+  opacity: 0;
+}
+.carrousel-wrapper.vitesse-9 {
+  animation: scroll 90s linear infinite;
+}
+
+.carrousel-wrapper.vitesse-6 {
+  animation: scroll 60s linear infinite;
+}
+
+.artiste_accueil {
+  font-size: 1.5em; 
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Pause au survol */
+.carrousel-wrapper:hover {
+  animation-play-state: paused !important;
+}
+
+
+
+
+
+
+
+  #titre-haut {
+    position: fixed;
+    top: 7px;
+    left: 27px;
+    font-family: Lagarto;
+    font-size: 4.5em;
+    color: transparent;
+    -webkit-text-stroke: 1px black;
+    text-stroke: 1px black;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.5s ease-out,
+                -webkit-text-stroke 2s ease-out,
+                text-stroke 2s ease-out;
+    white-space: nowrap;
+  }
+
+  #titre-haut.visible { opacity: 1; }
+  #titre-haut.fast-hide { transition: opacity 0.3s ease-out; }
+
+  /* Menu des artistes*/
+#nom_artiste_menu {
+  position: fixed;
+  left: 89px;
+ cursor: pointer;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  z-index: 55;
+  font-size: 1.1em;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.5s ease-out;
+}
+
+.artiste_menu {
+  position: relative; /* AJOUTE */
+  cursor: pointer;
+  z-index: 55;
+}
+
+.artiste_menu:hover{
+  z-index: 80;
+      text-shadow: 0px 0px 11px #FFFFFF, 0px 0px 13px #FFFFFF, 0px 0px 13px #FFFFFF, 0px 0px 13px #FFFFFF, 0px 0px 13px #FFFFFF;
+}
+
+#nom_artiste_menu.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#nom_artiste_menu .artiste_menu {
+  opacity: 0;
+  transform: translate(0, 0);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  transition: text-shadow 0.7s ease-out;
+}
+
+#nom_artiste_menu.visible .artiste_menu {
+  opacity: 1;
+}
+
+/* AJOUTE : le texte réel */
+.artiste_text {
+  position: relative;
+  display: inline-block;
+  z-index: 2;
+  text-shadow: none;
+  transition: text-shadow 0.7s ease-out;
+}
+
+/* AJOUTE : PHASE 1 text-shadow sur le texte */
+.artiste_menu:hover .artiste_text {
+  text-shadow:
+    0px 0px 11px #FFFFFF,
+    0px 0px 13px #FFFFFF,
+    0px 0px 13px #FFFFFF,
+    0px 0px 13px #FFFFFF,
+    0px 0px 13px #FFFFFF;
+  text-decoration: underline;
+}
+
+/* AJOUTE : halo derrière — état normal (SORTIE RAPIDE) */
+.artiste_text::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  right: -5px;
+  top: -22px;
+  bottom: -22px;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255,255,255,1) 0%,
+    rgba(255,255,255,0.8) 35%,
+    rgba(255,255,255,0.5) 60%,
+    rgba(255,255,255,0.3) 72%,
+    rgba(255,255,255,0.00) 100%
+  );
+  opacity: 0;
+  transform: scaleX(0.5) scaleY(0);
+  filter: blur(14px);
+  transition:
+    opacity 0.15s ease-out,
+    transform 0.25s ease-out;
+  will-change: transform, opacity;
+}
+
+/* AJOUTE : ENTRÉE avec delay 3s */
+.artiste_menu:hover .artiste_text::before {
+  opacity: 1;
+  transform: scaleX(5) scaleY(10);
+  transition:
+    opacity 0.7s ease-out,
+    transform 10s cubic-bezier(0.2, 0.0, 0.0, 1);
+  transition-delay: 3s, 3s;
+}
+
+.artiste-image {
+  border-radius: 20px;
+  position: fixed;
+  width: auto;
+  height: auto;
+  max-width: 170px;
+  max-height: 170px;
+  object-fit: contain;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s ease-out;
+  z-index: 60;
+
+    -webkit-mask:
+      radial-gradient(
+        farthest-corner at center,
+        black calc(100% - 15px),
+        transparent 100%
+      ),
+      linear-gradient(
+        to right,
+        transparent 0,
+        rgba(0,0,0,0.4) 5px,
+        rgba(0,0,0,0.7) 10px,
+        black 15px,
+        black calc(100% - 15px),
+        rgba(0,0,0,0.7) calc(100% - 10px),
+        rgba(0,0,0,0.4) calc(100% - 5px),
+        transparent 100%
+      ),
+      linear-gradient(
+        to bottom,
+        transparent 0,
+        rgba(0,0,0,0.4) 5px,
+        rgba(0,0,0,0.7) 10px,
+        black 15px,
+        black calc(100% - 15px),
+        rgba(0,0,0,0.7) calc(100% - 10px),
+        rgba(0,0,0,0.4) calc(100% - 5px),
+        transparent 100%
+      );
+
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+
+.artiste-image.visible {
+  opacity: 1;
+}
+
+.hidden-content {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 1.2s ease-out;
+}
+
+#nom_artiste_menu.positions-random .artiste_menu {
+  position: fixed;
+}
+
+
+
+#btn-return{
+  font-weight: 500; 
+  cursor: pointer; 
+  opacity: 0; 
+  pointer-events: none; 
+  transition: opacity 0.5s;
+    transition: text-shadow 0.7s ease-out;
+}
+
+#btn-return:hover{
+text-decoration: underline;
+text-shadow: 0px 0px 11px #FFFFFF, 0px 0px 13px #FFFFFF, 0px 0px 13px #FFFFFF, 0px 0px 13px #FFFFFF, 0px 0px 13px #FFFFFF;
+}
+
+
+
+
+/* part 3 */
+
+#part_3{
+  position: fixed;
+  top: 15vh;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1.5s ease-out, visibility 0s 1.5s;
+  z-index: 200;
+  display: inline-flex;
+}
+
+#part_3.visible{
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 1.5s ease-out, visibility 0s 0s;
+}
+
+
+/* Transition pour le menu qui disparaît - séparée */
+#nom_artiste_menu.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+#gauche{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  height: 85vh;
+  width: 35vw;
+  padding-right: 20px;
+  padding-left: 50px;
+    font-size: 1.5em;
+}
+
+.titre{
+text-decoration: underline;
+}
+
+#info{
+  cursor:pointer;
+        transition: text-shadow 0.7s ease-out;
+
+
+}
+
+#header-buttons > div {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.5s ease-out;
+  cursor: pointer;
+}
+
+#header-buttons > div.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+#info:hover{
+          text-shadow:
+      0px 0px 11px #FFFFFF,
+      0px 0px 13px #FFFFFF,
+      0px 0px 13px #FFFFFF,
+      0px 0px 13px #FFFFFF,
+      0px 0px 13px #FFFFFF;
+      text-decoration: none;
+}
+
+#droite{
+  position:relative;
+  height: 85vh;
+  width: 65vw;
+  padding-right: 20px;
+}
+
+#video-container {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  display: inline-block; /* s'adapte à la largeur de la vidéo */
+}
+#haut_video{
+  position: absolute;
+  top: -20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#gauche_du_cine{
+  display: flex;
+  gap: 8px;
+  align-intem:center;
+}
+
+#video{
+  width: auto;
+  height: 80vh;
+  object-fit: contain;
+  position: relative; /
+  display: block;
+}
+
+
+.btn{
+      transition: text-shadow 0.7s ease-out;
+      cursor: pointer;
+}
+
+.btn:hover{
+      text-shadow:
+      0px 0px 11px #FFFFFF,
+      0px 0px 13px #FFFFFF,
+      0px 0px 13px #FFFFFF,
+      0px 0px 13px #FFFFFF,
+      0px 0px 13px #FFFFFF;
+    text-decoration: underline;
+}
+
+
+#cinema-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 100vmin; /* Largeur = hauteur pour faire un cercle */
+  height: 100vmin;
+  background: black;
+  pointer-events: none;
+  z-index: 51;
+  border-radius: 50%;
+  opacity: 0;
+  box-shadow: 0 0 0 0 black,
+              0 0 0 0 rgba(0, 0, 0, 0.7),
+              0 0 0 0 rgba(0, 0, 0, 0.4),
+              0 0 0 0 rgba(0, 0, 0, 0.15);
+  transition: transform 3s ease-out,
+              border-radius 3s ease-out,
+              box-shadow 3s ease-out,
+              opacity 0.5s ease-out,
+              width 3s ease-out,
+              height 3s ease-out;
+  will-change: transform;
+}
+
+#cinema-overlay.active {
+  transform: translate(-50%, -50%) scale(1);
+  width: 150vw;
+  height: 150vh;
+  border-radius: 10%;
+  opacity: 1;
+  box-shadow: 0 0 15vw 12vw black,
+              0 0 30vw 25vw rgba(0, 0, 0, 0.7),
+              0 0 45vw 38vw rgba(0, 0, 0, 0.4),
+              0 0 60vw 50vw rgba(0, 0, 0, 0.15);
+}
+
+
+#cinema-overlay.closing{
+  opacity: 0 !important;
+  transition: opacity 1.5s ease-out !important;
+}
+
+.artiste_text {
+  transition: color 2s ease-out;
+}
+
+
+ .artiste_text,
+#top_right_part2 span,
+#gauche .titre,
+#gauche #info,
+#btn_cine,
+#btn_next,
+#btn_close,
+#gauche_du_cine span {
+  transition: color 2s ease-out;
+}
+/* Mode cinéma actif */
+body.cinema-mode #nom_artiste_menu .artiste_text,
+body.cinema-mode #top_right_part2,
+body.cinema-mode #top_right_part2 span,
+body.cinema-mode #gauche,
+body.cinema-mode #gauche .titre,
+body.cinema-mode #gauche #info,
+body.cinema-mode #haut_video,
+body.cinema-mode #btn_cine,
+body.cinema-mode #btn_next,
+body.cinema-mode #btn_close,
+body.cinema-mode #gauche_du_cine span {
+  color: white !important;
+}
+
+body.cinema-mode #titre-haut {
+  -webkit-text-stroke: 1px white;
+  text-stroke: 1px white;
+}
+
+
+</style>
+</head>
+<body>
+
+
+
+  <div id="gradient_fond"></div>
+<div id="cinema-overlay"></div>
+<div style="position: fixed; bottom: 8px; right: 20px; z-index: 2000; display: flex; align-items: center; gap: 15px;">
+  <img src="logo pompidou.png" style="height: 25px; width: auto;" alt="Logo 1">
+  <img src="logo kadist.png" style="height: 20px; width: auto;" alt="Logo 2">
+</div>
+
+
+
+<div id="header-buttons" style="position: fixed; top: 20px; right: 20px; z-index: 2000; display: flex; align-items: center; gap: 10px;">
+  <span id="btn-return">return</span>
+  <span id="btn-index" style="font-weight: 500; cursor: pointer;">index</span>
+  <div style="width: 15px; height: 15px; border-radius: 50%; background: linear-gradient(90deg, black 50%, white 50%); border: 1px solid white;"></div>
+</div>
+
+
+
+
+<div class="editor" onclick="hiddenInput.focus()">
+<input id="hiddenInput" type="text" autocomplete="off" spellcheck="false" value="DO our chimeras most resemble us?" />
+ 
+<svg viewBox="0 0 600 320" preserveAspectRatio="xMinYMid meet">
+  <path id="wave1" d="M0 80 L600 80"/>
+  <text><textPath id="text1" href="#wave1" startOffset="50%"></textPath></text>
+  <path id="wave2" d="M0 150 L600 150"/>
+  <text><textPath id="text2" href="#wave2" startOffset="50%"></textPath></text>
+  <path id="wave3" d="M0 220 L600 220"/>
+  <text><textPath id="text3" href="#wave3" startOffset="50%"></textPath></text>
+
+   <!-- Curseur SVG -->
+  <image id="cursor" href="SVG/curseur.svg" width="7" height="55" x="0" y="0" opacity="1"/>
+</svg>
+
+</svg>
+</div>
+
+
+</div>
+
+<div id="artistes-container" style="width: 100vw; bottom: 40px; padding-left: 20px; box-sizing: border-box; position: fixed; ">
+  <div class="carrousel-wrapper vitesse-9">
+    <!-- Premier set d'artistes -->
+    <span class="artiste_accueil artiste_1">Agnieszka Polska</span>
+    <span>—</span>
+    <span class="artiste_accueil artiste_2">Egor Kraft</span>
+    <span>—</span>
+    <span class="artiste_accueil artiste_3">Elsa Werth</span>
+    <span>—</span>
+    <span class="artiste_accueil artiste_4">Emmanuel Van der Auwera</span>
+    <span>—</span>
+    <span class="artiste_accueil artiste_5">Entangled Others</span>
+    <span>—</span>
+    <span class="artiste_accueil artiste_6">Ho Tzu Nyen</span>
+    <span>—</span>
+    <span class="artiste_accueil artiste_7">Interspecifics</span>
+    <span>—</span>
+    <span class="artiste_accueil artiste_8">John Menick</span>
+    <span>—</span>
+    <span class="artiste_accueil artiste_9">Ayoung Kim</span>
+    <span>—</span>
+    
+    <!-- Duplication pour boucle infinie -->
+    <span class="artiste_accueil artiste_1">Agnieszka Polska</span>
+    <span>—</span>
+    <span class="artiste_accueil artiste_2">Egor Kraft</span>
+    <span>—</span>
+    <span class="artiste_accueil artiste_3">Elsa Werth</span>
+    <span>—</span>
+    <span class="artiste_accueil artiste_4">Emmanuel Van der Auwera</span>
+    <span>—</span>
+    <span class="artiste_accueil artiste_5">Entangled Others</span>
+    <span>—</span>
+    <span class="artiste_accueil artiste_6">Ho Tzu Nyen</span>
+    <span>—</span>
+    <span class="artiste_accueil artiste_7">Interspecifics</span>
+    <span>—</span>
+    <span class="artiste_accueil artiste_8">John Menick</span>
+    <span>—</span>
+    <span class="artiste_accueil artiste_9">Ayoung Kim</span>
+    <span>—</span>
+  </div>
+</div>
+
+
+
+
+<!-- PARITE 2 -->
+
+
+
+<div id="titre-haut"></div>
+
+<div id="nom_artiste_menu">
+  <span class="artiste_menu"><span id="artiste_1_b" class="artiste_text">Agnieszka Polska</span></span>
+  <span class="artiste_menu"><span id="artiste_2_b" class="artiste_text">Egor Kraft</span></span>
+  <span class="artiste_menu"><span id="artiste_3_b" class="artiste_text">Elsa Werth</span></span>
+  <span class="artiste_menu"><span id="artiste_4_b" class="artiste_text">Emmanuel Van der Auwera</span></span>
+  <span class="artiste_menu"><span id="artiste_5_b" class="artiste_text">Entangled Others</span></span>
+  <span class="artiste_menu"><span id="artiste_6_b" class="artiste_text">Ho Tzu Nyen</span></span>
+  <span class="artiste_menu"><span id="artiste_7_b" class="artiste_text">Interspecifics</span></span>
+  <span class="artiste_menu"><span id="artiste_8_b" class="artiste_text">John Menick</span></span>
+  <span class="artiste_menu"><span id="artiste_9_b" class="artiste_text">Ayoung Kim</span></span>
+</div>
+
+<img src="img/img1.jpg" class="artiste-image" id="img-artiste-1" alt="">
+<img src="img/img2.jpg" class="artiste-image" id="img-artiste-2" alt="">
+<img src="img/img3.jpg" class="artiste-image" id="img-artiste-3" alt="">
+<img src="img/img4.jpg" class="artiste-image" id="img-artiste-4" alt="">
+<img src="img/img5.jpg" class="artiste-image" id="img-artiste-5" alt="">
+<img src="img/img6.jpg" class="artiste-image" id="img-artiste-6" alt="">
+<img src="img/img7.jpg" class="artiste-image" id="img-artiste-7" alt="">
+<img src="img/img8.jpg" class="artiste-image" id="img-artiste-8" alt="">
+<img src="img/img9.jpg" class="artiste-image" id="img-artiste-9" alt="">
+</body>
+</html>
+
+
+
+
+<!-- PART 3 -->
+<div id="part_3">
+<div id="gauche">
+  <span id="artiste_1_c" class="titre">Agnieszka Polska - Project Title</span>
+  <span id="info" class="btn">+</span>
+</div>
+<div id="droite">
+    <div id="video-container">
+  <div id="haut_video" >
+    <div id="gauche_du_cine">
+      <span id="btn_next" class="btn">next</span>
+      <span>/</span>
+      <span id="btn_close" class="btn">close</span>
+    </div>
+  </div>
+
+<img id="video" src="img/img1.jpg" >
+
+</div>
+</div>
+
+</div>
+
+
+
+
+<script>
+// LISTES DE NOMS - Facile à modifier pour un développeur
+const listesArtistes = [
+  // Liste originale (9 artistes)
+  [
+    'Agnieszka Polska',
+    'Egor Kraft',
+    'Elsa Werth',
+    'Emmanuel Van der Auwera',
+    'Entangled Others',
+    'Ho Tzu Nyen',
+    'Interspecifics',
+    'John Menick',
+    'Ayoung Kim'
+  ],
+  // Liste A (6 artistes)
+  [
+    'Artiste A1',
+    'Artiste A2',
+    'Artiste A3',
+    'Artiste A4',
+    'Artiste A5',
+    'Artiste A6'
+  ],
+  // Liste B (6 artistes)
+  [
+    'Artiste B1',
+    'Artiste B2',
+    'Artiste B3',
+    'Artiste B4',
+    'Artiste B5',
+    'Artiste B6'
+  ]
+  // Pour ajouter d'autres listes, il suffit d'ajouter un nouveau tableau ici
+];
+
+let indexListeActuelle = 0; // Commence à la liste 0 (originale)
+
+
+
+
+
+
+document.documentElement.style.setProperty('--couleur-fond', '#c9aeff');
+
+// Palette de couleurs
+const couleurs = ['#c9aeff', '#b8eaff', '#a3ffc3',  '#ffff61', '#ec88f6'];
+let indexCouleur = 0;
+
+
+function ajusterVitesseCarrousel() {
+  const carrousel = document.querySelector('.carrousel-wrapper');
+  const nombreArtistes = listesArtistes[indexListeActuelle].length;
+  
+  // Enlève toutes les classes de vitesse
+  carrousel.classList.remove('vitesse-9', 'vitesse-6');
+  
+  // Ajoute la classe appropriée
+  if (nombreArtistes === 9) {
+    carrousel.classList.add('vitesse-9');
+  } else {
+    carrousel.classList.add('vitesse-6');
+  }
+}
+
+
+
+function changerCouleur() {
+  // Change la couleur
+  indexCouleur = (indexCouleur + 1) % couleurs.length;
+  const nouvelleCouleur = couleurs[indexCouleur];
+  const gradient = document.getElementById('gradient_fond');
+  
+  // Change la liste d'artistes
+  indexListeActuelle = (indexListeActuelle + 1) % listesArtistes.length;
+  const nomsAUtiliser = listesArtistes[indexListeActuelle];
+  
+  const carrousel = document.querySelector('.carrousel-wrapper');
+  
+  // ÉTAPE 1 : Fondu sortant (0.75s)
+  carrousel.classList.add('fade-out');
+  
+  // ÉTAPE 2 : Après 0.75s, change le contenu et fondu entrant
+  setTimeout(() => {
+  carrousel.innerHTML = '';
+  
+  // Calcule combien de fois dupliquer (min 3 fois pour éviter les blancs)
+  const nombreDuplications = Math.ceil(27 / nomsAUtiliser.length); // Au moins 27 noms au total
+  
+  // Crée les duplications
+  for(let d = 0; d < nombreDuplications; d++) {
+    nomsAUtiliser.forEach((nom, index) => {
+      const span = document.createElement('span');
+      span.className = 'artiste_accueil';
+      if (d === 0 && indexListeActuelle === 0) span.id = `artiste_${index + 1}`;
+      span.textContent = nom;
+      carrousel.appendChild(span);
+      
+      const tiret = document.createElement('span');
+      tiret.textContent = '—';
+      carrousel.appendChild(tiret);
+    });
+  }
+  
+  ajusterVitesseCarrousel();
+  carrousel.classList.remove('fade-out');
+  
+}, 750);
+  
+  // Animation progressive du gradient (ton code existant)
+  let progress = 0;
+  const duration = 1500;
+  const startTime = Date.now();
+  const couleurActuelle = couleurs[(indexCouleur - 1 + couleurs.length) % couleurs.length];
+  
+  function animate() {
+    const elapsed = Date.now() - startTime;
+    progress = Math.min(elapsed / duration, 1);
+    const couleurInterpolée = interpolerCouleur(couleurActuelle, nouvelleCouleur, progress);
+    
+    gradient.style.background = `linear-gradient(to bottom, 
+      transparent 0%, 
+      ${couleurInterpolée}1A 10px,
+      ${couleurInterpolée}4D 20px,
+      ${couleurInterpolée}80 30px,
+      ${couleurInterpolée}B3 40px,
+      ${couleurInterpolée}D9 50px,
+      ${couleurInterpolée}F2 60px,
+      ${couleurInterpolée} 70px, 
+      ${couleurInterpolée} calc(100% - 70px),
+      ${couleurInterpolée}F2 calc(100% - 60px),
+      ${couleurInterpolée}D9 calc(100% - 50px),
+      ${couleurInterpolée}B3 calc(100% - 40px),
+      ${couleurInterpolée}80 calc(100% - 30px),
+      ${couleurInterpolée}4D calc(100% - 20px),
+      ${couleurInterpolée}1A calc(100% - 10px),
+      transparent 100%)`;
+    
+    document.querySelectorAll('text').forEach(text => {
+      text.style.fill = couleurInterpolée;
+    });
+    
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    }
+  }
+  
+  animate();
+}
+
+// Fonction pour interpoler entre deux couleurs hex
+function interpolerCouleur(couleur1, couleur2, ratio) {
+  const hex1 = couleur1.replace('#', '');
+  const hex2 = couleur2.replace('#', '');
+  
+  const r1 = parseInt(hex1.substring(0, 2), 16);
+  const g1 = parseInt(hex1.substring(2, 4), 16);
+  const b1 = parseInt(hex1.substring(4, 6), 16);
+  
+  const r2 = parseInt(hex2.substring(0, 2), 16);
+  const g2 = parseInt(hex2.substring(2, 4), 16);
+  const b2 = parseInt(hex2.substring(4, 6), 16);
+  
+  const r = Math.round(r1 + (r2 - r1) * ratio);
+  const g = Math.round(g1 + (g2 - g1) * ratio);
+  const b = Math.round(b1 + (b2 - b1) * ratio);
+  
+  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+}
+
+const input = document.getElementById("hiddenInput");
+const textPaths = [
+  document.getElementById("text1"),
+  document.getElementById("text2"),
+  document.getElementById("text3")
+];
+const paths = [
+  document.getElementById("wave1"),
+  document.getElementById("wave2"),
+  document.getElementById("wave3")
+];
+const MAX_CHARS_PER_LINE = 18;
+
+
+
+// 3. EVENT LISTENERS - à la fin, APRÈS la déclaration de input
+let firstKeyPress = true;
+
+input.addEventListener("keydown", (e) => {
+  // AJOUTE : Détection de la touche Entrée
+  if (e.key === "Enter") {
+    e.preventDefault();
+    changerCouleur();
+  }
+  
+  // Ton code existant
+  if (firstKeyPress && e.key === "Backspace") {
+    e.preventDefault();
+    input.value = input.value.slice(0, -2);
+    updateText();
+    firstKeyPress = false;
+  } else if (firstKeyPress) {
+    firstKeyPress = false;
+  }
+});
+
+
+
+
+// Configuration des lignes avec leurs paramètres d'ondulation
+const lines = [
+  { y: 80, amplitude: 16, frequency: 2 },  // Ligne 1 descendue
+  { y: 150, amplitude: 13, frequency: 4 }, // Interlignage réduit
+  { y: 220, amplitude: 12, frequency: 2.5 }
+];
+
+let glitchProgress = 0;
+let isGlitching = false;
+let targetProgress = 0;
+let animationSpeed = 0.001;
+let glitchDuration = 4; // en secondes
+let pauseDuration = 7; // pause au maximum en secondes
+let glitchFrequency = 20; // en secondes
+let nextGlitchTimeout;
+let isPausing = false;
+
+
+
+
+// Fonction d'easing (lent -> rapide -> lent)
+function easeInOutQuad(t) {
+  return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+}
+
+
+
+function generateWavyPath(lineConfig, progress) {
+  const { y, amplitude, frequency } = lineConfig;
+  const amp = amplitude * progress;
+  
+  if (progress === 0) {
+    return `M0 ${y} L600 ${y}`;
+  }
+  
+  let path = `M0 ${y}`;
+  const steps = 60;
+  
+  for (let i = 1; i <= steps; i++) {
+    const x = (i / steps) * 600;
+    const offset = Math.sin((i / steps) * Math.PI * frequency) * amp;
+    path += ` L${x} ${y + offset}`;
+  }
+  
+  return path;
+}
+
+function updatePaths() {
+  paths.forEach((path, i) => {
+    const d = generateWavyPath(lines[i], glitchProgress);
+    path.setAttribute('d', d);
+  });
+}
+
+function animate() {
+  if (isPausing) {
+    requestAnimationFrame(animate);
+    return;
+  }
+  
+  // Appliquer l'easing pour accélération douce
+  const diff = targetProgress - glitchProgress;
+  const easedSpeed = animationSpeed * (1 + Math.abs(diff) * 0.5);
+  
+  glitchProgress += diff * easedSpeed;
+  
+  if (Math.abs(diff) < 0.001) {
+    glitchProgress = targetProgress;
+    if (!isGlitching && glitchProgress === 0) {
+      return;
+    }
+  }
+  
+  updatePaths();
+  requestAnimationFrame(animate);
+}
+
+function glitch() {
+  isGlitching = true;
+  isPausing = false;
+  targetProgress = 1;
+  animate();
+  
+  // Atteindre le max puis pause
+  setTimeout(() => {
+    isPausing = true;
+    
+    // Après la pause, revenir à 0
+    setTimeout(() => {
+      isPausing = false;
+      targetProgress = 0;
+      isGlitching = false;
+      animate();
+    }, pauseDuration * 1000);
+    
+  }, glitchDuration * 1000);
+}
+
+function randomGlitch() {
+  glitch();
+  const randomDelay = (glitchFrequency + Math.random() * 10) * 1000;
+  nextGlitchTimeout = setTimeout(randomGlitch, randomDelay);
+}
+
+
+
+input.addEventListener("keydown", (e) => {
+  if (firstKeyPress && e.key === "Backspace") {
+    e.preventDefault(); // Empêche le comportement par défaut
+    input.value = input.value.slice(0, -2); // Enlève 2 caractères
+    updateText();
+    firstKeyPress = false;
+  } else if (firstKeyPress) {
+    // Pour toute autre touche, on ajoute un espace avant
+    firstKeyPress = false;
+  }
+});
+
+input.addEventListener("input", updateText);
+
+updateText();
+setTimeout(randomGlitch, 5000);
+
+// Ajoute l'espace initial
+input.value = input.value + ' ';
+input.focus();
+input.setSelectionRange(input.value.length, input.value.length);
+input.addEventListener("input", updateText);
+
+
+
+
+
+function updateCursorPosition() {
+  const cursor = document.getElementById('cursor');
+  
+  // Trouver la dernière ligne avec du texte
+  let lastLineIndex = -1;
+  for(let i = textPaths.length - 1; i >= 0; i--) {
+    if(textPaths[i].textContent.trim() !== '') {
+      lastLineIndex = i;
+      break;
+    }
+  }
+  
+  if(lastLineIndex === -1) {
+cursor.style.display = 'block';
+  cursor.setAttribute('x', 300); // Centre (50% de 600)
+  cursor.setAttribute('y', lines[0].y - 50); // Première ligne
+  return;
+}
+  
+  cursor.style.display = 'block';
+  const textPath = textPaths[lastLineIndex];
+  const textLength = textPath.textContent.length;
+  
+  if(textLength > 0) {
+    const bbox = textPath.getEndPositionOfChar(textLength - 1);
+    cursor.setAttribute('x', bbox.x + 8); // +8 pour espacer du texte
+    cursor.setAttribute('y', bbox.y - 50); // Ajuste selon la hauteur de ton curseur
+  }
+}
+
+// Modifie ta fonction updateText existante :
+function updateText() {
+  const words = input.value.split(' ');
+  textPaths.forEach(tp => tp.textContent = '');
+  let lineIndex = 0;
+  let currentLine = '';
+  words.forEach((word, i) => {
+    if(currentLine === ''){
+      currentLine = word;
+    } else {
+      if((currentLine + ' ' + word).length <= MAX_CHARS_PER_LINE){
+        currentLine += ' ' + word;
+      } else {
+        textPaths[lineIndex].textContent = capitalizeWords(currentLine);
+        lineIndex++;
+        if(lineIndex < textPaths.length){
+          currentLine = word;
+        }
+      }
+    }
+  });
+  if(lineIndex < textPaths.length){
+    textPaths[lineIndex].textContent = capitalizeWords(currentLine);
+  }
+  
+
+
+
+
+  updateCursorPosition();
+}
+
+
+ajusterVitesseCarrousel();
+
+
+
+/* =========================================================
+   4) TITRE HAUT — reprend le texte tapé
+   ========================================================= */
+function updateTitreHaut() {
+  const fullText = input.value.trim();
+  titreHaut.textContent = capitalizeWords(fullText);
+}
+
+function capitalizeWords(text) {
+  return text.split(' ').map(word => {
+    if (word.length === 0) return word;
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  }).join(' ');
+}
+
+
+
+
+// Références aux éléments
+const nomArtisteMenu = document.getElementById('nom_artiste_menu');
+const titreHaut = document.getElementById('titre-haut');
+const editor = document.querySelector('.editor');
+const artistesContainer = document.getElementById('artistes-container');
+const logosContainer = document.querySelector('[style*="bottom: 8px"]');
+const btnReturn = document.getElementById('btn-return');
+const btnIndex = document.getElementById('btn-index');
+
+let timeoutId = null;
+let isPartie2Visible = false;
+
+// Génère des positions aléatoires pour chaque artiste
+// Génère des positions aléatoires SÉCURISÉES avec espacement minimum
+function genererPositionsAleatoires() {
+  const artistes = nomArtisteMenu.querySelectorAll('.artiste_menu');
+  const positions = [];
+  const espaceMin = 200; // Distance minimale entre deux noms (en pixels)
+  const espaceVerticalMin = 80;
+
+  artistes.forEach((artiste, index) => {
+    let x, y;
+    let tentatives = 0;
+    let positionValide = false;
+    
+    // Essaie de trouver une position valide (max 50 tentatives)
+    while (!positionValide && tentatives < 50) {
+      // Zone sécurisée : évite les bords de l'écran
+      const margeGauche = 100;
+      const margeDroite = 400;
+      const margeHaut = 100;
+      const margeBas = 100;
+      
+      const zoneLargeur = window.innerWidth - margeGauche - margeDroite;
+      const zoneHauteur = window.innerHeight - margeHaut - margeBas;
+      
+      // Position aléatoire dans la zone sécurisée
+      x = margeGauche + (Math.random() * zoneLargeur);
+      y = margeHaut + (Math.random() * zoneHauteur);
+      
+      // Vérifie la distance avec les positions déjà placées
+      positionValide = true;
+      for (let pos of positions) {
+        const distance = Math.sqrt(Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2));
+        const distanceVerticale = Math.abs(y - pos.y);
+        if (distance < espaceMin) {
+          positionValide = false;
+          break;
+        }
+      }
+      
+      tentatives++;
+    }
+    
+    artiste.style.left = x + 'px';
+    artiste.style.top = y + 'px';
+    positions.push({x, y});
+  });
+  
+  return positions;
+}
+
+
+
+
+
+
+
+
+
+// Met à jour le menu avec la liste actuelle du carrousel
+function mettreAJourMenuArtistes() {
+  const nomsActuels = listesArtistes[indexListeActuelle];
+  const artistes = nomArtisteMenu.querySelectorAll('.artiste_menu');
+  
+  // Cache tous les artistes d'abord
+  artistes.forEach(a => a.style.display = 'none');
+  
+  // Affiche et met à jour seulement ceux de la liste actuelle
+  nomsActuels.forEach((nom, index) => {
+    if (artistes[index]) {
+      artistes[index].style.display = 'block';
+      artistes[index].querySelector('.artiste_text').textContent = nom;
+    }
+  });
+}
+
+
+
+
+
+
+
+
+
+// Fonction pour afficher la partie 2 
+function afficherPartie2() {
+  if (isPartie2Visible) return;
+  isPartie2Visible = true;
+  
+  // Cache la partie 1
+  editor.classList.add('hidden-content');
+  artistesContainer.classList.add('hidden-content');
+  logosContainer.classList.add('hidden-content');
+  
+  // Attends que tout ait disparu (2.5s)
+  setTimeout(() => {
+    // Met à jour les noms selon la liste actuelle
+    mettreAJourMenuArtistes();
+    
+    nomArtisteMenu.classList.add('positions-random');
+    genererPositionsAleatoires();
+    
+    
+    // Affiche le titre en haut après délai
+    setTimeout(() => {
+      updateTitreHaut();
+      titreHaut.classList.add('visible');
+      nomArtisteMenu.classList.add('visible');
+    }, 500);
+    
+    // Affiche le bouton Return
+    btnReturn.style.opacity = '1';
+    btnReturn.style.pointerEvents = 'auto';
+    
+  }, 1300);
+}
+
+
+
+
+
+// Fonction pour revenir à la partie 1
+function afficherPartie1() {
+  if (!isPartie2Visible) return;
+  isPartie2Visible = false;
+  
+  // Cache le titre et le menu
+  titreHaut.classList.add('fast-hide');
+  titreHaut.classList.remove('visible');
+  nomArtisteMenu.classList.remove('visible');
+  
+  // Cache le bouton Return
+  btnReturn.style.opacity = '0';
+  btnReturn.style.pointerEvents = 'none';
+  
+  // Affiche la partie 1
+  setTimeout(() => {
+    editor.classList.remove('hidden-content');
+    artistesContainer.classList.remove('hidden-content');
+    logosContainer.classList.remove('hidden-content');
+  }, 500);
+}
+
+// Clic sur les noms d'artistes du carrousel
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('artiste_accueil')) {
+    afficherPartie2();
+  }
+});
+
+// Clic sur Return
+btnReturn.addEventListener('click', () => {
+  afficherPartie1();
+});
+
+titreHaut.addEventListener('click', () => {
+  afficherPartie1();
+});
+
+
+
+
+// Gestion du survol des artistes avec leurs images (menu vertical)
+document.querySelectorAll('.artiste_menu').forEach((artiste, index) => {
+  const img = document.getElementById(`img-artiste-${index + 1}`);
+  if (!img) return;
+  
+  artiste.addEventListener('mouseenter', (e) => {
+    img.classList.add('visible');
+  });
+  
+  artiste.addEventListener('mousemove', (e) => {
+    const offsetX = 20;
+    const offsetY = 20;
+    const imgWidth = 170; // max-width de l'image
+    const imgHeight = 170; // max-height de l'image
+    
+    let posX = e.clientX + offsetX;
+    let posY = e.clientY + offsetY;
+    
+    // Vérifie si l'image dépasse à droite
+    if (posX + imgWidth > window.innerWidth) {
+      posX = e.clientX - imgWidth - offsetX- 30; // Place à gauche du curseur
+    }
+    
+    // Vérifie si l'image dépasse en bas
+    if (posY + imgHeight > window.innerHeight) {
+      posY = e.clientY - imgHeight - offsetY + 60; // Place au-dessus du curseur
+    }
+    
+    img.style.left = posX + 'px';
+    img.style.top = posY + 'px';
+  });
+  
+  artiste.addEventListener('mouseleave', () => {
+    img.classList.remove('visible');
+  });
+});
+
+
+
+// Initialisation au chargement
+window.addEventListener('load', () => {
+  window.scrollTo(0, 0);
+  editor.classList.remove('hidden-content');
+  artistesContainer.classList.remove('hidden-content');
+  logosContainer.classList.remove('hidden-content');
+});
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+apparition part 3 avec mode cinéma automatique
+   ========================================================= */
+
+document.querySelectorAll('.artiste_menu').forEach((artiste) => {
+  artiste.addEventListener('click', () => {
+    // LANCE le mode cinéma IMMÉDIATEMENT
+    const cinemaOverlay = document.getElementById('cinema-overlay');
+    cinemaOverlay.classList.add('active');
+    isCinemaMode = true;
+    
+    // Change les textes en blanc après un délai
+    setTimeout(() => {
+      document.body.classList.add('cinema-mode');
+    titreHaut.classList.add('stroke-white');
+    }, 500);
+    
+    // Fait disparaître le menu
+    nomArtisteMenu.classList.add('hidden');
+    
+    // Fait disparaître aussi les images des artistes
+    document.querySelectorAll('.artiste-image').forEach(img => {
+      img.classList.remove('visible');
+    });
+    
+    // Après 2s, fait apparaître la part 3
+    setTimeout(() => {
+      document.getElementById('part_3').classList.add('visible');
+      titreHaut.classList.add('stroke-white');
+      document.querySelector('#header-buttons > div').classList.add('visible');
+    }, 1000);
+  });
+});
+
+/* =========================================================
+Bouton CLOSE - retour au menu avec sortie du mode cinéma
+   ========================================================= */
+
+document.getElementById('btn_close').addEventListener('click', () => {
+  exitCinemaMode();
+  
+  document.getElementById('part_3').classList.remove('visible');
+    titreHaut.classList.remove('stroke-white');
+      document.querySelector('#header-buttons > div').classList.remove('visible');
+
+
+  setTimeout(() => {
+    nomArtisteMenu.classList.remove('hidden');
+  }, 1500);
+});
+
+
+
+/* =========================================================
+Fonction pour sortir du mode cinéma
+   ========================================================= */
+
+let isCinemaMode = false;
+
+function exitCinemaMode() {
+  if (isCinemaMode) {
+    const cinemaOverlay = document.getElementById('cinema-overlay');
+    
+    // Commence la transition des textes vers noir
+    document.body.classList.remove('cinema-mode');
+    
+    // Fade out rapide de l'overlay
+    cinemaOverlay.classList.add('closing');
+    
+    setTimeout(() => {
+      cinemaOverlay.classList.remove('active');
+      cinemaOverlay.classList.remove('closing');
+    }, 1000);
+    
+    setTimeout(() => {
+      isCinemaMode = false;
+    }, 1000);
+  }
+}
+
+
+
+
+
+/* =========================================================
+changement cooleur
+   ========================================================= */
+
+
+
+// Bouton noir et blanc - toggle du mode cinéma
+let cinemaOverlayVisible = true; // Au départ le noir est visible
+
+document.querySelector('#header-buttons > div').addEventListener('click', () => {
+  if (isCinemaMode || cinemaOverlayVisible) {
+    const cinemaOverlay = document.getElementById('cinema-overlay');
+    
+    if (cinemaOverlayVisible) {
+      // ENLEVER le noir
+      document.body.classList.remove('cinema-mode');
+      cinemaOverlay.classList.add('closing');
+      
+      setTimeout(() => {
+        cinemaOverlay.classList.remove('active');
+        cinemaOverlay.classList.remove('closing');
+      }, 1500);
+      
+      cinemaOverlayVisible = false;
+      
+    } else {
+      // REMETTRE le noir (juste fade-in)
+      cinemaOverlay.style.transition = 'opacity 0.8s ease-out';
+      cinemaOverlay.classList.add('active');
+      
+      setTimeout(() => {
+        document.body.classList.add('cinema-mode');
+      }, 500);
+      
+      // Remet la transition normale après
+      setTimeout(() => {
+        cinemaOverlay.style.transition = '';
+      }, 1000);
+      
+      cinemaOverlayVisible = true;
+    }
+  }
+});
+
+</script>
+</body>
+</html>

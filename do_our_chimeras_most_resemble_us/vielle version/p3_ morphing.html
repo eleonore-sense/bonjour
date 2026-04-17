@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>p3_ morphing</title>
+  <style>
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: #f3f3f3;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+    }
+    #editor {
+      opacity: 0;
+      height: 0;
+      overflow: hidden;
+      outline: none;
+    }
+    #content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    svg {
+      width: 90vw;
+      height: 70vh;
+      max-width: 1400px;
+      margin-top: -100px;
+    }
+    path {
+      fill: #111;
+    }body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+#main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0;
+}
+
+.artists-row {
+  display: flex;
+  width: 100vw;
+  justify-content: space-between;
+  gap: 400px;
+}
+
+.artist-block {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.artist-block p {
+  margin: 0;
+  font-size: 14px;
+  color: #000;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+}
+
+.link-box {
+  background: #f3f3f3;
+  border: 1px solid #000;
+  padding: 10px 30px;
+  font-size: 14px;
+  color: #000;
+  position: fixed;
+  bottom: 0px;
+
+}
+  </style>
+</head>
+<body>
+<div id="editor" contenteditable="true" spellcheck="false">Do our Chimeras most resemble us ?</div>
+
+<div id="main-content">
+  <svg id="svgContainer"></svg>
+</div>
+
+<footer>
+  <div class="artists-row">
+    <div class="artist-block">
+      <p>Agnieszka Polska</p>
+      <p>Egor Kraft</p>
+      <p>Elsa Werth</p>
+    </div>
+    
+    <div class="artist-block">
+      <p>Emmanuel Van der Auwera</p>
+      <p>Entangled Others</p>
+      <p>Ho Tzu Nyen</p>
+    </div>
+    
+    <div class="artist-block">
+      <p>Interspecifics</p>
+      <p>John Menick</p>
+      <p>Ayoung Kim</p>
+    </div>
+  </div>
+  
+  <div class="footer-links">
+    <div class="link-box" style="left: 0px; width: 93vw;">about</div>
+    <div class="link-box" style="right: 0px;">index</div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/opentype.js@latest/dist/opentype.min.js"></script>
+<script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+<script src="https://unpkg.com/gsap@3/dist/MorphSVGPlugin.min.js"></script>
+<script>
+let regularFont, boldFont;
+let isBold = false;
+
+// PARAMÈTRES - Change ici !
+const fontSize = 100;
+const firstLetterSizeBold = 220;
+const firstLetterExtraSpace = 0;
+const maxCharsPerLine = 18;
+const lineHeight = 150;
+
+// Charger les fonts
+Promise.all([
+  opentype.load('./fonts/RomieTrial-Italic.otf'),
+  opentype.load('./fonts/RomieTrial-Bold.otf')
+]).then(([reg, bold]) => {
+  regularFont = reg;
+  boldFont = bold;
+  
+  // Définir viewBox fixe basé sur la taille de l'écran
+  const vw = window.innerWidth * 0.9;
+  const vh = window.innerHeight * 0.7;
+  svgContainer.setAttribute('viewBox', `0 0 ${vw} ${vh}`);
+  
+  updatePaths();
+});
+
+// Découper le texte en lignes
+function splitIntoLines(text, maxChars) {
+  const words = text.split(/\s+/);
+  const lines = [];
+  let currentLine = '';
+  
+  words.forEach(word => {
+    const testLine = currentLine ? currentLine + ' ' + word : word;
+    if (testLine.length <= maxChars) {
+      currentLine = testLine;
+    } else {
+      if (currentLine) lines.push(currentLine);
+      currentLine = word;
+    }
+  });
+  
+  if (currentLine) lines.push(currentLine);
+  return lines;
+}
+
+// Créer les paths SVG
+function updatePaths() {
+  if (!regularFont || !boldFont) return;
+  
+  isBold = false; // Reset l'état
+  
+  const text = editor.innerText.trim();
+  const lines = splitIntoLines(text, maxCharsPerLine);
+  svgContainer.innerHTML = '';
+  
+  const viewBox = svgContainer.viewBox.baseVal;
+  const centerX = viewBox.width / 2;
+  const startY = (viewBox.height - (lines.length * lineHeight)) / 2 + 150;
+  
+  let globalWordIndex = 0;
+  
+  lines.forEach((line, lineIndex) => {
+    const words = line.split(/\s+/);
+    
+    // Calculer largeur de la ligne pour centrer
+    let lineWidthRegular = 0;
+    let lineWidthBold = 0;
+    
+    words.forEach(word => {
+      for (let i = 0; i < word.length; i++) {
+        const char = word[i];
+        const isFirst = i === 0;
+        const glyph = regularFont.charToGlyph(char);
+        const advance = glyph.advanceWidth * fontSize / regularFont.unitsPerEm;
+        
+        lineWidthRegular += advance;
+        
+        if (isFirst) {
+          const glyphBold = boldFont.charToGlyph(char);
+          const advanceBold = glyphBold.advanceWidth * firstLetterSizeBold / boldFont.unitsPerEm;
+          lineWidthBold += advanceBold + firstLetterExtraSpace;
+        } else {
+          lineWidthBold += advance;
+        }
+      }
+      const space = regularFont.charToGlyph(' ').advanceWidth * fontSize / regularFont.unitsPerEm;
+      lineWidthRegular += space;
+      lineWidthBold += space;
+    });
+    
+    // Positionner les caractères
+    let xRegular = centerX - lineWidthRegular / 2;
+    let xBold = centerX - lineWidthBold / 2;
+    const y = startY + lineIndex * lineHeight;
+    
+    words.forEach(word => {
+      for (let i = 0; i < word.length; i++) {
+        const char = word[i];
+        const isFirst = i === 0;
+        
+        const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        group.setAttribute('class', isFirst ? 'morphable' : 'static');
+        group.setAttribute('data-x-regular', xRegular);
+        group.setAttribute('data-x-bold', xBold);
+        group.setAttribute('data-y', y);
+          group.setAttribute('data-char-content', char);
+          group.setAttribute('data-word-index', globalWordIndex); // ← AJOUTE CETTE LIGNE
+
+        
+        // Path regular
+        const pathReg = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        const regularPath = regularFont.getPath(char, 0, y, fontSize);
+        pathReg.setAttribute('d', regularPath.toPathData(2));
+        pathReg.setAttribute('data-original', regularPath.toPathData(2));
+        group.appendChild(pathReg);
+        
+        // Path bold (caché)
+        if (isFirst) {
+          const pathBld = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          const boldPath = boldFont.getPath(char, 0, y, firstLetterSizeBold);
+          pathBld.setAttribute('d', boldPath.toPathData(2));
+          pathBld.style.visibility = 'hidden';
+          group.appendChild(pathBld);
+        }
+        
+        gsap.set(group, { x: xRegular, y: 0, scale: 1 });
+        svgContainer.appendChild(group);
+        
+        // Avancer X
+        const glyph = regularFont.charToGlyph(char);
+        const advance = glyph.advanceWidth * fontSize / regularFont.unitsPerEm;
+        xRegular += advance;
+        
+        if (isFirst) {
+          const glyphBold = boldFont.charToGlyph(char);
+          const advanceBold = glyphBold.advanceWidth * firstLetterSizeBold / boldFont.unitsPerEm;
+          xBold += advanceBold + firstLetterExtraSpace;
+        } else {
+          xBold += advance;
+        }
+      }
+      
+      const space = regularFont.charToGlyph(' ').advanceWidth * fontSize / regularFont.unitsPerEm;
+      xRegular += space;
+      xBold += space;
+      
+      globalWordIndex++;
+    });
+  });
+}
+
+// Édition
+editor.addEventListener('input', updatePaths);
+svgContainer.addEventListener('click', () => editor.focus());
+
+
+
+
+
+
+
+
+
+// Morph automatique
+// Morph automatique
+let morphedLetters = new Set();
+
+function morphNextLetter() {
+  const morphables = Array.from(document.querySelectorAll('.morphable'));
+  const unmorphed = morphables.filter((letter) => {
+    const id = letter.getAttribute('data-x-regular') + '-' + letter.getAttribute('data-y');
+    return !morphedLetters.has(id);
+  });
+  
+  if (unmorphed.length === 0) return;
+  
+  const randomLetter = unmorphed[Math.floor(Math.random() * unmorphed.length)];
+  const letterId = randomLetter.getAttribute('data-x-regular') + '-' + randomLetter.getAttribute('data-y');
+  const morphedY = randomLetter.getAttribute('data-y');
+  
+  const pathReg = randomLetter.children[0];
+  const pathBld = randomLetter.children[1];
+  
+  // Morph vers bold
+  gsap.to(pathReg, { duration: 6, morphSVG: pathBld, ease: 'sine.inOut' });
+  morphedLetters.add(letterId);
+  
+  // Recalculer uniquement la ligne concernée
+  const viewBox = svgContainer.viewBox.baseVal;
+  const centerX = viewBox.width / 2;
+  const allGroups = Array.from(svgContainer.querySelectorAll('g'));
+  const lineGroups = allGroups.filter(group => group.getAttribute('data-y') === morphedY);
+  
+  // Calculer la largeur totale de la ligne (avec espaces entre mots)
+  let totalWidth = 0;
+  let prevWordIndex = null;
+  
+  lineGroups.forEach(group => {
+    const groupId = group.getAttribute('data-x-regular') + '-' + group.getAttribute('data-y');
+    const char = group.getAttribute('data-char-content');
+    const wordIndex = group.getAttribute('data-word-index');
+    const isMorphed = morphedLetters.has(groupId);
+    const isMorphable = group.classList.contains('morphable');
+    
+    // Ajouter espace si changement de mot
+    if (prevWordIndex !== null && wordIndex !== prevWordIndex) {
+      const space = regularFont.charToGlyph(' ').advanceWidth * fontSize / regularFont.unitsPerEm;
+      totalWidth += space;
+    }
+    prevWordIndex = wordIndex;
+    
+    // Ajouter largeur de la lettre
+    if (isMorphable && isMorphed) {
+      const glyph = boldFont.charToGlyph(char);
+      const advance = glyph.advanceWidth * firstLetterSizeBold / boldFont.unitsPerEm;
+      totalWidth += advance + firstLetterExtraSpace;
+    } else {
+      const glyph = regularFont.charToGlyph(char);
+      const advance = glyph.advanceWidth * fontSize / regularFont.unitsPerEm;
+      totalWidth += advance;
+    }
+  });
+  
+  // Positionner les lettres (centré avec espaces)
+  let currentX = centerX - totalWidth / 2;
+  prevWordIndex = null;
+  
+  lineGroups.forEach(group => {
+    const groupId = group.getAttribute('data-x-regular') + '-' + group.getAttribute('data-y');
+    const char = group.getAttribute('data-char-content');
+    const wordIndex = group.getAttribute('data-word-index');
+    const isMorphed = morphedLetters.has(groupId);
+    const isMorphable = group.classList.contains('morphable');
+    
+    // Ajouter espace si changement de mot
+    if (prevWordIndex !== null && wordIndex !== prevWordIndex) {
+      const space = regularFont.charToGlyph(' ').advanceWidth * fontSize / regularFont.unitsPerEm;
+      currentX += space;
+    }
+    prevWordIndex = wordIndex;
+    
+    // Positionner cette lettre
+    gsap.to(group, { duration: 6, x: currentX, ease: 'sine.inOut' });
+    
+    // Avancer pour la prochaine
+    if (isMorphable && isMorphed) {
+      const glyph = boldFont.charToGlyph(char);
+      const advance = glyph.advanceWidth * firstLetterSizeBold / boldFont.unitsPerEm;
+      currentX += advance + firstLetterExtraSpace;
+    } else {
+      const glyph = regularFont.charToGlyph(char);
+      const advance = glyph.advanceWidth * fontSize / regularFont.unitsPerEm;
+      currentX += advance;
+    }
+  });
+  
+const minDelay = 5000;  // Délai minimum (change ici !)
+const maxDelay = 10000; // Délai maximum (change ici !)
+const randomDelay = Math.random() * (maxDelay - minDelay) + minDelay;
+  setTimeout(morphNextLetter, randomDelay);
+}
+
+setTimeout(() => {
+  morphNextLetter();
+}, 1000);
+</script>
+</body>
+</html>

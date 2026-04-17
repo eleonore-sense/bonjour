@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fond vaporeux</title>
+  <style>
+
+  @font-face {
+      font-family: 'Waza';
+      src: url('Waza LT W01.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+  }
+
+  @font-face {
+      font-family: 'Ami';
+      src: url('Amiamie-RegularRound.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+  }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #f5f5f2;
+      font-family: Ami, sans-serif;
+    }
+
+.center-text {
+    user-select: text;
+    font-family: Waza;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 10vh;
+    font-size: 10vw;
+    color: black;
+    opacity: 0.6;
+    z-index: 10;
+    text-align: center;
+    line-height: 130%;
+    caret-color: transparent;
+    outline: none;
+    width: max-content;
+    max-width: 90vw;
+    min-height: 40vw;  /* hauteur fixe = 3 lignes à 10vw × 1.3 line-height */
+}
+    .mist {
+      position: absolute;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      filter: blur(1px);
+      opacity: 0;
+      animation: floatIn 12s ease-in-out forwards;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+      -webkit-box-shadow: inset 0 0 20px rgba(245,245,242, 0.5), inset 0px 0px 20px 0px #FFF, inset 0px 00px 23px 16px #FFF;
+      box-shadow: inset 0 0 20px rgba(245,245,242, 0.5), inset 0px 0px 20px 0px #FFF, inset 0px 00px 23px 16px #FFF;
+      border-radius: 20%;  
+    }
+
+    @keyframes floatIn {
+      0% {
+        opacity: 0;
+      }
+      30% {
+        opacity: 1;
+      }
+      70% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+
+    span {
+      font-family: Ami;
+      color: #333;
+      white-space: nowrap;
+      font-size: 0.9em;
+      opacity: 0.6;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div style="position: fixed; bottom: 8px; right: 20px; z-index: 2000; display: flex; align-items: center; gap: 15px;">
+    <img src="logo pompidou.png" style="height: 25px; width: auto; opacity:0.6" alt="Logo 1">
+    <img src="logo kadist.png" style="height: 20px; width: auto; opacity:0.6" alt="Logo 2">
+  </div>
+
+  <div style="position: fixed; top: 20px; right: 20px; z-index: 2000; display: flex; align-items: center; gap: 10px;">
+    <span style="font-weight: 500;">Index</span>
+    <div style="width: 15px; height: 15px; border-radius: 50%; background: linear-gradient(90deg, black 50%, white 50%); border: 1px solid #000; opacity: 0.6;"></div>
+  </div>
+
+  <div class="center-text" contenteditable="true" spellcheck="false">Do our Chimeras <br>Most Resemble<br> Us?</div>
+  <div class="mist-container" id="mistContainer"></div>
+
+  <div style="width: 100vw; bottom: 40px; padding-left: 20px; padding-right: 20px; box-sizing: border-box; position: fixed;">
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+      <span>Agnieszka Polska</span>
+      <span>—</span>
+      <span>Egor Kraft</span>
+      <span>—</span>
+      <span>Elsa Werth</span>
+      <span>—</span>
+      <span>Emmanuel Van der Auwera</span>
+      <span>—</span>
+      <span>Entangled Others</span>
+      <span>—</span>
+      <span>Ho Tzu Nyen</span>
+      <span>—</span>
+      <span>Interspecifics</span>
+      <span>—</span>
+      <span>John Menick</span>
+      <span>—</span>
+      <span>Ayoung Kim</span>
+    </div>
+  </div>
+
+  <script>
+
+    // Focus automatique au chargement
+window.addEventListener('load', () => {
+    const textDiv = document.querySelector('.center-text');
+    textDiv.focus();
+    
+    // Place le curseur à la fin du texte
+    const selection = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(textDiv);
+    range.collapse(false); // false = à la fin
+    selection.removeAllRanges();
+    selection.addRange(range);
+});
+
+
+    const images = [
+      'img/img1.jpg',
+      'img/img2.jpg',
+      'img/img3.jpg',
+      'img/img4.jpg',
+      'img/img5.png',
+      'img/img6.jpg',
+      'img/img7.jpg',
+    ];
+
+    const container = document.getElementById('mistContainer');
+
+    function createMist() {
+      const mist = document.createElement('div');
+      mist.className = 'mist';
+
+      const src = images[Math.floor(Math.random() * images.length)];
+
+      const img = new Image();
+      img.src = src;
+
+      img.onload = () => {
+        let w = img.naturalWidth;
+        let h = img.naturalHeight;
+
+        const maxSize = 200;
+        const ratio = Math.min(maxSize / w, maxSize / h, 1);
+        w *= ratio;
+        h *= ratio;
+
+        mist.style.width = w + 'px';
+        mist.style.height = h + 'px';
+
+        mist.style.left = Math.random() * (window.innerWidth - w) + 'px';
+        mist.style.top = Math.random() * (window.innerHeight - h) + 'px';
+
+        mist.style.backgroundImage = `url(${src})`;
+
+        container.appendChild(mist);
+
+        const lifeTime = 15000 + Math.random() * 10000;
+        setTimeout(() => mist.remove(), lifeTime);
+      };
+    }
+
+    setTimeout(() => {
+      createMist();
+
+      function scheduleNext() {
+        const nextTime = 10000 + Math.random() * 10000;
+        setTimeout(() => {
+          createMist();
+          if (Math.random() < 0.3) {
+            createMist();
+          }
+          scheduleNext();
+        }, nextTime);
+      }
+
+      scheduleNext();
+    }, 3000);
+
+const textDiv = document.querySelector('.center-text');
+
+textDiv.addEventListener('keyup', function(e) {
+    if (e.key === ' ' || e.key === 'Enter') {
+        // Sauvegarde la position du curseur
+        const selection = window.getSelection();
+        if (!selection.rangeCount) return;
+        
+        const range = selection.getRangeAt(0);
+        const cursorPosition = range.startOffset;
+        const textNode = range.startContainer;
+        
+        // Transformation du texte
+        let text = this.textContent;
+        text = text.replace(/\b([a-z])([a-z]{3,})\b/gi, function(match, first, rest) {
+            // Exclut le "i" tout seul
+            if (match.toLowerCase() === 'i') return match;
+            return first.toUpperCase() + rest.toLowerCase();
+        });
+        this.textContent = text;
+        
+        // Restaure le curseur
+        try {
+            const newRange = document.createRange();
+            newRange.setStart(this.firstChild, cursorPosition);
+            newRange.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(newRange);
+        } catch(e) {}
+    }
+});
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Index - Exhibition</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="style_index.css">
+</head>
+<body>
+
+<!-- Logos en haut à droite -->
+<div style="position: fixed; top: 15px; right: 15px; z-index: 2000; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
+  <div style="display: flex; align-items: center; gap: 10px;">
+<a href="option 1 janvier.html">return</a>
+  </div>
+</div>
+
+<!-- Fond coloré -->
+<div id="gradient-overlay"></div>
+
+<!-- Titre éditable en haut -->
+<div id="titre-haut" contenteditable="true" spellcheck="false"></div>
+
+<img id="cursor-titre" src="SVG/curseur.svg" style="position: fixed; width: 7px; height: 55px; opacity: 0; z-index: 56; pointer-events: none;">
+<!-- Container des vignettes -->
+<div id="vignettes-container"></div>
+
+<script src="script_index.js"></script>
+</body>
+</html>

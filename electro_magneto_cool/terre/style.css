@@ -1,0 +1,64 @@
+	@font-face {
+	    font-family: 'Wingdings';
+	    src: url('TYPO/wingding.ttf') format('truetype'),
+	         url('wingding.svg') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+
+	}
+
+	@font-face {
+	    font-family: 'alegreya';
+	    src: url('../TYPO/Alegreya-Regular.ttf') format('truetype'),
+	    font-weight: normal;
+	    font-style: normal;
+
+	}
+  @font-face {
+      font-family: 'narrow';
+      src: url('../TYPO/arialnarrow.ttf') format('truetype'),
+      font-weight: normal;
+      font-style: normal;
+
+  }
+
+
+html, body{
+margin: 0px;
+padding: 0px;
+ font-family: narrow;
+color: rgb(0,0,0);
+overflow: hidden;
+ background-color: rgb(240, 240, 240 / 1.0);
+  background-size: cover;
+	background-position-y: center;
+	background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  font-size: 0.95em;
+  color: black;
+}
+
+
+
+#retour{
+  font-family: narrow;
+  letter-spacing: 0.1em;  
+  transform: scaleX(0.8);
+  position: fixed;
+}
+
+
+#fond_terre{
+height: 100%;
+width: fit-content;
+position: fixed;
+z-index: 0;
+transform: translate(-50%,0);
+left: 50%;
+}
+
+#img_terre{
+	height: 80vh;
+	margin-top: 30px;
+}
