@@ -62,13 +62,20 @@ function applyLang() {
   const t = translations[currentLang];
   const part3 = document.getElementById('part_3');
   const isPage2 = part3.classList.contains('visible');
+const texteWasVisible = document.getElementById('texte-oeuvre')?.classList.contains('visible');
 
   document.querySelectorAll('.editor-mobile text').forEach(el => {
     el.style.fontSize = currentLang === "FR" ? "4em" : "5.5em";
   });
 
-  // Ces éléments-là seulement pour le fade out/in de applyLang
-  // (le carrousel et le titre wave sont gérés par playIntro)
+  // Fade out titre si intro déjà jouée
+  if (introPlayed) {
+    const ed = document.querySelector('.editor');
+    const edm = document.getElementById('editor-mobile');
+    if (ed) { ed.style.transition = 'opacity 0.8s ease'; ed.style.opacity = '0'; }
+    if (edm) { edm.style.transition = 'opacity 0.8s ease'; edm.style.opacity = '0'; }
+  }
+
   const els = [
     document.getElementById('titre-haut'),
     document.getElementById('about-label'),
@@ -76,13 +83,18 @@ function applyLang() {
     document.querySelector('#gauche .titre'),
     document.getElementById('btn-play'),
     document.getElementById('fullscreen'),
+    document.getElementById('btn_cine_switch'),
+  document.getElementById('btn_home'),
+  document.getElementById('texte-oeuvre'),
+  document.getElementById('info'),
+  document.getElementById('list_artist'),
+  document.getElementById('next_artist'),
   ];
 
   // Fade out
   els.forEach(el => {
     if (el) {
-      el.style.transition = "opacity 0.8s ease";
-      el.style.opacity = "0";
+      setOpacity(el, '0', '0.8s');
     }
   });
 
@@ -120,7 +132,6 @@ function applyLang() {
     }
     setText("list_artist", t.artists);
 
-    // Titre wave desktop
     ["text1","text2","text3"].forEach((id, i) => {
       const el = document.getElementById(id);
       const wave = document.getElementById("wave" + (i + 1));
@@ -130,18 +141,15 @@ function applyLang() {
       if (wave) wave.style.visibility = val ? "visible" : "hidden";
     });
 
-    // Titre wave mobile
     ["m-text1","m-text2","m-text3","m-text4","m-text5"].forEach((id, i) => {
       const el = document.getElementById(id);
       if (el) el.textContent = t.titreWaveMobile[i] ?? "";
     });
 
-    // Taille typo selon langue
     document.querySelectorAll('.editor text').forEach(el => {
       el.style.fontSize = currentLang === "FR" ? "4.5em" : "5.4em";
     });
 
-    // Largeur boite about sans transition
     const boiteAbout = document.getElementById("boite_about");
     if (boiteAbout) {
       boiteAbout.style.transition = "none";
@@ -149,7 +157,6 @@ function applyLang() {
       setTimeout(() => { boiteAbout.style.transition = ""; }, 300);
     }
 
-    // Repositionner les paths SVG
     const waveY = linesConfig[currentLang].map(l => l.y);
     document.getElementById("wave1")?.setAttribute("d", `M0 ${waveY[0]} L600 ${waveY[0]}`);
     document.getElementById("wave2")?.setAttribute("d", `M0 ${waveY[1]} L600 ${waveY[1]}`);
@@ -157,7 +164,6 @@ function applyLang() {
 
     lines = linesConfig[currentLang];
 
-    // Si on est en page 2, mettre à jour le texte de l'artiste
     if (isPage2 && artisteCourant) {
       const data = artistes[artisteCourant];
       if (data) {
@@ -168,24 +174,36 @@ function applyLang() {
       }
     }
 
-    // URL sans rechargement
     const url = new URL(window.location);
     url.searchParams.set("lang", currentLang.toLowerCase());
     window.history.replaceState({}, "", url);
 
-    // Fade in uniquement ces éléments (pas le titre wave ni le carrousel)
-    els.forEach(el => {
-      if (el) {
-        el.style.transition = "opacity 0.8s ease";
-        if (el.id === "titre-haut") {
-          el.style.opacity = isPage2 ? "1" : "0";
-        } else {
-          el.style.opacity = "1";
-        }
-      }
-    });
+    // Fade in titre si intro déjà jouée
+    if (introPlayed) {
+      const ed = document.querySelector('.editor');
+      const edm = document.getElementById('editor-mobile');
+      if (ed) { ed.style.transition = 'opacity 0.8s ease'; ed.style.opacity = '1'; }
+      if (edm) { edm.style.transition = 'opacity 0.8s ease'; edm.style.opacity = '1'; }
+    }
 
-    // Lancer l'intro uniquement au premier chargement
+
+els.forEach(el => {
+  if (!el) return;
+  if (el.id === "titre-haut") {
+    setOpacity(el, isPage2 ? '1' : '0', '0.8s');
+  } else if (el.id === "btn-lang") {
+    setOpacity(el, introPlayed ? '1' : '0', '0.8s');
+  } else if (el.id === "texte-oeuvre") {
+    setOpacity(el, isPage2 && texteWasVisible ? '1' : '0', '0.8s');
+  } else if (el.id === "info") {
+    setOpacity(el, isPage2 ? '1' : '0', '0.8s');
+  } else if (el.id === "btn_home") {
+    setOpacity(el, isPage2 ? '0.8' : '0', '0.8s');
+  } else {
+    setOpacity(el, '1', '0.8s');
+  }
+});
+
     if (!introPlayed) {
       introPlayed = true;
       playIntro();
@@ -193,9 +211,6 @@ function applyLang() {
 
   }, 800);
 }
-
-
-
 
 // Init au chargement + clic bouton
 document.addEventListener("DOMContentLoaded", () => {
@@ -208,7 +223,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
 // ══════════════════════════════════════════════
 // ── DONNÉES ARTISTES ──────────────────────────
 // ══════════════════════════════════════════════
@@ -503,6 +517,15 @@ let cinemaTransitionTimer = null;
 let wasVideoPlayingBeforeHover = false;
 let hoveredArtistId = null;
 let activePreviewLayer = 1;
+let fullscreenVisible = false;
+
+
+function setOpacity(el, val, duration = '0.8s') {
+  if (!el) return;
+  el.style.transition = `opacity ${duration} ease, text-shadow 0.3s ease, color 1s ease, filter 0.3s ease`;
+  el.style.opacity = val;
+}
+
 
 // ══════════════════════════════════════════════
 // ── HELPERS GÉNÉRAUX ──────────────────────────
@@ -530,6 +553,8 @@ video.addEventListener('loadedmetadata', () => {
 
 function showInfo3() {
   document.querySelectorAll('.info3').forEach(el => {
+        el.style.opacity = '';      // ← reset inline pour laisser le CSS prendre le relais
+    el.style.transition = ''; 
     el.classList.add('visible');
   });
   btnHome.style.opacity = '1';
@@ -538,6 +563,8 @@ function showInfo3() {
 
 function hideInfo3() {
   document.querySelectorAll('.info3').forEach(el => {
+        el.style.opacity = '';      // ← reset inline pour laisser le CSS prendre le relais
+    el.style.transition = ''; 
     el.classList.remove('visible');
   });
   btnHome.style.opacity = '0.8';
@@ -563,64 +590,53 @@ function swapPreviewLayer() {
 let introPlayed = false;
 
 function playIntro() {
-  setTimeout(() => {
-  picks.forEach(id => {
-    const el = document.getElementById(`img-artiste-${id}`);
-    el?.classList.remove('visible', 'intro-blur');
-    el?.classList.add('leave-blur');
-    setTimeout(() => {
-      el?.classList.remove('leave-blur');
-    }, 1500); // après fade out complet
-  });
-}, 2200);
   const allIds = Object.keys(artistes).map(Number);
   const shuffled = allIds.sort(() => Math.random() - 0.5);
   const count = Math.random() < 0.5 ? 3 : 4;
   const picks = shuffled.slice(0, count);
 
   // 0s — vignettes apparaissent en cascade
-picks.forEach((id, i) => {
-  setTimeout(() => {
-    const el = document.getElementById(`img-artiste-${id}`);
-    el?.classList.add('visible', 'intro-blur');
-  }, i * 200);
-});
+  picks.forEach((id, i) => {
+    setTimeout(() => {
+      const el = document.getElementById(`img-artiste-${id}`);
+      el?.classList.add('visible', 'intro-blur');
+    }, i * 400);
+  });
 
-  // 1s — titre wave apparaît
+  // 2s — titre wave apparaît
   setTimeout(() => {
     const ed = document.querySelector('.editor');
     const edm = document.getElementById('editor-mobile');
-    if (ed) { ed.style.transition = 'opacity 1s ease'; ed.style.opacity = '1'; }
-    if (edm) { edm.style.transition = 'opacity 1s ease'; edm.style.opacity = '1'; }
-  }, 1000);
+    if (ed) { ed.style.transition = 'opacity 3s ease'; ed.style.opacity = '1'; }
+    if (edm) { edm.style.transition = 'opacity 3s ease'; edm.style.opacity = '1'; }
+  }, 1500);
 
-  // 2.2s — vignettes disparaissent
-setTimeout(() => {
-  picks.forEach(id => {
-    const el = document.getElementById(`img-artiste-${id}`);
-    el?.classList.remove('visible', 'intro-blur');
-    el?.classList.add('leave-blur');
-    setTimeout(() => {
-      el?.classList.remove('leave-blur');
-    }, 1500); // après fade out complet
-  });
-}, 2200);
+  // 8s — vignettes disparaissent
+  setTimeout(() => {
+    picks.forEach(id => {
+      const el = document.getElementById(`img-artiste-${id}`);
+      el?.classList.remove('visible', 'intro-blur');
+      el?.classList.add('leave-blur');
+      setTimeout(() => {
+        el?.classList.remove('leave-blur');
+      }, 1500);
+    });
+  }, 3500);
 
-  // 3.8s — carrousel + UI arrivent
+  // 5.8s — carrousel + UI arrivent
   setTimeout(() => {
     const fadeIn = (id) => {
       const el = document.getElementById(id);
       if (el) { el.style.transition = 'opacity 1s ease'; el.style.opacity = '1'; }
     };
     fadeIn('artistes-container');
-    fadeIn('boite_about');
-    fadeIn('btn-lang');
-    fadeIn('btn_cine_switch');
+    document.getElementById('boite_about')?.classList.add('visible');
+setOpacity(document.getElementById('btn-lang'), '1', '1s');
+setOpacity(document.getElementById('btn_cine_switch'), '1', '1s');
     fadeIn('logos-container');
-        document.getElementById('artistes-container').style.pointerEvents = 'auto';
-  }, 3800);
+    document.getElementById('artistes-container').style.pointerEvents = 'auto';
+  }, 4500);
 }
-
 // ══════════════════════════════════════════════
 // ── MODE CINE ────────────────
 // ══════════════════════════════════════════════
@@ -653,64 +669,109 @@ function enterCinemaFromHome() {
   document.body.classList.add('cinema-mode');
   document.documentElement.style.setProperty('--p2typo', 'white');
   btnPlay.style.color = 'black';
+  document.getElementById('btn_home').style.opacity = '0';
+  document.getElementById('btn_home').style.pointerEvents = 'none';
 }
 
 /* toggle interne après l'intro : plus de tunnel rejoué */
 function setCinemaMode(enabled) {
   clearCinemaTimer();
-
   isCinemaMode = enabled;
 
-  if (enabled) {
-    document.body.classList.add('cinema-mode');
-    document.documentElement.style.setProperty('--p2typo', 'white');
-    btnPlay.style.color = 'black';
+  const titreHaut     = document.getElementById('titre-haut');
+  const gaucheTitre   = document.querySelector('#gauche .titre');
+  const btnHome       = document.getElementById('btn_home');
+  const btnLang       = document.getElementById('btn-lang');
+  const btnCine       = document.getElementById('btn_cine_switch');
+  const listArtist    = document.getElementById('list_artist');
+  const nextArtist    = document.getElementById('next_artist');
+  const fullscreen    = document.getElementById('fullscreen');
+  const texte         = document.getElementById('texte-oeuvre');
+const infoBtn = document.getElementById('info');
+  // éléments toujours visibles
+  const alwaysVisible = [titreHaut, gaucheTitre, btnHome, btnLang, btnCine, listArtist, nextArtist, infoBtn];
+  // éléments conditionnels — on mémorise leur état avant
+const fullscreenWasVisible = fullscreenVisible;
+  const texteWasVisible      = texte && texte.classList.contains('visible');
+const infoBtnVisible       = infoBtn && artisteCourant !== null; // ← ici
 
+if (enabled) {
     cinemaOverlay.classList.remove('closing');
+    cinemaOverlay.style.transition = 'opacity 0.8s ease-out, box-shadow 0.8s ease-out';
+    cinemaOverlay.classList.add('active');
 
-    if (!cinemaIntroPlayed) {
-      cinemaOverlay.classList.remove('active');
-      void cinemaOverlay.offsetWidth;
-      cinemaOverlay.classList.add('active');
-      cinemaIntroPlayed = true;
-    } else {
-      /* on remet le noir sans relancer le tunnel */
-      cinemaOverlay.style.transition = 'opacity 1.5s ease-out, box-shadow 1.5s ease-out';
-      cinemaOverlay.classList.add('active');
-    }
+    setTimeout(() => {
+      alwaysVisible.forEach(el => {
+        if (!el) return;
+        setOpacity(el, '0', '0.6s');
+      });
+if (fullscreenWasVisible) {
+  setOpacity(fullscreen, '0', '0.6s');
+}
+      if (texteWasVisible)      setOpacity(texte, '0', '0.6s');
+      btnPlay.style.transition = 'opacity 0.6s ease';
+      btnPlay.style.opacity = '0';
 
+      setTimeout(() => {
+        document.body.classList.add('cinema-mode');
+        document.documentElement.style.setProperty('--p2typo', 'white');
+        btnPlay.style.color = 'black';
+
+        alwaysVisible.forEach(el => {
+          if (!el) return;
+          if (el === infoBtn) return;
+          setOpacity(el, '1', '0.6s');
+        });
+if (fullscreenWasVisible) {
+  fullscreen.style.transition = 'opacity 0.6s ease';
+  fullscreen.style.opacity = '1';
+}
+        if (texteWasVisible)      setOpacity(texte, '1', '0.6s');
+        btnPlay.style.opacity = hasStarted ? '0' : '1';
+       if (infoBtnVisible) setOpacity(infoBtn, '1', '0.6s'); 
+      }, 600);
+    }, 400);
 } else {
-  document.body.classList.remove('cinema-mode');
-  document.documentElement.style.setProperty('--p2typo', 'black');
-  btnPlay.style.color = 'white';
+    // 1. texte fade out
+   alwaysVisible.forEach(el => {
+  if (!el) return;
+  if (el === infoBtn) return;
+  setOpacity(el, '0', '0.4s');
+});
+if (fullscreenWasVisible) setOpacity(fullscreen, '0', '0.8s');
+if (texteWasVisible)      setOpacity(texte, '0', '0.4s');
+if (infoBtnVisible) setOpacity(infoBtn, '0', '0.4s');
 
-  cinemaOverlay.classList.add('closing');
+    // 2. noir disparaît
+    document.body.classList.remove('cinema-mode');
+    document.documentElement.style.setProperty('--p2typo', 'black');
+    btnPlay.style.color = 'white';
+    cinemaOverlay.classList.add('closing');
+  fullscreen.classList.remove('force-visible');
+    cinemaTransitionTimer = setTimeout(() => {
+      cinemaOverlay.classList.remove('active', 'closing');
+      cinemaTransitionTimer = null;
 
-  cinemaTransitionTimer = setTimeout(() => {
-    cinemaOverlay.classList.remove('active', 'closing');
-    cinemaTransitionTimer = null;
-  }, 1500);
+      // 3. texte réapparaît en noir
+alwaysVisible.forEach(el => {
+  if (!el) return;
+  if (el === infoBtn) return;
+  if (el === titreHaut || el === gaucheTitre || el === btnHome || el === btnCine) {
+    setOpacity(el, '1', '0.8s');
+  } else {
+    setOpacity(el, '', '0.8s');
+  }
+});
+if (fullscreenWasVisible) {
+  fullscreen.style.transition = 'opacity 0.8s ease';
+  fullscreen.style.opacity = '1';
 }
+if (texteWasVisible)      setOpacity(texte, '', '0.8s');
+      if (infoBtnVisible) setOpacity(infoBtn, '1', '0.8s');
+
+    }, 1200);
+  }
 }
-
-function exitCinemaMode() {
-  clearCinemaTimer();
-
-  isCinemaMode = false;
-  cinemaIntroPlayed = false;
-
-  document.body.classList.remove('cinema-mode');
-  document.documentElement.style.setProperty('--p2typo', 'black');
-  btnPlay.style.color = 'white';
-
-  cinemaOverlay.classList.add('closing');
-
-  cinemaTransitionTimer = setTimeout(() => {
-    cinemaOverlay.classList.remove('active', 'closing');
-    cinemaTransitionTimer = null;
-  }, 1500);
-}
-
 // ══════════════════════════════════════════════
 // ── IMAGES VIGNETTES AU SURVOL ────────────────
 // ══════════════════════════════════════════════
@@ -986,6 +1047,12 @@ window.addEventListener('resize', () => {
 artistesContainer.addEventListener('click', (e) => {
   if (!e.target.classList.contains('artiste_accueil')) return;
 
+
+setOpacity(document.getElementById('btn-lang'), '0', '0.6s');
+  document.querySelector('#gauche .titre').style.opacity = '0'; 
+document.getElementById('btn_home').style.opacity = '0';
+document.getElementById('btn_home').style.pointerEvents = 'none';
+
   const id = e.target.dataset.artiste;
   artisteCourant = parseInt(id, 10);
   const data = artistes[id];
@@ -998,7 +1065,8 @@ document.querySelector('#gauche .titre').innerHTML = `<span class="artiste-nom">
   video.src    = data.video;
   video.poster = data.poster;
   video.load();
-
+btnPlay.classList.add('hidden');
+btnPlay.style.pointerEvents = 'none';
 document.getElementById('texte-oeuvre').textContent = currentLang === "FR" && data.textFR ? data.textFR : data.text;
   document.getElementById('texte-oeuvre').classList.remove('visible');
 
@@ -1009,6 +1077,7 @@ document.getElementById('texte-oeuvre').textContent = currentLang === "FR" && da
   logosContainer.classList.add('hidden-content');
   about.classList.add('hidden-content');
 
+
 enterCinemaFromHome();
 document.getElementById('btn-lang').classList.add('nav_link');
   const part3 = document.getElementById('part_3');
@@ -1016,22 +1085,26 @@ document.getElementById('btn-lang').classList.add('nav_link');
   setTimeout(() => {
     part3.classList.add('visible');
 
-    setTimeout(() => {
-      document.getElementById('titre-haut').style.opacity = '1';
-    }, 50);
+setTimeout(() => {
+    setOpacity(document.getElementById('titre-haut'), '1', '1.5s');
+setOpacity(document.getElementById('btn-lang'), '1', '1.5s');
+setOpacity(document.getElementById('btn_home'), '0.8', '1.5s');
+setOpacity(document.querySelector('#gauche .titre'), '1', '1.5s');
+setOpacity(document.getElementById('info'), '1', '1.5s');
+
+  document.getElementById('btn_home').style.pointerEvents = 'auto';
+  part3.classList.add('part3-info1-visible');
+
+}, 1000);
 
     setTimeout(() => {
       part3.classList.add('part3-video-visible');
     }, 600);
 
-    setTimeout(() => {
-      part3.classList.add('part3-info1-visible');
-    }, 1200);
 
     setTimeout(() => {
       part3.classList.add('part3-info2-visible');
-      btnPlay.style.opacity = '1';
-      btnPlay.style.pointerEvents = 'auto';
+        btnPlay.classList.remove('hidden');
     }, 3000);
 
   }, 1000);
@@ -1046,40 +1119,77 @@ if (btnHome) {
   btnHome.addEventListener('click', () => {
     const part3 = document.getElementById('part_3');
 
+    // 1. Reset état
     hasStarted = false;
     video.pause();
     video.src = '';
     video.poster = '';
     info3AlreadyShown = false;
-    btnPlay.textContent = 'Play Video';
+    btnPlay.textContent = translations[currentLang].playVideo;
     btnPlay.classList.remove('playing');
+    btnPlay.classList.add('hidden');
 
-    ['visible', 'part3-video-visible', 'part3-info1-visible', 'part3-info2-visible', 'part3-info3-visible']
-      .forEach(c => part3.classList.remove(c));
-
-    hideInfo3();
-
-    document.getElementById('titre-haut').style.opacity = '0';
-    btnPlay.style.opacity = '0';
-    btnPlay.style.pointerEvents = 'none';
-    fullscreenBtn.style.opacity = '0';
-    fullscreenBtn.style.display = 'none';
-    btnRestart.style.opacity = '0';
+    // 2. Tout disparaît en 0.6s
+document.getElementById('droite').style.transition = 'opacity 0.6s ease';
+document.getElementById('droite').style.opacity = '0';
+document.getElementById('gauche').style.transition = 'opacity 0.6s ease';
+document.getElementById('gauche').style.opacity = '0';
+  document.querySelector('#gauche .titre').style.transition = 'none'; // ← ici
+  document.querySelector('#gauche .titre').style.opacity = '0';    
+    document.getElementById('texte-oeuvre').style.transition = 'none'; // ← ici
+  document.getElementById('texte-oeuvre').style.opacity = '0';   
+setOpacity(document.getElementById('btn_home'), '0', '0.6s');
+setOpacity(document.getElementById('btn-lang'), '0', '0.6s');
+setOpacity(document.getElementById('titre-haut'), '0', '0.6s');
+setOpacity(document.getElementById('btn_cine_switch'), '0', '0.6s');    
 
     if (isFullscreen) {
       document.exitFullscreen();
       isFullscreen = false;
     }
-document.getElementById('btn_home').style.opacity = "0";
-document.getElementById('btn_home').style.pointerEvents = "none";
-    exitCinemaMode();
-document.getElementById('btn-lang').classList.remove('nav_link');
+
+    // 3. Après 0.6s — reset part3 + fond noir se dissipe en 1s
+setTimeout(() => {
+  // 1. classes d'abord
+  ['visible', 'part3-video-visible', 'part3-info1-visible', 'part3-info2-visible', 'part3-info3-visible']
+    .forEach(c => part3.classList.remove(c));
+  hideInfo3();
+  
+  // 2. puis reset inline
+  document.getElementById('droite').style.transition = '';
+  document.getElementById('droite').style.opacity = '';
+  document.getElementById('gauche').style.transition = '';
+  document.getElementById('gauche').style.opacity = '';
+    document.getElementById('info').style.transition = 'none';
+  document.getElementById('info').style.opacity = '0';
+
+  // 3. reste
+  fullscreenBtn.style.opacity = '0';
+  fullscreenBtn.style.display = 'none';
+  fullscreenVisible = false;  
+  btnRestart.style.opacity = '0';
+  document.getElementById('btn-lang').classList.remove('nav_link');
+  document.getElementById('btn_home').style.transition = 'none';
+  document.getElementById('btn_home').style.opacity = '0';
+  document.getElementById('btn_home').style.pointerEvents = 'none';
+  document.getElementById('btn_cine_switch').style.transition = 'opacity 0.6s ease';
+document.getElementById('btn_cine_switch').style.opacity = '0';
+  exitCinemaMode();
+}, 600);
+
+    // 4. Après 0.6s + 1s — réapparition page 1
     setTimeout(() => {
       editor.classList.remove('hidden-content');
       artistesContainer.classList.remove('hidden-content');
       logosContainer.classList.remove('hidden-content');
       about.classList.remove('hidden-content');
-    }, 600);
+setOpacity(document.getElementById('btn-lang'), '1', '1.5s');
+setOpacity(document.getElementById('btn_cine_switch'), '1', '1.5s');
+
+  document.getElementById('btn_cine_switch').style.transition = 'opacity 1.5s ease'; // ← ici
+  document.getElementById('btn_cine_switch').style.opacity = '1';    
+    }, 1200);
+
   });
 }
 
@@ -1116,6 +1226,7 @@ btnPlay.addEventListener('click', async (e) => {
             requestAnimationFrame(() => {
               requestAnimationFrame(() => {
                 fullscreenBtn.style.opacity = '1';
+                fullscreenVisible = true;
               });
             });
           }, 2000);
@@ -1294,20 +1405,25 @@ btnRestart.addEventListener('click', () => {
 // ── CLICK SUR + ───────────────────────────────
 // ══════════════════════════════════════════════
 
+
 document.getElementById('info').addEventListener('click', () => {
   const texte = document.getElementById('texte-oeuvre');
   const info = document.getElementById('info');
-
   texte.classList.toggle('visible');
+  texte.style.transition = '';
+  texte.style.opacity = ''; 
   info.textContent = texte.classList.contains('visible') ? '–' : '+';
   texteWrapper.classList.toggle('visible', texte.classList.contains('visible'));
 
   if (texte.classList.contains('visible')) {
-    setTimeout(() => showInfo3(), 1500);
+    setTimeout(() => {
+      showInfo3();
+      setOpacity(document.getElementById('btn_cine_switch'), '1', '0.8s');
+    }, 1500);
+  } else {
+    setOpacity(document.getElementById('btn_cine_switch'), '0', '0.8s');
   }
 });
-
-
 // ══════════════════════════════════════════════
 // ── NEXT ARTIST ───────────────────────────────
 // ══════════════════════════════════════════════
@@ -1337,6 +1453,8 @@ document.getElementById('next_artist').addEventListener('click', () => {
   }
 
   setTimeout(() => {
+document.querySelector('#gauche .titre').style.transition = 'none';
+document.querySelector('#gauche .titre').style.opacity = '0';
 document.querySelector('#gauche .titre').innerHTML = `<span class="artiste-nom">${data.nom}</span> — <span class="artiste-titre">${data.titre}</span>`;
     video.src = data.video;
     video.poster = data.poster;
@@ -1356,11 +1474,13 @@ texte.textContent = currentLang === "FR" && data.textFR ? data.textFR : data.tex
     if (info3AlreadyShown) showInfo3();
 
     if (fullscreenUnlocked) {
-      fullscreenBtn.style.display = 'block';
-      fullscreenBtn.style.opacity = '1';
+fullscreenBtn.style.display = 'block';
+fullscreenBtn.style.opacity = '1';
+fullscreenVisible = true;
     } else {
       fullscreenBtn.style.display = 'none';
       fullscreenBtn.style.opacity = '0';
+      fullscreenVisible = false;
     }
 
     const next2 = getNextArtisteId(next);
@@ -1394,6 +1514,20 @@ switchCine.addEventListener('click', () => {
 });
 
 
+function exitCinemaMode() {
+  clearCinemaTimer();
+  isCinemaMode = false;
+  cinemaIntroPlayed = false;
+  document.body.classList.remove('cinema-mode');
+  document.documentElement.style.setProperty('--p2typo', 'black');
+  btnPlay.style.color = 'white';
+  cinemaOverlay.classList.add('closing');
+  cinemaTransitionTimer = setTimeout(() => {
+    cinemaOverlay.classList.remove('active', 'closing');
+    cinemaTransitionTimer = null;
+  }, 1500);
+}
+
 
 // ══════════════════════════════════════════════
 // ── ABOUT PANEL ───────────────────────────────
@@ -1408,7 +1542,12 @@ let aboutTextTimer = null;
 function openAbout() {
   if (aboutOpen) return;
   aboutOpen = true;
-  boiteAbout.style.width = "";
+boiteAbout.style.width = currentLang === "FR" ? "90px" : "70px";
+requestAnimationFrame(() => {
+  requestAnimationFrame(() => {
+    boiteAbout.style.width = "";
+  });
+});
   clearTimeout(aboutTextTimer);
 
   boiteAbout.classList.add('open');
@@ -1748,9 +1887,11 @@ texte.textContent = currentLang === "FR" && data.textFR ? data.textFR : data.tex
     if (fullscreenUnlocked) {
       fullscreenBtn.style.display = 'block';
       fullscreenBtn.style.opacity = '1';
+      fullscreenVisible = true;
     } else {
       fullscreenBtn.style.display = 'none';
       fullscreenBtn.style.opacity = '0';
+      fullscreenVisible = false;
     }
 
 const next2 = getNextArtisteId(id);

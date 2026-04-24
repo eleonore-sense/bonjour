@@ -27,6 +27,28 @@
 }
 
 
+.t-opacity {
+  transition: opacity var(--t-base) var(--ease);
+}
+
+.t-opacity-fast {
+  transition: opacity var(--t-fast) var(--ease);
+}
+
+.t-opacity-slow {
+  transition: opacity var(--t-ui) var(--ease);
+}
+
+.t-all {
+  transition:
+    opacity var(--t-base) var(--ease),
+    text-shadow var(--t-base) var(--ease),
+    color var(--t-slow) var(--ease),
+    -webkit-text-stroke var(--t-slow) var(--ease-out);
+}
+
+
+
 /* ══════════════════════════════════════════════
    FONTS
    ══════════════════════════════════════════════ */
@@ -95,6 +117,7 @@ span {
   border-radius: 50%;
   overflow: visible;
   cursor: pointer;
+  opacity:0;
   box-shadow:
     0 0 30px rgba(255,255,255,1),
     0 0 20px rgba(255,255,255,1),
@@ -106,8 +129,23 @@ span {
     box-shadow 0.7s ease,
     transform 1.1s ease,
     padding 1.1s ease,
+    background 0.6s ease,
+
+}
+
+#boite_about.visible {
+  opacity: 1;
+  transition:
+    opacity 1s ease,
+    width 1.1s ease,
+    height 1.1s ease,
+    border-radius 1.1s ease,
+    box-shadow 0.7s ease,
+    transform 1.1s ease,
+    padding 1.1s ease,
     background 0.6s ease;
 }
+
 
 #boite_about::before {
   content: "";
@@ -417,14 +455,14 @@ text {
 }
 
 .artiste-image.intro-blur {
-  opacity: 0.8;
+  opacity: 0.6;
   filter: blur(6px);
 }
 
 .artiste-image.leave-blur {
   filter: blur(6px);
   opacity: 0;
-  transition: opacity var(--t-overlay) var(--ease-out);
+  transition: opacity var(--t-base) var(--ease-out);
 }
 
 
@@ -438,12 +476,7 @@ text {
   transition: opacity var(--t-overlay) var(--ease-out);
 }
 
-.btn_hover {
-  cursor: pointer;
-  transition:
-    text-shadow var(--t-base) var(--ease),
-    opacity var(--t-base) var(--ease);
-}
+
 
 .btn_hover:hover {
   opacity: 1;
@@ -453,6 +486,13 @@ text {
     0 0 13px #ffffff;
 }
 
+.btn_home:hover {
+  opacity: 1;
+  text-shadow:
+    0 0 11px #ffffff,
+    0 0 13px #ffffff,
+    0 0 13px #ffffff;
+}
 
 #top-right-buttons {
   position: fixed;
@@ -491,6 +531,17 @@ text {
 /* ══════════════════════════════════════════════
    MODE CINÉMA — OVERLAY
    ══════════════════════════════════════════════ */
+
+#btn_cine_switch:hover svg {
+  filter: drop-shadow(0 0 8px white) drop-shadow(0 0 15px white);
+  transition: filter var(--t-base) var(--ease);
+}
+
+#btn_cine_switch svg {
+  filter: drop-shadow(0 0 0px transparent);
+  transition: filter var(--t-base) var(--ease);
+}
+
 
 #cinema-overlay {
   position: fixed;
@@ -544,6 +595,37 @@ body.cinema-mode #gauche #info,
 body.cinema-mode .btn {
   color: var(--p2typo) !important;
 }
+
+
+
+body:not(.cinema-mode) .btn_hover:hover {
+  text-shadow:
+    0 0 8px #ffffff,
+    0 0 15px #ffffff,
+    0 0 25px #ffffff,
+    0 0 40px #ffffff;
+}
+
+body:not(.cinema-mode) .artiste_accueil:hover {
+  text-shadow:
+    0 0 8px #ffffff,
+    0 0 15px #ffffff,
+    0 0 25px #ffffff,
+    0 0 40px #ffffff,
+    0 0 60px #ffffff,
+    0 0 80px #ffffff;
+}
+
+body:not(.cinema-mode) .artist-list-item:hover {
+  text-shadow:
+    0 0 8px #ffffff,
+    0 0 15px #ffffff,
+    0 0 25px #ffffff,
+    0 0 40px #ffffff;
+}
+
+
+
 /* ══════════════════════════════════════════════
    PART 3 — STRUCTURE
    ══════════════════════════════════════════════ */
@@ -609,6 +691,7 @@ font-style: italic;
   transition:
     text-shadow var(--t-base) var(--ease-out),
     color var(--t-slow) var(--ease);
+
 }
 
 #info:hover {
@@ -741,11 +824,8 @@ font-style: italic;
   font-size: 1em;
   color: var(--p2typo);
   cursor: pointer;
-  transition:
-    color var(--t-slow) var(--ease),
-    text-shadow var(--t-base) var(--ease),
-    opacity var(--t-base) var(--ease);
 }
+
 
 .bas {
   position: fixed;
@@ -775,6 +855,7 @@ font-style: italic;
   padding-bottom: 1vh;
   font-family: Abordage;
   color: var(--p2typo);
+  cursor: pointer;
 }
 
 #next_artist {
@@ -785,6 +866,7 @@ font-style: italic;
   padding-bottom: 1vh;
   font-family: Abordage;
   color: var(--p2typo);
+  cursor: pointer;
 }
 
 
@@ -807,6 +889,17 @@ font-style: italic;
 .part3-info1-visible .info1 {
   opacity: 1;
   pointer-events: auto;
+}
+
+
+.part3-video-visible .video-pack #btn-play {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#btn-play.hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 .info3 {
@@ -836,7 +929,7 @@ font-style: italic;
     0 0 13px #ffffff;
 }
 
-#btn_home,
+
 #gauche .titre {
   opacity: 0;
   transition:
@@ -845,13 +938,12 @@ font-style: italic;
     color var(--t-slow) var(--ease);
 }
 
-.part3-info1-visible #btn_home {
-  opacity: 0.8;
+
+#btn_home {
+  opacity: 0;
+  pointer-events: none;
 }
 
-.part3-info1-visible #gauche .titre {
-  opacity: 1;
-}
 
 #btn_cine_switch {
   background: none;
@@ -901,6 +993,16 @@ font-style: italic;
 /* ══════════════════════════════════════════════
    FULLSCREEN NATIF
    ══════════════════════════════════════════════ */
+
+
+#fullscreen {
+  transition: opacity var(--t-base) var(--ease);
+  cursor: pointer;
+}
+
+#fullscreen.force-visible {
+  opacity: 1 !important;
+}
 
 #video-wrapper:fullscreen,
 #video-wrapper:-webkit-full-screen {
@@ -1011,22 +1113,23 @@ font-style: italic;
 /* ══════════════════════════════════════════════
    HARMONISATION DES TRANSITIONS TEXTE / UI
    ══════════════════════════════════════════════ */
-
 .nav_link,
+.btn_hover,
 #list_artist,
 #next_artist,
 #btn-play,
 #fullscreen,
 #texte-oeuvre,
 #gauche .titre,
-#gauche #info {
+#gauche #info,
+#btn-lang,
+#btn_cine_switch {
   transition:
     color var(--t-slow) var(--ease),
-    text-shadow var(--t-base) var(--ease),
+      text-shadow 0.3s var(--ease),
     -webkit-text-stroke var(--t-slow) var(--ease-out),
     opacity var(--t-base) var(--ease);
 }
-
 
 /* ══════════════════════════════════════════════
    CURATED ARTISTS LIST
@@ -1189,7 +1292,6 @@ font-style: italic;
 .editor,
 #editor-mobile,
 #artistes-container,
-#boite_about,
 #btn-lang,
 #btn_cine_switch,
 #logos-container {
