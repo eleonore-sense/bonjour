@@ -362,6 +362,10 @@ text {
 #artistes-container {
   z-index: 15;
   overflow: hidden;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-top: -20px;
+  margin-bottom: -20px;
   white-space: nowrap;
   cursor: pointer;
   pointer-events: none;
@@ -408,17 +412,15 @@ text {
   margin-bottom: 10px;
   font-size: 1.5em;
   text-shadow: none;
-  transition: text-shadow var(--t-base) var(--ease-out);
+  transition: filter 0.8s ease;
 }
 
 .artiste_accueil:hover {
-  text-shadow:
-    0 0 11px #ffffff,
-    0 0 11px #ffffff,
-    0 0 13px #ffffff,
-    0 0 15px #ffffff,
-    0 0 20px #ffffff,
-    0 0 30px #ffffff;
+  filter:     
+      drop-shadow(0 0 3px white) 
+    drop-shadow(0 0 6px white)
+    drop-shadow(0 0 10px white)
+    drop-shadow(0 0 15px white);
 }
 
 
@@ -481,17 +483,19 @@ text {
 .btn_hover:hover {
   opacity: 1;
   text-shadow:
-    0 0 11px #ffffff,
-    0 0 13px #ffffff,
-    0 0 13px #ffffff;
+    0 0 6px #ffffff,
+    0 0 12px #ffffff,
+    0 0 20px #ffffff,
+    0 0 35px #ffffff;
 }
 
 .btn_home:hover {
   opacity: 1;
   text-shadow:
-    0 0 11px #ffffff,
-    0 0 13px #ffffff,
-    0 0 13px #ffffff;
+    0 0 6px #ffffff,
+    0 0 12px #ffffff,
+    0 0 20px #ffffff,
+    0 0 35px #ffffff;
 }
 
 #top-right-buttons {
@@ -543,6 +547,15 @@ text {
 }
 
 
+
+#cinema-tunnel {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 52;
+}
+
+
 #cinema-overlay {
   position: fixed;
   top: 50%;
@@ -589,6 +602,15 @@ text {
     box-shadow 1.2s ease-out !important;
 }
 
+
+
+
+
+
+
+
+
+
 body.cinema-mode #gauche,
 body.cinema-mode #gauche .titre,
 body.cinema-mode #gauche #info,
@@ -600,21 +622,19 @@ body.cinema-mode .btn {
 
 body:not(.cinema-mode) .btn_hover:hover {
   text-shadow:
-    0 0 8px #ffffff,
-    0 0 15px #ffffff,
-    0 0 25px #ffffff,
-    0 0 40px #ffffff;
+    0 0 6px #ffffff,
+    0 0 12px #ffffff,
+    0 0 20px #ffffff,
+    0 0 30px #ffffff;
 }
 
 body:not(.cinema-mode) .artiste_accueil:hover {
-  text-shadow:
-    0 0 8px #ffffff,
-    0 0 15px #ffffff,
-    0 0 25px #ffffff,
-    0 0 40px #ffffff,
-    0 0 60px #ffffff,
-    0 0 80px #ffffff;
-}
+  filter: 
+    drop-shadow(0 0 3px white) 
+    drop-shadow(0 0 6px white)
+    drop-shadow(0 0 10px white)
+    drop-shadow(0 0 15px white);
+  }
 
 body:not(.cinema-mode) .artist-list-item:hover {
   text-shadow:
@@ -659,7 +679,7 @@ body:not(.cinema-mode) .artist-list-item:hover {
   left: 20px;
   z-index: 55;
   font-family: Lagarto;
-  font-size: 3.5em;
+  font-size: clamp(1rem, 3.5vw, 3rem);;
   color: transparent;
   cursor: pointer;
   opacity: 0;
@@ -697,9 +717,10 @@ font-style: italic;
 #info:hover {
   text-decoration: none;
   text-shadow:
-    0 0 11px #ffffff,
-    0 0 11px #ffffff,
-    0 0 13px #ffffff;
+    0 0 6px #ffffff,
+    0 0 12px #ffffff,
+    0 0 20px #ffffff,
+    0 0 25px #ffffff;
 }
 
 #texte-wrapper {
@@ -924,9 +945,10 @@ font-style: italic;
 
 .info3.visible:hover {
   text-shadow:
-    0 0 11px #ffffff,
-    0 0 11px #ffffff,
-    0 0 13px #ffffff;
+    0 0 6px #ffffff,
+    0 0 12px #ffffff,
+    0 0 20px #ffffff,
+    0 0 35px #ffffff;
 }
 
 
@@ -980,8 +1002,10 @@ font-style: italic;
   pointer-events: none;
   -webkit-text-stroke: 0.4px var(--p2typo);
   text-shadow:
-    0 0 11px #ffffff,
-    0 0 13px #ffffff;
+    0 0 6px #ffffff,
+    0 0 12px #ffffff,
+    0 0 20px #ffffff,
+    0 0 35px #ffffff;
   transition:
     opacity var(--t-fast) var(--ease),
     color var(--t-fast) var(--ease),
@@ -1217,8 +1241,10 @@ font-style: italic;
 
 .artist-list-item:hover {
   text-shadow:
-    0 0 11px #ffffff,
-    0 0 13px #ffffff;
+    0 0 6px #ffffff,
+    0 0 12px #ffffff,
+    0 0 20px #ffffff,
+    0 0 35px #ffffff;
 }
 
 

@@ -215,11 +215,14 @@ els.forEach(el => {
 // Init au chargement + clic bouton
 document.addEventListener("DOMContentLoaded", () => {
   applyLang();
+  initTunnel();
   const btnLang = document.getElementById("btn-lang");
   if (btnLang) {
     btnLang.addEventListener("click", () => {
       currentLang = currentLang === "EN" ? "FR" : "EN";
       applyLang();
+      cachedLoopWidth = carrousel.scrollWidth / 2;
+
     });
   }
 });
@@ -590,6 +593,13 @@ function swapPreviewLayer() {
 let introPlayed = false;
 
 function playIntro() {
+
+  Object.values(artistes).forEach(a => {
+    const img = new Image();
+    img.src = a.poster;
+  });
+
+
   const allIds = Object.keys(artistes).map(Number);
   const shuffled = allIds.sort(() => Math.random() - 0.5);
   const count = Math.random() < 0.5 ? 3 : 4;
@@ -638,11 +648,152 @@ setOpacity(document.getElementById('btn_cine_switch'), '1', '1s');
   }, 4500);
 }
 // ══════════════════════════════════════════════
-// ── MODE CINE ────────────────
+// ── TUNNEL WEBGL ──────────────────────────────
 // ══════════════════════════════════════════════
 
+let tunnelCanvas, gl, tunnelRaf;
+let uRes, uProgress, uOpacity, uSoftness;
+
+function initTunnel() {
+  tunnelCanvas = document.getElementById('cinema-tunnel');
+  tunnelCanvas.width  = window.innerWidth;
+  tunnelCanvas.height = window.innerHeight;
+
+  gl = tunnelCanvas.getContext('webgl') || tunnelCanvas.getContext('experimental-webgl');
+
+  const vsSource = `
+    attribute vec2 aPos;
+    void main() { gl_Position = vec4(aPos, 0.0, 1.0); }
+  `;
+
+  const fsSource = `
+    precision highp float;
+    uniform vec2  uResolution;
+    uniform float uProgress;
+    uniform float uOpacity;
+    uniform float uSoftness;
+
+    float easeInOut(float t) {
+      return t < 0.5 ? 4.0*t*t*t : 1.0 - pow(-2.0*t+2.0, 3.0)/2.0;
+    }
+
+    void main() {
+      vec2 uv = gl_FragCoord.xy / uResolution;
+      vec2 p  = (uv - 0.5) * 2.0;
+float aspect = (uResolution.x / uResolution.y) * 0.65;
+
+      float e      = easeInOut(uProgress);
+      float shapeT = pow(e, 2.0);
+      float ratio  = mix(1.1, aspect*0.85, shapeT);
+      float size   = e * 1.5;
+
+      vec2 q = vec2(p.x / ratio, p.y) / size;
+
+      float expo = mix(2.0, 6.0, shapeT);
+      float dist = pow(pow(abs(q.x), expo) + pow(abs(q.y), expo), 1.0 / expo);
+      float alpha = 1.0 - smoothstep(1.0 - uSoftness, 1.0, dist);
+
+      gl_FragColor = vec4(0.0, 0.0, 0.0, alpha * uOpacity);
+    }
+  `;
+
+  function compileShader(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+
+  const prog = gl.createProgram();
+  gl.attachShader(prog, compileShader(gl.VERTEX_SHADER,   vsSource));
+  gl.attachShader(prog, compileShader(gl.FRAGMENT_SHADER, fsSource));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+    -1,-1,  1,-1,  -1,1,
+     1,-1,  1, 1,  -1,1
+  ]), gl.STATIC_DRAW);
+
+  const aPos = gl.getAttribLocation(prog, 'aPos');
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+  uRes      = gl.getUniformLocation(prog, 'uResolution');
+  uProgress = gl.getUniformLocation(prog, 'uProgress');
+  uOpacity  = gl.getUniformLocation(prog, 'uOpacity');
+  uSoftness = gl.getUniformLocation(prog, 'uSoftness');
+
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+  renderTunnel(0);
+}
+
+window.addEventListener('resize', () => {
+  if (!tunnelCanvas) return;
+  tunnelCanvas.width  = window.innerWidth;
+  tunnelCanvas.height = window.innerHeight;
+  gl.viewport(0, 0, tunnelCanvas.width, tunnelCanvas.height);
+});
+
+function easeInOutTunnel(t) {
+  return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
+}
+
+function renderTunnel(progress, opacityOverride) {
+  gl.viewport(0, 0, tunnelCanvas.width, tunnelCanvas.height);
+  gl.clearColor(0, 0, 0, 0);
+  gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.uniform2f(uRes, tunnelCanvas.width, tunnelCanvas.height);
+  gl.uniform1f(uProgress, progress);
+  gl.uniform1f(uOpacity, opacityOverride !== undefined ? opacityOverride : easeInOutTunnel(Math.min(progress / 0.8, 1)));
+  gl.uniform1f(uSoftness, 0.28);
+  gl.drawArrays(gl.TRIANGLES, 0, 6);
+}
 
 
+function animateTunnel(onCovered) {
+  cancelAnimationFrame(tunnelRaf);
+  tunnelCanvas.style.pointerEvents = 'auto';
+  const DURATION = 2500;
+  let startTime = null;
+
+  function step(ts) {
+    if (!startTime) startTime = ts;
+    const t = Math.min((ts - startTime) / DURATION, 1);
+    renderTunnel(t);
+    if (t < 1) tunnelRaf = requestAnimationFrame(step);
+    else if (onCovered) onCovered();
+  }
+  tunnelRaf = requestAnimationFrame(step);
+}
+
+function closeTunnel(onDone) {
+  cancelAnimationFrame(tunnelRaf);
+  const DURATION = 1200;
+  let startTime = null;
+
+  function step(ts) {
+    if (!startTime) startTime = ts;
+    const t = Math.min((ts - startTime) / DURATION, 1);
+    // juste fade out de l'opacité, forme reste en place
+    renderTunnel(1, 1 - easeInOutTunnel(t));
+    if (t < 1) tunnelRaf = requestAnimationFrame(step);
+    else {
+      tunnelCanvas.style.pointerEvents = 'none';
+      renderTunnel(0, 0);
+      if (onDone) onDone();
+    }
+  }
+  tunnelRaf = requestAnimationFrame(step);
+}
+
+// ══════════════════════════════════════════════
+// ── MODE CINE ────────────────
+// ══════════════════════════════════════════════
 
 function clearCinemaTimer() {
   if (cinemaTransitionTimer) {
@@ -654,17 +805,11 @@ function clearCinemaTimer() {
 /* entrée depuis l'accueil : on garde le tunnel d'origine */
 function enterCinemaFromHome() {
   clearCinemaTimer();
-
+  stopCarousel(); 
   isCinemaMode = true;
   cinemaIntroPlayed = true;
 
-  cinemaOverlay.classList.remove('closing');
-  cinemaOverlay.classList.remove('active');
-
-  /* force le navigateur à reprendre l'état initial du tunnel */
-  void cinemaOverlay.offsetWidth;
-
-  cinemaOverlay.classList.add('active');
+animateTunnel();
 
   document.body.classList.add('cinema-mode');
   document.documentElement.style.setProperty('--p2typo', 'white');
@@ -790,18 +935,35 @@ artistesIds.forEach((id, index) => {
   hoverPreviews.appendChild(img);
 });
 
+let currentVisibleImg = null;
+let mousoverPending = false;
+let lastHoveredId = null;
+
 artistesContainer.addEventListener('mouseover', (e) => {
   if (!e.target.classList.contains('artiste_accueil')) return;
   const id = e.target.dataset.artiste;
-  if (!id) return;
-  document.querySelectorAll('.artiste-image').forEach(i => i.classList.remove('visible'));
-  document.getElementById(`img-artiste-${id}`)?.classList.add('visible');
+  if (!id || id === lastHoveredId) return; // ← même élément, on ignore
+
+  lastHoveredId = id;
+
+  if (mousoverPending) return; // ← un rAF est déjà en attente
+  mousoverPending = true;
+
+  requestAnimationFrame(() => {
+    mousoverPending = false;
+    const next = document.getElementById(`img-artiste-${lastHoveredId}`);
+    if (next === currentVisibleImg) return;
+    if (currentVisibleImg) currentVisibleImg.classList.remove('visible');
+    next?.classList.add('visible');
+    currentVisibleImg = next;
+  });
 });
 
 artistesContainer.addEventListener('mouseleave', () => {
-  document.querySelectorAll('.artiste-image').forEach(i => i.classList.remove('visible'));
+  lastHoveredId = null;
+  if (currentVisibleImg) currentVisibleImg.classList.remove('visible');
+  currentVisibleImg = null;
 });
-
 
 // ══════════════════════════════════════════════
 // ── LOGOS SVG ─────────────────────────────────
@@ -965,19 +1127,21 @@ let carouselVelocity = -0.35; // vitesse auto vers la gauche
 let carouselHovered = false;
 let carouselRaf = null;
 
+let cachedLoopWidth = 0;
+
 function getCarouselLoopWidth() {
-  return carrousel.scrollWidth / 2;
+  if (!cachedLoopWidth) {
+    cachedLoopWidth = carrousel.scrollWidth / 2;
+  }
+  return cachedLoopWidth;
 }
 
 function normalizeCarouselOffset() {
   const loopWidth = getCarouselLoopWidth();
-
   if (!loopWidth) return;
-
   while (carouselOffset <= -loopWidth) {
     carouselOffset += loopWidth;
   }
-
   while (carouselOffset > 0) {
     carouselOffset -= loopWidth;
   }
@@ -1027,19 +1191,18 @@ artistesContainer.addEventListener('mouseleave', () => {
 // scroll molette sur le carrousel
 artistesContainer.addEventListener('wheel', (e) => {
   if (!carouselHovered) return;
-
   e.preventDefault();
-
-  // scroll vers le bas = avance vers la gauche
-  nudgeCarousel(-e.deltaY * 0.8);
+  requestAnimationFrame(() => {
+    nudgeCarousel(-e.deltaY * 0.8);
+  });
 }, { passive: false });
 
 // recalcul propre si la fenêtre change de taille
 window.addEventListener('resize', () => {
+  cachedLoopWidth = carrousel.scrollWidth / 2;
   normalizeCarouselOffset();
   renderCarousel();
 });
-
 // ══════════════════════════════════════════════
 // ── OUVERTURE PART 3 (clic sur un artiste) ────
 // ══════════════════════════════════════════════
@@ -1183,6 +1346,7 @@ document.getElementById('btn_cine_switch').style.opacity = '0';
       artistesContainer.classList.remove('hidden-content');
       logosContainer.classList.remove('hidden-content');
       about.classList.remove('hidden-content');
+      startCarousel();
 setOpacity(document.getElementById('btn-lang'), '1', '1.5s');
 setOpacity(document.getElementById('btn_cine_switch'), '1', '1.5s');
 
@@ -1521,11 +1685,7 @@ function exitCinemaMode() {
   document.body.classList.remove('cinema-mode');
   document.documentElement.style.setProperty('--p2typo', 'black');
   btnPlay.style.color = 'white';
-  cinemaOverlay.classList.add('closing');
-  cinemaTransitionTimer = setTimeout(() => {
-    cinemaOverlay.classList.remove('active', 'closing');
-    cinemaTransitionTimer = null;
-  }, 1500);
+closeTunnel();
 }
 
 
