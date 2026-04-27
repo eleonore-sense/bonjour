@@ -521,7 +521,7 @@ let wasVideoPlayingBeforeHover = false;
 let hoveredArtistId = null;
 let activePreviewLayer = 1;
 let fullscreenVisible = false;
-
+let isTransitioning = false;
 
 function setOpacity(el, val, duration = '0.8s') {
   if (!el) return;
@@ -535,6 +535,7 @@ function setOpacity(el, val, duration = '0.8s') {
 // ══════════════════════════════════════════════
 
 video.addEventListener('loadedmetadata', () => {
+    if (isTransitioning) return;
   const ratio = video.videoWidth / video.videoHeight;
   const wrapperW = window.innerWidth * 0.63;
   const wrapperH = window.innerHeight * 0.8;
@@ -1569,23 +1570,49 @@ btnRestart.addEventListener('click', () => {
 // ── CLICK SUR + ───────────────────────────────
 // ══════════════════════════════════════════════
 
-
 document.getElementById('info').addEventListener('click', () => {
   const texte = document.getElementById('texte-oeuvre');
   const info = document.getElementById('info');
-  texte.classList.toggle('visible');
-  texte.style.transition = '';
-  texte.style.opacity = ''; 
-  info.textContent = texte.classList.contains('visible') ? '–' : '+';
-  texteWrapper.classList.toggle('visible', texte.classList.contains('visible'));
+  const isVisible = texte.classList.contains('visible');
 
-  if (texte.classList.contains('visible')) {
+  if (isVisible) {
+    // — FERMETURE
+    texte.style.transition = 'opacity 0.4s ease';
+    texte.style.opacity = '0';
+
+    setTimeout(() => {
+      texte.classList.remove('visible');
+      texte.style.transition = '';
+      texte.style.opacity = '';
+      texteWrapper.classList.remove('visible');
+      info.textContent = '+';
+      setOpacity(document.getElementById('btn_cine_switch'), '0', '0.8s');
+    }, 420);
+
+  } else {
+    // — OUVERTURE
+    texte.style.transition = 'none';
+    texte.style.opacity = '0';
+    texte.classList.add('visible');
+    texteWrapper.classList.add('visible');
+    info.textContent = '–';
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        texte.style.transition = 'opacity 0.4s ease';
+        texte.style.opacity = '1';
+
+        setTimeout(() => {
+          texte.style.transition = '';
+          texte.style.opacity = '';
+        }, 450);
+      });
+    });
+
     setTimeout(() => {
       showInfo3();
       setOpacity(document.getElementById('btn_cine_switch'), '1', '0.8s');
     }, 1500);
-  } else {
-    setOpacity(document.getElementById('btn_cine_switch'), '0', '0.8s');
   }
 });
 // ══════════════════════════════════════════════
@@ -1595,79 +1622,112 @@ document.getElementById('info').addEventListener('click', () => {
 document.getElementById('next_artist').addEventListener('click', () => {
   const next = getNextArtisteId(artisteCourant);
   artisteCourant = next;
-  const data = artistes[next];
+  transitionToArtist(next);
+});
 
-  video.style.transition = 'opacity 0.5s ease';
-  video.style.opacity = '0';
-
-  btnPlay.style.transition = 'opacity 0.5s ease';
-  btnPlay.style.opacity = '0';
-
+function transitionToArtist(id) {
+  const data = artistes[id];
+  if (!data) return;
   const titre = document.querySelector('#gauche .titre');
-  titre.style.transition = 'opacity 0.5s ease';
-  titre.style.opacity = '0';
-
   const texte = document.getElementById('texte-oeuvre');
   const infoBtn = document.getElementById('info');
+  const texteVisible = texte.classList.contains('visible');
+  isTransitioning = true;
 
-  if (texte.classList.contains('visible')) {
-    texte.style.transition = 'opacity 0.5s ease';
+  // — SORTIE
+[video, titre, infoBtn].forEach(el => {
+  el.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(12px)';
+});
+btnPlay.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+btnPlay.style.opacity = '0';
+  if (texteVisible) {
+    texte.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
     texte.style.opacity = '0';
-      texte.scrollTop = 0; 
+    texte.style.transform = 'translateY(12px)';
   }
 
   setTimeout(() => {
-document.querySelector('#gauche .titre').style.transition = 'none';
-document.querySelector('#gauche .titre').style.opacity = '0';
-document.querySelector('#gauche .titre').innerHTML = `<span class="artiste-nom">${data.nom}</span> — <span class="artiste-titre">${data.titre}</span>`;
+    // — RESET contenu
+    titre.innerHTML = `<span class="artiste-nom">${data.nom}</span> — <span class="artiste-titre">${data.titre}</span>`;
     video.src = data.video;
     video.poster = data.poster;
     video.load();
-
-texte.textContent = currentLang === "FR" && data.textFR ? data.textFR : data.text;
-    if (!info3AlreadyShown) {
-      texte.classList.remove('visible');
-      infoBtn.textContent = '+';
-    }
+    texte.textContent = currentLang === "FR" && data.textFR ? data.textFR : data.text;
+    texte.scrollTop = 0;
 
     hasStarted = false;
-    btnPlay.textContent = 'Play Video';
+    btnPlay.textContent = translations[currentLang].playVideo;
     btnPlay.classList.remove('playing');
 
+    if (!info3AlreadyShown) { texte.classList.remove('visible'); infoBtn.textContent = '+'; texteWrapper.classList.remove('visible'); }
     if (!info3AlreadyShown) hideInfo3();
     if (info3AlreadyShown) showInfo3();
 
-    if (fullscreenUnlocked) {
-fullscreenBtn.style.display = 'block';
-fullscreenBtn.style.opacity = '1';
-fullscreenVisible = true;
-    } else {
-      fullscreenBtn.style.display = 'none';
-      fullscreenBtn.style.opacity = '0';
-      fullscreenVisible = false;
-    }
+    if (fullscreenUnlocked) { fullscreenBtn.style.display = 'block'; fullscreenBtn.style.opacity = '1'; fullscreenVisible = true; }
+    else { fullscreenBtn.style.display = 'none'; fullscreenBtn.style.opacity = '0'; fullscreenVisible = false; }
 
-    const next2 = getNextArtisteId(next);
+    const next2 = getNextArtisteId(id);
     document.getElementById('next_artist').textContent = `→ ${artistes[next2].nom}`;
 
-    video.style.transition = 'opacity 0.8s ease';
-    video.style.opacity = '1';
-
-    titre.style.transition = 'opacity 0.8s ease';
-    titre.style.opacity = '1';
-
-    if (!fullscreenUnlocked) {
-      btnPlay.style.transition = 'opacity 0.8s ease';
-      btnPlay.style.opacity = '1';
+    // — ENTRÉE : invisible d'abord
+    [video, titre, infoBtn, btnPlay].forEach(el => {
+      el.style.transition = 'none';
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(12px)';
+    });
+    if (texteVisible) {
+      texte.style.transition = 'none';
+      texte.style.opacity = '0';
+      texte.style.transform = 'translateY(12px)';
     }
 
-    if (texte.classList.contains('visible')) {
-      texte.style.transition = 'opacity 0.8s ease';
-      texte.style.opacity = '1';
-    }
-  }, 500);
-});
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        [video, titre, infoBtn].forEach(el => {
+          el.style.transition = 'opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1)';
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        });
+        if (texteVisible) {
+          texte.style.transition = 'opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1)';
+          texte.style.opacity = '1';
+          texte.style.transform = 'translateY(0)';
+        }
 
+        // nettoyage
+        setTimeout(() => {
+          video.style.transition = '';
+          video.style.opacity = '';
+          video.style.transform = '';
+          texte.style.transition = '';
+          texte.style.opacity = '';
+          texte.style.transform = '';
+          infoBtn.style.transition = '';
+          infoBtn.style.opacity = '';
+          infoBtn.style.transform = '';
+          titre.style.transition = '';
+          titre.style.transform = '';
+          btnPlay.style.transition = '';
+          btnPlay.style.transform = '';
+          btnPlay.style.opacity = '0';
+
+          isTransitioning = false;
+          video.dispatchEvent(new Event('loadedmetadata'));
+
+          setTimeout(() => {
+            btnPlay.style.transition = 'opacity 0.6s ease';
+            btnPlay.style.opacity = '1';
+            setTimeout(() => {
+              btnPlay.style.transition = '';
+            }, 650);
+          }, 100);
+        }, 1500);
+      });
+    });
+  }, 850);
+}
 
 // ══════════════════════════════════════════════
 // ── CINEMA VIEW ───────────────────────────────
@@ -2004,78 +2064,8 @@ artistsList.addEventListener('click', (e) => {
   }
 
   artisteCourant = id;
-  const data = artistes[id];
-
-  video.style.transition = 'opacity 0.5s ease';
-  video.style.opacity = '0';
-
-  btnPlay.style.transition = 'opacity 0.5s ease';
-  btnPlay.style.opacity = '0';
-
-  const titre = document.querySelector('#gauche .titre');
-  titre.style.transition = 'opacity 0.5s ease';
-  titre.style.opacity = '0';
-
-  const texte = document.getElementById('texte-oeuvre');
-  const infoBtn = document.getElementById('info');
-
-  if (texte.classList.contains('visible')) {
-    texte.style.transition = 'opacity 0.5s ease';
-    texte.style.opacity = '0';
-  }
-
-  setTimeout(() => {
-document.querySelector('#gauche .titre').innerHTML = `<span class="artiste-nom">${data.nom}</span> — <span class="artiste-titre">${data.titre}</span>`;
-    video.src = data.video;
-    video.poster = data.poster;
-    video.load();
-
-texte.textContent = currentLang === "FR" && data.textFR ? data.textFR : data.text;
-    if (!info3AlreadyShown) {
-      texte.classList.remove('visible');
-      infoBtn.textContent = '+';
-      texteWrapper.classList.remove('visible');
-    }
-
-    hasStarted = false;
-    btnPlay.textContent = 'Play Video';
-    btnPlay.classList.remove('playing');
-
-    if (!info3AlreadyShown) hideInfo3();
-    if (info3AlreadyShown) showInfo3();
-
-    if (fullscreenUnlocked) {
-      fullscreenBtn.style.display = 'block';
-      fullscreenBtn.style.opacity = '1';
-      fullscreenVisible = true;
-    } else {
-      fullscreenBtn.style.display = 'none';
-      fullscreenBtn.style.opacity = '0';
-      fullscreenVisible = false;
-    }
-
-const next2 = getNextArtisteId(id);
-    nextArtistBtn.textContent = `→ ${artistes[next2].nom}`;
-
-    video.style.transition = 'opacity 0.8s ease';
-    video.style.opacity = '1';
-
-    titre.style.transition = 'opacity 0.8s ease';
-    titre.style.opacity = '1';
-
-    if (!fullscreenUnlocked) {
-      btnPlay.style.transition = 'opacity 0.8s ease';
-      btnPlay.style.opacity = '1';
-    }
-
-    if (texte.classList.contains('visible')) {
-      texte.style.transition = 'opacity 0.8s ease';
-      texte.style.opacity = '1';
-    }
-
-    closeArtistsList();
-  }, 500);
+  transitionToArtist(id);
+  setTimeout(() => closeArtistsList(), 100);
 });
-
 
 

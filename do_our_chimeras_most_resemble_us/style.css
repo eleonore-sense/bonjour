@@ -1155,6 +1155,24 @@ font-style: italic;
     opacity var(--t-base) var(--ease);
 }
 
+
+
+.slide-out-down {
+  opacity: 0 !important;
+  transition: opacity 0.4s ease !important;
+}
+
+.slide-in-up {
+  opacity: 0;
+  transition: none !important;
+}
+
+.slide-in-up.settle {
+  opacity: 1;
+  transition: opacity 0.4s ease !important;
+}
+
+
 /* ══════════════════════════════════════════════
    CURATED ARTISTS LIST
    ══════════════════════════════════════════════ */
