@@ -169,8 +169,7 @@ const texteWasVisible = document.getElementById('texte-oeuvre')?.classList.conta
       if (data) {
         const texteOeuvre = document.getElementById('texte-oeuvre');
         if (texteOeuvre) {
-          texteOeuvre.textContent = currentLang === "FR" && data.textFR ? data.textFR : data.text;
-        }
+renderTexteOeuvre(data, currentLang);        }
       }
     }
 
@@ -233,43 +232,75 @@ document.addEventListener("DOMContentLoaded", () => {
 const artistes = {
   1: {
     nom: "Agnieszka Polska",
+    bioTitre: "Agnieszka Polska (b. 1985, Lublin, Poland)",
     titre: "The Book of Flowers",
+    details: "2023 — HD video, 9:38 minutes",
     video: "img/agnieszka_polska.mp4",
     poster: "img/agnieszka_polska.jpg",
-    text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
-nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
+text: `<credits>Written and directed by Agnieszka Polska
+voice: Tina Greatrex
+stable diffusion workflow: Nathan Gray
+animation: Agnieszka Polska, Nathan Gray, Ewa Polska
+sound design: Igor Kłaczyński
+sound recording: The Sound Company
+music: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
 
-Curabitur vel augue non neque tristique tincidunt. 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
-    textFR: `txt fr Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
-nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
+Commissioned for the exhibition Chronic desire - Sete cronica, 17 feb - 23 April 2023, as part of Timisoara 2023, European Capital of Culture</credits>
 
-Curabitur vel augue non neque tristique tincidunt. 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
-  },
+In her practice, Agnieszka Polska uses cinematic storytelling and affective technologies to address the perpetually negotiated relationship between human and technology, examining the processes that mutually influence and legitimate this relationship in language, history and consciousness. She is interested in the question of individual social responsibility against the background of technology-driven disorientation and ideologies of technological determinism.
+
+Polska’s works combine historical research, cinematic storytelling and affective communication technologies, seeking new narrative formats that correspond with the rapidly changing requirements of information-driven societies. According to Polska, such formats are available at the intersection of poetry and narration, art and cinema.
+
+A major strand of her current practice and thinking is the construction of a pre-history of an emerging global cybernetic consciousness. The animation The Book of Flowers (2023), devoted to gendered reproductive labor, takes this process a step further - as the pre-history depicted in the film is obviously fabricated. 
+
+In the film, deep and enchanting voice of the actress Tina Greatrex guides the listener through the joined history of humankind and flowers. According to the narrator, blooming plants used to be enormous and humans were their main pollinators. A complex symbiosis existed between the species, both humans and flowers unable to reproduce without one another. Over the centuries, humans mastered technologies that allowed them to reproduce without participation of plants and reduced sizes of flowers. Especially one technology played an important role in this morally-ambiguous process: technology of storytelling. 
+
+This fantastic history that led to the contemporary state of affairs is told against the backdrop of impassioned Charles-Marie Widor's Symphony No. 5 Toccata for Organ and a succession of dynamic animations of surreal flowers, often equipped with animal- or machine-like textures. A complex process of re-writing early time-lapse plant videos with Artificial Intelligence tools led to creation of material that could be described as found footage - but with not a single original frame used.  
+
+“What if what we believe is required of humans by nature is just a story that we told ourselves about what being human is and what nature is? What if who we think we are, what we believe at a gut level about our kinship loyalty and our perceived survival needs are responses to a story we made up and told ourselves was written by our genes?,” writes Alexis Pauline Gumbs on Sylvia Wynter. This “discursive construction of man” echoes in Polska’s film, where the main power and, at the same time, threat to humanity is becoming enchanted in one’s own story, whispered into a human ear by technological mouth. The Book of Flowers, itself constituting a sci-fi story, is designed as a “thought experiment” in immersion and dissociation.
+<bio>Agnieszka Polska is a visual artist, film and theatre director based in Berlin. Polska employs computer-generated media to explore themes of individual agency, social responsibility, and the shaping of historical narratives within environments driven by rapid technological changes and the flow of information. Her work bridges the past and the digital present, using hallucinatory animations and poetic storytelling to delve into the ethical ambiguities of contemporary society. Polska’s art has been showcased internationally, including exhibitions at the New Museum and MoMA in New York, Centre Pompidou in Paris, Tate Modern in London, and the Hirshhorn Museum in Washington, D.C. She has held solo exhibitions at Hamburger Bahnhof in Berlin, the Museum of Modern Art in Warsaw, M HKA in Antwerp, Frye Art Museum in Seattle, Nottingham Contemporary, and Salzburger Kunstverein. She participated in the 57th Venice Biennale, 11th Gwangju Biennale, 19th and 24th Biennale of Sydney, 14th Shanghai Biennale, and 13th Istanbul Biennial. In 2023, she premiered her first theatre play, The Talking Car, in the frame of BoCA Biennale, Lisbon.</bio>`,
+textFR: `<credits>Écrit et réalisé par Agnieszka Polska
+voix: Tina Greatrex
+workflow stable diffusion: Nathan Gray
+animation: Agnieszka Polska, Nathan Gray, Ewa Polska
+conception sonore: Igor Kłaczyński
+enregistrement sonore: The Sound Company
+musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
+
+Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
+
+Texte en français
+
+<bio>txt en francais</bio>`,  },
   2: {
     nom: "Lu Yang",
+    bioTitre: "Agnieszka Polska (b. 1985, Lublin, Poland)",
     titre: "DOKU, The Creator",
-    video: "img/lu_yang.mp4",
+    vimeo: "1099319080",
+    vimeoHash: "33b083d2e4",
     poster: "img/lu_yang.jpg",
-    text: `Curabitur vel augue non neque tristique tincidunt. 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem.
-Curabitur vel augue non neque tristique tincidunt. 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
-nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
+    text: `<credits>Written and directed by Agnieszka Polska
+voice: Tina Greatrex
+stable diffusion workflow: Nathan Gray
+animation: Agnieszka Polska, Nathan Gray, Ewa Polska
+sound design: Igor Kłaczyński
+sound recording: The Sound Company
+music: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
 
-Curabitur vel augue non neque tristique tincidunt. 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
-    textFR: `txt fr Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
-nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
+Commissioned for the exhibition Chronic desire - Sete cronica, 17 feb - 23 April 2023, as part of Timisoara 2023, European Capital of Culture</credits>
 
-Curabitur vel augue non neque tristique tincidunt. 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
+In her practice, Agnieszka Polska uses cinematic storytelling and affective technologies to address the perpetually negotiated relationship between human and technology, examining the processes that mutually influence and legitimate this relationship in language, history and consciousness. She is interested in the question of individual social responsibility against the background of technology-driven disorientation and ideologies of technological determinism.
+
+Polska’s works combine historical research, cinematic storytelling and affective communication technologies, seeking new narrative formats that correspond with the rapidly changing requirements of information-driven societies. According to Polska, such formats are available at the intersection of poetry and narration, art and cinema.
+
+A major strand of her current practice and thinking is the construction of a pre-history of an emerging global cybernetic consciousness. The animation The Book of Flowers (2023), devoted to gendered reproductive labor, takes this process a step further - as the pre-history depicted in the film is obviously fabricated. 
+
+In the film, deep and enchanting voice of the actress Tina Greatrex guides the listener through the joined history of humankind and flowers. According to the narrator, blooming plants used to be enormous and humans were their main pollinators. A complex symbiosis existed between the species, both humans and flowers unable to reproduce without one another. Over the centuries, humans mastered technologies that allowed them to reproduce without participation of plants and reduced sizes of flowers. Especially one technology played an important role in this morally-ambiguous process: technology of storytelling. 
+
+This fantastic history that led to the contemporary state of affairs is told against the backdrop of impassioned Charles-Marie Widor's Symphony No. 5 Toccata for Organ and a succession of dynamic animations of surreal flowers, often equipped with animal- or machine-like textures. A complex process of re-writing early time-lapse plant videos with Artificial Intelligence tools led to creation of material that could be described as found footage - but with not a single original frame used.  
+
+“What if what we believe is required of humans by nature is just a story that we told ourselves about what being human is and what nature is? What if who we think we are, what we believe at a gut level about our kinship loyalty and our perceived survival needs are responses to a story we made up and told ourselves was written by our genes?,” writes Alexis Pauline Gumbs on Sylvia Wynter. This “discursive construction of man” echoes in Polska’s film, where the main power and, at the same time, threat to humanity is becoming enchanted in one’s own story, whispered into a human ear by technological mouth. The Book of Flowers, itself constituting a sci-fi story, is designed as a “thought experiment” in immersion and dissociation.
+<bio>Agnieszka Polska is a visual artist, film and theatre director based in Berlin. Polska employs computer-generated media to explore themes of individual agency, social responsibility, and the shaping of historical narratives within environments driven by rapid technological changes and the flow of information. Her work bridges the past and the digital present, using hallucinatory animations and poetic storytelling to delve into the ethical ambiguities of contemporary society. Polska’s art has been showcased internationally, including exhibitions at the New Museum and MoMA in New York, Centre Pompidou in Paris, Tate Modern in London, and the Hirshhorn Museum in Washington, D.C. She has held solo exhibitions at Hamburger Bahnhof in Berlin, the Museum of Modern Art in Warsaw, M HKA in Antwerp, Frye Art Museum in Seattle, Nottingham Contemporary, and Salzburger Kunstverein. She participated in the 57th Venice Biennale, 11th Gwangju Biennale, 19th and 24th Biennale of Sydney, 14th Shanghai Biennale, and 13th Istanbul Biennial. In 2023, she premiered her first theatre play, The Talking Car, in the frame of BoCA Biennale, Lisbon.</bio>`,
   },
   3: {
     nom: "Jonas Lund",
@@ -420,10 +451,10 @@ Curabitur vel augue non neque tristique tincidunt.
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
   },
   10: {
-    nom: "Ayoung Kim",
-    titre: "AI Mother Plot",
-    video: "img/ayoung_kim.mp4",
-    poster: "img/ayoung_kim.jpg",
+    nom: "Sofia Crespo",
+    titre: "Invertebrate Interactions, etc.",
+    video: "img/spfia_crespo.mp4",
+    poster: "img/sofia_crespo.jpg",
     text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
 nisl nisi aliquam nunc, vitae facilisis purus massa nec libero.
@@ -522,6 +553,10 @@ let hoveredArtistId = null;
 let activePreviewLayer = 1;
 let fullscreenVisible = false;
 let isTransitioning = false;
+let tunnelActive = false;
+let vimeoFrame = null;
+let vimeoPlayer = null;
+let wasInCinemaModeBeforeFullscreen = false;
 
 function setOpacity(el, val, duration = '0.8s') {
   if (!el) return;
@@ -536,6 +571,7 @@ function setOpacity(el, val, duration = '0.8s') {
 
 video.addEventListener('loadedmetadata', () => {
     if (isTransitioning) return;
+  if (videoWrapper.classList.contains('is-vimeo')) return;
   const ratio = video.videoWidth / video.videoHeight;
   const wrapperW = window.innerWidth * 0.63;
   const wrapperH = window.innerHeight * 0.8;
@@ -562,6 +598,7 @@ function showInfo3() {
     el.classList.add('visible');
   });
   btnHome.style.opacity = '1';
+    setOpacity(document.getElementById('btn_cine_switch'), '1', '1s'); // ← ajoute ça
   info3AlreadyShown = true;
 }
 
@@ -572,6 +609,7 @@ function hideInfo3() {
     el.classList.remove('visible');
   });
   btnHome.style.opacity = '0.8';
+    setOpacity(document.getElementById('btn_cine_switch'), '0', '1s'); // ← ajoute ça
 }
 
 
@@ -757,6 +795,7 @@ function renderTunnel(progress, opacityOverride) {
 
 
 function animateTunnel(onCovered) {
+  tunnelActive = true;
   cancelAnimationFrame(tunnelRaf);
   tunnelCanvas.style.pointerEvents = 'auto';
   const DURATION = 2500;
@@ -766,8 +805,12 @@ function animateTunnel(onCovered) {
     if (!startTime) startTime = ts;
     const t = Math.min((ts - startTime) / DURATION, 1);
     renderTunnel(t);
-    if (t < 1) tunnelRaf = requestAnimationFrame(step);
-    else if (onCovered) onCovered();
+    if (t < 1) {
+      tunnelRaf = requestAnimationFrame(step);
+    } else {
+      // tunnel plein, on reste actif
+      if (onCovered) onCovered();
+    }
   }
   tunnelRaf = requestAnimationFrame(step);
 }
@@ -785,6 +828,7 @@ function closeTunnel(onDone) {
     if (t < 1) tunnelRaf = requestAnimationFrame(step);
     else {
       tunnelCanvas.style.pointerEvents = 'none';
+      tunnelActive = false;
       renderTunnel(0, 0);
       if (onDone) onDone();
     }
@@ -879,40 +923,44 @@ if (fullscreenWasVisible) {
     }, 400);
 } else {
     // 1. texte fade out
-   alwaysVisible.forEach(el => {
-  if (!el) return;
-  if (el === infoBtn) return;
-  setOpacity(el, '0', '0.4s');
-});
-if (fullscreenWasVisible) setOpacity(fullscreen, '0', '0.8s');
-if (texteWasVisible)      setOpacity(texte, '0', '0.4s');
-if (infoBtnVisible) setOpacity(infoBtn, '0', '0.4s');
+    alwaysVisible.forEach(el => {
+      if (!el) return;
+      if (el === infoBtn) return;
+      setOpacity(el, '0', '0.4s');
+    });
+    if (fullscreenWasVisible) setOpacity(fullscreen, '0', '0.8s');
+    if (texteWasVisible) setOpacity(texte, '0', '0.4s');
+    if (infoBtnVisible) setOpacity(infoBtn, '0', '0.4s');
 
-    // 2. noir disparaît
-    document.body.classList.remove('cinema-mode');
-    document.documentElement.style.setProperty('--p2typo', 'black');
-    btnPlay.style.color = 'white';
+    // 2. fond noir disparaît
     cinemaOverlay.classList.add('closing');
-  fullscreen.classList.remove('force-visible');
+    closeTunnel();
+    fullscreen.classList.remove('force-visible');
+
     cinemaTransitionTimer = setTimeout(() => {
       cinemaOverlay.classList.remove('active', 'closing');
       cinemaTransitionTimer = null;
 
-      // 3. texte réapparaît en noir
-alwaysVisible.forEach(el => {
-  if (!el) return;
-  if (el === infoBtn) return;
-  if (el === titreHaut || el === gaucheTitre || el === btnHome || el === btnCine) {
-    setOpacity(el, '1', '0.8s');
-  } else {
-    setOpacity(el, '', '0.8s');
-  }
-});
-if (fullscreenWasVisible) {
-  fullscreen.style.transition = 'opacity 0.8s ease';
-  fullscreen.style.opacity = '1';
-}
-if (texteWasVisible)      setOpacity(texte, '', '0.8s');
+      // 3. seulement maintenant on remet le mode jour
+      document.body.classList.remove('cinema-mode');
+      document.documentElement.style.setProperty('--p2typo', 'black');
+      btnPlay.style.color = 'white';
+
+      // 4. texte réapparaît en noir
+      alwaysVisible.forEach(el => {
+        if (!el) return;
+        if (el === infoBtn) return;
+        if (el === titreHaut || el === gaucheTitre || el === btnHome || el === btnCine) {
+          setOpacity(el, '1', '0.8s');
+        } else {
+          setOpacity(el, '', '0.8s');
+        }
+      });
+      if (fullscreenWasVisible) {
+        fullscreen.style.transition = 'opacity 0.8s ease';
+        fullscreen.style.opacity = '1';
+      }
+      if (texteWasVisible) setOpacity(texte, '', '0.8s');
       if (infoBtnVisible) setOpacity(infoBtn, '1', '0.8s');
 
     }, 1200);
@@ -1225,13 +1273,14 @@ const next = getNextArtisteId(artisteCourant);
   document.getElementById('next_artist').textContent = `→ ${artistes[next].nom}`;
   if (!data) return;
 
-document.querySelector('#gauche .titre').innerHTML = `<span class="artiste-nom">${data.nom}</span> — <span class="artiste-titre">${data.titre}</span>`;
-  video.src    = data.video;
-  video.poster = data.poster;
-  video.load();
+document.querySelector('#gauche .titre').innerHTML = `<span class="artiste-nom">${data.nom}</span> — <span class="artiste-titre">${data.titre}</span>${data.details ? `<span class="artiste-details">${data.details}</span>` : ''}`;
+loadArtistMedia(data);
+
+document.getElementById('fullscreen').style.display = 'none';
 btnPlay.classList.add('hidden');
 btnPlay.style.pointerEvents = 'none';
-document.getElementById('texte-oeuvre').textContent = currentLang === "FR" && data.textFR ? data.textFR : data.text;
+btnPlay.style.opacity = '0';
+renderTexteOeuvre(data, currentLang);
   document.getElementById('texte-oeuvre').classList.remove('visible');
 
   if (!info3AlreadyShown) hideInfo3();
@@ -1266,9 +1315,14 @@ setOpacity(document.getElementById('info'), '1', '1.5s');
     }, 600);
 
 
-    setTimeout(() => {
-      part3.classList.add('part3-info2-visible');
-        btnPlay.classList.remove('hidden');
+setTimeout(() => {
+  part3.classList.add('part3-info2-visible');
+  btnPlay.classList.remove('hidden');
+  const data = artistes[artisteCourant];
+  if (data?.vimeo) {
+    btnPlay.style.opacity = '1';
+    btnPlay.style.pointerEvents = 'auto';
+  }
     }, 3000);
 
   }, 1000);
@@ -1284,6 +1338,7 @@ if (btnHome) {
     const part3 = document.getElementById('part_3');
 
     // 1. Reset état
+    vimeoPlayer = null;
     hasStarted = false;
     video.pause();
     video.src = '';
@@ -1292,6 +1347,7 @@ if (btnHome) {
     btnPlay.textContent = translations[currentLang].playVideo;
     btnPlay.classList.remove('playing');
     btnPlay.classList.add('hidden');
+btnPlay.style.whiteSpace = '';
 
     // 2. Tout disparaît en 0.6s
 document.getElementById('droite').style.transition = 'opacity 0.6s ease';
@@ -1327,7 +1383,7 @@ setTimeout(() => {
     document.getElementById('info').style.transition = 'none';
   document.getElementById('info').style.opacity = '0';
 
-  // 3. reste
+videoWrapper.classList.remove('is-vimeo');
   fullscreenBtn.style.opacity = '0';
   fullscreenBtn.style.display = 'none';
   fullscreenVisible = false;  
@@ -1364,11 +1420,103 @@ document.getElementById('titre-haut').addEventListener('click', () => {
 // ══════════════════════════════════════════════
 // ── PLAY / PAUSE VIDÉO ────────────────────────
 // ══════════════════════════════════════════════
-
 btnPlay.addEventListener('click', async (e) => {
   e.preventDefault();
   e.stopPropagation();
 
+  const data = artistes[artisteCourant];
+
+if (data?.vimeo) {
+  // si déjà démarré → toggle pause/play
+  if (hasStarted && vimeoPlayer) {
+    vimeoPlayer.getPaused().then(paused => {
+      if (paused) {
+        vimeoPlayer.play();
+      } else {
+        vimeoPlayer.pause();
+      }
+    });
+    return;
+  }
+
+  // premier lancement
+  video.style.transition = 'opacity 0.8s ease';
+  video.style.opacity = '0';
+  btnPlay.style.opacity = '0';
+  btnPlay.style.pointerEvents = 'none';
+
+  setTimeout(() => {
+    video.style.display = 'none';
+    vimeoFrame.style.backgroundImage = 'none';
+    const hash = data.vimeoHash ? `&h=${data.vimeoHash}` : '';
+    const queryParams = [
+      'badge=0', 'autopause=0', 'player_id=0', 'app_id=58479',
+      'title=0', 'byline=0', 'portrait=0', 'color=ffffff',
+      'controls=0', 'dnt=1',
+    ].join('&');
+
+    vimeoFrame.src = `https://player.vimeo.com/video/${data.vimeo}?${queryParams}${hash}&autoplay=1`;
+    vimeoFrame.style.display = 'block';
+    vimeoFrame.style.transition = 'opacity 0.8s ease';
+    vimeoFrame.style.opacity = '1';
+    video.style.display = 'none';
+    hasStarted = true;
+    showInfo3();
+
+
+setTimeout(() => {
+  fullscreenBtn.style.display = 'block';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      fullscreenBtn.style.opacity = '1';
+      fullscreenVisible = true;
+    });
+  });
+}, 2000);
+    // initialise le player Vimeo
+    vimeoPlayer = new Vimeo.Player(vimeoFrame);
+
+
+vimeoPlayer.on('timeupdate', (data) => {
+  const pct = (data.seconds / data.duration) * 100;
+  timelineFill.style.width = pct + '%';
+});
+
+
+    vimeoPlayer.on('play', () => {
+      btnPlay.textContent = 'Pause';
+      btnPlay.classList.add('playing');
+      btnPlay.style.opacity = '0';
+      btnPlay.style.pointerEvents = 'none';
+    });
+
+    vimeoPlayer.on('pause', () => {
+      btnPlay.textContent = translations[currentLang].playVideo;
+      btnPlay.classList.remove('playing');
+      btnPlay.style.opacity = '1';
+      btnPlay.style.pointerEvents = 'auto';
+      showInfo3();
+    });
+
+    vimeoPlayer.on('ended', () => {
+  btnPlay.textContent = translations[currentLang].playVideo;
+  btnPlay.classList.remove('playing');
+  vimeoFrame.style.transition = 'opacity 0.8s ease';
+  vimeoFrame.style.opacity = '0';
+  setTimeout(() => {
+    vimeoFrame.style.display = 'none';
+    video.style.display = 'block';
+    video.style.opacity = '1';
+    positionVimeoBtn();
+  }, 800);
+  hasStarted = false;
+  vimeoPlayer = null;
+  showInfo3();
+});
+
+  }, 800);
+  return;
+}
   if (video.paused) {
     if (!hasStarted) {
       video.style.transition = 'opacity 0.8s ease';
@@ -1501,17 +1649,26 @@ video.addEventListener('timeupdate', () => {
 timelineFull.addEventListener('click', (e) => {
   const rect = timelineFull.getBoundingClientRect();
   const pct = (e.clientX - rect.left) / rect.width;
-  video.currentTime = pct * video.duration;
+  const data = artistes[artisteCourant];
+  if (data?.vimeo && vimeoPlayer) {
+    vimeoPlayer.getDuration().then(duration => {
+      vimeoPlayer.setCurrentTime(pct * duration);
+    });
+  } else {
+    video.currentTime = pct * video.duration;
+  }
 });
-
 
 // ══════════════════════════════════════════════
 // ── FULLSCREEN ────────────────────────────────
 // ══════════════════════════════════════════════
 
 fullscreenBtn.addEventListener('click', () => {
+  const data = artistes[artisteCourant];
+  wasInCinemaModeBeforeFullscreen = isCinemaMode;
+
   if (!isFullscreen) {
-    videoWrapper.requestFullscreen();
+    videoWrapper.requestFullscreen(); // ← même chose pour tout le monde
   } else {
     document.exitFullscreen();
   }
@@ -1521,47 +1678,86 @@ fullscreenExit.addEventListener('click', () => {
   document.exitFullscreen();
 });
 
+
 document.addEventListener('fullscreenchange', () => {
+  const data = artistes[artisteCourant];
+
   if (document.fullscreenElement) {
     isFullscreen = true;
-    fullscreenBtn.textContent = 'exit fullscreen';
+    fullscreenBtn.textContent = translations[currentLang].exitFullscreen;
     timelineFull.style.display = 'block';
     fullscreenExit.style.display = 'block';
     btnRestart.style.display = 'block';
     btnRestart.style.opacity = '1';
 
-    btnPlay.style.top = '50%';
-    btnPlay.style.left = '50%';
-    btnPlay.style.right = 'auto';
-    btnPlay.style.bottom = 'auto';
-    btnPlay.style.transform = 'translate(-50%,-50%)';
+    if (data?.vimeo) {
+      vimeoFrame.style.width    = '100vw';
+      vimeoFrame.style.height   = 'calc(100vw * 9 / 16)';
+      vimeoFrame.style.position = 'absolute';
+      vimeoFrame.style.top      = '0';
+      vimeoFrame.style.left     = '0';
+  btnPlay.style.top       = '50%';
+  btnPlay.style.left      = '50%';
+  btnPlay.style.right     = 'auto';
+  btnPlay.style.transform = 'translate(-50%, -50%)';
 
-    video.style.width = '100vw';
-    video.style.height = '95vh';
-    video.style.objectPosition = 'center center';
+    } else {
+      btnPlay.style.top       = '50%';
+      btnPlay.style.left      = '50%';
+      btnPlay.style.right     = 'auto';
+      btnPlay.style.bottom    = 'auto';
+      btnPlay.style.transform = 'translate(-50%,-50%)';
+      video.style.width          = '100vw';
+      video.style.height         = '95vh';
+      video.style.objectPosition = 'center center';
+      document.fullscreenElement.addEventListener('mousemove', showBtn);
+      showBtn();
+    }
 
-    document.fullscreenElement.addEventListener('mousemove', showBtn);
-    showBtn();
-
-  } else {
+} else {
     isFullscreen = false;
-    fullscreenBtn.textContent = 'fullscreen';
+    fullscreenBtn.textContent = translations[currentLang].fullscreen;
     timelineFull.style.display = 'none';
     fullscreenExit.style.display = 'none';
     btnRestart.style.display = 'none';
     btnRestart.style.opacity = '0';
-
     btnPlay.style.left = 'auto';
-    video.style.width = '63vw';
-    video.style.height = '80vh';
-    video.style.objectPosition = 'right top';
-    video.dispatchEvent(new Event('loadedmetadata'));
+if (wasInCinemaModeBeforeFullscreen) {
+  cinemaOverlay.style.transition = 'none';
+  cinemaOverlay.classList.remove('closing');
+  cinemaOverlay.classList.add('active');
+  document.body.classList.add('cinema-mode');
+  document.documentElement.style.setProperty('--p2typo', 'white');
+  setTimeout(() => {
+    cinemaOverlay.style.transition = '';
+  }, 50);
+}
+
+    if (data?.vimeo) {
+      vimeoFrame.style.width    = '';
+      vimeoFrame.style.height   = '';
+      vimeoFrame.style.position = '';
+      vimeoFrame.style.top      = '';
+      vimeoFrame.style.left     = '';
+       positionVimeoBtn();
+    } else {
+      video.style.width          = '63vw';
+      video.style.height         = '80vh';
+      video.style.objectPosition = 'right top';
+      video.dispatchEvent(new Event('loadedmetadata'));
+    }
   }
 });
 
+
 btnRestart.addEventListener('click', () => {
-  video.currentTime = 0;
-  video.play();
+  const data = artistes[artisteCourant];
+  if (data?.vimeo && vimeoPlayer) {
+    vimeoPlayer.setCurrentTime(0).then(() => vimeoPlayer.play());
+  } else {
+    video.currentTime = 0;
+    video.play();
+  }
   showBtn();
 });
 
@@ -1575,10 +1771,11 @@ document.getElementById('info').addEventListener('click', () => {
   const info = document.getElementById('info');
   const isVisible = texte.classList.contains('visible');
 
-  if (isVisible) {
-    // — FERMETURE
+if (isVisible) {
+  // FERMETURE
     texte.style.transition = 'opacity 0.4s ease';
     texte.style.opacity = '0';
+    document.querySelector('.artiste-details')?.classList.remove('visible');
 
     setTimeout(() => {
       texte.classList.remove('visible');
@@ -1589,18 +1786,18 @@ document.getElementById('info').addEventListener('click', () => {
       setOpacity(document.getElementById('btn_cine_switch'), '0', '0.8s');
     }, 420);
 
-  } else {
-    // — OUVERTURE
-    texte.style.transition = 'none';
+   } else {
+    // OUVERUTRE
+    texte.style.transition = 'opacity 0.4s ease';
     texte.style.opacity = '0';
     texte.classList.add('visible');
     texteWrapper.classList.add('visible');
-    info.textContent = '–';
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        texte.style.transition = 'opacity 0.4s ease';
         texte.style.opacity = '1';
+        info.textContent = '–';
+        document.querySelector('.artiste-details')?.classList.add('visible');
 
         setTimeout(() => {
           texte.style.transition = '';
@@ -1614,7 +1811,8 @@ document.getElementById('info').addEventListener('click', () => {
       setOpacity(document.getElementById('btn_cine_switch'), '1', '0.8s');
     }, 1500);
   }
-});
+  });  
+
 // ══════════════════════════════════════════════
 // ── NEXT ARTIST ───────────────────────────────
 // ══════════════════════════════════════════════
@@ -1651,13 +1849,12 @@ btnPlay.style.opacity = '0';
   setTimeout(() => {
     // — RESET contenu
     titre.innerHTML = `<span class="artiste-nom">${data.nom}</span> — <span class="artiste-titre">${data.titre}</span>`;
-    video.src = data.video;
-    video.poster = data.poster;
-    video.load();
+    loadArtistMedia(data);
     texte.textContent = currentLang === "FR" && data.textFR ? data.textFR : data.text;
     texte.scrollTop = 0;
 
     hasStarted = false;
+    vimeoPlayer = null;
     btnPlay.textContent = translations[currentLang].playVideo;
     btnPlay.classList.remove('playing');
 
@@ -1745,7 +1942,12 @@ function exitCinemaMode() {
   document.body.classList.remove('cinema-mode');
   document.documentElement.style.setProperty('--p2typo', 'black');
   btnPlay.style.color = 'white';
-closeTunnel();
+  cinemaOverlay.classList.remove('active', 'closing');
+  if (tunnelActive) {
+    closeTunnel();
+  } else {
+    renderTunnel(0, 0);
+  }
 }
 
 
@@ -2069,3 +2271,115 @@ artistsList.addEventListener('click', (e) => {
 });
 
 
+
+
+function renderTexteOeuvre(data, lang) {
+  const el = document.getElementById('texte-oeuvre');
+  if (!el) return;
+  const raw = (lang === "FR" && data.textFR) ? data.textFR : data.text;
+  
+  const creditsMatch = raw.match(/<credits>([\s\S]*?)<\/credits>/);
+  const bioMatch = raw.match(/<bio>([\s\S]*?)<\/bio>/);
+  const mainText = raw
+    .replace(/<credits>[\s\S]*?<\/credits>/, '')
+    .replace(/<bio>[\s\S]*?<\/bio>/, '')
+    .trim();
+  
+  const creditsText = creditsMatch ? creditsMatch[1].trim() : '';
+  const bioText = bioMatch ? bioMatch[1].trim() : '';
+
+  let html = '';
+
+
+if (creditsText) {
+  const creditsLines = creditsText.split('\n').map(line => {
+    const colonIdx = line.indexOf(':');
+    if (colonIdx > 0) {
+      const label = line.substring(0, colonIdx);
+      const value = line.substring(colonIdx + 1);
+return `<span class="credit-label">${label}<span class="credit-colon">&thinsp;:</span></span>${value}`;    }
+    return line;
+  }).join('<br>');
+  html += `<div class="texte-credits">${creditsLines}</div>`;
+}
+  html += `<div class="texte-main">${mainText.replace(/\n/g, '<br>')}</div>`;
+if (bioText) {
+  const titreBio = data.bioTitre || data.nom;
+  html += `<div class="texte-bio"><span class="bio-nom">${titreBio}</span><div class="bio-text">${bioText.replace(/\n/g, '<br>')}</div></div>`;
+}
+  
+  el.innerHTML = html;
+  el.scrollTop = 0; 
+}
+
+
+
+
+
+
+
+// ══════════════════════════════════════════════
+// ── VIMEO PLAYER ──────────────────────────────
+// ══════════════════════════════════════════════
+
+function loadArtistMedia(data) {
+  const videoEl  = document.getElementById('video');
+  const wrapper  = document.getElementById('video-wrapper');
+  vimeoFrame = document.getElementById('vimeo-frame');
+
+  if (data.vimeo) {
+    if (!vimeoFrame) {
+      vimeoFrame = document.createElement('iframe');
+      vimeoFrame.id = 'vimeo-frame';
+      vimeoFrame.allow = 'autoplay; fullscreen; picture-in-picture';
+      vimeoFrame.allowFullscreen = true;
+      wrapper.appendChild(vimeoFrame);
+    }
+
+    // Pas de src ici — on attend le clic Play
+    vimeoFrame.src = '';
+    vimeoFrame.style.display = 'block';
+    vimeoFrame.style.opacity = '0';
+    videoEl.style.display = 'block';
+    videoEl.src   = '';
+    videoEl.poster = data.poster;
+    wrapper.classList.add('is-vimeo');
+// calcul identique à loadedmetadata mais pour 16:9
+setTimeout(() => positionVimeoBtn(), 1100);
+
+  } else {
+    // Vidéo native MP4
+    if (vimeoFrame) {
+      vimeoFrame.src           = '';
+      vimeoFrame.style.display = 'none';
+    }
+        wrapper.classList.remove('is-vimeo'); 
+    videoEl.style.display = 'block';
+    videoEl.src           = data.video;
+    videoEl.poster        = data.poster;
+    videoEl.load();
+  }
+}
+
+
+function positionVimeoBtn() {
+  const wrapperW = window.innerWidth * 0.63;
+  const wrapperH = window.innerHeight * 0.8;
+  const wrapperRatio = wrapperW / wrapperH;
+  const ratio = 16 / 9;
+
+  let vidW, vidH;
+  if (ratio > wrapperRatio) {
+    vidW = wrapperW;
+    vidH = vidW / ratio;
+  } else {
+    vidH = wrapperH;
+    vidW = vidH * ratio;
+  }
+
+  btnPlay.style.top       = (vidH / 2) + 'px';
+  btnPlay.style.right     = (vidW / 2) + 'px';
+  btnPlay.style.left      = 'auto';
+  btnPlay.style.transform = 'translate(50%, -50%)';
+  btnPlay.style.whiteSpace = 'nowrap';
+}

@@ -705,23 +705,6 @@ font-style: italic;
   color: inherit;
 }
 
-#info {
-  width: fit-content;
-  cursor: pointer;
-  transition:
-    text-shadow var(--t-base) var(--ease-out),
-    color var(--t-slow) var(--ease);
-
-}
-
-#info:hover {
-  text-decoration: none;
-  text-shadow:
-    0 0 6px #ffffff,
-    0 0 12px #ffffff,
-    0 0 20px #ffffff,
-    0 0 25px #ffffff;
-}
 
 #texte-wrapper {
   position: relative;
@@ -745,6 +728,8 @@ font-style: italic;
   font-size: 0.8em;
   line-height: 1.5;
   white-space: pre-line;
+    overflow-wrap: break-word;   /* ← ajoute ça */
+  word-break: break-word;  
   opacity: 0;
   transition:
     opacity var(--t-base) var(--ease),
@@ -1027,12 +1012,9 @@ font-style: italic;
 #fullscreen.force-visible {
   opacity: 1 !important;
 }
-
 #video-wrapper:fullscreen,
 #video-wrapper:-webkit-full-screen {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
   width: 100vw !important;
   height: 100vh !important;
   max-width: 100vw !important;
@@ -1052,6 +1034,15 @@ font-style: italic;
   object-position: center center;
 }
 
+#video-wrapper:fullscreen #vimeo-frame,
+#video-wrapper:-webkit-full-screen #vimeo-frame {
+  display: block !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: calc(100vw * 9 / 16) !important;
+}
 /* Timeline */
 #timeline-fullscreen {
   position: absolute;
@@ -1270,6 +1261,124 @@ font-style: italic;
 .artist-list-item.active {
   text-decoration: underline;
 }
+
+
+
+/* --- Les artistes txt--- */
+
+
+
+.artiste-details {
+  font-family: Abordage;
+  font-size: 0.55em;
+  display: block;
+  margin-top: 7px;
+  white-space: nowrap;
+  color: inherit;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.artiste-details.visible {
+  opacity: 1;
+}
+
+#info {
+  width: fit-content;
+  cursor: pointer;
+  transition:
+    opacity 0.4s ease,
+    text-shadow var(--t-base) var(--ease-out),
+    color var(--t-slow) var(--ease);
+    margin-top: -8px;
+}
+
+#info:hover {
+  text-decoration: none;
+  text-shadow:
+    0 0 6px #ffffff,
+    0 0 12px #ffffff,
+    0 0 20px #ffffff,
+    0 0 25px #ffffff;
+}
+.texte-credits {
+  font-family: Abordage;
+  font-size: 0.6em;
+  line-height: 1.5;
+  margin-bottom: 2em;
+}
+
+.texte-main {
+  font-family: Abordage;
+  font-size: 0.9em;
+  line-height: 1.6;
+  margin-bottom: 2em;
+}
+
+.texte-bio {
+  font-family: Abordage;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+
+.bio-nom {
+  text-decoration: underline;
+  display: inline-block;
+  margin-bottom: 0.4em;
+  color: inherit;
+}
+
+.credit-label {
+  text-decoration: underline;
+  color: inherit;
+  text-underline-offset: 2px;
+}
+
+.credit-colon {
+  text-decoration: underline;
+    color: inherit; /* ← réduit l'espace encore un peu */
+}
+
+
+/* --- GESTION PLAYER VIDEO --- */
+
+
+
+#vimeo-frame {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 63vw;
+  height: calc(63vw * 9 / 16); /* hauteur exacte 16:9 depuis la largeur */
+  border: none;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right top;
+  vertical-align: top;
+}
+
+
+
+
+#vimeo-frame:-webkit-full-screen {
+  width: 100vw;
+  height: calc(100vw * 9 / 16);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#vimeo-frame:fullscreen {
+  width: 100vw;
+  height: calc(100vw * 9 / 16);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+
+
 
 
 /* --- Desktop : cache le bloc mobile --- */
