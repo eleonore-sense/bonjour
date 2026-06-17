@@ -70,7 +70,7 @@ div[style*="top:15px"] {
 
   #boite_about.open {
     width: 84vw;
-    height: 100vh;
+    height: 100svh;
     padding-top: 18px;
     padding-left: 18px;
     margin-right: 0;
@@ -308,7 +308,7 @@ div[style*="top:15px"] {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100svh;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -328,10 +328,12 @@ div[style*="top:15px"] {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 22vh;
+    height: 22svh;
+]
+
 #part_3::before {
   background: linear-gradient(to top, black 0%, transparent 100%);
-}    pointer-events: none;
+    pointer-events: none;
     z-index: 201;
   }
 
@@ -401,7 +403,7 @@ div[style*="top:15px"] {
   #video {
     width: 100vw;
     height: auto;
-    max-height: 75vh;
+    max-height: 75svh;
     object-fit: contain;
     object-position: center center;
   }
@@ -409,7 +411,7 @@ div[style*="top:15px"] {
   .video-hover-preview {
     width: 100vw;
     height: auto;
-    max-height: 75vh;
+    max-height: 75svh;
     object-position: center center;
   }
 
@@ -436,7 +438,7 @@ div[style*="top:15px"] {
     position: relative;
     width: 93vw;
     height: auto;
-    min-height: 25vh;
+    min-height: 25svh;
     padding: 19px 0 80px 13px;
     flex-direction: column;
     gap: 10px;
@@ -499,7 +501,7 @@ div[style*="top:15px"] {
     position: fixed;
     inset: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100svh;
     padding: 0 24px;
     z-index: 400;
     justify-content: center;
@@ -516,7 +518,7 @@ div[style*="top:15px"] {
 
   #cinema-overlay.active {
     width: 200vw;
-    height: 200vh;
+    height: 200svh;
   }
 
 
