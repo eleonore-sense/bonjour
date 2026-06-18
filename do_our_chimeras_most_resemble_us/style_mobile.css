@@ -51,12 +51,20 @@ div[style*="top:15px"] {
   }
 
 
+  #btn-lang {
+  position: fixed;
+  top: 70px;
+  left: 15px;
+  right: auto;
+}
+
+
   /* ══════════════════════════════════════════════
      ABOUT PANEL
      ══════════════════════════════════════════════ */
 
   #header-buttons {
-    top: 30px !important;
+    top: 20px !important;
     right: 27px !important;
     font-size: 1.1em;
   }

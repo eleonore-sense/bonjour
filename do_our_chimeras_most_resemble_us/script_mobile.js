@@ -71,7 +71,9 @@ function initMobileArtistsList() {
   btnSee.id = 'mobile-see-artists';
   btnSee.textContent = 'artists';
   document.body.appendChild(btnSee);
-
+setTimeout(() => {
+  btnSee.style.opacity = '1';
+}, 4500);
   const list = document.createElement('div');
   list.id = 'mobile-artists-list';
 
