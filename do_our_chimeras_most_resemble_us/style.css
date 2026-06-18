@@ -528,11 +528,12 @@ text {
 }
 
 
-#btn-lang.nav_link {
-  color: var(--p2typo);
-  opacity: 0.8;
+@media (min-width: 769px) {
+  #btn-lang.nav_link {
+    color: var(--p2typo);
+    opacity: 0.8;
+  }
 }
-
 
 /* ══════════════════════════════════════════════
    MODE CINÉMA — OVERLAY
@@ -681,7 +682,7 @@ body:not(.cinema-mode) .artist-list-item:hover {
   left: 20px;
   z-index: 55;
   font-family: Lagarto;
-  font-size: clamp(1rem, 3.5vw, 3rem);;
+  font-size: clamp(1rem, 3.5vw, 3rem);
   color: transparent;
   cursor: pointer;
   opacity: 0;

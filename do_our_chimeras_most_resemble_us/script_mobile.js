@@ -64,6 +64,14 @@ function isMobile() {
 // ── LISTE ARTISTES MOBILE
 // ══════════════════════════════════════════════
 
+function setTransitionFor(ids, duration) {
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.transition = `opacity ${duration} ease`;
+  });
+}
+
+
 function initMobileArtistsList() {
   if (!isMobile()) return;
 
@@ -71,9 +79,7 @@ function initMobileArtistsList() {
   btnSee.id = 'mobile-see-artists';
   btnSee.textContent = 'artists';
   document.body.appendChild(btnSee);
-setTimeout(() => {
-  btnSee.style.opacity = '1';
-}, 4500);
+
   const list = document.createElement('div');
   list.id = 'mobile-artists-list';
 
@@ -88,6 +94,7 @@ setTimeout(() => {
   document.body.appendChild(list);
 
   btnSee.addEventListener('click', () => {
+
     // toggle : si liste visible → fermer
     if (list.classList.contains('visible')) {
       closeMobileList();
@@ -95,13 +102,25 @@ setTimeout(() => {
     }
 
     // ouvrir
-    list.classList.add('visible');
-    document.getElementById('editor-mobile')?.classList.add('appearing');
-    document.getElementById('editor-mobile')?.style.setProperty('opacity', '0');
+setTransitionFor(['editor-mobile', 'logos-container', 'btn-lang', 'about'], '1s');
+
+void document.body.offsetHeight;
+list.classList.add('visible');
+
+    const editorMobile = document.getElementById('editor-mobile');
+    editorMobile?.classList.add('appearing');
+    editorMobile?.style.setProperty('opacity', '0');
+
     document.getElementById('logos-container')?.style.setProperty('opacity', '0');
+    document.getElementById('btn-lang')?.style.setProperty('opacity', '0');
     document.getElementById('about')?.style.setProperty('opacity', '0');
-    document.getElementById('titre-haut')?.style.setProperty('opacity', '1');
     document.documentElement.style.setProperty('--p2typo', 'black');
+
+setTimeout(() => {
+  setTransitionFor(['titre-haut'], '1.2s');
+  document.getElementById('titre-haut')?.style.setProperty('opacity', '1');
+}, 500);
+
 
     btnSee.textContent = 'close artists list';
     btnSee.style.fontSize = '1em';
@@ -112,31 +131,47 @@ setTimeout(() => {
   list.addEventListener('click', (e) => {
     const item = e.target.closest('.mobile-artist-item');
     if (!item) return;
+
     const id = parseInt(item.dataset.artiste, 10);
     if (!id) return;
-    closeMobileList();
+
+    closeMobileListOnly();
     openArtisteMobile(id);
   });
 }
 
-function closeMobileList() {
-  const list   = document.getElementById('mobile-artists-list');
+
+function closeMobileListOnly() {
+  const list = document.getElementById('mobile-artists-list');
   const btnSee = document.getElementById('mobile-see-artists');
 
-  if (list) list.classList.remove('visible');
+  setTransitionFor(['titre-haut'], '1s');
 
-  document.getElementById('editor-mobile')?.classList.add('appearing');
-  document.getElementById('editor-mobile')?.style.setProperty('opacity', '1');
-  document.getElementById('logos-container')?.style.setProperty('opacity', '1');
-  document.getElementById('about')?.style.setProperty('opacity', '1');
+  void document.body.offsetHeight;
+  list?.classList.remove('visible');
   document.getElementById('titre-haut')?.style.setProperty('opacity', '0');
-  document.documentElement.style.setProperty('--p2typo', 'white');
 
   if (btnSee) {
     btnSee.textContent = 'artists';
     btnSee.style.fontSize = '';
   }
 }
+
+function closeMobileList() {
+  closeMobileListOnly();
+
+  setTimeout(() => {
+    setTransitionFor(['editor-mobile', 'logos-container', 'btn-lang', 'about'], '1.5s');
+    const editorMobile = document.getElementById('editor-mobile');
+    editorMobile?.classList.add('appearing');
+    editorMobile?.style.setProperty('opacity', '1');
+    document.getElementById('logos-container')?.style.setProperty('opacity', '1');
+    document.getElementById('btn-lang')?.style.setProperty('opacity', '1');
+    document.getElementById('about')?.style.setProperty('opacity', '1');
+  }, 700);
+}
+
+
 
 function updateMobileActiveItem() {
   const list = document.getElementById('mobile-artists-list');
@@ -184,21 +219,25 @@ document.getElementById('texte-oeuvre').textContent = data.text;
     if (mobileSlideshowTimer) clearTimeout(mobileSlideshowTimer);
 document.getElementById('mobile-bg-1')?.classList.remove('visible');
 document.getElementById('mobile-bg-2')?.classList.remove('visible');
-    enterCinemaFromHome();
+    enterCinemaFromHomeMobile();
 document.getElementById('btn-lang').classList.add('nav_link');
 const next = getNextArtisteId(id);
     document.getElementById('next_artist').textContent = `> ${artistes[next].nom}`;
 
     setTimeout(() => {
       part3.classList.add('visible');
-      setTimeout(() => { document.getElementById('titre-haut').style.opacity = '1'; }, 50);
       setTimeout(() => { part3.classList.add('part3-video-visible'); }, 600);
-      setTimeout(() => { part3.classList.add('part3-info1-visible'); }, 1200);
-      setTimeout(() => {
-        part3.classList.add('part3-info2-visible');
-        btnPlay.style.opacity = '1';
-        btnPlay.style.pointerEvents = 'auto';
-      }, 3000);
+      setTimeout(() => { 
+      part3.classList.add('part3-info1-visible'); 
+      setOpacity(document.getElementById('info'), '1', '1s');
+      const btnHomeEl = document.getElementById('btn_home');
+  btnHomeEl.style.pointerEvents = 'auto';
+}, 1200);
+setTimeout(() => {
+  part3.classList.add('part3-info2-visible');
+  btnPlay.style.opacity = '1';
+  btnPlay.style.pointerEvents = 'auto';
+}, 3000);
     }, 1000);
 
   } else {
@@ -304,6 +343,19 @@ function getMobileBgLayer(n) {
   return document.getElementById(`mobile-bg-${n}`);
 }
 
+
+function getFarPosition(prevX, prevY, minDist = 35, margin = 5) {
+  const vw = window.innerWidth / 100;
+  const vh = window.innerHeight / 100;
+  const maxRange = 55 - margin;
+  let x, y;
+  do {
+    x = margin + Math.random() * (maxRange - margin);
+    y = margin + Math.random() * (maxRange - margin);
+  } while (Math.hypot((x - prevX) * vw, (y - prevY) * vh) < minDist * vw);
+  return { x, y };
+}
+
 function showNextMobileSlide() {
   const id = artisteIds[mobileSlideshowIndex % artisteIds.length];
   const data = artistes[id];
@@ -319,14 +371,17 @@ function showNextMobileSlide() {
   nextLayer.dataset.artiste = id;
 
 
-const randX = Math.random() * 55; // 0% à 55% pour éviter débordement
-const randY = Math.random() * 55;
+const prevX = parseFloat(currentLayer.style.left) || 0;
+const prevY = parseFloat(currentLayer.style.top) || 0;
+const { x: randX, y: randY } = getFarPosition(prevX, prevY);
+
 nextLayer.style.left = randX + 'vw';
 nextLayer.style.top  = randY + 'vh';
+void nextLayer.offsetHeight; // force reflow
   nextLayer.classList.add('visible');
   setTimeout(() => {
     currentLayer.classList.remove('visible');
-  }, 400);
+  }, 700);
 
   updateMobileListHighlight(id);
 
@@ -386,6 +441,7 @@ function initMobileScrollMask() {
 
   part3.addEventListener('scroll', () => {
     const scrollY = part3.scrollTop;
+      part3.classList.toggle('scrolled', scrollY > 10);
     const videoContainer = document.getElementById('video-container');
     if (!videoContainer) return;
 
@@ -407,9 +463,139 @@ initMobileScrollMask();
 
 
 
+
+// ══════════════════════════════════════════════
+// ── ENTRER MODE CINE MOBILE
+// ══════════════════════════════════════════════
+
+function enterCinemaFromHomeMobile() {
+  const titreHaut = document.getElementById('titre-haut');
+  const btnLang = document.getElementById('btn-lang');
+  const titreGauche = document.querySelector('#gauche .titre');
+
+  titreHaut.style.transition = 'none';
+  btnLang.style.transition = 'none';
+  titreGauche.style.transition = 'none';
+  titreHaut.style.opacity = '0';
+  btnLang.style.opacity = '0';
+  titreGauche.style.opacity = '0';
+  void titreHaut.offsetHeight;
+
+  clearCinemaTimer();
+  stopCarousel();
+  isCinemaMode = true;
+  cinemaIntroPlayed = true;
+
+  animateTunnel();
+
+  document.body.classList.add('cinema-mode');
+  btnPlay.style.color = 'black';
+  document.getElementById('btn_home').style.opacity = '0';
+  document.getElementById('btn_home').style.pointerEvents = 'none';
+
+setTimeout(() => {
+  document.documentElement.style.setProperty('--p2typo', 'white');
+  requestAnimationFrame(() => {
+    titreHaut.style.transition = 'opacity 0.7s ease';
+    btnLang.style.transition = 'opacity 0.7s ease';
+    titreGauche.style.transition = 'opacity 0.7s ease';
+
+    void titreHaut.offsetHeight;
+    titreHaut.style.opacity = '1';
+    btnLang.style.opacity = '1';
+    titreGauche.style.opacity = '1';
+  });
+}, 2500);
+}
+
+
+function initTunnelMobile() {
+  tunnelCanvas = document.getElementById('cinema-tunnel');
+  tunnelCanvas.width  = window.innerWidth;
+  tunnelCanvas.height = window.innerHeight;
+
+  gl = tunnelCanvas.getContext('webgl') || tunnelCanvas.getContext('experimental-webgl');
+
+  const vsSource = `
+    attribute vec2 aPos;
+    void main() { gl_Position = vec4(aPos, 0.0, 1.0); }
+  `;
+
+  const fsSource = `
+    precision highp float;
+    uniform vec2  uResolution;
+    uniform float uProgress;
+    uniform float uOpacity;
+    uniform float uSoftness;
+
+    float easeInOut(float t) {
+      return t < 0.5 ? 4.0*t*t*t : 1.0 - pow(-2.0*t+2.0, 3.0)/2.0;
+    }
+
+    void main() {
+      vec2 uv = gl_FragCoord.xy / uResolution;
+      vec2 p  = (uv - 0.5) * 2.0;
+      float aspect = max(uResolution.x / uResolution.y, uResolution.y / uResolution.x) * 0.65;
+
+      float e      = easeInOut(uProgress);
+      float shapeT = pow(e, 2.0);
+      float ratio  = mix(1.1, aspect*0.85, shapeT);
+      float size   = e * 2.0;
+
+      vec2 q = vec2(p.x / ratio, p.y) / size;
+
+      float expo = mix(2.0, 6.0, shapeT);
+      float dist = pow(pow(abs(q.x), expo) + pow(abs(q.y), expo), 1.0 / expo);
+      float alpha = 1.0 - smoothstep(1.0 - uSoftness, 1.0, dist);
+
+      gl_FragColor = vec4(0.0, 0.0, 0.0, alpha * uOpacity);
+    }
+  `;
+
+  function compileShader(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+
+  const prog = gl.createProgram();
+  gl.attachShader(prog, compileShader(gl.VERTEX_SHADER,   vsSource));
+  gl.attachShader(prog, compileShader(gl.FRAGMENT_SHADER, fsSource));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+    -1,-1,  1,-1,  -1,1,
+     1,-1,  1, 1,  -1,1
+  ]), gl.STATIC_DRAW);
+
+  const aPos = gl.getAttribLocation(prog, 'aPos');
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+  uRes      = gl.getUniformLocation(prog, 'uResolution');
+  uProgress = gl.getUniformLocation(prog, 'uProgress');
+  uOpacity  = gl.getUniformLocation(prog, 'uOpacity');
+  uSoftness = gl.getUniformLocation(prog, 'uSoftness');
+
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+  renderTunnel(0);
+}
+
+
+
+
+
 // ══════════════════════════════════════════════
 // ── INIT
 // ══════════════════════════════════════════════
 
 initMobileArtistsList();
-initMobileSlideshow();
+setTimeout(() => {
+  initMobileSlideshow();
+}, 700);

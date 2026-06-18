@@ -198,6 +198,12 @@ els.forEach(el => {
     setOpacity(el, isPage2 ? '1' : '0', '0.8s');
   } else if (el.id === "btn_home") {
     setOpacity(el, isPage2 ? '0.8' : '0', '0.8s');
+  } else if (el.id === "btn-play") {
+        if (isMobile()) {
+          setOpacity(el, introPlayed ? '1' : '0', '0.8s');
+        } else {
+          setOpacity(el, '1', '0.8s');
+        }
   } else {
     setOpacity(el, '1', '0.8s');
   }
@@ -214,7 +220,7 @@ els.forEach(el => {
 // Init au chargement + clic bouton
 document.addEventListener("DOMContentLoaded", () => {
   applyLang();
-  initTunnel();
+isMobile() ? initTunnelMobile() : initTunnel();
   const btnLang = document.getElementById("btn-lang");
   if (btnLang) {
     btnLang.addEventListener("click", () => {
@@ -684,6 +690,7 @@ setOpacity(document.getElementById('btn-lang'), '1', '1s');
 setOpacity(document.getElementById('btn_cine_switch'), '1', '1s');
     fadeIn('logos-container');
     document.getElementById('artistes-container').style.pointerEvents = 'auto';
+    document.getElementById('mobile-see-artists').style.opacity = '1';
   }, 4500);
 }
 // ══════════════════════════════════════════════
@@ -857,6 +864,7 @@ function enterCinemaFromHome() {
 animateTunnel();
 
   document.body.classList.add('cinema-mode');
+
   document.documentElement.style.setProperty('--p2typo', 'white');
   btnPlay.style.color = 'black';
   document.getElementById('btn_home').style.opacity = '0';
