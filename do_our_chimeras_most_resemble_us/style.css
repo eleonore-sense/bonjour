@@ -85,7 +85,9 @@ span {
 }
 
 
-
+* {
+  -webkit-tap-highlight-color: transparent;
+}
 
 
 /* ══════════════════════════════════════════════
