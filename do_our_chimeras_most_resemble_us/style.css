@@ -680,7 +680,7 @@ body:not(.cinema-mode) .artist-list-item:hover {
   position: fixed;
   top: 12px;
   left: 20px;
-  z-index: 55;
+  z-index: 300;
   font-family: Lagarto;
   font-size: clamp(1rem, 3.5vw, 3rem);
   color: transparent;

@@ -53,7 +53,7 @@ div[style*="top:15px"] {
 
   #btn-lang {
   position: fixed;
-  top: 52px;
+  top: 5svh;
   left: 15px;
   right: auto;
 }
@@ -63,9 +63,10 @@ div[style*="top:15px"] {
 
 body:has(#part_3.visible) #btn-lang {
   position: fixed;
-  top: 20px;
-  right: 17px;
+top:calc(26px + 3.5em + 44px);
+  right: 45px;
   left: auto;
+  text-decoration: none;
 }
 
   /* ══════════════════════════════════════════════
@@ -342,41 +343,9 @@ body:has(#part_3.visible) #btn-lang {
     display: none;
   }
 
-  /* masque haut — couvre la vidéo, sous titres et boutons */
-  #part_3::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 22svh;
-  background: linear-gradient(to top, black 0%, transparent 100%);
-    pointer-events: none;
-    z-index: 201;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
 
-  /* masque bas — très fin, derrière #next_artist */
-  #part_3::after {
-    content: '';
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100vw;
-    height: 170px;
-    background: linear-gradient(to top, black 20%, transparent 80%);
-    pointer-events: none;
-    z-index: 201;
-  }
 
-  #part_3::before {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-#part_3.scrolled::before {
-  opacity: 1;
-}
+
 
 
   /* ══════════════════════════════════════════════
@@ -395,8 +364,8 @@ line-height: 0.9em;
 
 #top-right-buttons {
   position: fixed;
-  top: calc(30px + 3.5em + 44px);
-  right: 17px;
+top:calc(26px + 3.5em + 44px);
+  right: 19px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -417,7 +386,7 @@ line-height: 0.9em;
     position: relative;
     width: 100vw;
     height: auto;
-    padding-top: 20vh;
+    padding-top: 22vh;
     order: 1;
     flex-shrink: 0;
   }
@@ -427,6 +396,9 @@ line-height: 0.9em;
     right: auto;
     width: 100vw;
     height: auto;
+     padding-bottom: 80px;
+  margin-bottom: -80px;
+  pointer-events: none;
   }
 
   #video {
@@ -474,27 +446,35 @@ line-height: 0.9em;
     font-size: 1.2em;
     order: 2;
     flex-shrink: 0;
+    z-index: 250;
+    isolation: isolate;
   }
 
-  .titre {
-    font-size: 1.1em;
-  }
+.titre {
+  font-size: 1.1em;
+  position: sticky;
+  top: 22vh;
+  z-index: 270;
+}
 
-  #info {
-    font-size: 2.2em;
-  }
+#info {
+  font-size: 2.2em;
+  position: sticky;
+  top: calc(22vh + 0.6em);
+  z-index: 270;
+}
 
-  #texte-wrapper {
-    height: auto;
-    max-height: none;
-    overflow-y: visible;
-    -webkit-mask: none;
-    mask: none;
-  }
-
+#texte-wrapper {
+  height: auto;
+  max-height: none;
+  overflow-y: visible;
+  -webkit-mask: none;
+  mask: none;
+}
   #texte-oeuvre {
     font-size: 0.85em;
   }
+
 
 
   /* ══════════════════════════════════════════════
@@ -518,7 +498,7 @@ line-height: 0.9em;
     bottom: 0;
     padding-bottom: 1vh;
     font-size: 1.2em;
-    z-index: 202;
+    z-index: 270;
   }
 
 
@@ -553,6 +533,11 @@ line-height: 0.9em;
   }
 
 
+
+
+.part3-video-visible .video-pack #btn-play {
+  opacity: revert;
+}
   /* ══════════════════════════════════════════════
      TOUCH — SUPPRESSION DES HOVER STATES
      ══════════════════════════════════════════════ */
@@ -567,6 +552,43 @@ line-height: 0.9em;
   }
 
 } /* fin @media max-width: 768px */
+
+
+#mask-haut {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  #mask-haut {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: var(--mask-h, 0px);
+    background: linear-gradient(to bottom, black 56%, transparent 75%);
+    pointer-events: none;
+    z-index: 260;
+    opacity: var(--mask-o, 0);
+    transition: height 0.15s ease, opacity 0.3s ease;
+  }
+}
+
+#mask-bas { display: none; }
+
+@media (max-width: 768px) {
+  #mask-bas {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 170px;
+    background: linear-gradient(to top, black 20%, transparent 80%);
+    pointer-events: none;
+    z-index: 260;
+  }
+}
 
 
 

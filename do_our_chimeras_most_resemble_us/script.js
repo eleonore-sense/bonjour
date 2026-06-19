@@ -459,7 +459,7 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
   10: {
     nom: "Sofia Crespo",
     titre: "Invertebrate Interactions, etc.",
-    video: "img/spfia_crespo.mp4",
+    video: "img/sofia_crespo.mp4",
     poster: "img/sofia_crespo.jpg",
     text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
@@ -598,14 +598,32 @@ video.addEventListener('loadedmetadata', () => {
 });
 
 function showInfo3() {
+  if (isMobile() && typeof showInfo3Mobile === 'function') {
+    showInfo3Mobile();
+    return;
+  }
   document.querySelectorAll('.info3').forEach(el => {
-        el.style.opacity = '';      // ← reset inline pour laisser le CSS prendre le relais
-    el.style.transition = ''; 
+    el.style.opacity = '';
+    el.style.transition = '';
     el.classList.add('visible');
   });
   btnHome.style.opacity = '1';
-    setOpacity(document.getElementById('btn_cine_switch'), '1', '1s'); // ← ajoute ça
+  setOpacity(document.getElementById('btn_cine_switch'), '1', '1s');
   info3AlreadyShown = true;
+}
+
+function hideInfo3() {
+  if (isMobile() && typeof hideInfo3Mobile === 'function') {
+    hideInfo3Mobile();
+    return;
+  }
+  document.querySelectorAll('.info3').forEach(el => {
+    el.style.opacity = '';
+    el.style.transition = '';
+    el.classList.remove('visible');
+  });
+  btnHome.style.opacity = '0.8';
+  setOpacity(document.getElementById('btn_cine_switch'), '0', '1s');
 }
 
 function hideInfo3() {
@@ -1857,6 +1875,8 @@ btnPlay.style.opacity = '0';
   setTimeout(() => {
     // — RESET contenu
     titre.innerHTML = `<span class="artiste-nom">${data.nom}</span> — <span class="artiste-titre">${data.titre}</span>`;
+    
+
     loadArtistMedia(data);
     texte.textContent = currentLang === "FR" && data.textFR ? data.textFR : data.text;
     texte.scrollTop = 0;

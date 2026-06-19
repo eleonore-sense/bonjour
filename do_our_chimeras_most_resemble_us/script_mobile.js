@@ -197,6 +197,7 @@ function openArtisteMobile(id) {
 
   if (!isPart3Visible) {
     document.querySelector('#gauche .titre').textContent = `${data.nom} — ${data.titre}`;
+recalcTitreHeight();
     video.src    = data.video;
     video.poster = data.poster;
     video.load();
@@ -204,7 +205,7 @@ function openArtisteMobile(id) {
 document.getElementById('texte-oeuvre').textContent = data.text;
     document.getElementById('texte-oeuvre').classList.remove('visible');
 
-    if (!info3AlreadyShown) hideInfo3();
+    if (!info3AlreadyShown) hideInfo3Mobile();
 
     editor.classList.add('hidden-content');
     document.getElementById('editor-mobile')?.classList.add('hidden-content');
@@ -226,6 +227,7 @@ const next = getNextArtisteId(id);
 
     setTimeout(() => {
       part3.classList.add('visible');
+      initMobileScrollMask();
       setTimeout(() => { part3.classList.add('part3-video-visible'); }, 600);
       setTimeout(() => { 
       part3.classList.add('part3-info1-visible'); 
@@ -243,7 +245,8 @@ setTimeout(() => {
   } else {
     video.style.transition = 'opacity 0.5s ease';
     video.style.opacity = '0';
-    const titre = document.querySelector('#gauche .titre');
+
+if (window.recalcTitreStartY) window.recalcTitreStartY();
     titre.style.transition = 'opacity 0.5s ease';
     titre.style.opacity = '0';
 
@@ -258,8 +261,8 @@ document.querySelector('#gauche .titre').innerHTML = `<span class="artiste-nom">
       btnPlay.textContent = 'Play Video';
       btnPlay.classList.remove('playing');
 
-      if (!info3AlreadyShown) hideInfo3();
-      if (info3AlreadyShown) showInfo3();
+      if (!info3AlreadyShown) hideInfo3Mobile();
+      if (info3AlreadyShown) showInfo3Mobile();
 
 const next = getNextArtisteId(id);
       document.getElementById('next_artist').textContent = `${artistes[next].nom}`;
@@ -320,10 +323,11 @@ let mobileSlideshowActive = 1;
 let mobileSlideshowTimer = null;
 
 const artisteIds = Object.keys(artistes).map(Number).sort(() => Math.random() - 0.5);
+
+
 function initMobileSlideshow() {
   if (!isMobile()) return;
 
-  // Créer les calques seulement s'ils n'existent pas encore
   if (!document.getElementById('mobile-bg-1')) {
     const layerA = document.createElement('img');
     layerA.id = 'mobile-bg-1';
@@ -338,6 +342,95 @@ function initMobileSlideshow() {
 
   showNextMobileSlide();
 }
+
+function recalcTitreHeight() {
+  const part3 = document.getElementById('part_3');
+  const titreEl = document.querySelector('#gauche .titre');
+  const infoEl  = document.getElementById('info');
+  if (!part3 || !titreEl || !infoEl) return;
+
+  const titreH = titreEl.offsetHeight;
+  const infoH  = infoEl.offsetHeight;
+
+  part3.style.setProperty('--titre-h', titreH + 'px');
+  part3.style.setProperty('--titre-total-h', (titreH + infoH) + 'px');
+}
+
+
+
+
+
+
+function initMobileScrollMask() {
+  if (!isMobile()) return;
+
+  const part3 = document.getElementById('part_3');
+  if (!part3) return;
+
+  const titreEl = document.querySelector('#gauche .titre');
+  const lockY = window.innerHeight * 0.22;
+
+  recalcTitreHeight();
+
+  let titreStartY = titreEl ? titreEl.getBoundingClientRect().top + part3.scrollTop : null;
+let lastScrollY = 0;
+part3.addEventListener('scroll', () => {
+    if (!info3AlreadyShown) {
+    part3.scrollTop = 0;
+    return;
+  }
+  const scrollY = part3.scrollTop;
+
+  // Mask haut progressif — AVANT tout return
+  const maxScroll = 400;
+  const maxHeight = 50;
+  const maskProgress = Math.min(scrollY / maxScroll, 1);
+  document.documentElement.style.setProperty('--mask-h', (maskProgress * maxHeight) + 'svh');
+  document.documentElement.style.setProperty('--mask-o', maskProgress);
+
+  // Mask vidéo
+const videoContainer = document.getElementById('video-container');
+if (!videoContainer) return;
+
+const videoH = videoContainer.offsetHeight;
+const videoProgress = Math.min(scrollY / videoH, 1);
+const maskStop = Math.round((1 - videoProgress) * 100);
+videoContainer.style.webkitMaskImage =
+  `linear-gradient(to top, black 12%, black ${maskStop}%, transparent ${maskStop + 20}%)`;
+videoContainer.style.maskImage =
+  `linear-gradient(to top, black 12%, black ${maskStop}%, transparent ${maskStop + 20}%)`;
+
+
+
+const btnLang = document.getElementById('btn-lang');
+const btnHome = document.getElementById('btn_home');
+const btnCine = document.getElementById('btn_cine_switch');
+
+if (scrollY > lastScrollY) {
+  // scroll vers le bas
+  setOpacity(btnLang, '0.75', '0.4s');
+  setOpacity(btnHome, '0.75', '0.4s');
+  setOpacity(btnCine, '0.75', '0.4s');
+} else {
+  // contre-scroll
+  setOpacity(btnLang, '1', '0.4s');
+  setOpacity(btnHome, '1', '0.4s');
+  setOpacity(btnCine, '1', '0.4s');
+}
+lastScrollY = scrollY;
+
+
+
+});
+
+  window.recalcTitreStartY = () => {
+    titreStartY = titreEl ? titreEl.getBoundingClientRect().top + part3.scrollTop : null;
+  };
+}
+
+
+
+
 
 function getMobileBgLayer(n) {
   return document.getElementById(`mobile-bg-${n}`);
@@ -429,38 +522,6 @@ if (isMobile()) {
   }
 }
 
-// ══════════════════════════════════════════════
-// ── SCROLL MASK VIDÉO
-// ══════════════════════════════════════════════
-
-function initMobileScrollMask() {
-  if (!isMobile()) return;
-
-  const part3 = document.getElementById('part_3');
-  if (!part3) return;
-
-  part3.addEventListener('scroll', () => {
-    const scrollY = part3.scrollTop;
-      part3.classList.toggle('scrolled', scrollY > 10);
-    const videoContainer = document.getElementById('video-container');
-    if (!videoContainer) return;
-
-    const videoH = videoContainer.offsetHeight;
-
-    // progress : 0 = pas scrollé, 1 = vidéo complètement masquée
-    const progress = Math.min(scrollY / videoH, 1);
-
-    // masque qui monte par le bas
-    const maskStop = Math.round((1 - progress) * 100);
-    videoContainer.style.webkitMaskImage = 
-      `linear-gradient(to top, black 0%, black ${maskStop}%, transparent ${maskStop + 5}%)`;
-    videoContainer.style.maskImage = 
-      `linear-gradient(to top, black 0%, black ${maskStop}%, transparent ${maskStop + 5}%)`;
-  });
-}
-
-initMobileScrollMask();
-
 
 
 
@@ -470,14 +531,11 @@ initMobileScrollMask();
 
 function enterCinemaFromHomeMobile() {
   const titreHaut = document.getElementById('titre-haut');
-  const btnLang = document.getElementById('btn-lang');
   const titreGauche = document.querySelector('#gauche .titre');
 
   titreHaut.style.transition = 'none';
-  btnLang.style.transition = 'none';
   titreGauche.style.transition = 'none';
   titreHaut.style.opacity = '0';
-  btnLang.style.opacity = '0';
   titreGauche.style.opacity = '0';
   void titreHaut.offsetHeight;
 
@@ -497,12 +555,10 @@ setTimeout(() => {
   document.documentElement.style.setProperty('--p2typo', 'white');
   requestAnimationFrame(() => {
     titreHaut.style.transition = 'opacity 0.7s ease';
-    btnLang.style.transition = 'opacity 0.7s ease';
     titreGauche.style.transition = 'opacity 0.7s ease';
 
     void titreHaut.offsetHeight;
     titreHaut.style.opacity = '1';
-    btnLang.style.opacity = '1';
     titreGauche.style.opacity = '1';
   });
 }, 2500);
@@ -585,6 +641,33 @@ function initTunnelMobile() {
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
   renderTunnel(0);
+}
+
+
+
+
+// ══════════════════════════════════════════════
+// ── GERER BOUTON MODE CINE
+// ══════════════════════════════════════════════
+
+
+function showInfo3Mobile() {
+  document.querySelectorAll('.info3').forEach(el => {
+    el.classList.add('visible');
+  });
+  btnHome.style.opacity = '1';
+  setOpacity(document.getElementById('btn_cine_switch'), '1', '1s');
+  document.getElementById('btn-lang').style.opacity = '1';
+  info3AlreadyShown = true;
+}
+
+function hideInfo3Mobile() {
+  document.querySelectorAll('.info3').forEach(el => {
+    el.classList.remove('visible');
+  });
+  btnHome.style.opacity = '0.8';
+  setOpacity(document.getElementById('btn_cine_switch'), '0', '1s');
+  document.getElementById('btn-lang').style.opacity = '0';
 }
 
 
