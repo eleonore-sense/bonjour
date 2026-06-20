@@ -1,0 +1,27 @@
+/* ══════════════════════════════════════════════
+   TITRE SVG — LETTRES SUR COURBE
+   Remplace le style `text { stroke: ... }` du
+   système textPath par un style sur les <path>
+   de lettres individuelles.
+   ══════════════════════════════════════════════ */
+
+.titre-svg-line {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.titre-svg-letter path {
+  fill: transparent;
+  stroke: var(--stroke);
+  stroke-width: 0.8px;
+  paint-order: stroke fill;
+}
+
+/* titre-haut : statique, utilise --p2typo comme l'actuel #titre-haut */
+#titre-haut .titre-svg-letter path {
+  stroke: var(--p2typo);
+    stroke-width: 1.6px;
+}

@@ -2,12 +2,15 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-  <link rel="stylesheet" type="text/css" href="style.css"> 
-  <link rel="stylesheet" type="text/css" href="style_mobile.css"> 
+<link rel="stylesheet" type="text/css" href="style.css"> 
+<link rel="stylesheet" type="text/css" href="titre-svg-wave.css">
+<link rel="stylesheet" type="text/css" href="style_mobile.css">
 
-    <script src="script.js" defer></script>
-    <script src="js/vimeo-player.js"></script>
-    <script src="script_mobile.js" defer></script>
+<script src="titre-svg-data.js" defer></script>
+<script src="titre-svg-wave.js" defer></script>
+<script src="script.js" defer></script>
+<script src="js/vimeo-player.js"></script>
+<script src="script_mobile.js" defer></script>
   <title>Do Our Chimeras Most Ressemble Us?</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -71,64 +74,14 @@ The chimera is a native creature of the internet, where the viral myth routinely
 
 <!-- PART 1 : Titre wave -->
 <div class="editor" id="editor">
-<svg id="main-svg" viewBox="0 0 600 320" preserveAspectRatio="xMinYMid meet">
-  <path id="wave1" d="M0 80 L600 80"/>
-  <text><textPath id="text1" href="#wave1" startOffset="50%">Do Our Chimeras</textPath></text>
-  <path id="wave2" d="M0 160 L600 160"/>
-  <text><textPath id="text2" href="#wave2" startOffset="50%">Most Resemble Us?</textPath></text>
-  <path id="wave3" d="M0 240 L600 240"/>
-  <text><textPath id="text3" href="#wave3" startOffset="50%"></textPath></text>
-</svg>
+  <div id="desktop-wave-lines"></div>
 </div>
-
-  <script>
-  // inline, s'exécute immédiatement
-  (function() {
-    const p = new URLSearchParams(window.location.search).get("lang");
-    const lang = p === "fr" ? "FR" : (navigator.language.startsWith("fr") ? "FR" : "EN");
-    if (lang === "FR") {
-      document.getElementById("wave1")?.setAttribute("d", "M0 60 L600 60");
-      document.getElementById("wave2")?.setAttribute("d", "M0 130 L600 130");
-      document.getElementById("wave3")?.setAttribute("d", "M0 200 L600 200");
-    }
-  })();
-</script>
 <!-- ══════════════════════════════════════════════
      MOBILE ONLY 
      ══════════════════════════════════════════════ -->
 
 <div class="editor-mobile" id="editor-mobile">
-
-  <!-- Ligne 1 : "Do Our" -->
-  <svg viewBox="0 0 283.13 33.46" preserveAspectRatio="xMidYMid meet">
-    <path id="m-wave1" d="M0,16.73 L283.13,16.73"/>
-    <text><textPath id="m-text1" href="#m-wave1" startOffset="50%" dy="0">Do Our</textPath></text>
-  </svg>
-
-  <!-- Ligne 2 : "Chimeras" -->
-  <svg viewBox="0 0 283.13 37.07" preserveAspectRatio="xMidYMid meet">
-    <path id="m-wave2" d="M0,18.535 L283.13,18.535"/>
-    <text><textPath id="m-text2" href="#m-wave2" startOffset="50%" dy="0">Chimeras</textPath></text>
-  </svg>
-
-  <!-- Ligne 3 : "Most" -->
-  <svg viewBox="0 0 283.13 32.36" preserveAspectRatio="xMidYMid meet">
-    <path id="m-wave3" d="M0,16.18 L283.13,16.18"/>
-    <text><textPath id="m-text3" href="#m-wave3" startOffset="50%" dy="0">Most</textPath></text>
-  </svg>
-
-  <!-- Ligne 4 : "Resemble" -->
-  <svg viewBox="0 0 283.13 41.53" preserveAspectRatio="xMidYMid meet">
-    <path id="m-wave4" d="M0,20.765 L283.13,20.765"/>
-    <text><textPath id="m-text4" href="#m-wave4" startOffset="50%" dy="0">Resemble</textPath></text>
-  </svg>
-
-  <!-- Ligne 5 : "Us?" -->
-  <svg viewBox="0 0 283.13 33.76" preserveAspectRatio="xMidYMid meet">
-    <path id="m-wave5" d="M0,16.88 L283.13,16.88"/>
-    <text><textPath id="m-text5" href="#m-wave5" startOffset="50%" dy="0">Us?</textPath></text>
-  </svg>
-
+  <div id="mobile-wave-lines"></div>
 </div>
 
 
@@ -150,14 +103,15 @@ The chimera is a native creature of the internet, where the viral myth routinely
 
 <div id="part_3">
 <div id="mask-bas"></div>
-  <div id="gauche">
-    <span class="titre info1"></span>
-    <span id="info" class="btn info1 btn_hover">+</span>
-  <div id="mask-haut"></div>
-<div id="texte-wrapper">
-  <div id="texte-oeuvre" class="info1"></div>
-</div>
+<div id="gauche">
+  <span class="titre info1"></span>
+  <span id="info" class="btn info1 btn_hover">+</span>
+  <div id="mask-texte-oeuvre">
+    <div id="texte-wrapper">
+      <div id="texte-oeuvre" class="info1"></div>
+    </div>
   </div>
+</div>
 
   <div id="droite">
     <div id="video-container">

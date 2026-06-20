@@ -45,18 +45,51 @@ if (urlLang) {
 
 const linesConfig = {
   EN: [
-    { y: 80,  amplitude: 16, frequency: 2   },
-    { y: 160, amplitude: 13, frequency: 4   },
-    { y: 240, amplitude: 12, frequency: 2.5 },
+    { amplitude: 16, frequency: 2   },
+    { amplitude: 13, frequency: 4   },
   ],
   FR: [
-    { y: 60,  amplitude: 16, frequency: 2   },
-    { y: 130, amplitude: 13, frequency: 4   },
-    { y: 200, amplitude: 12, frequency: 2.5 },
+    { amplitude: 16, frequency: 2   },
+    { amplitude: 13, frequency: 4   },
+    { amplitude: 12, frequency: 2.5 },
   ]
 };
 
 let lines = linesConfig[currentLang];
+
+function buildTitreHaut() {
+  const container = document.getElementById('titre-haut');
+  if (!container) return;
+
+  let lineDataSet;
+  if (isMobile() && currentLang === "FR") {
+    lineDataSet = TITRE_SVG_DATA.titreHautFRMobile[1]; // version 4 lignes (longue)
+} else if (isMobile() && currentLang === "EN") {
+    lineDataSet = TITRE_SVG_DATA.titreHautENMobile; // ← 2 lignes, pas waveMobileEN
+} else if (currentLang === "FR") {
+    lineDataSet = [TITRE_SVG_DATA.titreHautFRDesktop]; // 1 ligne
+  } else {
+    lineDataSet = [TITRE_SVG_DATA.titreHautEN]; // desktop EN, 1 ligne
+  }
+
+  container.innerHTML = '';
+  container.style.color = 'transparent';
+
+  const wrapper = document.createElement('div');
+  wrapper.style.display = 'flex';
+  wrapper.style.flexDirection = 'column';
+  container.appendChild(wrapper);
+
+  const containerWidth = container.clientWidth || 600;
+  const scale = computeSharedScale(lineDataSet, containerWidth);
+
+  lineDataSet.forEach(lineData => {
+    const lineDiv = document.createElement('div');
+    wrapper.appendChild(lineDiv);
+    buildStaticLetterLine(lineDiv, lineData, scale);
+  });
+}
+
 
 function applyLang() {
   const t = translations[currentLang];
@@ -67,6 +100,22 @@ const texteWasVisible = document.getElementById('texte-oeuvre')?.classList.conta
   document.querySelectorAll('.editor-mobile text').forEach(el => {
     el.style.fontSize = currentLang === "FR" ? "4em" : "5.5em";
   });
+
+
+
+  document.getElementById("btn-lang").addEventListener("click", (e) => {
+    console.log("CLICK LANG");
+    console.log("avant", currentLang);
+
+    currentLang = currentLang === "EN" ? "FR" : "EN";
+
+    console.log("apres", currentLang);
+
+    applyLang();
+});
+
+
+  
 
   // Fade out titre si intro déjà jouée
   if (introPlayed) {
@@ -106,18 +155,9 @@ const texteWasVisible = document.getElementById('texte-oeuvre')?.classList.conta
 
     setText("btn-lang", currentLang === "EN" ? "→fr" : "→en");
 
-    if (isMobile()) {
-      const titreHaut = document.getElementById('titre-haut');
-      if (titreHaut) {
-        titreHaut.innerHTML = currentLang === "FR"
-          ? 'Nos Chimères sont-elles<br>Ce Qui Nous Ressemble<br>Le Mieux\u00a0?'
-          : 'Do Our Chimeras<br>Most Resemble Us?';
-        titreHaut.style.fontSize = currentLang === "FR" ? "3em" : "";
-        titreHaut.style.lineHeight = currentLang === "FR" ? "1em" : "0.85em";
-      }
-    } else {
-      setText("titre-haut", t.titre);
-    }
+buildTitreHaut();
+buildDesktopWaveLines();
+buildMobileWaveLines();
 
     setText("about-label", t.about);
     setText("btn_home", t.exhibitionEntrance);
@@ -132,23 +172,6 @@ const texteWasVisible = document.getElementById('texte-oeuvre')?.classList.conta
     }
     setText("list_artist", t.artists);
 
-    ["text1","text2","text3"].forEach((id, i) => {
-      const el = document.getElementById(id);
-      const wave = document.getElementById("wave" + (i + 1));
-      const val = t.titreWave[i] ?? "";
-      if (el) el.textContent = val;
-      if (el) el.closest("text").style.visibility = val ? "visible" : "hidden";
-      if (wave) wave.style.visibility = val ? "visible" : "hidden";
-    });
-
-    ["m-text1","m-text2","m-text3","m-text4","m-text5"].forEach((id, i) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = t.titreWaveMobile[i] ?? "";
-    });
-
-    document.querySelectorAll('.editor text').forEach(el => {
-      el.style.fontSize = currentLang === "FR" ? "4.5em" : "5.4em";
-    });
 
     const boiteAbout = document.getElementById("boite_about");
     if (boiteAbout) {
@@ -157,12 +180,7 @@ const texteWasVisible = document.getElementById('texte-oeuvre')?.classList.conta
       setTimeout(() => { boiteAbout.style.transition = ""; }, 300);
     }
 
-    const waveY = linesConfig[currentLang].map(l => l.y);
-    document.getElementById("wave1")?.setAttribute("d", `M0 ${waveY[0]} L600 ${waveY[0]}`);
-    document.getElementById("wave2")?.setAttribute("d", `M0 ${waveY[1]} L600 ${waveY[1]}`);
-    document.getElementById("wave3")?.setAttribute("d", `M0 ${waveY[2]} L600 ${waveY[2]}`);
-
-    lines = linesConfig[currentLang];
+lines = linesConfig[currentLang];
 
     if (isPage2 && artisteCourant) {
       const data = artistes[artisteCourant];
@@ -209,27 +227,29 @@ els.forEach(el => {
   }
 });
 
-    if (!introPlayed) {
-      introPlayed = true;
-      playIntro();
-    }
+if (!introPlayed && !playIntroCalled) {
+  introPlayed = true;
+  playIntroCalled = true;
+  playIntro();
+}
 
   }, 800);
 }
 
 // Init au chargement + clic bouton
 document.addEventListener("DOMContentLoaded", () => {
+  buildDesktopWaveLines();
+  buildMobileWaveLines();
+  buildTitreHaut();
   applyLang();
-isMobile() ? initTunnelMobile() : initTunnel();
-  const btnLang = document.getElementById("btn-lang");
-  if (btnLang) {
-    btnLang.addEventListener("click", () => {
-      currentLang = currentLang === "EN" ? "FR" : "EN";
-      applyLang();
-      cachedLoopWidth = carrousel.scrollWidth / 2;
+  isMobile() ? initTunnelMobile() : initTunnel();
+});
 
-    });
-  }
+document.body.addEventListener("click", (e) => {
+  if (!e.target.closest("#btn-lang")) return;
+  currentLang = currentLang === "EN" ? "FR" : "EN";
+  applyLang();
+  if (typeof carrousel !== "undefined") cachedLoopWidth = carrousel.scrollWidth / 2;
 });
 // ══════════════════════════════════════════════
 // ── DONNÉES ARTISTES ──────────────────────────
@@ -563,6 +583,7 @@ let tunnelActive = false;
 let vimeoFrame = null;
 let vimeoPlayer = null;
 let wasInCinemaModeBeforeFullscreen = false;
+let playIntroCalled = false;
 
 function setOpacity(el, val, duration = '0.8s') {
   if (!el) return;
@@ -612,6 +633,8 @@ function showInfo3() {
   info3AlreadyShown = true;
 }
 
+
+
 function hideInfo3() {
   if (isMobile() && typeof hideInfo3Mobile === 'function') {
     hideInfo3Mobile();
@@ -624,16 +647,6 @@ function hideInfo3() {
   });
   btnHome.style.opacity = '0.8';
   setOpacity(document.getElementById('btn_cine_switch'), '0', '1s');
-}
-
-function hideInfo3() {
-  document.querySelectorAll('.info3').forEach(el => {
-        el.style.opacity = '';      // ← reset inline pour laisser le CSS prendre le relais
-    el.style.transition = ''; 
-    el.classList.remove('visible');
-  });
-  btnHome.style.opacity = '0.8';
-    setOpacity(document.getElementById('btn_cine_switch'), '0', '1s'); // ← ajoute ça
 }
 
 
@@ -708,7 +721,7 @@ setOpacity(document.getElementById('btn-lang'), '1', '1s');
 setOpacity(document.getElementById('btn_cine_switch'), '1', '1s');
     fadeIn('logos-container');
     document.getElementById('artistes-container').style.pointerEvents = 'auto';
-    document.getElementById('mobile-see-artists').style.opacity = '1';
+document.getElementById('mobile-see-artists')?.style.setProperty('opacity', '1');
   }, 4500);
 }
 // ══════════════════════════════════════════════
@@ -1112,13 +1125,10 @@ setTimeout(() => requestAnimationFrame(animerCouleur), PAUSE);
 // ── TITRE WAVE / GLITCH ───────────────────────
 // ══════════════════════════════════════════════
 
-const paths = [
-  document.getElementById('wave1'),
-  document.getElementById('wave2'),
-  document.getElementById('wave3'),
-];
+// ── TITRE WAVE / GLITCH — SVG lettre par lettre ──
 
-
+let desktopWaveInstances = [];
+let mobileWaveInstances = [];
 let glitchProgress = 0;
 let targetProgress = 0;
 let isGlitching    = false;
@@ -1127,27 +1137,48 @@ const GLITCH_DURATION  = 4;
 const PAUSE_DURATION   = 7;
 const GLITCH_FREQUENCY = 20;
 
-function generateWavyPath({ y, amplitude, frequency }, progress) {
-  const amp = amplitude * progress;
-  if (progress === 0) return `M0 ${y} L600 ${y}`;
+function buildDesktopWaveLines() {
+  const container = document.getElementById('desktop-wave-lines');
+  if (!container) return;
+  const lineDataSet = currentLang === "EN" ? TITRE_SVG_DATA.waveDesktopEN : TITRE_SVG_DATA.waveDesktopFR;
+  container.innerHTML = '';
+  const containerWidth = container.clientWidth || container.parentElement.clientWidth || 600;
+  const scale = computeSharedScale(lineDataSet, containerWidth);
+  desktopWaveInstances = lineDataSet.map((lineData, i) => {
+    const lineDiv = document.createElement('div');
+    container.appendChild(lineDiv);
+    const cfg = lines[i] || { amplitude: 12, frequency: 2 };
+    return buildLetterLine(lineDiv, lineData, { amplitude: cfg.amplitude, pxPerUnit: scale });
+  });
+}
 
-  let d = `M0 ${y}`;
-  for (let i = 1; i <= 60; i++) {
-    const x = (i / 60) * 600;
-    const offset = Math.sin((i / 60) * Math.PI * frequency) * amp;
-    d += ` L${x} ${y + offset}`;
-  }
-  return d;
+function buildMobileWaveLines() {
+  const container = document.getElementById('mobile-wave-lines');
+  if (!container) return;
+  const lineDataSet = currentLang === "EN" ? TITRE_SVG_DATA.waveMobileEN : TITRE_SVG_DATA.waveMobileFR;
+  container.innerHTML = '';
+  const containerWidth = container.clientWidth || container.parentElement.clientWidth || 380;
+  const scale = computeSharedScale(lineDataSet, containerWidth);
+  mobileWaveInstances = lineDataSet.map((lineData, i) => {
+    const lineDiv = document.createElement('div');
+    container.appendChild(lineDiv);
+    const cfg = mobileWaveLines[i] || { amplitude: 12, frequency: 2 };
+    return buildLetterLine(lineDiv, lineData, { amplitude: cfg.amplitude, pxPerUnit: scale });
+  });
 }
 
 function updatePaths() {
-  paths.forEach((p, i) => {
-    if (p) p.setAttribute('d', generateWavyPath(lines[i], glitchProgress));
+  desktopWaveInstances.forEach((wave, i) => {
+    const cfg = lines[i] || { amplitude: 12, frequency: 2 };
+    updateLetterLineWave(wave, glitchProgress, cfg.amplitude, cfg.frequency, true);
   });
-
-    if (typeof updateMobileWavePaths === 'function') updateMobileWavePaths();
-    
+  mobileWaveInstances.forEach((wave, i) => {
+    const cfg = mobileWaveLines[i] || { amplitude: 12, frequency: 2 };
+    updateLetterLineWave(wave, glitchProgress, cfg.amplitude, cfg.frequency, true);
+  });
 }
+
+
 
 function animateWave() {
   if (isPausing) {
@@ -1809,11 +1840,31 @@ if (isVisible) {
       texte.style.opacity = '';
       texteWrapper.classList.remove('visible');
       info.textContent = '+';
+const part3 = document.getElementById('part_3');
+if (part3) {
+  const startY = part3.scrollTop;
+  const duration = 900; // ms — augmente pour encore plus lent/doux
+  const startTime = performance.now();
+
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  function step(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = easeInOutCubic(progress);
+    part3.scrollTop = startY * (1 - eased);
+    if (progress < 1) requestAnimationFrame(step);
+  }
+
+  requestAnimationFrame(step);
+}
       setOpacity(document.getElementById('btn_cine_switch'), '0', '0.8s');
     }, 420);
 
    } else {
-    // OUVERUTRE
+    // OUVERTURE
     texte.style.transition = 'opacity 0.4s ease';
     texte.style.opacity = '0';
     texte.classList.add('visible');
@@ -1828,6 +1879,9 @@ if (isVisible) {
         setTimeout(() => {
           texte.style.transition = '';
           texte.style.opacity = '';
+          if (typeof window.updateBottomMaskMobile === 'function') {
+            window.updateBottomMaskMobile(); // ← recalcul après ouverture
+          }
         }, 450);
       });
     });
@@ -1837,7 +1891,7 @@ if (isVisible) {
       setOpacity(document.getElementById('btn_cine_switch'), '1', '0.8s');
     }, 1500);
   }
-  });  
+  });
 
 // ══════════════════════════════════════════════
 // ── NEXT ARTIST ───────────────────────────────
@@ -1854,12 +1908,13 @@ function transitionToArtist(id) {
   if (!data) return;
   const titre = document.querySelector('#gauche .titre');
   const texte = document.getElementById('texte-oeuvre');
+   const titreHaut = document.getElementById('titre-haut');
   const infoBtn = document.getElementById('info');
   const texteVisible = texte.classList.contains('visible');
   isTransitioning = true;
 
   // — SORTIE
-[video, titre, infoBtn].forEach(el => {
+[video, titre, titreHaut, infoBtn].forEach(el => {
   el.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
   el.style.opacity = '0';
   el.style.transform = 'translateY(12px)';
@@ -1874,8 +1929,7 @@ btnPlay.style.opacity = '0';
 
   setTimeout(() => {
     // — RESET contenu
-    titre.innerHTML = `<span class="artiste-nom">${data.nom}</span> — <span class="artiste-titre">${data.titre}</span>`;
-    
+titre.innerHTML = formatTitreArtiste(data.nom, data.titre, titre);    
 
     loadArtistMedia(data);
     texte.textContent = currentLang === "FR" && data.textFR ? data.textFR : data.text;
@@ -1897,7 +1951,7 @@ btnPlay.style.opacity = '0';
     document.getElementById('next_artist').textContent = `→ ${artistes[next2].nom}`;
 
     // — ENTRÉE : invisible d'abord
-    [video, titre, infoBtn, btnPlay].forEach(el => {
+    [video, titre, infoBtn, titreHaut, btnPlay].forEach(el => {
       el.style.transition = 'none';
       el.style.opacity = '0';
       el.style.transform = 'translateY(12px)';
@@ -1910,11 +1964,11 @@ btnPlay.style.opacity = '0';
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        [video, titre, infoBtn].forEach(el => {
-          el.style.transition = 'opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1)';
-          el.style.opacity = '1';
-          el.style.transform = 'translateY(0)';
-        });
+[video, titre, titreHaut, infoBtn].forEach(el => {
+  el.style.transition = 'opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1)';
+  el.style.opacity = '1';
+  el.style.transform = 'translateY(0)';
+});
         if (texteVisible) {
           texte.style.transition = 'opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1)';
           texte.style.opacity = '1';
@@ -1937,6 +1991,8 @@ btnPlay.style.opacity = '0';
           btnPlay.style.transition = '';
           btnPlay.style.transform = '';
           btnPlay.style.opacity = '0';
+titreHaut.style.transition = '';
+titreHaut.style.transform = '';          
 
           isTransitioning = false;
           video.dispatchEvent(new Event('loadedmetadata'));

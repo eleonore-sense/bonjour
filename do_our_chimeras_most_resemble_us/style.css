@@ -329,33 +329,16 @@ span {
   left: 50%;
   z-index: 10;
   width: calc(100vw - 30px);
-  max-width: calc(100vw - 30px);
+  max-width: 90%;
   transform: translateX(-50%);
   opacity: 0;
 }
 
-svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  pointer-events: none;
+#desktop-wave-lines {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-
-.editor path {
-  opacity: 0;
-}
-
-text {
-  font-family: Lagarto;
-  font-size: 5.4em;
-  fill: transparent;
-  stroke: var(--stroke);
-  stroke-width: 0.6px;
-  text-anchor: middle;
-  paint-order: stroke fill;
-  letter-spacing: -0.02em;
-}
-
 
 /* ══════════════════════════════════════════════
    CARROUSEL ARTISTES (PART 1)
@@ -681,12 +664,10 @@ body:not(.cinema-mode) .artist-list-item:hover {
   top: 12px;
   left: 20px;
   z-index: 300;
-  font-family: Lagarto;
-  font-size: clamp(1rem, 3.5vw, 3rem);
   color: transparent;
   cursor: pointer;
+  height: 10vh;
   opacity: 0;
-  -webkit-text-stroke: 0.6px var(--p2typo);
   transition:
     opacity var(--t-overlay) var(--ease-out),
     -webkit-text-stroke var(--t-base) var(--ease-out);
@@ -739,6 +720,10 @@ font-style: italic;
     color var(--t-slow) var(--ease);
 }
 
+
+#mask-texte-oeuvre {
+  display: contents; /* le div devient transparent dans le layout, comme s'il n'existait pas */
+}
 #texte-oeuvre.visible {
   opacity: 1;
 }
@@ -1390,51 +1375,19 @@ font-style: italic;
 }
 
 @media (max-width: 768px) {
-
   /* Cache le titre desktop */
   .editor {
     display: none;
   }
 
-  /* Affiche le titre mobile */
-  .editor-mobile {
+  #mobile-wave-lines {
     display: flex;
     flex-direction: column;
-    position: fixed;
-    top: 12%;
-    left: 50%;
-    z-index: 10;
-    width: calc(100vw - 30px);
-    transform: translateX(-50%);
-    gap: 0px;
-  }
-
-  .editor-mobile svg {
-    display: block;
-    width: 100%;
-    height: auto;
-    pointer-events: none;
-    overflow: visible;
+    align-items: center;
+    gap: 0;
     margin-top: 7vh;
   }
-
-  .editor-mobile path {
-    opacity: 0;
-  }
-
-  .editor-mobile text {
-    font-family: Lagarto;
-    font-size: 5.4em;
-    fill: transparent;
-    stroke: var(--stroke);
-    stroke-width: 0.6px;
-    text-anchor: middle;
-    paint-order: stroke fill;
-    letter-spacing: -0.02em;
-  }
-
 }
-
 
 
 #about-close-mobile{

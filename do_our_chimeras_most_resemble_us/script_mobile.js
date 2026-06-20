@@ -2,18 +2,10 @@
    SCRIPT_MARS_MOBILE.JS
    ══════════════════════════════════════════════ */
 
-
+console.log('script_mobile.js démarre, currentLang =', typeof currentLang !== 'undefined' ? currentLang : 'PAS ENCORE DEFINI');
 // ══════════════════════════════════════════════
 // ── WAVE MOBILE
 // ══════════════════════════════════════════════
-
-const mobileWavePaths = [
-  document.getElementById('m-wave1'),
-  document.getElementById('m-wave2'),
-  document.getElementById('m-wave3'),
-  document.getElementById('m-wave4'),
-  document.getElementById('m-wave5'),
-];
 
 const mobileWaveLines = [
   { amplitude: 16, frequency: 2   },
@@ -22,33 +14,6 @@ const mobileWaveLines = [
   { amplitude: 15, frequency: 3   },
   { amplitude: 10, frequency: 2   },
 ];
-
-const mobileVbW = 283.13;
-const mobileVbH = [33.46, 37.07, 32.36, 41.53, 33.76];
-
-function generateMobileWavyPath(index, progress) {
-  const { amplitude, frequency } = mobileWaveLines[index];
-  const vbH = mobileVbH[index];
-  const midY = vbH / 2;
-  const amp = amplitude * progress;
-
-  let d = `M0 ${midY}`;
-  for (let i = 1; i <= 60; i++) {
-    const x = (i / 60) * mobileVbW;
-    const offset = Math.sin((i / 60) * Math.PI * frequency) * amp;
-    d += ` L${x} ${midY + offset}`;
-  }
-  return d;
-}
-
-function updateMobileWavePaths() {
-  mobileWavePaths.forEach((p, i) => {
-    if (p) p.setAttribute('d', generateMobileWavyPath(i, glitchProgress));
-  });
-}
-
-// NOTE : ajouter dans updatePaths() de script_mars.js :
-//   if (typeof updateMobileWavePaths === 'function') updateMobileWavePaths();
 
 
 // ══════════════════════════════════════════════
@@ -196,12 +161,18 @@ function openArtisteMobile(id) {
   const isPart3Visible = part3.classList.contains('visible');
 
   if (!isPart3Visible) {
-    document.querySelector('#gauche .titre').textContent = `${data.nom} — ${data.titre}`;
+const titreEl = document.querySelector('#gauche .titre');
+titreEl.innerHTML = formatTitreArtiste(data.nom, data.titre, titreEl);
 recalcTitreHeight();
+document.body.classList.add('part3-active');
     video.src    = data.video;
     video.poster = data.poster;
     video.load();
-
+const fullscreenBtnMobile = document.getElementById('fullscreen');
+if (fullscreenBtnMobile) {
+  fullscreenBtnMobile.style.opacity = '0';
+  fullscreenBtnMobile.style.pointerEvents = 'none';
+}
 document.getElementById('texte-oeuvre').textContent = data.text;
     document.getElementById('texte-oeuvre').classList.remove('visible');
 
@@ -223,7 +194,7 @@ document.getElementById('mobile-bg-2')?.classList.remove('visible');
     enterCinemaFromHomeMobile();
 document.getElementById('btn-lang').classList.add('nav_link');
 const next = getNextArtisteId(id);
-    document.getElementById('next_artist').textContent = `> ${artistes[next].nom}`;
+    document.getElementById('next_artist').textContent = `→ ${artistes[next].nom}`;
 
     setTimeout(() => {
       part3.classList.add('visible');
@@ -251,7 +222,8 @@ if (window.recalcTitreStartY) window.recalcTitreStartY();
     titre.style.opacity = '0';
 
     setTimeout(() => {
-document.querySelector('#gauche .titre').innerHTML = `<span class="artiste-nom">${data.nom}</span> — <span class="artiste-titre">${data.titre}</span>`;
+const titreEl2 = document.querySelector('#gauche .titre');
+titreEl2.innerHTML = formatTitreArtiste(data.nom, data.titre, titreEl2);
       video.src = data.video;
       video.poster = data.poster;
       video.load();
@@ -265,7 +237,7 @@ document.querySelector('#gauche .titre').innerHTML = `<span class="artiste-nom">
       if (info3AlreadyShown) showInfo3Mobile();
 
 const next = getNextArtisteId(id);
-      document.getElementById('next_artist').textContent = `${artistes[next].nom}`;
+      document.getElementById('next_artist').textContent = `→ ${artistes[next].nom}`;
 
       video.style.transition = 'opacity 0.8s ease';
       video.style.opacity = '1';
@@ -285,6 +257,10 @@ const next = getNextArtisteId(id);
 btnHome.addEventListener('click', () => {
   if (!isMobile()) return;
 
+  document.body.classList.remove('part3-active');
+  document.body.classList.remove('cinema-mode');
+  document.documentElement.style.setProperty('--p2typo', 'black');
+
   const btnSee     = document.getElementById('mobile-see-artists');
   const editorMob  = document.getElementById('editor-mobile');
   const logosCont  = document.getElementById('logos-container');
@@ -293,25 +269,12 @@ btnHome.addEventListener('click', () => {
   if (editorMob) editorMob.classList.remove('hidden-content');
   if (logosCont) logosCont.style.opacity = '1';
 
-  // Relancer le slideshow
   document.getElementById('btn-lang').classList.remove('nav_link');
   mobileSlideshowIndex = 0;
   initMobileSlideshow();
 });
 
 
-// ══════════════════════════════════════════════
-// ── TITRE HAUT MOBILE (2 lignes)
-// ══════════════════════════════════════════════
-
-if (isMobile()) {
-if (currentLang === 'FR') {
-  document.getElementById('titre-haut').innerHTML = 'Nos Chimères sont-Elles <br>Ce Qui Nous Ressemble<br>Le Mieux\u00a0?';
-  document.getElementById('titre-haut').style.fontSize = '2.8em';
-} else {
-  document.getElementById('titre-haut').innerHTML = 'Do Our Chimeras<br>Most Resemble Us?';
-  document.getElementById('titre-haut').style.fontSize = '';
-}}
 
 
 // ══════════════════════════════════════════════
@@ -359,8 +322,6 @@ function recalcTitreHeight() {
 
 
 
-
-
 function initMobileScrollMask() {
   if (!isMobile()) return;
 
@@ -368,67 +329,134 @@ function initMobileScrollMask() {
   if (!part3) return;
 
   const titreEl = document.querySelector('#gauche .titre');
-  const lockY = window.innerHeight * 0.22;
-
   recalcTitreHeight();
 
   let titreStartY = titreEl ? titreEl.getBoundingClientRect().top + part3.scrollTop : null;
-let lastScrollY = 0;
-part3.addEventListener('scroll', () => {
-    if (!info3AlreadyShown) {
-    part3.scrollTop = 0;
-    return;
-  }
-  const scrollY = part3.scrollTop;
+  let lastScrollY = 0;
 
-  // Mask haut progressif — AVANT tout return
-  const maxScroll = 400;
-  const maxHeight = 50;
-  const maskProgress = Math.min(scrollY / maxScroll, 1);
-  document.documentElement.style.setProperty('--mask-h', (maskProgress * maxHeight) + 'svh');
-  document.documentElement.style.setProperty('--mask-o', maskProgress);
-
-  // Mask vidéo
-const videoContainer = document.getElementById('video-container');
-if (!videoContainer) return;
-
-const videoH = videoContainer.offsetHeight;
-const videoProgress = Math.min(scrollY / videoH, 1);
-const maskStop = Math.round((1 - videoProgress) * 100);
-videoContainer.style.webkitMaskImage =
-  `linear-gradient(to top, black 12%, black ${maskStop}%, transparent ${maskStop + 20}%)`;
-videoContainer.style.maskImage =
-  `linear-gradient(to top, black 12%, black ${maskStop}%, transparent ${maskStop + 20}%)`;
-
-
-
-const btnLang = document.getElementById('btn-lang');
-const btnHome = document.getElementById('btn_home');
-const btnCine = document.getElementById('btn_cine_switch');
-
-if (scrollY > lastScrollY) {
-  // scroll vers le bas
-  setOpacity(btnLang, '0.75', '0.4s');
-  setOpacity(btnHome, '0.75', '0.4s');
-  setOpacity(btnCine, '0.75', '0.4s');
-} else {
-  // contre-scroll
-  setOpacity(btnLang, '1', '0.4s');
-  setOpacity(btnHome, '1', '0.4s');
-  setOpacity(btnCine, '1', '0.4s');
+  // ── calcule la distance entre le bas de #info et le haut de #video-container ──
+function calcSeuilScroll() {
+  const remPx = parseFloat(getComputedStyle(document.documentElement).fontSize); // taille de base en px
+  const emPx = 0.6 * remPx; // approx, si .titre/#info utilisent em relatif au root — à vérifier selon ton CSS
+  // 22vh en pixels
+  const vh22 = window.innerHeight * 0.22;
+  return vh22 + emPx; // distance entre le haut de la vidéo (22vh) et le bas de #info (22vh + 0.6em)
 }
-lastScrollY = scrollY;
 
 
+  let seuilScrollDynamic = calcSeuilScroll();
 
-});
+  function updateTexteMask() {
+    // ... reste de la fonction
+    const texteOeuvre = document.getElementById('texte-oeuvre');
+    if (!texteOeuvre) return;
+
+    const rect = texteOeuvre.getBoundingClientRect();
+    const texteHeight = texteOeuvre.offsetHeight;
+    if (texteHeight <= 0) return;
+
+    const scrollY = part3.scrollTop;
+    const toPercent = (px) => Math.max(0, Math.min(100, (px / texteHeight) * 100));
+
+    // ── MASK HAUT — hauteur du fondu se fige à 300px de scroll, mais la POSITION
+const seuilScroll = seuilScrollDynamic+160;
+    const vitesseAvant = 0;
+    const vitesseApres = 1;
+
+    let topFadeHeightPx;
+    if (scrollY <= seuilScroll) {
+      topFadeHeightPx = scrollY * vitesseAvant;
+    } else {
+      topFadeHeightPx = (seuilScroll * vitesseAvant) + (scrollY - seuilScroll) * vitesseApres;
+    }
+
+    const topEndPct = toPercent(topFadeHeightPx);
+    const topQ1Pct = toPercent(topFadeHeightPx + 25);
+const topQ2Pct = toPercent(topFadeHeightPx + 55);
+const topQ3Pct = toPercent(topFadeHeightPx + 80);
+
+    // ── MASK BAS — courbe douce, fixé au bas de l'écran ──
+    const fadeHeightPx = 100;
+    const hiddenZonePx = 40;
+
+    let bottomStartPct, bottomQ1Pct, bottomQ2Pct, bottomQ3Pct, bottomEndPct;
+
+    if (rect.bottom <= window.innerHeight) {
+      bottomStartPct = bottomQ1Pct = bottomQ2Pct = bottomQ3Pct = bottomEndPct = 100;
+    } else {
+      const bottomStartPx = (window.innerHeight - hiddenZonePx - fadeHeightPx) - rect.top;
+      const bottomEndPx = (window.innerHeight - hiddenZonePx) - rect.top;
+      const q1Px = bottomStartPx + (bottomEndPx - bottomStartPx) * 0.5;
+      const q2Px = bottomStartPx + (bottomEndPx - bottomStartPx) * 0.75;
+      const q3Px = bottomStartPx + (bottomEndPx - bottomStartPx) * 0.9;
+
+      bottomStartPct = toPercent(bottomStartPx);
+      bottomQ1Pct = toPercent(q1Px);
+      bottomQ2Pct = toPercent(q2Px);
+      bottomQ3Pct = toPercent(q3Px);
+      bottomEndPct = toPercent(bottomEndPx);
+    }
+
+const gradient = `linear-gradient(to bottom,
+  transparent 0%,
+  transparent ${topEndPct}%,
+  black ${topEndPct}%,
+  transparent ${toPercent(topFadeHeightPx -20)}%,
+    black ${toPercent(topFadeHeightPx +10)}%,
+    black ${bottomStartPct}%,
+  rgba(0,0,0,0.9) ${bottomQ1Pct}%,
+  rgba(0,0,0,0.55) ${bottomQ2Pct}%,
+  rgba(0,0,0,0.18) ${bottomQ3Pct}%,
+  transparent ${bottomEndPct}%
+)`;
+
+    texteOeuvre.style.webkitMaskImage = gradient;
+    texteOeuvre.style.maskImage = gradient;
+  }
+
+  window.updateBottomMaskMobile = updateTexteMask;
+  updateTexteMask();
+
+  part3.addEventListener('scroll', () => {
+    if (!info3AlreadyShown) {
+      part3.scrollTop = 0;
+      return;
+    }
+    const scrollY = part3.scrollTop;
+
+    updateTexteMask();
+
+    const videoContainer = document.getElementById('video-container');
+    if (!videoContainer) return;
+
+    const videoH = videoContainer.offsetHeight;
+    const videoProgress = Math.min(scrollY / videoH, 1);
+    const maskStop = Math.round((1 - videoProgress) * 100);
+    videoContainer.style.webkitMaskImage =
+      `linear-gradient(to top, black 12%, black ${maskStop}%, transparent ${maskStop + 20}%)`;
+    videoContainer.style.maskImage =
+      `linear-gradient(to top, black 12%, black ${maskStop}%, transparent ${maskStop + 20}%)`;
+
+    const btnLang = document.getElementById('btn-lang');
+    const btnHome = document.getElementById('btn_home');
+    const btnCine = document.getElementById('btn_cine_switch');
+
+    if (scrollY > lastScrollY) {
+      setOpacity(btnLang, '0.75', '0.4s');
+      setOpacity(btnHome, '0.75', '0.4s');
+      setOpacity(btnCine, '0.75', '0.4s');
+    } else {
+      setOpacity(btnLang, '1', '0.4s');
+      setOpacity(btnHome, '1', '0.4s');
+      setOpacity(btnCine, '1', '0.4s');
+    }
+    lastScrollY = scrollY;
+  });
 
   window.recalcTitreStartY = () => {
     titreStartY = titreEl ? titreEl.getBoundingClientRect().top + part3.scrollTop : null;
   };
 }
-
-
 
 
 
@@ -502,23 +530,31 @@ function updateMobileListHighlight(activeId) {
 if (isMobile()) {
   const btnFs = document.getElementById('fullscreen');
   if (btnFs) {
-    video.addEventListener('play', () => {
-      setTimeout(() => {
-        btnFs.style.position = 'fixed';
-        btnFs.style.bottom = '16px';
-        btnFs.style.left = '20px';
-        btnFs.style.right = 'auto';
-        btnFs.style.transform = 'none';
-        btnFs.style.display = 'block';
-        btnFs.style.opacity = '1';
-        btnFs.style.pointerEvents = 'auto';
-      }, 2000);
-    });
 
-    video.addEventListener('pause', () => {
-      btnFs.style.opacity = '0';
-      btnFs.style.pointerEvents = 'none';
-    });
+
+video.addEventListener('play', () => {
+  document.getElementById('next_artist')?.classList.remove('visible');
+  document.getElementById('list_artist')?.classList.remove('visible');
+
+  setTimeout(() => {
+    btnFs.style.position = 'fixed';
+    btnFs.style.bottom = '14px';
+    btnFs.style.left = '50%';
+    btnFs.style.right = 'auto';
+    btnFs.style.transform = 'translateX(-50%)';
+    btnFs.style.display = 'block';
+    btnFs.style.opacity = '1';
+    btnFs.style.pointerEvents = 'auto';
+  }, 2000);
+});
+
+video.addEventListener('pause', () => {
+  btnFs.style.opacity = '0';
+  btnFs.style.pointerEvents = 'none';
+
+  document.getElementById('next_artist')?.classList.add('visible');
+  document.getElementById('list_artist')?.classList.add('visible');
+});
   }
 }
 
@@ -671,8 +707,34 @@ function hideInfo3Mobile() {
 }
 
 
+// ══════════════════════════════════════════════
+// ── PASSER A LA LIGNE LES TITRE TROP LONG
+// ══════════════════════════════════════════════
 
 
+function formatTitreArtiste(nom, titre, containerEl) {
+  if (!isMobile() || !containerEl) {
+    return `<span class="artiste-nom">${nom}</span> — <span class="artiste-titre">${titre}</span>`;
+  }
+
+  const maxWidth = containerEl.clientWidth || window.innerWidth;
+
+  const testEl = document.createElement('span');
+  testEl.style.visibility = 'hidden';
+  testEl.style.position = 'absolute';
+  testEl.style.whiteSpace = 'nowrap';
+  testEl.style.font = getComputedStyle(containerEl).font;
+  testEl.textContent = `${nom} — ${titre}`;
+  document.body.appendChild(testEl);
+
+  const fullWidth = testEl.offsetWidth;
+  document.body.removeChild(testEl);
+
+  if (fullWidth > maxWidth) {
+    return `<span class="artiste-nom">${nom}</span><br>— <span class="artiste-titre">${titre}</span>`;
+  }
+  return `<span class="artiste-nom">${nom}</span> — <span class="artiste-titre">${titre}</span>`;
+}
 
 // ══════════════════════════════════════════════
 // ── INIT

@@ -53,20 +53,22 @@ div[style*="top:15px"] {
 
   #btn-lang {
   position: fixed;
-  top: 5svh;
+  top: 6svh;
   left: 15px;
   right: auto;
+  z-index: 350;
 }
 #btn-lang.nav_link {
   color: var(--p2typo);
 }
 
-body:has(#part_3.visible) #btn-lang {
+body.part3-active #btn-lang {
   position: fixed;
-top:calc(26px + 3.5em + 44px);
+  top: calc(26px + 3.5em + 44px);
   right: 45px;
   left: auto;
   text-decoration: none;
+  z-index: 2500;
 }
 
   /* ══════════════════════════════════════════════
@@ -132,16 +134,21 @@ top:calc(26px + 3.5em + 44px);
      PART 1 — TITRE WAVE MOBILE
      ══════════════════════════════════════════════ */
 
-  .editor-mobile {
-    top: 17%;
-    width: calc(100vw - 20px);
-    transition: opacity 2s ease;
-  }
-
+.editor-mobile {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 47%;
+  left: 50%;
+  z-index: 10;
+  width: 80vw;
+  max-width: 80vw;
+  transform: translate(-50%, -50%);
+  gap: 0px;
+  transition: opacity 2s ease;
+}
   /* Épaisseur du contour titre mobile — modifier stroke-width ici */
-  .editor-mobile text,
-  text {
-    font-size: 5.5em;
+.titre-svg-letter path {
     stroke-width: 0.8px;
   }
 
@@ -353,14 +360,19 @@ top:calc(26px + 3.5em + 44px);
      ══════════════════════════════════════════════ */
 
   #titre-haut {
-font-size: clamp(3.3rem, 9vw, 3.5rem);
-line-height: 0.9em;
     top: 30px;
     left: 17px;
-      white-space: pre-wrap;
-    -webkit-text-stroke-width: 0.7px;
-    line-height: 0.8em;
+    z-index: 250;
+    width: calc(100vw - 34px);
   }
+
+#titre-haut .titre-svg-letter path {
+  stroke-width: 1.2px; /* ← garde l'épaisseur actuelle sur mobile */
+}
+
+body.cinema-mode #titre-haut .titre-svg-letter path {
+  stroke-width: 2px;
+}
 
 #top-right-buttons {
   position: fixed;
@@ -460,7 +472,7 @@ top:calc(26px + 3.5em + 44px);
 #info {
   font-size: 2.2em;
   position: sticky;
-  top: calc(22vh + 0.6em);
+  top: calc(22vh + var(--titre-h, 0.6em));
   z-index: 270;
 }
 
@@ -468,14 +480,15 @@ top:calc(26px + 3.5em + 44px);
   height: auto;
   max-height: none;
   overflow-y: visible;
-  -webkit-mask: none;
+-webkit-mask: none;
   mask: none;
 }
-  #texte-oeuvre {
-    font-size: 0.85em;
-  }
 
 
+#texte-oeuvre {
+  font-size: 0.85em;
+
+}
 
   /* ══════════════════════════════════════════════
      PART 3 — BOUTONS BAS
@@ -490,6 +503,7 @@ top:calc(26px + 3.5em + 44px);
 
   #list_artist {
     display: none;
+    font-size: 1.1;
   }
 
   #next_artist {
@@ -497,7 +511,7 @@ top:calc(26px + 3.5em + 44px);
     right: 20px;
     bottom: 0;
     padding-bottom: 1vh;
-    font-size: 1.2em;
+    font-size: 1.1em;
     z-index: 270;
   }
 
@@ -560,8 +574,8 @@ top:calc(26px + 3.5em + 44px);
 
 @media (max-width: 768px) {
   #mask-haut {
-    display: block;
-    position: fixed;
+    display: none;
+/*    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
@@ -570,7 +584,7 @@ top:calc(26px + 3.5em + 44px);
     pointer-events: none;
     z-index: 260;
     opacity: var(--mask-o, 0);
-    transition: height 0.15s ease, opacity 0.3s ease;
+    transition: height 0.15s ease, opacity 0.3s ease;*/
   }
 }
 
@@ -578,15 +592,15 @@ top:calc(26px + 3.5em + 44px);
 
 @media (max-width: 768px) {
   #mask-bas {
-    display: block;
-    position: fixed;
+    display: none;
+  /*  position: fixed;
     bottom: 0;
     left: 0;
     width: 100vw;
     height: 170px;
     background: linear-gradient(to top, black 20%, transparent 80%);
     pointer-events: none;
-    z-index: 260;
+    z-index: 260;*/
   }
 }
 
