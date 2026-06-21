@@ -543,6 +543,9 @@ body.lang-fr #desktop-wave-lines > div:not(:first-child) {
   inset: 0;
   pointer-events: none;
   z-index: 52;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
 }
 
 
