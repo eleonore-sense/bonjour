@@ -155,101 +155,85 @@ function updateMobileActiveItem() {
 function openArtisteMobile(id) {
   const data = artistes[id];
   if (!data) return;
-
   artisteCourant = id;
   const part3 = document.getElementById('part_3');
   const isPart3Visible = part3.classList.contains('visible');
-
   if (!isPart3Visible) {
-const titreEl = document.querySelector('#gauche .titre');
-titreEl.innerHTML = formatTitreArtiste(data.nom, data.titre, titreEl);
-recalcTitreHeight();
-document.body.classList.add('part3-active');
-    video.src    = data.video;
-    video.poster = data.poster;
-    video.load();
-const fullscreenBtnMobile = document.getElementById('fullscreen');
-if (fullscreenBtnMobile) {
-  fullscreenBtnMobile.style.opacity = '0';
-  fullscreenBtnMobile.style.pointerEvents = 'none';
-}
-document.getElementById('texte-oeuvre').textContent = data.text;
+    btnPlay.classList.remove('hidden');
+    btnPlay.style.transition = 'none';
+    btnPlay.style.opacity = '0';
+    btnPlay.style.pointerEvents = 'none';
+
+    const titreEl = document.querySelector('#gauche .titre');
+    titreEl.innerHTML = formatTitreArtiste(data.nom, data.titre, titreEl);
+    recalcTitreHeight();
+    document.body.classList.add('part3-active');
+loadArtistMedia(data);
+    const fullscreenBtnMobile = document.getElementById('fullscreen');
+    if (fullscreenBtnMobile) {
+      fullscreenBtnMobile.style.opacity = '0';
+      fullscreenBtnMobile.style.pointerEvents = 'none';
+    }
+    document.getElementById('texte-oeuvre').textContent = data.text;
     document.getElementById('texte-oeuvre').classList.remove('visible');
-
     if (!info3AlreadyShown) hideInfo3Mobile();
-
     editor.classList.add('hidden-content');
     document.getElementById('editor-mobile')?.classList.add('hidden-content');
     artistesContainer.classList.add('hidden-content');
     logosContainer.classList.add('hidden-content');
     about.classList.add('hidden-content');
-
     const btnSee = document.getElementById('mobile-see-artists');
     if (btnSee) btnSee.classList.add('hidden-content');
-
-    // Stopper le slideshow
     if (mobileSlideshowTimer) clearTimeout(mobileSlideshowTimer);
-document.getElementById('mobile-bg-1')?.classList.remove('visible');
-document.getElementById('mobile-bg-2')?.classList.remove('visible');
+    document.getElementById('mobile-bg-1')?.classList.remove('visible');
+    document.getElementById('mobile-bg-2')?.classList.remove('visible');
     enterCinemaFromHomeMobile();
-document.getElementById('btn-lang').classList.add('nav_link');
-const next = getNextArtisteId(id);
+    document.getElementById('btn-lang').classList.add('nav_link');
+    const next = getNextArtisteId(id);
     document.getElementById('next_artist').textContent = `→ ${artistes[next].nom}`;
-
     setTimeout(() => {
       part3.classList.add('visible');
       initMobileScrollMask();
       setTimeout(() => { part3.classList.add('part3-video-visible'); }, 600);
       setTimeout(() => { 
-      part3.classList.add('part3-info1-visible'); 
-      setOpacity(document.getElementById('info'), '1', '1s');
-      const btnHomeEl = document.getElementById('btn_home');
-  btnHomeEl.style.pointerEvents = 'auto';
-}, 1200);
-setTimeout(() => {
-  part3.classList.add('part3-info2-visible');
-  btnPlay.style.opacity = '1';
-  btnPlay.style.pointerEvents = 'auto';
-}, 3000);
+        part3.classList.add('part3-info1-visible'); 
+        setOpacity(document.getElementById('info'), '1', '1s');
+        const btnHomeEl = document.getElementById('btn_home');
+        btnHomeEl.style.pointerEvents = 'auto';
+      }, 1200);
+      setTimeout(() => {
+        part3.classList.add('part3-info2-visible');
+        btnPlay.style.transition = '';
+        btnPlay.style.opacity = '1';
+        btnPlay.style.pointerEvents = 'auto';
+      }, 3000);
     }, 1000);
-
   } else {
     video.style.transition = 'opacity 0.5s ease';
     video.style.opacity = '0';
-
-if (window.recalcTitreStartY) window.recalcTitreStartY();
+    if (window.recalcTitreStartY) window.recalcTitreStartY();
     titre.style.transition = 'opacity 0.5s ease';
     titre.style.opacity = '0';
-
     setTimeout(() => {
-const titreEl2 = document.querySelector('#gauche .titre');
-titreEl2.innerHTML = formatTitreArtiste(data.nom, data.titre, titreEl2);
-      video.src = data.video;
-      video.poster = data.poster;
-      video.load();
+      const titreEl2 = document.querySelector('#gauche .titre');
+      titreEl2.innerHTML = formatTitreArtiste(data.nom, data.titre, titreEl2);
+loadArtistMedia(data);
       document.getElementById('texte-oeuvre').textContent = data.text;
-
       hasStarted = false;
       btnPlay.textContent = 'Play Video';
       btnPlay.classList.remove('playing');
-
       if (!info3AlreadyShown) hideInfo3Mobile();
       if (info3AlreadyShown) showInfo3Mobile();
-
-const next = getNextArtisteId(id);
+      const next = getNextArtisteId(id);
       document.getElementById('next_artist').textContent = `→ ${artistes[next].nom}`;
-
       video.style.transition = 'opacity 0.8s ease';
       video.style.opacity = '1';
       titre.style.transition = 'opacity 0.8s ease';
       titre.style.opacity = '1';
-
       if (!fullscreenUnlocked) btnPlay.style.opacity = '1';
     }, 500);
   }
 }
-
-
 // ══════════════════════════════════════════════
 // ── RETOUR ACCUEIL MOBILE
 // ══════════════════════════════════════════════
@@ -266,14 +250,30 @@ btnHome.addEventListener('click', () => {
   const logosCont  = document.getElementById('logos-container');
 
   if (btnSee)    btnSee.classList.remove('hidden-content');
-  if (editorMob) editorMob.classList.remove('hidden-content');
+  if (editorMob) {
+    editorMob.classList.remove('hidden-content');
+    editorMob.style.opacity = '1';
+  }
   if (logosCont) logosCont.style.opacity = '1';
+
+  // Reset texte-oeuvre et bouton info
+  const texteOeuvreEl = document.getElementById('texte-oeuvre');
+  const infoBtnEl = document.getElementById('info');
+  if (texteOeuvreEl) {
+    texteOeuvreEl.classList.remove('visible');
+    texteOeuvreEl.style.opacity = '';
+  }
+  if (infoBtnEl) infoBtnEl.textContent = '+';
+
+  // Reset bouton play — sinon il garde son état de la session précédente
+  btnPlay.style.opacity = '';
+  btnPlay.style.pointerEvents = '';
+  document.getElementById('part_3')?.classList.remove('part3-info2-visible');
 
   document.getElementById('btn-lang').classList.remove('nav_link');
   mobileSlideshowIndex = 0;
   initMobileSlideshow();
 });
-
 
 
 
@@ -379,23 +379,17 @@ const topQ3Pct = toPercent(topFadeHeightPx + 80);
     const fadeHeightPx = 100;
     const hiddenZonePx = 40;
 
-    let bottomStartPct, bottomQ1Pct, bottomQ2Pct, bottomQ3Pct, bottomEndPct;
+const bottomStartPx = (window.innerHeight - hiddenZonePx - fadeHeightPx) - rect.top;
+    const bottomEndPx = (window.innerHeight - hiddenZonePx) - rect.top;
+    const q1Px = bottomStartPx + (bottomEndPx - bottomStartPx) * 0.5;
+    const q2Px = bottomStartPx + (bottomEndPx - bottomStartPx) * 0.75;
+    const q3Px = bottomStartPx + (bottomEndPx - bottomStartPx) * 0.9;
 
-    if (rect.bottom <= window.innerHeight) {
-      bottomStartPct = bottomQ1Pct = bottomQ2Pct = bottomQ3Pct = bottomEndPct = 100;
-    } else {
-      const bottomStartPx = (window.innerHeight - hiddenZonePx - fadeHeightPx) - rect.top;
-      const bottomEndPx = (window.innerHeight - hiddenZonePx) - rect.top;
-      const q1Px = bottomStartPx + (bottomEndPx - bottomStartPx) * 0.5;
-      const q2Px = bottomStartPx + (bottomEndPx - bottomStartPx) * 0.75;
-      const q3Px = bottomStartPx + (bottomEndPx - bottomStartPx) * 0.9;
-
-      bottomStartPct = toPercent(bottomStartPx);
-      bottomQ1Pct = toPercent(q1Px);
-      bottomQ2Pct = toPercent(q2Px);
-      bottomQ3Pct = toPercent(q3Px);
-      bottomEndPct = toPercent(bottomEndPx);
-    }
+    const bottomStartPct = toPercent(bottomStartPx);
+    const bottomQ1Pct = toPercent(q1Px);
+    const bottomQ2Pct = toPercent(q2Px);
+    const bottomQ3Pct = toPercent(q3Px);
+    const bottomEndPct = toPercent(bottomEndPx);
 
 const gradient = `linear-gradient(to bottom,
   transparent 0%,
@@ -527,18 +521,16 @@ function updateMobileListHighlight(activeId) {
 // ── FULLSCREEN MOBILE
 // ══════════════════════════════════════════════
 
-if (isMobile()) {
-  const btnFs = document.getElementById('fullscreen');
-  if (btnFs) {
+const btnFs = document.getElementById('fullscreen');
 
-
-video.addEventListener('play', () => {
+function onMobileVideoPlay() {
+  if (!btnFs) return;
   document.getElementById('next_artist')?.classList.remove('visible');
   document.getElementById('list_artist')?.classList.remove('visible');
 
   setTimeout(() => {
     btnFs.style.position = 'fixed';
-    btnFs.style.bottom = '14px';
+    btnFs.style.bottom = '0px';
     btnFs.style.left = '50%';
     btnFs.style.right = 'auto';
     btnFs.style.transform = 'translateX(-50%)';
@@ -546,20 +538,73 @@ video.addEventListener('play', () => {
     btnFs.style.opacity = '1';
     btnFs.style.pointerEvents = 'auto';
   }, 2000);
-});
+}
 
-video.addEventListener('pause', () => {
+function onMobileVideoPause() {
+  if (!btnFs) return;
   btnFs.style.opacity = '0';
   btnFs.style.pointerEvents = 'none';
-
   document.getElementById('next_artist')?.classList.add('visible');
   document.getElementById('list_artist')?.classList.add('visible');
-});
-  }
+}
+
+if (isMobile() && btnFs) {
+  video.addEventListener('play', onMobileVideoPlay);
+  video.addEventListener('pause', onMobileVideoPause);
 }
 
 
+// ══════════════════════════════════════════════
+// ── TAP POUR AFFICHER PLAY/PAUSE (MOBILE)
+// ══════════════════════════════════════════════
+let mobileBtnPlayHideTimer = null;
+function showBtnMobile() {
+  btnPlay.style.opacity = '1';
+  btnPlay.style.pointerEvents = 'auto';
+  clearTimeout(mobileBtnPlayHideTimer);
+  mobileBtnPlayHideTimer = setTimeout(() => {
+    if (!video.paused || hasStarted) {
+      btnPlay.style.opacity = '0';
+      btnPlay.style.pointerEvents = 'none';
+    }
+  }, 2000);
+}
 
+if (isMobile()) {
+  video.addEventListener('click', (e) => {
+    if (e.target.closest('#btn-play')) return;
+    if (!hasStarted) {
+      handlePlayPauseClick(e);
+      return;
+    }
+    showBtnMobile();
+  });
+
+  // Overlay tactile pour Vimeo (l'iframe bloque la propagation du clic)
+  const vimeoTapOverlay = document.createElement('div');
+  vimeoTapOverlay.id = 'vimeo-tap-overlay';
+  vimeoTapOverlay.style.cssText = `
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: none;
+  `;
+  videoWrapper.appendChild(vimeoTapOverlay);
+
+  vimeoTapOverlay.addEventListener('click', () => {
+    showBtnMobile();
+    vimeoTapOverlay.style.pointerEvents = 'none';
+    setTimeout(() => {
+      vimeoTapOverlay.style.pointerEvents = 'auto';
+    }, 300);
+  });
+
+  function toggleVimeoOverlay() {
+    const data = artistes[artisteCourant];
+    vimeoTapOverlay.style.display = (data?.vimeo && hasStarted) ? 'block' : 'none';
+  }
+  window.toggleVimeoOverlay = toggleVimeoOverlay;
+}
 
 // ══════════════════════════════════════════════
 // ── ENTRER MODE CINE MOBILE
@@ -569,8 +614,8 @@ function enterCinemaFromHomeMobile() {
   const titreHaut = document.getElementById('titre-haut');
   const titreGauche = document.querySelector('#gauche .titre');
 
-  titreHaut.style.transition = 'none';
-  titreGauche.style.transition = 'none';
+  titreHaut.style.transition = 'opacity 0.5s ease';
+  titreGauche.style.transition = 'opacity 0.5s ease';
   titreHaut.style.opacity = '0';
   titreGauche.style.opacity = '0';
   void titreHaut.offsetHeight;
@@ -582,12 +627,12 @@ function enterCinemaFromHomeMobile() {
 
   animateTunnel();
 
-  document.body.classList.add('cinema-mode');
   btnPlay.style.color = 'black';
   document.getElementById('btn_home').style.opacity = '0';
   document.getElementById('btn_home').style.pointerEvents = 'none';
 
 setTimeout(() => {
+  document.body.classList.add('cinema-mode');
   document.documentElement.style.setProperty('--p2typo', 'white');
   requestAnimationFrame(() => {
     titreHaut.style.transition = 'opacity 0.7s ease';

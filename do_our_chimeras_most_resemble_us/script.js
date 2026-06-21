@@ -57,13 +57,18 @@ const linesConfig = {
 
 let lines = linesConfig[currentLang];
 
+
+
 function buildTitreHaut() {
+
   const container = document.getElementById('titre-haut');
   if (!container) return;
 
+
+
   let lineDataSet;
-  if (isMobile() && currentLang === "FR") {
-    lineDataSet = TITRE_SVG_DATA.titreHautFRMobile[1]; // version 4 lignes (longue)
+if (isMobile() && currentLang === "FR") {
+    lineDataSet = [TITRE_SVG_DATA.titreHautFRMobile[0], TITRE_SVG_DATA.titreHautFRMobile[1]];
 } else if (isMobile() && currentLang === "EN") {
     lineDataSet = TITRE_SVG_DATA.titreHautENMobile; // ← 2 lignes, pas waveMobileEN
 } else if (currentLang === "FR") {
@@ -88,34 +93,19 @@ function buildTitreHaut() {
     wrapper.appendChild(lineDiv);
     buildStaticLetterLine(lineDiv, lineData, scale);
   });
-}
 
+
+}
 
 function applyLang() {
   const t = translations[currentLang];
   const part3 = document.getElementById('part_3');
   const isPage2 = part3.classList.contains('visible');
-const texteWasVisible = document.getElementById('texte-oeuvre')?.classList.contains('visible');
+  const texteWasVisible = document.getElementById('texte-oeuvre')?.classList.contains('visible');
 
   document.querySelectorAll('.editor-mobile text').forEach(el => {
     el.style.fontSize = currentLang === "FR" ? "4em" : "5.5em";
   });
-
-
-
-  document.getElementById("btn-lang").addEventListener("click", (e) => {
-    console.log("CLICK LANG");
-    console.log("avant", currentLang);
-
-    currentLang = currentLang === "EN" ? "FR" : "EN";
-
-    console.log("apres", currentLang);
-
-    applyLang();
-});
-
-
-  
 
   // Fade out titre si intro déjà jouée
   if (introPlayed) {
@@ -133,11 +123,11 @@ const texteWasVisible = document.getElementById('texte-oeuvre')?.classList.conta
     document.getElementById('btn-play'),
     document.getElementById('fullscreen'),
     document.getElementById('btn_cine_switch'),
-  document.getElementById('btn_home'),
-  document.getElementById('texte-oeuvre'),
-  document.getElementById('info'),
-  document.getElementById('list_artist'),
-  document.getElementById('next_artist'),
+    document.getElementById('btn_home'),
+    document.getElementById('texte-oeuvre'),
+    document.getElementById('info'),
+    document.getElementById('list_artist'),
+    document.getElementById('next_artist'),
   ];
 
   // Fade out
@@ -154,10 +144,11 @@ const texteWasVisible = document.getElementById('texte-oeuvre')?.classList.conta
     }
 
     setText("btn-lang", currentLang === "EN" ? "→fr" : "→en");
+    document.body.classList.toggle('lang-fr', currentLang === "FR");
 
-buildTitreHaut();
-buildDesktopWaveLines();
-buildMobileWaveLines();
+    buildTitreHaut();
+    buildDesktopWaveLines();
+    buildMobileWaveLines();
 
     setText("about-label", t.about);
     setText("btn_home", t.exhibitionEntrance);
@@ -172,7 +163,6 @@ buildMobileWaveLines();
     }
     setText("list_artist", t.artists);
 
-
     const boiteAbout = document.getElementById("boite_about");
     if (boiteAbout) {
       boiteAbout.style.transition = "none";
@@ -180,14 +170,17 @@ buildMobileWaveLines();
       setTimeout(() => { boiteAbout.style.transition = ""; }, 300);
     }
 
-lines = linesConfig[currentLang];
+    lines = linesConfig[currentLang];
+
+
 
     if (isPage2 && artisteCourant) {
       const data = artistes[artisteCourant];
       if (data) {
         const texteOeuvre = document.getElementById('texte-oeuvre');
         if (texteOeuvre) {
-renderTexteOeuvre(data, currentLang);        }
+          renderTexteOeuvre(data, currentLang);
+        }
       }
     }
 
@@ -203,38 +196,59 @@ renderTexteOeuvre(data, currentLang);        }
       if (edm) { edm.style.transition = 'opacity 0.8s ease'; edm.style.opacity = '1'; }
     }
 
-
-els.forEach(el => {
-  if (!el) return;
-  if (el.id === "titre-haut") {
-    setOpacity(el, isPage2 ? '1' : '0', '0.8s');
-  } else if (el.id === "btn-lang") {
-    setOpacity(el, introPlayed ? '1' : '0', '0.8s');
-  } else if (el.id === "texte-oeuvre") {
-    setOpacity(el, isPage2 && texteWasVisible ? '1' : '0', '0.8s');
-  } else if (el.id === "info") {
-    setOpacity(el, isPage2 ? '1' : '0', '0.8s');
-  } else if (el.id === "btn_home") {
-    setOpacity(el, isPage2 ? '0.8' : '0', '0.8s');
-  } else if (el.id === "btn-play") {
+    els.forEach(el => {
+      if (!el) return;
+      if (el.id === "titre-haut") {
+        setOpacity(el, isPage2 ? '1' : '0', '0.8s');
+      } else if (el.id === "btn-lang") {
+        setOpacity(el, introPlayed ? '1' : '0', '0.8s');
+      } else if (el.id === "texte-oeuvre") {
+        setOpacity(el, isPage2 && texteWasVisible ? '1' : '0', '0.8s');
+      } else if (el.id === "info") {
+        setOpacity(el, isPage2 ? '1' : '0', '0.8s');
+      } else if (el.id === "btn_home") {
+        setOpacity(el, isPage2 ? '0.8' : '0', '0.8s');
+      } else if (el.id === "btn-play") {
         if (isMobile()) {
           setOpacity(el, introPlayed ? '1' : '0', '0.8s');
         } else {
           setOpacity(el, '1', '0.8s');
         }
-  } else {
-    setOpacity(el, '1', '0.8s');
-  }
-});
+      } else {
+        setOpacity(el, '1', '0.8s');
+      }
+    });
 
-if (!introPlayed && !playIntroCalled) {
-  introPlayed = true;
-  playIntroCalled = true;
-  playIntro();
-}
+    if (!introPlayed && !playIntroCalled) {
+      introPlayed = true;
+      playIntroCalled = true;
+      playIntro();
+    }
 
   }, 800);
 }
+
+
+
+
+
+
+
+// TEMPORAIRE — affichage de base le temps du nettoyage
+function showBasicsTemp() {
+  const ids = ['editor', 'editor-mobile', 'artistes-container', 'btn-lang', 'btn_cine_switch', 'logos-container'];
+  ids.forEach(id => {
+    const el = document.getElementById(id) || document.querySelector('.' + id);
+    if (el) el.style.opacity = '1';
+  });
+  const editorEl = document.querySelector('.editor');
+  if (editorEl) editorEl.style.opacity = '1';
+
+  // TEMPORAIRE — forcer la visibilité de la boîte about
+  document.getElementById('boite_about')?.classList.add('visible');
+}
+
+
 
 // Init au chargement + clic bouton
 document.addEventListener("DOMContentLoaded", () => {
@@ -970,6 +984,9 @@ if (fullscreenWasVisible) {
     if (fullscreenWasVisible) setOpacity(fullscreen, '0', '0.8s');
     if (texteWasVisible) setOpacity(texte, '0', '0.4s');
     if (infoBtnVisible) setOpacity(infoBtn, '0', '0.4s');
+    if (isMobile() && !hasStarted) {
+      setOpacity(btnPlay, '0', '0.4s');
+    }
 
     // 2. fond noir disparaît
     cinemaOverlay.classList.add('closing');
@@ -986,7 +1003,7 @@ if (fullscreenWasVisible) {
       btnPlay.style.color = 'white';
 
       // 4. texte réapparaît en noir
-      alwaysVisible.forEach(el => {
+alwaysVisible.forEach(el => {
         if (!el) return;
         if (el === infoBtn) return;
         if (el === titreHaut || el === gaucheTitre || el === btnHome || el === btnCine) {
@@ -1001,6 +1018,20 @@ if (fullscreenWasVisible) {
       }
       if (texteWasVisible) setOpacity(texte, '', '0.8s');
       if (infoBtnVisible) setOpacity(infoBtn, '1', '0.8s');
+
+if (isMobile()) {
+        setOpacity(btnLang, '1', '0.8s');
+        if (!hasStarted) {
+          btnPlay.style.transition = 'none';
+          btnPlay.style.opacity = '0';
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              btnPlay.style.transition = 'opacity 0.8s ease';
+              btnPlay.style.opacity = '1';
+            });
+          });
+        }
+      }
 
     }, 1200);
   }
@@ -1477,103 +1508,104 @@ document.getElementById('titre-haut').addEventListener('click', () => {
 // ══════════════════════════════════════════════
 // ── PLAY / PAUSE VIDÉO ────────────────────────
 // ══════════════════════════════════════════════
-btnPlay.addEventListener('click', async (e) => {
+
+
+async function handlePlayPauseClick(e) {
   e.preventDefault();
   e.stopPropagation();
 
   const data = artistes[artisteCourant];
 
-if (data?.vimeo) {
-  // si déjà démarré → toggle pause/play
-  if (hasStarted && vimeoPlayer) {
-    vimeoPlayer.getPaused().then(paused => {
-      if (paused) {
-        vimeoPlayer.play();
-      } else {
-        vimeoPlayer.pause();
-      }
-    });
+  if (data?.vimeo) {
+    if (hasStarted && vimeoPlayer) {
+      vimeoPlayer.getPaused().then(paused => {
+        if (paused) {
+          vimeoPlayer.play();
+        } else {
+          vimeoPlayer.pause();
+        }
+      });
+      return;
+    }
+
+    video.style.transition = 'opacity 0.8s ease';
+    video.style.opacity = '0';
+    btnPlay.style.opacity = '0';
+    btnPlay.style.pointerEvents = 'none';
+
+    setTimeout(() => {
+      video.style.display = 'none';
+      vimeoFrame.style.backgroundImage = 'none';
+      const hash = data.vimeoHash ? `&h=${data.vimeoHash}` : '';
+      const queryParams = [
+        'badge=0', 'autopause=0', 'player_id=0', 'app_id=58479',
+        'title=0', 'byline=0', 'portrait=0', 'color=ffffff',
+        'controls=0', 'dnt=1',
+      ].join('&');
+
+      vimeoFrame.src = `https://player.vimeo.com/video/${data.vimeo}?${queryParams}${hash}&autoplay=1`;
+      vimeoFrame.style.display = 'block';
+      vimeoFrame.style.transition = 'opacity 0.8s ease';
+      vimeoFrame.style.opacity = '1';
+      video.style.display = 'none';
+      hasStarted = true;
+      if (typeof window.toggleVimeoOverlay === 'function') window.toggleVimeoOverlay();
+
+      setTimeout(() => {
+        fullscreenBtn.style.display = 'block';
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            fullscreenBtn.style.opacity = '1';
+            fullscreenVisible = true;
+          });
+        });
+      }, 2000);
+
+      vimeoPlayer = new Vimeo.Player(vimeoFrame);
+
+      vimeoPlayer.on('timeupdate', (data) => {
+        const pct = (data.seconds / data.duration) * 100;
+        timelineFill.style.width = pct + '%';
+      });
+
+      vimeoPlayer.on('play', () => {
+        btnPlay.textContent = 'Pause';
+        btnPlay.classList.add('playing');
+        btnPlay.style.opacity = '0';
+        btnPlay.style.pointerEvents = 'none';
+        if (isMobile() && typeof onMobileVideoPlay === 'function') onMobileVideoPlay();
+      });
+
+      vimeoPlayer.on('pause', () => {
+        btnPlay.textContent = translations[currentLang].playVideo;
+        btnPlay.classList.remove('playing');
+        btnPlay.style.opacity = '1';
+        btnPlay.style.pointerEvents = 'auto';
+        showInfo3();
+        if (isMobile() && typeof onMobileVideoPause === 'function') onMobileVideoPause();
+      });
+
+      vimeoPlayer.on('ended', () => {
+        btnPlay.textContent = translations[currentLang].playVideo;
+        btnPlay.classList.remove('playing');
+        vimeoFrame.style.transition = 'opacity 0.8s ease';
+        vimeoFrame.style.opacity = '0';
+        setTimeout(() => {
+          vimeoFrame.style.display = 'none';
+          video.style.display = 'block';
+          video.style.opacity = '1';
+          positionVimeoBtn();
+        }, 800);
+        hasStarted = false;
+        vimeoPlayer = null;
+        showInfo3();
+        if (typeof window.toggleVimeoOverlay === 'function') window.toggleVimeoOverlay();
+      });
+
+    }, 800);
     return;
   }
 
-  // premier lancement
-  video.style.transition = 'opacity 0.8s ease';
-  video.style.opacity = '0';
-  btnPlay.style.opacity = '0';
-  btnPlay.style.pointerEvents = 'none';
-
-  setTimeout(() => {
-    video.style.display = 'none';
-    vimeoFrame.style.backgroundImage = 'none';
-    const hash = data.vimeoHash ? `&h=${data.vimeoHash}` : '';
-    const queryParams = [
-      'badge=0', 'autopause=0', 'player_id=0', 'app_id=58479',
-      'title=0', 'byline=0', 'portrait=0', 'color=ffffff',
-      'controls=0', 'dnt=1',
-    ].join('&');
-
-    vimeoFrame.src = `https://player.vimeo.com/video/${data.vimeo}?${queryParams}${hash}&autoplay=1`;
-    vimeoFrame.style.display = 'block';
-    vimeoFrame.style.transition = 'opacity 0.8s ease';
-    vimeoFrame.style.opacity = '1';
-    video.style.display = 'none';
-    hasStarted = true;
-    showInfo3();
-
-
-setTimeout(() => {
-  fullscreenBtn.style.display = 'block';
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      fullscreenBtn.style.opacity = '1';
-      fullscreenVisible = true;
-    });
-  });
-}, 2000);
-    // initialise le player Vimeo
-    vimeoPlayer = new Vimeo.Player(vimeoFrame);
-
-
-vimeoPlayer.on('timeupdate', (data) => {
-  const pct = (data.seconds / data.duration) * 100;
-  timelineFill.style.width = pct + '%';
-});
-
-
-    vimeoPlayer.on('play', () => {
-      btnPlay.textContent = 'Pause';
-      btnPlay.classList.add('playing');
-      btnPlay.style.opacity = '0';
-      btnPlay.style.pointerEvents = 'none';
-    });
-
-    vimeoPlayer.on('pause', () => {
-      btnPlay.textContent = translations[currentLang].playVideo;
-      btnPlay.classList.remove('playing');
-      btnPlay.style.opacity = '1';
-      btnPlay.style.pointerEvents = 'auto';
-      showInfo3();
-    });
-
-    vimeoPlayer.on('ended', () => {
-  btnPlay.textContent = translations[currentLang].playVideo;
-  btnPlay.classList.remove('playing');
-  vimeoFrame.style.transition = 'opacity 0.8s ease';
-  vimeoFrame.style.opacity = '0';
-  setTimeout(() => {
-    vimeoFrame.style.display = 'none';
-    video.style.display = 'block';
-    video.style.opacity = '1';
-    positionVimeoBtn();
-  }, 800);
-  hasStarted = false;
-  vimeoPlayer = null;
-  showInfo3();
-});
-
-  }, 800);
-  return;
-}
   if (video.paused) {
     if (!hasStarted) {
       video.style.transition = 'opacity 0.8s ease';
@@ -1614,7 +1646,18 @@ vimeoPlayer.on('timeupdate', (data) => {
   } else {
     video.pause();
   }
-});
+}
+
+btnPlay.addEventListener('click', handlePlayPauseClick);
+
+
+
+
+
+
+
+
+
 
 video.addEventListener('play', () => {
   btnPlay.textContent = 'Pause';
@@ -1674,8 +1717,26 @@ function showBtn() {
     }
   }, 2000);
 }
-videoWrapper.addEventListener('mousemove', showBtn);
-videoWrapper.addEventListener('mouseenter', showBtn);
+if (window.innerWidth > 768) {
+  videoWrapper.addEventListener('mousemove', showBtn);
+  videoWrapper.addEventListener('mouseenter', showBtn);
+}
+videoWrapper.addEventListener('mouseleave', () => {
+  clearTimeout(hideTimer);
+
+  if (!video.paused || hasStarted) {
+    btnPlay.style.opacity = '0';
+    btnPlay.style.pointerEvents = 'none';
+  }
+
+  if (document.fullscreenElement) {
+    btnRestart.style.opacity = '0';
+    fullscreenExit.style.opacity = '0';
+    timelineFull.style.opacity = '0';
+  }
+
+  videoWrapper.style.cursor = 'default';
+});
 videoWrapper.addEventListener('mouseleave', () => {
   clearTimeout(hideTimer);
 
@@ -1747,26 +1808,44 @@ document.addEventListener('fullscreenchange', () => {
     btnRestart.style.display = 'block';
     btnRestart.style.opacity = '1';
 
+const mobileFs = isMobile();
+
     if (data?.vimeo) {
-      vimeoFrame.style.width    = '100vw';
-      vimeoFrame.style.height   = 'calc(100vw * 9 / 16)';
+      if (mobileFs) {
+        vimeoFrame.style.width    = '100svh';
+        vimeoFrame.style.height   = '100vw';
+      } else {
+        vimeoFrame.style.width    = '100vw';
+        vimeoFrame.style.height   = 'calc(100vw * 9 / 16)';
+      }
       vimeoFrame.style.position = 'absolute';
-      vimeoFrame.style.top      = '0';
-      vimeoFrame.style.left     = '0';
-  btnPlay.style.top       = '50%';
-  btnPlay.style.left      = '50%';
-  btnPlay.style.right     = 'auto';
-  btnPlay.style.transform = 'translate(-50%, -50%)';
+      vimeoFrame.style.top      = '50%';
+      vimeoFrame.style.left     = '50%';
+      btnPlay.style.top       = '50%';
+      btnPlay.style.left      = '50%';
+      btnPlay.style.right     = 'auto';
+      btnPlay.style.transform = mobileFs
+        ? 'translate(-50%, -50%) rotate(90deg)'
+        : 'translate(-50%, -50%)';
 
     } else {
       btnPlay.style.top       = '50%';
       btnPlay.style.left      = '50%';
       btnPlay.style.right     = 'auto';
       btnPlay.style.bottom    = 'auto';
-      btnPlay.style.transform = 'translate(-50%,-50%)';
-      video.style.width          = '100vw';
-      video.style.height         = '95vh';
-      video.style.objectPosition = 'center center';
+      btnPlay.style.transform = mobileFs
+        ? 'translate(-50%, -50%) rotate(90deg)'
+        : 'translate(-50%,-50%)';
+
+      if (mobileFs) {
+        video.style.width          = '100svh';
+        video.style.height         = '100vw';
+        video.style.objectPosition = 'center center';
+      } else {
+        video.style.width          = '100vw';
+        video.style.height         = '95vh';
+        video.style.objectPosition = 'center center';
+      }
       document.fullscreenElement.addEventListener('mousemove', showBtn);
       showBtn();
     }
@@ -1797,12 +1876,18 @@ if (wasInCinemaModeBeforeFullscreen) {
       vimeoFrame.style.top      = '';
       vimeoFrame.style.left     = '';
        positionVimeoBtn();
-    } else {
-      video.style.width          = '63vw';
-      video.style.height         = '80vh';
-      video.style.objectPosition = 'right top';
-      video.dispatchEvent(new Event('loadedmetadata'));
-    }
+} else {
+  if (window.innerWidth > 768) {
+    video.style.width          = '63vw';
+    video.style.height         = '80vh';
+    video.style.objectPosition = 'right top';
+  } else {
+    video.style.width          = '';
+    video.style.height         = '';
+    video.style.objectPosition = '';
+  }
+  video.dispatchEvent(new Event('loadedmetadata'));
+}
   }
 });
 
@@ -1914,7 +1999,7 @@ function transitionToArtist(id) {
   isTransitioning = true;
 
   // — SORTIE
-[video, titre, titreHaut, infoBtn].forEach(el => {
+[video, titre, infoBtn].forEach(el => {
   el.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
   el.style.opacity = '0';
   el.style.transform = 'translateY(12px)';
@@ -1927,7 +2012,7 @@ btnPlay.style.opacity = '0';
     texte.style.transform = 'translateY(12px)';
   }
 
-  setTimeout(() => {
+setTimeout(() => {
     // — RESET contenu
 titre.innerHTML = formatTitreArtiste(data.nom, data.titre, titre);    
 
@@ -1935,23 +2020,40 @@ titre.innerHTML = formatTitreArtiste(data.nom, data.titre, titre);
     texte.textContent = currentLang === "FR" && data.textFR ? data.textFR : data.text;
     texte.scrollTop = 0;
 
+    if (isMobile()) {
+      const part3El = document.getElementById('part_3');
+      if (part3El) part3El.scrollTop = 0;
+      if (typeof recalcTitreHeight === 'function') recalcTitreHeight();
+      if (typeof window.updateBottomMaskMobile === 'function') window.updateBottomMaskMobile();
+    }
+
+
     hasStarted = false;
     vimeoPlayer = null;
     btnPlay.textContent = translations[currentLang].playVideo;
     btnPlay.classList.remove('playing');
+    btnPlay.style.pointerEvents = '';
 
     if (!info3AlreadyShown) { texte.classList.remove('visible'); infoBtn.textContent = '+'; texteWrapper.classList.remove('visible'); }
     if (!info3AlreadyShown) hideInfo3();
     if (info3AlreadyShown) showInfo3();
 
-    if (fullscreenUnlocked) { fullscreenBtn.style.display = 'block'; fullscreenBtn.style.opacity = '1'; fullscreenVisible = true; }
-    else { fullscreenBtn.style.display = 'none'; fullscreenBtn.style.opacity = '0'; fullscreenVisible = false; }
+    if (isMobile()) {
+      fullscreenBtn.style.display = 'none';
+      fullscreenBtn.style.opacity = '0';
+      fullscreenVisible = false;
+    } else {
+      if (fullscreenUnlocked) { fullscreenBtn.style.display = 'block'; fullscreenBtn.style.opacity = '1'; fullscreenVisible = true; }
+      else { fullscreenBtn.style.display = 'none'; fullscreenBtn.style.opacity = '0'; fullscreenVisible = false; }
+    }
+
+
 
     const next2 = getNextArtisteId(id);
     document.getElementById('next_artist').textContent = `→ ${artistes[next2].nom}`;
 
     // — ENTRÉE : invisible d'abord
-    [video, titre, infoBtn, titreHaut, btnPlay].forEach(el => {
+    [video, titre, infoBtn, btnPlay].forEach(el => {
       el.style.transition = 'none';
       el.style.opacity = '0';
       el.style.transform = 'translateY(12px)';
@@ -1964,7 +2066,7 @@ titre.innerHTML = formatTitreArtiste(data.nom, data.titre, titre);
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-[video, titre, titreHaut, infoBtn].forEach(el => {
+[video, titre, infoBtn].forEach(el => {
   el.style.transition = 'opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1)';
   el.style.opacity = '1';
   el.style.transform = 'translateY(0)';
@@ -2447,6 +2549,15 @@ setTimeout(() => positionVimeoBtn(), 1100);
 
 
 function positionVimeoBtn() {
+  if (window.innerWidth <= 768) {
+    btnPlay.style.top = '';
+    btnPlay.style.right = '';
+    btnPlay.style.left = '';
+    btnPlay.style.transform = '';
+    btnPlay.style.whiteSpace = '';
+    return;
+  }
+
   const wrapperW = window.innerWidth * 0.63;
   const wrapperH = window.innerHeight * 0.8;
   const wrapperRatio = wrapperW / wrapperH;

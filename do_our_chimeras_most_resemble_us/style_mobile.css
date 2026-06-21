@@ -147,11 +147,41 @@ body.part3-active #btn-lang {
   gap: 0px;
   transition: opacity 2s ease;
 }
+
+body.lang-fr .editor-mobile {
+  width: 90vw;
+  max-width: 90vw;
+}
+
   /* Épaisseur du contour titre mobile — modifier stroke-width ici */
 .titre-svg-letter path {
     stroke-width: 0.8px;
   }
 
+body.lang-fr .titre-svg-letter path {
+  stroke-width: 1px;
+}
+
+
+  .editor {
+    display: none;
+  }
+
+#mobile-wave-lines {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-top: 7vh;
+}
+
+body.lang-fr #mobile-wave-lines {
+  gap: 15px;
+}
+
+body.lang-fr #mobile-wave-lines > div:nth-child(4) {
+  margin-top: -15px;
+}
 
   /* ══════════════════════════════════════════════
      PART 1 — CARROUSEL → MASQUÉ SUR MOBILE
@@ -360,7 +390,7 @@ body.part3-active #btn-lang {
      ══════════════════════════════════════════════ */
 
   #titre-haut {
-    top: 30px;
+    top: 18px;
     left: 17px;
     z-index: 250;
     width: calc(100vw - 34px);
@@ -374,6 +404,18 @@ body.cinema-mode #titre-haut .titre-svg-letter path {
   stroke-width: 2px;
 }
 
+#titre-haut > div {
+  gap: 8px;
+}
+
+body.lang-fr:has(#mobile-artists-list.visible) #titre-haut .titre-svg-letter path {
+  stroke-width: 1.5px;
+}
+
+body.lang-fr.cinema-mode #titre-haut .titre-svg-letter path {
+  fill: white;
+  stroke: none;
+}
 #top-right-buttons {
   position: fixed;
 top:calc(26px + 3.5em + 44px);
@@ -421,6 +463,24 @@ top:calc(26px + 3.5em + 44px);
     object-position: center center;
   }
 
+
+#vimeo-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: auto;
+  width: 100vw;
+  height: calc(100vw * 9 / 16);
+  max-height: 75svh;
+}
+
+
+#video-wrapper.is-vimeo {
+  height: calc(100vw * 9 / 16);
+  max-height: 75svh;
+}
+
+
   .video-hover-preview {
     width: 100vw;
     height: auto;
@@ -433,6 +493,7 @@ top:calc(26px + 3.5em + 44px);
   }
 
   #btn-play {
+    pointer-events: auto;
     width: 100vw;
     text-align: center;
     font-size: 5em;
@@ -441,6 +502,45 @@ top:calc(26px + 3.5em + 44px);
     right: auto !important;
     transform: translate(-50%, -50%) !important;
     transition: opacity 1s ease, color 0.5s ease, text-shadow 0.8s ease, -webkit-text-stroke 1s ease-out;}
+
+
+
+
+/* ══════════════════════════════════════════════
+     PART 3 — PLEIN ÉCRAN MOBILE : ROTATION PAYSAGE
+     ══════════════════════════════════════════════ */
+
+  #video-wrapper:fullscreen,
+  #video-wrapper:-webkit-full-screen {
+    width: 100vw !important;
+    height: 100svh !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: black;
+  }
+
+  #video-wrapper:fullscreen #video,
+  #video-wrapper:-webkit-full-screen #video,
+  #video-wrapper:fullscreen #vimeo-frame,
+  #video-wrapper:-webkit-full-screen #vimeo-frame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100svh !important;
+    height: 100vw !important;
+    transform: translate(-50%, -50%) rotate(90deg);
+    transform-origin: center center;
+    object-fit: contain;
+  }
+
+  #video-wrapper:fullscreen #btn-play,
+  #video-wrapper:-webkit-full-screen #btn-play {
+    transform: translate(-50%, -50%) rotate(90deg) !important;
+  }
+
+  
 
 
   /* ══════════════════════════════════════════════
@@ -499,6 +599,7 @@ top:calc(26px + 3.5em + 44px);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.5s ease;
+    z-index: 500;
   }
 
   #list_artist {
@@ -550,7 +651,7 @@ top:calc(26px + 3.5em + 44px);
 
 
 .part3-video-visible .video-pack #btn-play {
-  opacity: revert;
+  opacity: 0;
 }
   /* ══════════════════════════════════════════════
      TOUCH — SUPPRESSION DES HOVER STATES

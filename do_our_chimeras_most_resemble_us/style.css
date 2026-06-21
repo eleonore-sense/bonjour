@@ -1031,6 +1031,14 @@ font-style: italic;
   width: 100vw !important;
   height: calc(100vw * 9 / 16) !important;
 }
+
+@media (max-width: 768px) {
+  #video-wrapper:fullscreen #vimeo-frame,
+  #video-wrapper:-webkit-full-screen #vimeo-frame {
+    width: 100svh !important;
+    height: 100vw !important;
+  }
+}
 /* Timeline */
 #timeline-fullscreen {
   position: absolute;
@@ -1374,20 +1382,7 @@ font-style: italic;
   display: none;
 }
 
-@media (max-width: 768px) {
-  /* Cache le titre desktop */
-  .editor {
-    display: none;
-  }
 
-  #mobile-wave-lines {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-    margin-top: 7vh;
-  }
-}
 
 
 #about-close-mobile{
