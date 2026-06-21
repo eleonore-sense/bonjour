@@ -71,14 +71,7 @@ setTransitionFor(['editor-mobile', 'logos-container', 'btn-lang', 'about'], '1s'
 
 void document.body.offsetHeight;
 list.classList.add('visible');
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        if (typeof recalcMobileArtistsListGap === 'function') recalcMobileArtistsListGap();
-      });
-    });
-
-
+    document.body.classList.add('artists-list-open'); 
 
     const editorMobile = document.getElementById('editor-mobile');
     editorMobile?.classList.add('appearing');
@@ -122,6 +115,7 @@ function closeMobileListOnly() {
 
   void document.body.offsetHeight;
   list?.classList.remove('visible');
+  document.body.classList.remove('artists-list-open'); 
   document.getElementById('titre-haut')?.style.setProperty('opacity', '0');
 
   if (btnSee) {
@@ -346,37 +340,6 @@ function recalcTopButtonsHeight() {
 }
 
 
-
-function recalcMobileArtistsListGap() {
-  const list = document.getElementById('mobile-artists-list');
-  const titreHaut = document.getElementById('titre-haut');
-  if (!list || !titreHaut) return;
-
-  const DEFAULT_GAP = 37;
-  const SAFE_MARGIN = 16;
-
-  // on repart toujours du gap par défaut avant de mesurer
-  list.style.gap = DEFAULT_GAP + 'px';
-
-  const titreBottom = titreHaut.getBoundingClientRect().bottom + SAFE_MARGIN;
-  const listRect = list.getBoundingClientRect();
-
-  // si le haut de la liste centrée dépasse sous titre-haut, on réduit le gap
-  if (listRect.top < titreBottom) {
-    const items = list.querySelectorAll('.mobile-artist-item');
-    const count = items.length;
-    if (count <= 1) return;
-
-const overflow = titreBottom - listRect.top;
-    const gapReduction = Math.ceil(overflow / (count - 1));
-    const newGap = Math.max(16, DEFAULT_GAP - gapReduction);
-
-    list.style.gap = newGap + 'px';
-  }
-}
-
-window.recalcMobileArtistsListGap = recalcMobileArtistsListGap;
-window.addEventListener('resize', recalcMobileArtistsListGap);
 
 
 

@@ -240,7 +240,7 @@ body.lang-fr #mobile-wave-lines > div:nth-child(4) {
     justify-content: flex-end;
     align-items: flex-start;
     padding: 0 24px 90px 24px;
-    gap: 25px;
+    gap: 3.2vh;
     background: transparent;
     opacity: 0;
     pointer-events: none;
@@ -312,6 +312,15 @@ body.lang-fr #mobile-wave-lines > div:nth-child(4) {
       0 0 11px #ffffff,
       0 0 13px #ffffff;
   }
+
+  body.artists-list-open #logos-container,
+body.artists-list-open div[style*="top:15px"],
+body.artists-list-open #about,
+body.artists-list-open #editor-mobile,
+body.artists-list-open #btn-lang,
+body.artists-list-open #btn_cine_switch {
+  pointer-events: none !important;
+}
 
 
   /* ══════════════════════════════════════════════
@@ -469,7 +478,7 @@ top:calc(26px + 3.5em + 44px);
   position: absolute;
   top: 0;
   left: 0;
-  right: auto;
+  right: 0;
   width: 100vw;
   height: calc(100vw * 9 / 16);
   max-height: 75svh;
@@ -479,6 +488,7 @@ top:calc(26px + 3.5em + 44px);
 #video-wrapper.is-vimeo {
   height: calc(100vw * 9 / 16);
   max-height: 75svh;
+  width: 100vw;
 }
 
 
