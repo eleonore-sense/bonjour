@@ -240,7 +240,7 @@ body.lang-fr #mobile-wave-lines > div:nth-child(4) {
     justify-content: flex-end;
     align-items: flex-start;
     padding: 0 24px 90px 24px;
-    gap: 3vh;
+    gap: 2.5vh;
     background: transparent;
     opacity: 0;
     pointer-events: none;

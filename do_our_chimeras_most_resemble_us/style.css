@@ -546,6 +546,8 @@ body.lang-fr #desktop-wave-lines > div:not(:first-child) {
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
   will-change: transform;
+  overflow: hidden;
+    overscroll-behavior: none;
 }
 
 
