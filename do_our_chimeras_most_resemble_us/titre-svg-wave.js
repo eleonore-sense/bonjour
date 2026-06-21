@@ -44,7 +44,7 @@ function buildLetterLine(container, lineData, options = {}) {
     const renderedHeight = (h + padding * 2) * pxPerUnit;
     svg.style.width = renderedWidth + "px";
     svg.style.height = renderedHeight + "px";
-    svg.style.maxWidth = "100%"; // sécurité responsive : ne dépasse jamais le conteneur
+    svg.style.flexShrink = "0"; // empêche le flex parent de le compresser
   } else {
     // fallback ancien comportement (étirement à 100%) si pas d'échelle fournie
     svg.style.width = "100%";
@@ -87,7 +87,12 @@ function buildLetterLine(container, lineData, options = {}) {
  * @param {number} containerWidthPx - largeur dispo du conteneur en px
  * @returns {number} pxPerUnit
  */
-function computeSharedScale(lines, containerWidthPx) {
+function computeSharedScale(lines, containerWidthPx, containerHeightPx = null) {
+  if (containerHeightPx) {
+    const tallest = lines.reduce((max, l) => (l.h > max.h ? l : max), lines[0]);
+    const pxPerUnit = containerHeightPx / tallest.h;
+    return pxPerUnit;
+  }
   const widest = lines.reduce((max, l) => (l.w > max.w ? l : max), lines[0]);
   const pxPerUnit = containerWidthPx / widest.w;
   return pxPerUnit;

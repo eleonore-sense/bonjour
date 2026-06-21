@@ -58,7 +58,7 @@ function initMobileArtistsList() {
 
   document.body.appendChild(list);
 
-  btnSee.addEventListener('click', () => {
+btnSee.addEventListener('click', () => {
 
     // toggle : si liste visible → fermer
     if (list.classList.contains('visible')) {
@@ -71,6 +71,14 @@ setTransitionFor(['editor-mobile', 'logos-container', 'btn-lang', 'about'], '1s'
 
 void document.body.offsetHeight;
 list.classList.add('visible');
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (typeof recalcMobileArtistsListGap === 'function') recalcMobileArtistsListGap();
+      });
+    });
+
+
 
     const editorMobile = document.getElementById('editor-mobile');
     editorMobile?.classList.add('appearing');
@@ -191,9 +199,10 @@ loadArtistMedia(data);
     document.getElementById('btn-lang').classList.add('nav_link');
     const next = getNextArtisteId(id);
     document.getElementById('next_artist').textContent = `→ ${artistes[next].nom}`;
-    setTimeout(() => {
+setTimeout(() => {
       part3.classList.add('visible');
       initMobileScrollMask();
+      if (typeof recalcTopButtonsHeight === 'function') recalcTopButtonsHeight();
       setTimeout(() => { part3.classList.add('part3-video-visible'); }, 600);
       setTimeout(() => { 
         part3.classList.add('part3-info1-visible'); 
@@ -318,6 +327,56 @@ function recalcTitreHeight() {
   part3.style.setProperty('--titre-h', titreH + 'px');
   part3.style.setProperty('--titre-total-h', (titreH + infoH) + 'px');
 }
+
+
+function recalcTopButtonsHeight() {
+  if (!isMobile()) return;
+  const topButtons = document.getElementById('top-right-buttons');
+  const droite = document.getElementById('droite');
+  if (!topButtons || !droite) return;
+
+  const rect = topButtons.getBoundingClientRect();
+  const safeBottom = rect.bottom + 16; // 16px de marge de sécurité
+
+  // on ne descend jamais en dessous de 22vh (comportement d'origine sur grand écran)
+  const minPadding = window.innerHeight * 0.22;
+  const finalPadding = Math.max(minPadding, safeBottom);
+
+  droite.style.paddingTop = finalPadding + 'px';
+}
+
+
+
+function recalcMobileArtistsListGap() {
+  const list = document.getElementById('mobile-artists-list');
+  const titreHaut = document.getElementById('titre-haut');
+  if (!list || !titreHaut) return;
+
+  const DEFAULT_GAP = 37;
+  const SAFE_MARGIN = 16;
+
+  // on repart toujours du gap par défaut avant de mesurer
+  list.style.gap = DEFAULT_GAP + 'px';
+
+  const titreBottom = titreHaut.getBoundingClientRect().bottom + SAFE_MARGIN;
+  const listRect = list.getBoundingClientRect();
+
+  // si le haut de la liste centrée dépasse sous titre-haut, on réduit le gap
+  if (listRect.top < titreBottom) {
+    const items = list.querySelectorAll('.mobile-artist-item');
+    const count = items.length;
+    if (count <= 1) return;
+
+const overflow = titreBottom - listRect.top;
+    const gapReduction = Math.ceil(overflow / (count - 1));
+    const newGap = Math.max(16, DEFAULT_GAP - gapReduction);
+
+    list.style.gap = newGap + 'px';
+  }
+}
+
+window.recalcMobileArtistsListGap = recalcMobileArtistsListGap;
+window.addEventListener('resize', recalcMobileArtistsListGap);
 
 
 
@@ -529,6 +588,8 @@ function onMobileVideoPlay() {
   document.getElementById('list_artist')?.classList.remove('visible');
 
   setTimeout(() => {
+    if (videoWrapper.classList.contains('pseudo-fullscreen')) return;
+
     btnFs.style.position = 'fixed';
     btnFs.style.bottom = '0px';
     btnFs.style.left = '50%';
@@ -557,18 +618,8 @@ if (isMobile() && btnFs) {
 // ══════════════════════════════════════════════
 // ── TAP POUR AFFICHER PLAY/PAUSE (MOBILE)
 // ══════════════════════════════════════════════
-let mobileBtnPlayHideTimer = null;
-function showBtnMobile() {
-  btnPlay.style.opacity = '1';
-  btnPlay.style.pointerEvents = 'auto';
-  clearTimeout(mobileBtnPlayHideTimer);
-  mobileBtnPlayHideTimer = setTimeout(() => {
-    if (!video.paused || hasStarted) {
-      btnPlay.style.opacity = '0';
-      btnPlay.style.pointerEvents = 'none';
-    }
-  }, 2000);
-}
+
+
 
 if (isMobile()) {
   video.addEventListener('click', (e) => {
@@ -733,12 +784,25 @@ function initTunnelMobile() {
 
 
 function showInfo3Mobile() {
+  const inPseudoFullscreen = videoWrapper.classList.contains('pseudo-fullscreen');
+
   document.querySelectorAll('.info3').forEach(el => {
     el.classList.add('visible');
   });
-  btnHome.style.opacity = '1';
-  setOpacity(document.getElementById('btn_cine_switch'), '1', '1s');
-  document.getElementById('btn-lang').style.opacity = '1';
+
+  if (!inPseudoFullscreen) {
+    btnHome.style.opacity = '1';
+    setOpacity(document.getElementById('btn_cine_switch'), '1', '1s');
+    document.getElementById('btn-lang').style.opacity = '1';
+
+    // après une sortie du pseudo-fullscreen pendant la lecture, next_artist
+    // était resté caché : on le fait réapparaître si le panneau info est ouvert
+    const texteOeuvre = document.getElementById('texte-oeuvre');
+    if (texteOeuvre && texteOeuvre.classList.contains('visible')) {
+      setOpacity(document.getElementById('next_artist'), '1', '0.6s');
+    }
+  }
+
   info3AlreadyShown = true;
 }
 
@@ -788,4 +852,8 @@ function formatTitreArtiste(nom, titre, containerEl) {
 initMobileArtistsList();
 setTimeout(() => {
   initMobileSlideshow();
+}, 700);
+
+setTimeout(() => {
+  if (typeof recalcTopButtonsHeight === 'function') recalcTopButtonsHeight();
 }, 700);

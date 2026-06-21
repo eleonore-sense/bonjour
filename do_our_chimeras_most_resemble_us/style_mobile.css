@@ -231,15 +231,15 @@ body.lang-fr #mobile-wave-lines > div:nth-child(4) {
      PART 1 — LISTE ARTISTES MOBILE (plein écran)
      ══════════════════════════════════════════════ */
 
-  #mobile-artists-list {
+#mobile-artists-list {
     position: fixed;
     inset: 0;
     z-index: 500;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: flex-start;
-    padding: 0 24px;
+    padding: 0 24px 90px 24px;
     gap: 25px;
     background: transparent;
     opacity: 0;
@@ -247,7 +247,8 @@ body.lang-fr #mobile-wave-lines > div:nth-child(4) {
     clip-path: inset(100% 0 0% 0);
     transition:
       clip-path 0.7s var(--ease-in-out),
-      opacity 0s linear 0.7s;
+      opacity 0s linear 0.7s,
+      gap 0.3s ease;
   }
 
   #mobile-artists-list.visible {
@@ -510,8 +511,11 @@ top:calc(26px + 3.5em + 44px);
      PART 3 — PLEIN ÉCRAN MOBILE : ROTATION PAYSAGE
      ══════════════════════════════════════════════ */
 
-  #video-wrapper:fullscreen,
-  #video-wrapper:-webkit-full-screen {
+
+
+#video-wrapper.pseudo-fullscreen {
+    position: fixed !important;
+    inset: 0 !important;
     width: 100vw !important;
     height: 100svh !important;
     display: flex !important;
@@ -519,29 +523,73 @@ top:calc(26px + 3.5em + 44px);
     justify-content: center;
     overflow: hidden;
     background: black;
+    z-index: 9999;
   }
 
-  #video-wrapper:fullscreen #video,
-  #video-wrapper:-webkit-full-screen #video,
-  #video-wrapper:fullscreen #vimeo-frame,
-  #video-wrapper:-webkit-full-screen #vimeo-frame {
-    position: absolute;
-    top: 50%;
-    left: 50%;
+
+  
+#video-wrapper.pseudo-fullscreen #video {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
     width: 100svh !important;
     height: 100vw !important;
-    transform: translate(-50%, -50%) rotate(90deg);
-    transform-origin: center center;
+    transform: translate(-50%, -50%) rotate(90deg) !important;
+    transform-origin: center center !important;
     object-fit: contain;
   }
 
-  #video-wrapper:fullscreen #btn-play,
-  #video-wrapper:-webkit-full-screen #btn-play {
+  #video-wrapper.pseudo-fullscreen #vimeo-frame {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    height: 100svh !important;
+    width: calc(100svh * 16 / 9) !important;
+    transform: translate(-50%, -50%) rotate(90deg) !important;
+    transform-origin: center center !important;
+  }
+
+
+
+  #video-wrapper.pseudo-fullscreen #btn-play {
     transform: translate(-50%, -50%) rotate(90deg) !important;
   }
 
-  
 
+#video-wrapper.pseudo-fullscreen #fullscreen-exit {
+  position: fixed;
+  bottom: 20px;
+  left: 6px;
+  top: auto;
+  right: auto;
+  transform: translate(-100%) rotate(90deg);
+  transform-origin: bottom right;
+  z-index: 10000;
+}
+
+#video-wrapper.pseudo-fullscreen #btn-restart {
+  position: fixed;
+  top: 1px;
+  left: 6px;
+  bottom: auto;
+  right: auto;
+  transform: rotate(90deg);
+  transform-origin: bottom left;
+  z-index: 10000;
+}
+
+#video-wrapper.pseudo-fullscreen #fullscreen-exit,
+  #video-wrapper.pseudo-fullscreen #btn-restart {
+    text-shadow:
+      0 0 6px #000000,
+      0 0 12px #000000,
+      0 0 20px #000000,
+      0 0 35px #000000;
+  }
 
   /* ══════════════════════════════════════════════
      PART 3 — GAUCHE (titre + texte)

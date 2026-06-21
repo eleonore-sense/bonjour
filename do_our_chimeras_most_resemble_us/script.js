@@ -58,14 +58,9 @@ const linesConfig = {
 let lines = linesConfig[currentLang];
 
 
-
 function buildTitreHaut() {
-
   const container = document.getElementById('titre-haut');
   if (!container) return;
-
-
-
   let lineDataSet;
 if (isMobile() && currentLang === "FR") {
     lineDataSet = [TITRE_SVG_DATA.titreHautFRMobile[0], TITRE_SVG_DATA.titreHautFRMobile[1]];
@@ -76,26 +71,28 @@ if (isMobile() && currentLang === "FR") {
   } else {
     lineDataSet = [TITRE_SVG_DATA.titreHautEN]; // desktop EN, 1 ligne
   }
-
   container.innerHTML = '';
   container.style.color = 'transparent';
-
   const wrapper = document.createElement('div');
   wrapper.style.display = 'flex';
   wrapper.style.flexDirection = 'column';
   container.appendChild(wrapper);
-
-  const containerWidth = container.clientWidth || 600;
-  const scale = computeSharedScale(lineDataSet, containerWidth);
-
+const containerWidth = container.clientWidth || 600;
+  const useHeightScale = !isMobile();
+  const targetHeightVh = currentLang === "FR" ? 9 : 10;
+  const containerHeight = useHeightScale
+    ? window.innerHeight * (targetHeightVh / 100)
+    : null;
+  const scale = useHeightScale
+    ? computeSharedScale(lineDataSet, containerWidth, containerHeight)
+    : computeSharedScale(lineDataSet, containerWidth);
   lineDataSet.forEach(lineData => {
     const lineDiv = document.createElement('div');
     wrapper.appendChild(lineDiv);
     buildStaticLetterLine(lineDiv, lineData, scale);
   });
-
-
 }
+
 
 function applyLang() {
   const t = translations[currentLang];
@@ -1174,7 +1171,8 @@ function buildDesktopWaveLines() {
   const lineDataSet = currentLang === "EN" ? TITRE_SVG_DATA.waveDesktopEN : TITRE_SVG_DATA.waveDesktopFR;
   container.innerHTML = '';
   const containerWidth = container.clientWidth || container.parentElement.clientWidth || 600;
-  const scale = computeSharedScale(lineDataSet, containerWidth);
+  const widthFactor = currentLang === "FR" ? 0.98 : 1;
+  const scale = computeSharedScale(lineDataSet, containerWidth * widthFactor);
   desktopWaveInstances = lineDataSet.map((lineData, i) => {
     const lineDiv = document.createElement('div');
     container.appendChild(lineDiv);
@@ -1426,11 +1424,18 @@ if (btnHome) {
     const part3 = document.getElementById('part_3');
 
     // 1. Reset état
-    vimeoPlayer = null;
+vimeoPlayer = null;
     hasStarted = false;
     video.pause();
     video.src = '';
     video.poster = '';
+    video.style.opacity = '';
+    video.style.transition = '';
+    if (vimeoFrame) {
+      vimeoFrame.src = '';
+      vimeoFrame.style.opacity = '0';
+      vimeoFrame.style.display = 'none';
+    }
     info3AlreadyShown = false;
     btnPlay.textContent = translations[currentLang].playVideo;
     btnPlay.classList.remove('playing');
@@ -1533,7 +1538,7 @@ async function handlePlayPauseClick(e) {
     btnPlay.style.opacity = '0';
     btnPlay.style.pointerEvents = 'none';
 
-    setTimeout(() => {
+setTimeout(() => {
       video.style.display = 'none';
       vimeoFrame.style.backgroundImage = 'none';
       const hash = data.vimeoHash ? `&h=${data.vimeoHash}` : '';
@@ -1548,8 +1553,10 @@ async function handlePlayPauseClick(e) {
       vimeoFrame.style.transition = 'opacity 0.8s ease';
       vimeoFrame.style.opacity = '1';
       video.style.display = 'none';
-      hasStarted = true;
-      if (typeof window.toggleVimeoOverlay === 'function') window.toggleVimeoOverlay();
+hasStarted = true;
+btnPlay.style.pointerEvents = '';
+if (typeof window.toggleVimeoOverlay === 'function') window.toggleVimeoOverlay();
+if (typeof window.toggleVimeoOverlayDesktop === 'function') window.toggleVimeoOverlayDesktop();
 
       setTimeout(() => {
         fullscreenBtn.style.display = 'block';
@@ -1596,10 +1603,11 @@ async function handlePlayPauseClick(e) {
           video.style.opacity = '1';
           positionVimeoBtn();
         }, 800);
-        hasStarted = false;
-        vimeoPlayer = null;
-        showInfo3();
-        if (typeof window.toggleVimeoOverlay === 'function') window.toggleVimeoOverlay();
+hasStarted = false;
+vimeoPlayer = null;
+showInfo3();
+if (typeof window.toggleVimeoOverlay === 'function') window.toggleVimeoOverlay();
+if (typeof window.toggleVimeoOverlayDesktop === 'function') window.toggleVimeoOverlayDesktop();
       });
 
     }, 800);
@@ -1717,10 +1725,71 @@ function showBtn() {
     }
   }, 2000);
 }
+
+// ══════════════════════════════════════════════
+// ── TAP POUR AFFICHER PLAY/PAUSE (MOBILE)
+// ══════════════════════════════════════════════
+let mobileBtnPlayHideTimer = null;
+
+function showBtnMobile() {
+  const inPseudoFullscreen = videoWrapper.classList.contains('pseudo-fullscreen');
+
+  btnPlay.style.opacity = '1';
+  btnPlay.style.pointerEvents = 'auto';
+
+  if (inPseudoFullscreen) {
+    fullscreenExit.style.opacity = '1';
+    fullscreenExit.style.pointerEvents = 'auto';
+    btnRestart.style.opacity = '1';
+    btnRestart.style.pointerEvents = 'auto';
+  }
+
+  clearTimeout(mobileBtnPlayHideTimer);
+  mobileBtnPlayHideTimer = null;
+
+  mobileBtnPlayHideTimer = setTimeout(() => {
+    if (inPseudoFullscreen) {
+      btnPlay.style.opacity = '0';
+      btnPlay.style.pointerEvents = 'none';
+      fullscreenExit.style.opacity = '0';
+      fullscreenExit.style.pointerEvents = 'none';
+      btnRestart.style.opacity = '0';
+      btnRestart.style.pointerEvents = 'none';
+    } else if (!video.paused || hasStarted) {
+      btnPlay.style.opacity = '0';
+      btnPlay.style.pointerEvents = 'none';
+    }
+  }, 2000);
+}
+
+
+
 if (window.innerWidth > 768) {
   videoWrapper.addEventListener('mousemove', showBtn);
   videoWrapper.addEventListener('mouseenter', showBtn);
+
+  // overlay invisible par-dessus l'iframe Vimeo : un <iframe> capte les
+  // événements souris dans son propre document, donc mousemove ne remonte
+  // pas naturellement au videoWrapper parent — cet overlay relaie l'event.
+  const vimeoTapOverlayDesktop = document.createElement('div');
+  vimeoTapOverlayDesktop.id = 'vimeo-tap-overlay-desktop';
+  videoWrapper.appendChild(vimeoTapOverlayDesktop);
+
+  vimeoTapOverlayDesktop.addEventListener('mousemove', showBtn);
+  vimeoTapOverlayDesktop.addEventListener('mouseenter', showBtn);
+
+  vimeoTapOverlayDesktop.addEventListener('click', (e) => {
+    handlePlayPauseClick(e);
+  });
+
+  function toggleVimeoOverlayDesktop() {
+    const data = artistes[artisteCourant];
+    vimeoTapOverlayDesktop.style.display = (data?.vimeo && hasStarted) ? 'block' : 'none';
+  }
+  window.toggleVimeoOverlayDesktop = toggleVimeoOverlayDesktop;
 }
+
+
 videoWrapper.addEventListener('mouseleave', () => {
   clearTimeout(hideTimer);
 
@@ -1785,16 +1854,119 @@ fullscreenBtn.addEventListener('click', () => {
   const data = artistes[artisteCourant];
   wasInCinemaModeBeforeFullscreen = isCinemaMode;
 
+  if (isMobile()) {
+    if (!isFullscreen) {
+      enterPseudoFullscreenMobile();
+    } else {
+      exitPseudoFullscreenMobile();
+    }
+    return;
+  }
+
   if (!isFullscreen) {
-    videoWrapper.requestFullscreen(); // ← même chose pour tout le monde
+    videoWrapper.requestFullscreen();
   } else {
     document.exitFullscreen();
   }
 });
 
 fullscreenExit.addEventListener('click', () => {
-  document.exitFullscreen();
+  if (isMobile()) {
+    exitPseudoFullscreenMobile();
+  } else {
+    document.exitFullscreen();
+  }
 });
+
+function getPseudoFullscreenUIElements() {
+  return [
+    document.getElementById('titre-haut'),
+    document.querySelector('#gauche .titre'),
+    document.getElementById('info'),
+    document.getElementById('texte-oeuvre'),
+    document.getElementById('list_artist'),
+    document.getElementById('next_artist'),
+    document.getElementById('btn_home'),
+    document.getElementById('btn-lang'),
+    document.getElementById('btn_cine_switch'),
+        document.getElementById('video'),
+                document.getElementById('fullscreen'),
+    btnPlay,
+  ];
+}
+
+function enterPseudoFullscreenMobile() {
+  const uiElements = getPseudoFullscreenUIElements();
+
+  // 1. fade out de tous les éléments de la page artiste (vidéo et fullscreen inclus)
+  uiElements.forEach(el => setOpacity(el, '0', '1s'));
+
+  setTimeout(() => {
+    videoWrapper.classList.add('pseudo-fullscreen');
+    isFullscreen = true;
+    fullscreenBtn.textContent = translations[currentLang].exitFullscreen;
+    timelineFull.style.display = 'block';
+
+    fullscreenExit.style.display = 'block';
+    btnRestart.style.display = 'block';
+
+    // fade in vidéo, fullscreen btn (déjà dans uiElements) + restart + exit fullscreen
+// fade in vidéo + restart + exit fullscreen (fullscreen reste caché)
+    setOpacity(fullscreenExit, '1', '1s');
+    setOpacity(btnRestart, '1', '1s');
+    uiElements.forEach(el => {
+      if (el && el.id === 'video') {
+        setOpacity(el, '1', '1s');
+      }
+    });
+
+    // démarre automatiquement le minuteur de disparition (2s)
+    if (typeof showBtnMobile === 'function') {
+      showBtnMobile();
+    }
+
+  }, 1000);
+}
+
+function exitPseudoFullscreenMobile() {
+  const videoEl = document.getElementById('video');
+  const uiElements = getPseudoFullscreenUIElements();
+  const isPlaying = !video.paused;
+
+  // fade out : vidéo, fond noir, exit/restart
+  setOpacity(videoEl, '0', '0.6s');
+  setOpacity(fullscreenExit, '0', '0.6s');
+  setOpacity(btnRestart, '0', '0.6s');
+  videoWrapper.style.transition = 'background-color 0.6s ease';
+  videoWrapper.style.backgroundColor = 'transparent';
+
+  setTimeout(() => {
+    // 2. on sort réellement du mode pseudo-fullscreen
+    videoWrapper.classList.remove('pseudo-fullscreen');
+    videoWrapper.style.transition = '';
+    videoWrapper.style.backgroundColor = '';
+    isFullscreen = false;
+    fullscreenBtn.textContent = translations[currentLang].fullscreen;
+    timelineFull.style.display = 'none';
+    fullscreenExit.style.display = 'none';
+    btnRestart.style.display = 'none';
+
+    positionVimeoBtn();
+
+// 3. fade in : page artiste comme avant
+    const infoConditionalIds = ['btn_home', 'btn_cine_switch', 'btn-lang', 'texte-oeuvre'];
+
+    uiElements.forEach(el => {
+      if (!el) return;
+      if (el.id === 'fullscreen') return; // jamais réaffiché en sortie de pseudo-fullscreen
+      if (el.id === 'next_artist' && isPlaying) return;
+      if (infoConditionalIds.includes(el.id) && !info3AlreadyShown) return;
+      setOpacity(el, '1', '0.6s');
+    });
+
+  }, 600);
+}
+
 
 
 document.addEventListener('fullscreenchange', () => {
@@ -1810,7 +1982,7 @@ document.addEventListener('fullscreenchange', () => {
 
 const mobileFs = isMobile();
 
-    if (data?.vimeo) {
+if (data?.vimeo) {
       if (mobileFs) {
         vimeoFrame.style.width    = '100svh';
         vimeoFrame.style.height   = '100vw';
@@ -1821,6 +1993,9 @@ const mobileFs = isMobile();
       vimeoFrame.style.position = 'absolute';
       vimeoFrame.style.top      = '50%';
       vimeoFrame.style.left     = '50%';
+      vimeoFrame.style.transform = mobileFs
+        ? 'translate(-50%, -50%) rotate(90deg)'
+        : 'translate(-50%, -50%)';
       btnPlay.style.top       = '50%';
       btnPlay.style.left      = '50%';
       btnPlay.style.right     = 'auto';
@@ -1875,6 +2050,7 @@ if (wasInCinemaModeBeforeFullscreen) {
       vimeoFrame.style.position = '';
       vimeoFrame.style.top      = '';
       vimeoFrame.style.left     = '';
+            vimeoFrame.style.transform = '';
        positionVimeoBtn();
 } else {
   if (window.innerWidth > 768) {
