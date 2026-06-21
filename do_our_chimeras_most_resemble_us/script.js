@@ -472,7 +472,7 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem.`,
   9: {
     nom: "John Menick",
     titre: "Telharmonium",
-    video: "img/john_menick.mp4",
+ youtube: "dQw4w9WgXcQ",
     poster: "img/john_menick.jpg",
     text: `txt fr Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 Suspendisse potenti. Vivamus euismod, nisl vel consectetur interdum, 
@@ -595,6 +595,16 @@ let vimeoFrame = null;
 let vimeoPlayer = null;
 let wasInCinemaModeBeforeFullscreen = false;
 let playIntroCalled = false;
+let youtubeFrame = null;
+let youtubePlayer = null;
+let youtubeApiReady = false;
+let youtubePendingAutoplay = false;
+
+
+window.onYouTubeIframeAPIReady = function() {
+  youtubeApiReady = true;
+};
+
 
 function setOpacity(el, val, duration = '0.8s') {
   if (!el) return;
@@ -1521,6 +1531,106 @@ async function handlePlayPauseClick(e) {
 
   const data = artistes[artisteCourant];
 
+  if (data?.youtube) {
+    if (hasStarted && youtubePlayer) {
+      const state = youtubePlayer.getPlayerState();
+      if (state === YT.PlayerState.PLAYING) {
+        youtubePlayer.pauseVideo();
+      } else {
+        youtubePlayer.playVideo();
+      }
+      return;
+    }
+
+    video.style.transition = 'opacity 0.8s ease';
+    video.style.opacity = '0';
+    btnPlay.style.opacity = '0';
+    btnPlay.style.pointerEvents = 'none';
+
+    setTimeout(() => {
+      video.style.display = 'none';
+      youtubeFrame.style.display = 'block';
+      youtubeFrame.style.transition = 'opacity 0.8s ease';
+      youtubeFrame.style.opacity = '1';
+      hasStarted = true;
+      btnPlay.style.pointerEvents = '';
+
+      function startYoutubePlayer() {
+        youtubePlayer = new YT.Player(youtubeFrame, {
+          videoId: data.youtube,
+          playerVars: {
+            autoplay: 1,
+            controls: 0,
+            modestbranding: 1,
+            rel: 0,
+            playsinline: 1,
+          },
+          events: {
+            onReady: (ev) => {
+              ev.target.playVideo();
+              setTimeout(() => {
+                fullscreenBtn.style.display = 'block';
+                requestAnimationFrame(() => {
+                  requestAnimationFrame(() => {
+                    fullscreenBtn.style.opacity = '1';
+                    fullscreenVisible = true;
+                  });
+                });
+              }, 2000);
+            },
+            onStateChange: (ev) => {
+              if (ev.data === YT.PlayerState.PLAYING) {
+                btnPlay.textContent = 'Pause';
+                btnPlay.classList.add('playing');
+                btnPlay.style.opacity = '0';
+                btnPlay.style.pointerEvents = 'none';
+                if (isMobile() && typeof onMobileVideoPlay === 'function') onMobileVideoPlay();
+                if (youtubeTimelineRaf) cancelAnimationFrame(youtubeTimelineRaf);
+                updateYoutubeTimeline();
+              }
+              if (ev.data === YT.PlayerState.PAUSED) {
+                btnPlay.textContent = translations[currentLang].playVideo;
+                btnPlay.classList.remove('playing');
+                btnPlay.style.opacity = '1';
+                btnPlay.style.pointerEvents = 'auto';
+                showInfo3();
+                if (isMobile() && typeof onMobileVideoPause === 'function') onMobileVideoPause();
+                if (youtubeTimelineRaf) cancelAnimationFrame(youtubeTimelineRaf);
+              }
+              if (ev.data === YT.PlayerState.ENDED) {
+                btnPlay.textContent = translations[currentLang].playVideo;
+                btnPlay.classList.remove('playing');
+                youtubeFrame.style.transition = 'opacity 0.8s ease';
+                youtubeFrame.style.opacity = '0';
+                setTimeout(() => {
+                  youtubeFrame.style.display = 'none';
+                  video.style.display = 'block';
+                  video.style.opacity = '1';
+                  positionVimeoBtn();
+                }, 800);
+                hasStarted = false;
+                if (youtubeTimelineRaf) cancelAnimationFrame(youtubeTimelineRaf);
+                showInfo3();
+              }
+            }
+          }
+        });
+      }
+
+      if (youtubeApiReady && window.YT && window.YT.Player) {
+        startYoutubePlayer();
+      } else {
+        const waitForApi = setInterval(() => {
+          if (youtubeApiReady && window.YT && window.YT.Player) {
+            clearInterval(waitForApi);
+            startYoutubePlayer();
+          }
+        }, 100);
+      }
+    }, 800);
+    return;
+  }
+
   if (data?.vimeo) {
     if (hasStarted && vimeoPlayer) {
       vimeoPlayer.getPaused().then(paused => {
@@ -1837,7 +1947,10 @@ timelineFull.addEventListener('click', (e) => {
   const rect = timelineFull.getBoundingClientRect();
   const pct = (e.clientX - rect.left) / rect.width;
   const data = artistes[artisteCourant];
-  if (data?.vimeo && vimeoPlayer) {
+  if (data?.youtube && youtubePlayer) {
+    const duration = youtubePlayer.getDuration();
+    youtubePlayer.seekTo(pct * duration, true);
+  } else if (data?.vimeo && vimeoPlayer) {
     vimeoPlayer.getDuration().then(duration => {
       vimeoPlayer.setCurrentTime(pct * duration);
     });
@@ -2070,7 +2183,10 @@ if (wasInCinemaModeBeforeFullscreen) {
 
 btnRestart.addEventListener('click', () => {
   const data = artistes[artisteCourant];
-  if (data?.vimeo && vimeoPlayer) {
+  if (data?.youtube && youtubePlayer) {
+    youtubePlayer.seekTo(0, true);
+    youtubePlayer.playVideo();
+  } else if (data?.vimeo && vimeoPlayer) {
     vimeoPlayer.setCurrentTime(0).then(() => vimeoPlayer.play());
   } else {
     video.currentTime = 0;
@@ -2688,6 +2804,32 @@ function loadArtistMedia(data) {
   const videoEl  = document.getElementById('video');
   const wrapper  = document.getElementById('video-wrapper');
   vimeoFrame = document.getElementById('vimeo-frame');
+  youtubeFrame = document.getElementById('youtube-frame');
+
+  // reset état youtube
+  if (youtubeFrame) {
+    youtubeFrame.style.display = 'none';
+    youtubeFrame.style.opacity = '0';
+  }
+  if (youtubePlayer) {
+    try { youtubePlayer.destroy(); } catch(e) {}
+    youtubePlayer = null;
+  }
+
+  if (data.youtube) {
+    if (!youtubeFrame) {
+      youtubeFrame = document.createElement('div');
+      youtubeFrame.id = 'youtube-frame';
+      wrapper.appendChild(youtubeFrame);
+    }
+    if (vimeoFrame) { vimeoFrame.src = ''; vimeoFrame.style.display = 'none'; }
+    videoEl.style.display = 'block';
+    videoEl.src = '';
+    videoEl.poster = data.poster;
+    wrapper.classList.add('is-vimeo'); // réutilise le même habillage CSS 16:9
+    setTimeout(() => positionVimeoBtn(), 1100);
+    return;
+  }
 
   if (data.vimeo) {
     if (!vimeoFrame) {
@@ -2753,4 +2895,17 @@ function positionVimeoBtn() {
   btnPlay.style.left      = 'auto';
   btnPlay.style.transform = 'translate(50%, -50%)';
   btnPlay.style.whiteSpace = 'nowrap';
+}
+
+let youtubeTimelineRaf = null;
+
+function updateYoutubeTimeline() {
+  if (!youtubePlayer || typeof youtubePlayer.getCurrentTime !== 'function') return;
+  const current = youtubePlayer.getCurrentTime();
+  const duration = youtubePlayer.getDuration();
+  if (duration > 0) {
+    const pct = (current / duration) * 100;
+    timelineFill.style.width = pct + '%';
+  }
+  youtubeTimelineRaf = requestAnimationFrame(updateYoutubeTimeline);
 }

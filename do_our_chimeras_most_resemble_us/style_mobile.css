@@ -485,6 +485,18 @@ top:calc(26px + 3.5em + 44px);
 }
 
 
+#youtube-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: auto;
+  width: 100vw;
+  height: calc(100vw * 9 / 16);
+  max-height: 75svh;
+}
+
+
+
 #video-wrapper.is-vimeo {
   height: calc(100vw * 9 / 16);
   max-height: 75svh;

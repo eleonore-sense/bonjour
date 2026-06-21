@@ -1401,7 +1401,15 @@ font-style: italic;
 }
 
 
-
+#youtube-frame {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 63vw;
+  height: calc(63vw * 9 / 16);
+  border: none;
+}
 
 
 /* --- Desktop : cache le bloc mobile --- */
