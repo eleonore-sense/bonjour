@@ -1555,67 +1555,72 @@ async function handlePlayPauseClick(e) {
       hasStarted = true;
       btnPlay.style.pointerEvents = '';
 
-      function startYoutubePlayer() {
-        youtubePlayer = new YT.Player(youtubeFrame, {
-          videoId: data.youtube,
-          playerVars: {
-            autoplay: 1,
-            controls: 0,
-            modestbranding: 1,
-            rel: 0,
-            playsinline: 1,
-          },
-          events: {
-            onReady: (ev) => {
-              ev.target.playVideo();
-              setTimeout(() => {
-                fullscreenBtn.style.display = 'block';
-                requestAnimationFrame(() => {
-                  requestAnimationFrame(() => {
-                    fullscreenBtn.style.opacity = '1';
-                    fullscreenVisible = true;
-                  });
-                });
-              }, 2000);
-            },
-            onStateChange: (ev) => {
-              if (ev.data === YT.PlayerState.PLAYING) {
-                btnPlay.textContent = 'Pause';
-                btnPlay.classList.add('playing');
-                btnPlay.style.opacity = '0';
-                btnPlay.style.pointerEvents = 'none';
-                if (isMobile() && typeof onMobileVideoPlay === 'function') onMobileVideoPlay();
-                if (youtubeTimelineRaf) cancelAnimationFrame(youtubeTimelineRaf);
-                updateYoutubeTimeline();
-              }
-              if (ev.data === YT.PlayerState.PAUSED) {
-                btnPlay.textContent = translations[currentLang].playVideo;
-                btnPlay.classList.remove('playing');
-                btnPlay.style.opacity = '1';
-                btnPlay.style.pointerEvents = 'auto';
-                showInfo3();
-                if (isMobile() && typeof onMobileVideoPause === 'function') onMobileVideoPause();
-                if (youtubeTimelineRaf) cancelAnimationFrame(youtubeTimelineRaf);
-              }
-              if (ev.data === YT.PlayerState.ENDED) {
-                btnPlay.textContent = translations[currentLang].playVideo;
-                btnPlay.classList.remove('playing');
-                youtubeFrame.style.transition = 'opacity 0.8s ease';
-                youtubeFrame.style.opacity = '0';
-                setTimeout(() => {
-                  youtubeFrame.style.display = 'none';
-                  video.style.display = 'block';
-                  video.style.opacity = '1';
-                  positionVimeoBtn();
-                }, 800);
-                hasStarted = false;
-                if (youtubeTimelineRaf) cancelAnimationFrame(youtubeTimelineRaf);
-                showInfo3();
-              }
-            }
-          }
-        });
+function startYoutubePlayer() {
+  youtubePlayer = new YT.Player(youtubeFrame, {
+    videoId: data.youtube,
+    playerVars: {
+      autoplay: 1,
+      controls: 0,
+      modestbranding: 1,
+      rel: 0,
+      playsinline: 1,
+      showinfo: 0,
+      iv_load_policy: 3,
+      fs: 0,
+      disablekb: 1,
+      origin: window.location.origin,
+    },
+    events: {
+      onReady: (ev) => {
+        ev.target.playVideo();
+        setTimeout(() => {
+          fullscreenBtn.style.display = 'block';
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              fullscreenBtn.style.opacity = '1';
+              fullscreenVisible = true;
+            });
+          });
+        }, 2000);
+      },
+      onStateChange: (ev) => {
+        if (ev.data === YT.PlayerState.PLAYING) {
+          btnPlay.textContent = 'Pause';
+          btnPlay.classList.add('playing');
+          btnPlay.style.opacity = '0';
+          btnPlay.style.pointerEvents = 'none';
+          if (isMobile() && typeof onMobileVideoPlay === 'function') onMobileVideoPlay();
+          if (youtubeTimelineRaf) cancelAnimationFrame(youtubeTimelineRaf);
+          updateYoutubeTimeline();
+        }
+        if (ev.data === YT.PlayerState.PAUSED) {
+          btnPlay.textContent = translations[currentLang].playVideo;
+          btnPlay.classList.remove('playing');
+          btnPlay.style.opacity = '1';
+          btnPlay.style.pointerEvents = 'auto';
+          showInfo3();
+          if (isMobile() && typeof onMobileVideoPause === 'function') onMobileVideoPause();
+          if (youtubeTimelineRaf) cancelAnimationFrame(youtubeTimelineRaf);
+        }
+        if (ev.data === YT.PlayerState.ENDED) {
+          btnPlay.textContent = translations[currentLang].playVideo;
+          btnPlay.classList.remove('playing');
+          youtubeFrame.style.transition = 'opacity 0.8s ease';
+          youtubeFrame.style.opacity = '0';
+          setTimeout(() => {
+            youtubeFrame.style.display = 'none';
+            video.style.display = 'block';
+            video.style.opacity = '1';
+            positionVimeoBtn();
+          }, 800);
+          hasStarted = false;
+          if (youtubeTimelineRaf) cancelAnimationFrame(youtubeTimelineRaf);
+          showInfo3();
+        }
       }
+    }
+  });
+}
 
       if (youtubeApiReady && window.YT && window.YT.Player) {
         startYoutubePlayer();
