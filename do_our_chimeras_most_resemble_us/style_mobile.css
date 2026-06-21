@@ -237,25 +237,18 @@ body.lang-fr #mobile-wave-lines > div:nth-child(4) {
     z-index: 500;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: flex-start;
-    padding: 90px 24px 90px 24px;
-    gap: 20px;
+    padding: 0 24px 90px 24px;
+    gap: 25px;
     background: transparent;
     opacity: 0;
     pointer-events: none;
     clip-path: inset(100% 0 0% 0);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
     transition:
       clip-path 0.7s var(--ease-in-out),
       opacity 0s linear 0.7s,
       gap 0.3s ease;
-  }
-
-  #mobile-artists-list::-webkit-scrollbar {
-    display: none;
   }
 
   #mobile-artists-list.visible {
@@ -270,18 +263,13 @@ body.lang-fr #mobile-wave-lines > div:nth-child(4) {
   #mobile-artists-list .mobile-artist-item {
     font-family: Abordage;
     font-size: 1.4em;
-    line-height: 1.3;
     color: var(--typo);
     cursor: pointer;
     position: relative;
-    padding: 6px 4px;
-    margin: -6px -4px;
-    -webkit-tap-highlight-color: transparent;
     transition:
       text-shadow var(--t-base) var(--ease),
       opacity var(--t-fast) var(--ease);
   }
-  
 
   #mobile-artists-list .mobile-artist-item::after {
     content: "";

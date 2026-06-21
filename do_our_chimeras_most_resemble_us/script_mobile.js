@@ -72,16 +72,6 @@ setTransitionFor(['editor-mobile', 'logos-container', 'btn-lang', 'about'], '1s'
 void document.body.offsetHeight;
 list.classList.add('visible');
 
-
-    // ── AJOUT : bloque les clics annexes tant que la liste est ouverte ──
-    document.getElementById('titre-haut')?.style.setProperty('pointer-events', 'none');
-    document.getElementById('about')?.style.setProperty('pointer-events', 'none');
-    document.getElementById('logos-container')?.style.setProperty('pointer-events', 'none');
-    document.getElementById('btn-lang')?.style.setProperty('pointer-events', 'none');
-
-
-
-
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         if (typeof recalcMobileArtistsListGap === 'function') recalcMobileArtistsListGap();
@@ -133,14 +123,6 @@ function closeMobileListOnly() {
   void document.body.offsetHeight;
   list?.classList.remove('visible');
   document.getElementById('titre-haut')?.style.setProperty('opacity', '0');
-
-// ── AJOUT : réautorise les clics annexes ──
-  document.getElementById('titre-haut')?.style.removeProperty('pointer-events');
-  document.getElementById('about')?.style.removeProperty('pointer-events');
-  document.getElementById('logos-container')?.style.removeProperty('pointer-events');
-  document.getElementById('btn-lang')?.style.removeProperty('pointer-events');
-
-
 
   if (btnSee) {
     btnSee.textContent = 'artists';
