@@ -3134,8 +3134,9 @@ function updateYoutubeTimeline() {
 
 
 function formatTitreArtiste(nom, titre, containerEl, details) {
+  const style = 'style="white-space:normal;word-break:break-word;"';
   const detailsHtml = details
-    ? `<span class="artiste-details visible">${details}</span>`
+    ? `<span class="artiste-details visible" ${style}>${details}</span>`
     : '';
 
   if (!isMobile() || !containerEl) {

@@ -601,7 +601,27 @@ body.lang-fr #desktop-wave-lines > div:not(:first-child) {
 
 
 
+body.cinema-mode::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: black;
+  z-index: 50;  /* juste en dessous du tunnel (z-index: 52) et overlay (z-index: 51) */
+  opacity: 1;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
 
+body:not(.cinema-mode)::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: black;
+  z-index: 50;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
 
 
 
@@ -614,6 +634,12 @@ body.cinema-mode .btn {
 }
 
 
+#gauche .titre .artiste-nom,
+#gauche .titre .artiste-titre,
+#gauche .titre .artiste-details {
+  white-space: normal !important;
+  word-break: break-word !important;
+}
 
 body:not(.cinema-mode) .btn_hover:hover {
   text-shadow:
@@ -1277,7 +1303,7 @@ font-style: italic;
   font-size: 0.55em;
   display: block;
   margin-top: 7px;
-  white-space: nowrap;
+  white-space: normal;
   color: inherit;
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -1410,6 +1436,9 @@ font-style: italic;
   height: calc(63vw * 9 / 16);
   border: none;
 }
+
+
+
 
 
 /* --- Desktop : cache le bloc mobile --- */
