@@ -166,8 +166,9 @@ function openArtisteMobile(id) {
     btnPlay.style.opacity = '0';
     btnPlay.style.pointerEvents = 'none';
 
-    const titreEl = document.querySelector('#gauche .titre');
-    titreEl.innerHTML = formatTitreArtiste(data.nom, data.titre, titreEl);
+const titreEl = document.querySelector('#gauche .titre');
+const detailsM1 = currentLang === "FR" && data.detailsFR ? data.detailsFR : data.details;
+titreEl.innerHTML = formatTitreArtiste(data.nom, data.titre, titreEl, detailsM1);
     recalcTitreHeight();
     document.body.classList.add('part3-active');
 loadArtistMedia(data);
@@ -218,8 +219,9 @@ setTimeout(() => {
     titre.style.transition = 'opacity 0.5s ease';
     titre.style.opacity = '0';
     setTimeout(() => {
-      const titreEl2 = document.querySelector('#gauche .titre');
-      titreEl2.innerHTML = formatTitreArtiste(data.nom, data.titre, titreEl2);
+const titreEl2 = document.querySelector('#gauche .titre');
+const detailsM2 = currentLang === "FR" && data.detailsFR ? data.detailsFR : data.details;
+titreEl2.innerHTML = formatTitreArtiste(data.nom, data.titre, titreEl2, detailsM2);
 loadArtistMedia(data);
       document.getElementById('texte-oeuvre').textContent = data.text;
       hasStarted = false;
@@ -779,34 +781,6 @@ function hideInfo3Mobile() {
 }
 
 
-// ══════════════════════════════════════════════
-// ── PASSER A LA LIGNE LES TITRE TROP LONG
-// ══════════════════════════════════════════════
-
-
-function formatTitreArtiste(nom, titre, containerEl) {
-  if (!isMobile() || !containerEl) {
-    return `<span class="artiste-nom">${nom}</span> — <span class="artiste-titre">${titre}</span>`;
-  }
-
-  const maxWidth = containerEl.clientWidth || window.innerWidth;
-
-  const testEl = document.createElement('span');
-  testEl.style.visibility = 'hidden';
-  testEl.style.position = 'absolute';
-  testEl.style.whiteSpace = 'nowrap';
-  testEl.style.font = getComputedStyle(containerEl).font;
-  testEl.textContent = `${nom} — ${titre}`;
-  document.body.appendChild(testEl);
-
-  const fullWidth = testEl.offsetWidth;
-  document.body.removeChild(testEl);
-
-  if (fullWidth > maxWidth) {
-    return `<span class="artiste-nom">${nom}</span><br>— <span class="artiste-titre">${titre}</span>`;
-  }
-  return `<span class="artiste-nom">${nom}</span> — <span class="artiste-titre">${titre}</span>`;
-}
 
 // ══════════════════════════════════════════════
 // ── INIT
