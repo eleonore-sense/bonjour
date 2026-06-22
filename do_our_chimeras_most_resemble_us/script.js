@@ -439,18 +439,16 @@ Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 20
 detailsFR: "2024 — video, color, silent, loop, 42:22 minutes. Edition of 5 + 1AP",
     video: "img/elsa_werth.mp4",
     poster: "img/elsa_werth.jpg",
-text: `In her practice, Agnieszka Polska uses cinematic storytelling and affective technologies to address the perpetually negotiated relationship between human and technology, examining the processes that mutually influence and legitimate this relationship in language, history and consciousness. She is interested in the question of individual social responsibility against the background of technology-driven disorientation and ideologies of technological determinism.
+text: `This video explores the relationship between technology, particularly Artificial Intelligence, and the production of goods.
+AI-generated futuristic objects related to work appear to be bound by conditional relationships.
+However, these connections lack clear logic, resulting in ambiguous links between various shapes and unexpected functionalities.
+The video invites viewers to contemplate the implications of AI-driven decision-making processes on consumption and human labor in contemporary society.
 
-Polska’s works combine historical research, cinematic storytelling and affective communication technologies, seeking new narrative formats that correspond with the rapidly changing requirements of information-driven societies. According to Polska, such formats are available at the intersection of poetry and narration, art and cinema.
-
-A major strand of her current practice and thinking is the construction of a pre-history of an emerging global cybernetic consciousness. The animation The Book of Flowers (2023), devoted to gendered reproductive labor, takes this process a step further - as the pre-history depicted in the film is obviously fabricated. 
-
-In the film, deep and enchanting voice of the actress Tina Greatrex guides the listener through the joined history of humankind and flowers. According to the narrator, blooming plants used to be enormous and humans were their main pollinators. A complex symbiosis existed between the species, both humans and flowers unable to reproduce without one another. Over the centuries, humans mastered technologies that allowed them to reproduce without participation of plants and reduced sizes of flowers. Especially one technology played an important role in this morally-ambiguous process: technology of storytelling. 
-
-This fantastic history that led to the contemporary state of affairs is told against the backdrop of impassioned Charles-Marie Widor's Symphony No. 5 Toccata for Organ and a succession of dynamic animations of surreal flowers, often equipped with animal- or machine-like textures. A complex process of re-writing early time-lapse plant videos with Artificial Intelligence tools led to creation of material that could be described as found footage - but with not a single original frame used.  
-
-“What if what we believe is required of humans by nature is just a story that we told ourselves about what being human is and what nature is? What if who we think we are, what we believe at a gut level about our kinship loyalty and our perceived survival needs are responses to a story we made up and told ourselves was written by our genes?,” writes Alexis Pauline Gumbs on Sylvia Wynter. This “discursive construction of man” echoes in Polska’s film, where the main power and, at the same time, threat to humanity is becoming enchanted in one’s own story, whispered into a human ear by technological mouth. The Book of Flowers, itself constituting a sci-fi story, is designed as a “thought experiment” in immersion and dissociation.
-<bio>Agnieszka Polska is a visual artist, film and theatre director based in Berlin. Polska employs computer-generated media to explore themes of individual agency, social responsibility, and the shaping of historical narratives within environments driven by rapid technological changes and the flow of information. Her work bridges the past and the digital present, using hallucinatory animations and poetic storytelling to delve into the ethical ambiguities of contemporary society. Polska’s art has been showcased internationally, including exhibitions at the New Museum and MoMA in New York, Centre Pompidou in Paris, Tate Modern in London, and the Hirshhorn Museum in Washington, D.C. She has held solo exhibitions at Hamburger Bahnhof in Berlin, the Museum of Modern Art in Warsaw, M HKA in Antwerp, Frye Art Museum in Seattle, Nottingham Contemporary, and Salzburger Kunstverein. She participated in the 57th Venice Biennale, 11th Gwangju Biennale, 19th and 24th Biennale of Sydney, 14th Shanghai Biennale, and 13th Istanbul Biennial. In 2023, she premiered her first theatre play, The Talking Car, in the frame of BoCA Biennale, Lisbon.</bio>
+In this project, I also explore the common perception of dematerialized AI. The futuristic AI-generated objects raises the question of the materiality/immateriality of data, whose energy-intensive storage relies on the quantifiable exploitation of non-renewable energies and resources (water, rare earths, oil, and coal).
+ 
+<bio>
+Elsa Werth is a Paris-based artist working across installation, sculpture, video, artist books, and sound. Her practice centers on the economies of labor and the ordinary gestures that sustain them. What interests her is the texture of work as it is actually lived — the repetitive, the habitual, the barely noticed — and she approaches it through operations of displacement and counter-use that make familiar actions strange without aestheticizing them. The anti-spectacular is a deliberate position: in a context that valorizes productivity and growth, her refusal of spectacle is itself a form of argument. She received the 23rd Prix de la Fondation Pernod Ricard pour l'Art Contemporain in 2022 and has exhibited at the Centre Pompidou, the West Bund Museum in Shanghai, and the National Taiwan Museum of Fine Arts, among other venues.
+</bio>
 <credits>Écrit et réalisé par Agnieszka Polska
 voix: Tina Greatrex
 workflow stable diffusion: Nathan Gray
@@ -1360,6 +1358,9 @@ artistesIds.forEach((id, index) => {
   img.alt        = artiste.nom;
   img.style.left = vignettePositions[index].x;
   img.style.top  = vignettePositions[index].y;
+  if (artiste.nom === "Sofia Crespo") {
+    img.style.transform = "scale(0.78)";
+  }
   hoverPreviews.appendChild(img);
 });
 
