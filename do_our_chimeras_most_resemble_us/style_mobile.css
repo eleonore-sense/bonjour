@@ -64,7 +64,7 @@ div[style*="top:15px"] {
 
 body.part3-active #btn-lang {
   position: fixed;
-  top: calc(26px + 3.5em + 44px);
+  top: calc(26px + 3.5em + 34px);
   right: 45px;
   left: auto;
   text-decoration: none;
@@ -428,7 +428,7 @@ body.lang-fr.cinema-mode #titre-haut .titre-svg-letter path {
 }
 #top-right-buttons {
   position: fixed;
-top:calc(26px + 3.5em + 44px);
+top:calc(26px + 3.5em + 34px);
   right: 19px;
   display: flex;
   flex-direction: column;

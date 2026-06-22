@@ -344,8 +344,6 @@ function recalcTopButtonsHeight() {
 
 
 
-
-
 function initMobileScrollMask() {
   if (!isMobile()) return;
 
@@ -355,127 +353,115 @@ function initMobileScrollMask() {
   const titreEl = document.querySelector('#gauche .titre');
   recalcTitreHeight();
 
-  let titreStartY = titreEl ? titreEl.getBoundingClientRect().top + part3.scrollTop : null;
   let lastScrollY = 0;
 
-  // ── calcule la distance entre le bas de #info et le haut de #video-container ──
-function calcSeuilScroll() {
-  const remPx = parseFloat(getComputedStyle(document.documentElement).fontSize); // taille de base en px
-  const emPx = 0.6 * remPx; // approx, si .titre/#info utilisent em relatif au root — à vérifier selon ton CSS
-  // 22vh en pixels
-  const vh22 = window.innerHeight * 0.22;
-  return vh22 + emPx; // distance entre le haut de la vidéo (22vh) et le bas de #info (22vh + 0.6em)
-}
-
+  function calcSeuilScroll() {
+    const remPx = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    const emPx = 0.6 * remPx;
+    const vh22 = window.innerHeight * 0.22;
+    return vh22 + emPx;
+  }
 
   let seuilScrollDynamic = calcSeuilScroll();
 
-  function updateTexteMask() {
-    // ... reste de la fonction
-    const texteOeuvre = document.getElementById('texte-oeuvre');
-    if (!texteOeuvre) return;
+  // ── CACHE des valeurs coûteuses ──
+  const texteOeuvre = document.getElementById('texte-oeuvre');
+  let cachedTexteHeight = texteOeuvre ? texteOeuvre.offsetHeight : 0;
+  let cachedRectTop = texteOeuvre ? texteOeuvre.getBoundingClientRect().top : 0;
 
-    const rect = texteOeuvre.getBoundingClientRect();
-    const texteHeight = texteOeuvre.offsetHeight;
-    if (texteHeight <= 0) return;
+function updateTexteMask() {
+  if (!texteOeuvre) return;
 
-    const scrollY = part3.scrollTop;
-    const toPercent = (px) => Math.max(0, Math.min(100, (px / texteHeight) * 100));
+  const scrollY = part3.scrollTop;
+  const h = window.innerHeight;
+  
+  // MASK HAUT
+  const seuilScroll = seuilScrollDynamic + 160;
+  const hidden = Math.max(0, scrollY - seuilScroll);
+  const fadeEnd = hidden + h * 0.05;
 
-    // ── MASK HAUT — hauteur du fondu se fige à 300px de scroll, mais la POSITION
-const seuilScroll = seuilScrollDynamic+160;
-    const vitesseAvant = 0;
-    const vitesseApres = 1;
+  // MASK BAS — identique à avant, inchangé
+  const fadeHeightPx = 100;
+  const hiddenZonePx = 40;
+  const rect = texteOeuvre.getBoundingClientRect();
+  const bottomStartPx = (window.innerHeight - hiddenZonePx - fadeHeightPx) - rect.top;
+  const bottomEndPx   = (window.innerHeight - hiddenZonePx) - rect.top;
+  const q1Px = bottomStartPx + (bottomEndPx - bottomStartPx) * 0.5;
+  const q2Px = bottomStartPx + (bottomEndPx - bottomStartPx) * 0.75;
+  const q3Px = bottomStartPx + (bottomEndPx - bottomStartPx) * 0.9;
 
-    let topFadeHeightPx;
-    if (scrollY <= seuilScroll) {
-      topFadeHeightPx = scrollY * vitesseAvant;
-    } else {
-      topFadeHeightPx = (seuilScroll * vitesseAvant) + (scrollY - seuilScroll) * vitesseApres;
-    }
+  const texteHeight = texteOeuvre.offsetHeight;
+  const toPercent = (px) => Math.max(0, Math.min(100, (px / texteHeight) * 100));
 
-    const topEndPct = toPercent(topFadeHeightPx);
-    const topQ1Pct = toPercent(topFadeHeightPx + 25);
-const topQ2Pct = toPercent(topFadeHeightPx + 55);
-const topQ3Pct = toPercent(topFadeHeightPx + 80);
+  const bottomStartPct = toPercent(bottomStartPx);
+  const bottomQ1Pct    = toPercent(q1Px);
+  const bottomQ2Pct    = toPercent(q2Px);
+  const bottomQ3Pct    = toPercent(q3Px);
+  const bottomEndPct   = toPercent(bottomEndPx);
 
-    // ── MASK BAS — courbe douce, fixé au bas de l'écran ──
-    const fadeHeightPx = 100;
-    const hiddenZonePx = 40;
-
-const bottomStartPx = (window.innerHeight - hiddenZonePx - fadeHeightPx) - rect.top;
-    const bottomEndPx = (window.innerHeight - hiddenZonePx) - rect.top;
-    const q1Px = bottomStartPx + (bottomEndPx - bottomStartPx) * 0.5;
-    const q2Px = bottomStartPx + (bottomEndPx - bottomStartPx) * 0.75;
-    const q3Px = bottomStartPx + (bottomEndPx - bottomStartPx) * 0.9;
-
-    const bottomStartPct = toPercent(bottomStartPx);
-    const bottomQ1Pct = toPercent(q1Px);
-    const bottomQ2Pct = toPercent(q2Px);
-    const bottomQ3Pct = toPercent(q3Px);
-    const bottomEndPct = toPercent(bottomEndPx);
-
-const gradient = `linear-gradient(to bottom,
-  transparent 0%,
-  transparent ${topEndPct}%,
-  black ${topEndPct}%,
-  transparent ${toPercent(topFadeHeightPx -20)}%,
-    black ${toPercent(topFadeHeightPx +10)}%,
+  texteOeuvre.style.webkitMaskImage = `linear-gradient(to bottom,
+    transparent 0px,
+    transparent ${hidden}px,
+    black ${fadeEnd}px,
     black ${bottomStartPct}%,
-  rgba(0,0,0,0.9) ${bottomQ1Pct}%,
-  rgba(0,0,0,0.55) ${bottomQ2Pct}%,
-  rgba(0,0,0,0.18) ${bottomQ3Pct}%,
-  transparent ${bottomEndPct}%
-)`;
-
-    texteOeuvre.style.webkitMaskImage = gradient;
-    texteOeuvre.style.maskImage = gradient;
-  }
-
-  window.updateBottomMaskMobile = updateTexteMask;
+    rgba(0,0,0,0.9) ${bottomQ1Pct}%,
+    rgba(0,0,0,0.55) ${bottomQ2Pct}%,
+    rgba(0,0,0,0.18) ${bottomQ3Pct}%,
+    transparent ${bottomEndPct}%
+  )`;
+  texteOeuvre.style.maskImage = texteOeuvre.style.webkitMaskImage;
+}
   updateTexteMask();
+
+  let scrollRafPending = false;
 
   part3.addEventListener('scroll', () => {
     if (!info3AlreadyShown) {
       part3.scrollTop = 0;
       return;
     }
-    const scrollY = part3.scrollTop;
 
-    updateTexteMask();
+    if (scrollRafPending) return;
+    scrollRafPending = true;
 
-    const videoContainer = document.getElementById('video-container');
-    if (!videoContainer) return;
+    requestAnimationFrame(() => {
+      scrollRafPending = false;
+      const scrollY = part3.scrollTop;
 
-    const videoH = videoContainer.offsetHeight;
-    const videoProgress = Math.min(scrollY / videoH, 1);
-    const maskStop = Math.round((1 - videoProgress) * 100);
-    videoContainer.style.webkitMaskImage =
-      `linear-gradient(to top, black 12%, black ${maskStop}%, transparent ${maskStop + 20}%)`;
-    videoContainer.style.maskImage =
-      `linear-gradient(to top, black 12%, black ${maskStop}%, transparent ${maskStop + 20}%)`;
+      updateTexteMask();
 
-    const btnLang = document.getElementById('btn-lang');
-    const btnHome = document.getElementById('btn_home');
-    const btnCine = document.getElementById('btn_cine_switch');
+      const videoContainer = document.getElementById('video-container');
+      if (!videoContainer) return;
 
-    if (scrollY > lastScrollY) {
-      setOpacity(btnLang, '0.75', '0.4s');
-      setOpacity(btnHome, '0.75', '0.4s');
-      setOpacity(btnCine, '0.75', '0.4s');
-    } else {
-      setOpacity(btnLang, '1', '0.4s');
-      setOpacity(btnHome, '1', '0.4s');
-      setOpacity(btnCine, '1', '0.4s');
-    }
-    lastScrollY = scrollY;
+      const videoH = videoContainer.offsetHeight;
+      const videoProgress = Math.min(scrollY / videoH, 1);
+      const maskStop = Math.round((1 - videoProgress) * 100);
+      videoContainer.style.webkitMaskImage =
+        `linear-gradient(to top, black 12%, black ${maskStop}%, transparent ${maskStop + 20}%)`;
+      videoContainer.style.maskImage =
+        `linear-gradient(to top, black 12%, black ${maskStop}%, transparent ${maskStop + 20}%)`;
+
+      const btnLang = document.getElementById('btn-lang');
+      const btnHome = document.getElementById('btn_home');
+      const btnCine = document.getElementById('btn_cine_switch');
+
+      if (scrollY > lastScrollY) {
+        setOpacity(btnLang, '0.75', '0.4s');
+        setOpacity(btnHome, '0.75', '0.4s');
+        setOpacity(btnCine, '0.75', '0.4s');
+      } else {
+        setOpacity(btnLang, '1', '0.4s');
+        setOpacity(btnHome, '1', '0.4s');
+        setOpacity(btnCine, '1', '0.4s');
+      }
+      lastScrollY = scrollY;
+    });
   });
 
   window.recalcTitreStartY = () => {
-    titreStartY = titreEl ? titreEl.getBoundingClientRect().top + part3.scrollTop : null;
+    if (titreEl) titreStartY = titreEl.getBoundingClientRect().top + part3.scrollTop;
   };
 }
-
 
 
 function getMobileBgLayer(n) {

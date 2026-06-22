@@ -2471,12 +2471,41 @@ if (part3) {
       });
     });
 
+
+
     setTimeout(() => {
       showInfo3();
       setOpacity(document.getElementById('btn_cine_switch'), '1', '0.8s');
+
+      if (isMobile()) {
+      const part3El = document.getElementById('part_3');
+      const videoContainer = document.getElementById('video-container');
+      if (part3El && videoContainer) {
+        const targetY = videoContainer.offsetHeight * 0.75;
+        const startY = part3El.scrollTop;
+        const duration = 1000;
+        const startTime = performance.now();
+
+        function easeInOutCubic(t) {
+          return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+
+        function step(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = easeInOutCubic(progress);
+          part3El.scrollTop = startY + (targetY - startY) * eased;
+          if (progress < 1) requestAnimationFrame(step);
+        }
+
+        requestAnimationFrame(step);
+      }
+    }
+
     }, 1500);
   }
   });
+
 
 // ══════════════════════════════════════════════
 // ── NEXT ARTIST ───────────────────────────────
