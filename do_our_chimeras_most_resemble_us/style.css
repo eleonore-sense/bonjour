@@ -135,6 +135,8 @@ span {
 
 }
 
+
+
 #boite_about.visible {
   opacity: 1;
   transition:
@@ -281,6 +283,199 @@ span {
   transform: translateY(0);
 }
 
+
+
+
+/* ══════════════════════════════════════════════
+   CALENDRIER
+   ══════════════════════════════════════════════ */
+
+#boite_calendar {
+  position: fixed;
+  top: calc(3.5em);
+  left: 25px;
+  z-index: 3000;  opacity: 0;
+  transition: opacity 1s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+  pointer-events: none;
+}
+
+#boite_calendar.visible {
+  opacity: 1;
+}
+
+
+#boite_calendar.hidden-in-part3 {
+  pointer-events: none !important;
+}
+
+
+#calendar-label {
+  font-family: Abordage;
+  font-size: 1em;
+  color: black;
+  margin-top: -10px;
+  text-shadow:
+    0 0 80px rgba(255,255,255,1),
+    0 0 60px rgba(255,255,255,1),
+    0 0 50px rgba(255,255,255,1),
+    0 0 40px rgba(255,255,255,1),
+    0 0 30px rgba(255,255,255,1),
+    0 0 20px rgba(255,255,255,1),
+    0 0 15px rgba(255,255,255,1),
+    0 0 10px rgba(255,255,255,1),
+    0 0 6px rgba(255,255,255,1),
+    0 0 3px rgba(255,255,255,1);
+  transition: opacity 0.4s ease;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+
+#boite_calendar:hover #calendar-label {
+  text-decoration: underline;
+}
+
+#boite_calendar.open #calendar-label {
+  text-decoration: underline;
+}
+
+#calendar-panel {
+  position: relative;
+  z-index: 3000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s ease;
+    cursor: pointer;
+  filter: 
+          drop-shadow(0 0 30px rgba(255,255,255,1))
+          drop-shadow(0 0 20px rgba(255,255,255,1))
+          drop-shadow(0 0 10px rgba(255,255,255,1))
+          drop-shadow(0 0 6px rgba(255,255,255,1))
+          drop-shadow(0 0 3px rgba(255,255,255,1));
+}
+
+#boite_calendar.open #calendar-panel {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#calendar-content {
+  font-family: Abordage;
+  font-size: 0.85em;
+  line-height: 1.6;
+  color: black;
+  max-height: 57vh;
+  overflow-y: auto;
+
+  scrollbar-width: none;
+  -webkit-mask: linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
+  mask: linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+  opacity: 0;
+  transform: translateY(8px);
+  padding-bottom: 80px;
+}
+
+#calendar-content::-webkit-scrollbar { display: none; }
+
+#boite_calendar.show-text #calendar-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.calendar-entry {
+  display: flex;
+  gap: 2em;
+  padding: 2px 0;
+  max-height: 2em;
+  transition: max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease;
+}
+
+.calendar-entry.today {
+  text-decoration: underline;
+}
+
+
+.calendar-entry.collapsed {
+  max-height: 0;
+  opacity: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.calendar-date {
+  opacity: 0.6;
+  min-width: 5em;
+}
+
+.calendar-artist {
+  flex: 1;
+}
+
+#calendar-top-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4em;
+}
+
+#calendar-artists-nav {
+  display: flex;
+  gap: 0.3em 0.8em;
+  flex-wrap: wrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  padding-left: 0;
+}
+
+#boite_calendar.open #calendar-artists-nav {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.calendar-nav-artist {
+  font-family: Abordage;
+  font-size: 0.7em;
+  color: black;
+  opacity: 0.35;
+  cursor: pointer;
+text-shadow:
+    0 0 80px rgba(255,255,255,1),
+    0 0 60px rgba(255,255,255,1),
+    0 0 50px rgba(255,255,255,1),
+    0 0 40px rgba(255,255,255,1),
+    0 0 30px rgba(255,255,255,1),
+    0 0 20px rgba(255,255,255,1),
+    0 0 15px rgba(255,255,255,1),
+    0 0 10px rgba(255,255,255,1),
+    0 0 6px rgba(255,255,255,1),
+    0 0 3px rgba(255,255,255,1);
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+}
+
+.calendar-nav-artist:hover {
+  opacity: 1;
+}
+
+
+.calendar-entry.today .calendar-date,
+.calendar-entry.today .calendar-artist {
+  text-decoration: underline;
+}
+
+
+.texte-dates {
+  font-family: Abordage;
+  font-size: 0.8em;
+  line-height: 1.6;
+  margin-bottom: 1em;
+  cursor: default;
+}
 /* ══════════════════════════════════════════════
    FOND COULEUR ANIMÉ
    ══════════════════════════════════════════════ */

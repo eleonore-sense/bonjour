@@ -172,6 +172,11 @@ titreEl.innerHTML = formatTitreArtiste(data.nom, data.titre, titreEl, detailsM1)
     recalcTitreHeight();
     document.body.classList.add('part3-active');
 loadArtistMedia(data);
+if (!isArtistAvailableToday(data.nom)) {
+  btnPlay.style.opacity = '0.3';
+  btnPlay.style.pointerEvents = 'none';
+  // afficher la date — on décidera où ensemble
+}
     const fullscreenBtnMobile = document.getElementById('fullscreen');
     if (fullscreenBtnMobile) {
       fullscreenBtnMobile.style.opacity = '0';

@@ -237,22 +237,6 @@ if (isPage2 && artisteCourant) {
 
 
 
-// TEMPORAIRE — affichage de base le temps du nettoyage
-function showBasicsTemp() {
-  const ids = ['editor', 'editor-mobile', 'artistes-container', 'btn-lang', 'btn_cine_switch', 'logos-container'];
-  ids.forEach(id => {
-    const el = document.getElementById(id) || document.querySelector('.' + id);
-    if (el) el.style.opacity = '1';
-  });
-  const editorEl = document.querySelector('.editor');
-  if (editorEl) editorEl.style.opacity = '1';
-
-  // TEMPORAIRE — forcer la visibilité de la boîte about
-  document.getElementById('boite_about')?.classList.add('visible');
-}
-
-
-
 // Init au chargement + clic bouton
 document.addEventListener("DOMContentLoaded", () => {
   buildDesktopWaveLines();
@@ -578,7 +562,7 @@ Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 20
 
 `,  },
   8: {
-    nom: "Tzu Nyen Ho",
+    nom: "Ho Tzu Nyen",
     titre: "P for Power",
     details: "2023 — HD video, 9:38 minutes",
 detailsFR: "2023 — vidéo HD, 9:38 minutes",
@@ -777,6 +761,15 @@ const btnRestart        = document.getElementById('btn-restart');
 const texteWrapper      = document.getElementById('texte-wrapper');
 const videoHoverPreview1 = document.getElementById('video-hover-preview-1');
 const videoHoverPreview2 = document.getElementById('video-hover-preview-2');
+const boiteCalendar = document.getElementById('boite_calendar');
+const calendarContent = document.getElementById('calendar-content');
+
+/*CHANGE DATE*/
+const DEBUG_DATE = '2026-09-18';
+function getToday() {
+  return DEBUG_DATE || new Date().toISOString().split('T')[0];
+}
+
 
 let isCinemaMode = false;
 let isFullscreen = false;
@@ -800,7 +793,103 @@ let youtubeFrame = null;
 let youtubePlayer = null;
 let youtubeApiReady = false;
 let youtubePendingAutoplay = false;
+let calendarOpen = false;
+let calendarTextTimer = null;
 
+const schedule = [
+  { date: "2026-09-14", artist: "ALL" },
+  { date: "2026-09-15", artist: "ALL" },
+  { date: "2026-09-16", artist: "Ho Tzu Nyen", work: "P for Power" },
+  { date: "2026-09-17", artist: "Emmanuel Van der Auwera", work: "The Gospel" },
+  { date: "2026-09-18", artist: "Agnieszka Polska", work: "The Book of Flowers" },
+  { date: "2026-09-19", artist: "Jon Rafman", work: "Catastrophonics I–IV" },
+  { date: "2026-09-20", artist: "Jonas Lund", work: "The Future of Life" },
+  { date: "2026-09-21", artist: "John Menick", work: "Telharmonium" },
+  { date: "2026-09-22", artist: "Elsa Werth", work: "If/Then" },
+  { date: "2026-09-23", artist: "Egor Kraft", work: "One & Infinite Chairs" },
+  { date: "2026-09-24", artist: "Lu Yang", work: "DOKU the Creator" },
+  { date: "2026-09-25", artist: "Sofia Crespo", work: "Invertebrate Interactions" },
+  { date: "2026-09-26", artist: "Ho Tzu Nyen", work: "P for Power" },
+  { date: "2026-09-27", artist: "Emmanuel Van der Auwera", work: "The Gospel" },
+  { date: "2026-09-28", artist: "Agnieszka Polska", work: "The Book of Flowers" },
+  { date: "2026-09-29", artist: "Jon Rafman", work: "Catastrophonics I–IV" },
+  { date: "2026-09-30", artist: "Jonas Lund", work: "The Future of Life" },
+  { date: "2026-10-01", artist: "John Menick", work: "Telharmonium" },
+  { date: "2026-10-02", artist: "Elsa Werth", work: "If/Then" },
+  { date: "2026-10-03", artist: "Egor Kraft", work: "One & Infinite Chairs" },
+  { date: "2026-10-04", artist: "Lu Yang", work: "DOKU the Creator" },
+  { date: "2026-10-05", artist: "Sofia Crespo", work: "Invertebrate Interactions" },
+  { date: "2026-10-06", artist: "Ho Tzu Nyen", work: "P for Power" },
+  { date: "2026-10-07", artist: "Emmanuel Van der Auwera", work: "The Gospel" },
+  { date: "2026-10-08", artist: "Agnieszka Polska", work: "The Book of Flowers" },
+  { date: "2026-10-09", artist: "Jon Rafman", work: "Catastrophonics I–IV" },
+  { date: "2026-10-10", artist: "Jonas Lund", work: "The Future of Life" },
+  { date: "2026-10-11", artist: "John Menick", work: "Telharmonium" },
+  { date: "2026-10-12", artist: "Elsa Werth", work: "If/Then" },
+  { date: "2026-10-13", artist: "Egor Kraft", work: "One & Infinite Chairs" },
+  { date: "2026-10-14", artist: "Lu Yang", work: "DOKU the Creator" },
+  { date: "2026-10-15", artist: "Sofia Crespo", work: "Invertebrate Interactions" },
+  { date: "2026-10-16", artist: "Ho Tzu Nyen", work: "P for Power" },
+  { date: "2026-10-17", artist: "Emmanuel Van der Auwera", work: "The Gospel" },
+  { date: "2026-10-18", artist: "Agnieszka Polska", work: "The Book of Flowers" },
+  { date: "2026-10-19", artist: "Jon Rafman", work: "Catastrophonics I–IV" },
+  { date: "2026-10-20", artist: "Jonas Lund", work: "The Future of Life" },
+  { date: "2026-10-21", artist: "John Menick", work: "Telharmonium" },
+  { date: "2026-10-22", artist: "Elsa Werth", work: "If/Then" },
+  { date: "2026-10-23", artist: "Egor Kraft", work: "One & Infinite Chairs" },
+  { date: "2026-10-24", artist: "Lu Yang", work: "DOKU the Creator" },
+  { date: "2026-10-25", artist: "Sofia Crespo", work: "Invertebrate Interactions" },
+  { date: "2026-10-26", artist: "Ho Tzu Nyen", work: "P for Power" },
+  { date: "2026-10-27", artist: "Emmanuel Van der Auwera", work: "The Gospel" },
+  { date: "2026-10-28", artist: "Agnieszka Polska", work: "The Book of Flowers" },
+  { date: "2026-10-29", artist: "Jon Rafman", work: "Catastrophonics I–IV" },
+  { date: "2026-10-30", artist: "Jonas Lund", work: "The Future of Life" },
+  { date: "2026-10-31", artist: "John Menick", work: "Telharmonium" },
+  { date: "2026-11-01", artist: "Elsa Werth", work: "If/Then" },
+  { date: "2026-11-02", artist: "Egor Kraft", work: "One & Infinite Chairs" },
+  { date: "2026-11-03", artist: "Lu Yang", work: "DOKU the Creator" },
+  { date: "2026-11-04", artist: "Sofia Crespo", work: "Invertebrate Interactions" },
+  { date: "2026-11-05", artist: "Ho Tzu Nyen", work: "P for Power" },
+  { date: "2026-11-06", artist: "Emmanuel Van der Auwera", work: "The Gospel" },
+  { date: "2026-11-07", artist: "Agnieszka Polska", work: "The Book of Flowers" },
+  { date: "2026-11-08", artist: "Jon Rafman", work: "Catastrophonics I–IV" },
+  { date: "2026-11-09", artist: "Jonas Lund", work: "The Future of Life" },
+  { date: "2026-11-10", artist: "John Menick", work: "Telharmonium" },
+  { date: "2026-11-11", artist: "Elsa Werth", work: "If/Then" },
+  { date: "2026-11-12", artist: "Egor Kraft", work: "One & Infinite Chairs" },
+  { date: "2026-11-13", artist: "Lu Yang", work: "DOKU the Creator" },
+  { date: "2026-11-14", artist: "Sofia Crespo", work: "Invertebrate Interactions" },
+  { date: "2026-11-15", artist: "Ho Tzu Nyen", work: "P for Power" },
+  { date: "2026-11-16", artist: "Emmanuel Van der Auwera", work: "The Gospel" },
+  { date: "2026-11-17", artist: "Agnieszka Polska", work: "The Book of Flowers" },
+  { date: "2026-11-18", artist: "Jon Rafman", work: "Catastrophonics I–IV" },
+  { date: "2026-11-19", artist: "Jonas Lund", work: "The Future of Life" },
+  { date: "2026-11-20", artist: "John Menick", work: "Telharmonium" },
+  { date: "2026-11-21", artist: "Elsa Werth", work: "If/Then" },
+  { date: "2026-11-22", artist: "Egor Kraft", work: "One & Infinite Chairs" },
+  { date: "2026-11-23", artist: "Lu Yang", work: "DOKU the Creator" },
+  { date: "2026-11-24", artist: "Sofia Crespo", work: "Invertebrate Interactions" },
+  { date: "2026-11-25", artist: "Ho Tzu Nyen", work: "P for Power" },
+  { date: "2026-11-26", artist: "Emmanuel Van der Auwera", work: "The Gospel" },
+  { date: "2026-11-27", artist: "Agnieszka Polska", work: "The Book of Flowers" },
+  { date: "2026-11-28", artist: "Jon Rafman", work: "Catastrophonics I–IV" },
+  { date: "2026-11-29", artist: "Jonas Lund", work: "The Future of Life" },
+  { date: "2026-11-30", artist: "John Menick", work: "Telharmonium" },
+  { date: "2026-12-01", artist: "Elsa Werth", work: "If/Then" },
+  { date: "2026-12-02", artist: "Egor Kraft", work: "One & Infinite Chairs" },
+  { date: "2026-12-03", artist: "Lu Yang", work: "DOKU the Creator" },
+  { date: "2026-12-04", artist: "Sofia Crespo", work: "Invertebrate Interactions" },
+  { date: "2026-12-05", artist: "Ho Tzu Nyen", work: "P for Power" },
+  { date: "2026-12-06", artist: "Emmanuel Van der Auwera", work: "The Gospel" },
+  { date: "2026-12-07", artist: "Agnieszka Polska", work: "The Book of Flowers" },
+  { date: "2026-12-08", artist: "Jon Rafman", work: "Catastrophonics I–IV" },
+  { date: "2026-12-09", artist: "Jonas Lund", work: "The Future of Life" },
+  { date: "2026-12-10", artist: "John Menick", work: "Telharmonium" },
+  { date: "2026-12-11", artist: "Elsa Werth", work: "If/Then" },
+  { date: "2026-12-12", artist: "ALL" },
+  { date: "2026-12-13", artist: "ALL" },
+  { date: "2026-12-14", artist: "CLOSED" },
+];
 
 window.onYouTubeIframeAPIReady = function() {
   youtubeApiReady = true;
@@ -884,6 +973,17 @@ function swapPreviewLayer() {
   activePreviewLayer = activePreviewLayer === 1 ? 2 : 1;
 }
 
+
+
+function isArtistAvailableToday(nom) {
+  const today = getToday();
+  const entry = schedule.find(e => e.date === today);
+  if (!entry) return false;
+  return entry.artist === nom || entry.artist === 'ALL';
+}
+
+
+
 // ══════════════════════════════════════════════
 // ── INTRO ANIMATION
 // ══════════════════════════════════════════════
@@ -939,6 +1039,7 @@ function playIntro() {
     };
     fadeIn('artistes-container');
     document.getElementById('boite_about')?.classList.add('visible');
+    setCalendarVisible(true);
 setOpacity(document.getElementById('btn-lang'), '1', '1s');
 setOpacity(document.getElementById('btn_cine_switch'), '1', '1s');
     fadeIn('logos-container');
@@ -1269,8 +1370,10 @@ let lastHoveredId = null;
 artistesContainer.addEventListener('mouseover', (e) => {
   if (!e.target.classList.contains('artiste_accueil')) return;
   const id = e.target.dataset.artiste;
-  if (!id || id === lastHoveredId) return; // ← même élément, on ignore
 
+  if (!id || id === lastHoveredId) return; // ← même élément, on ignore
+  const nom = artistes[id]?.nom;
+  if (nom) updateCalendarLabelForArtist(nom);
   lastHoveredId = id;
 
   if (mousoverPending) return; // ← un rAF est déjà en attente
@@ -1290,7 +1393,12 @@ artistesContainer.addEventListener('mouseleave', () => {
   lastHoveredId = null;
   if (currentVisibleImg) currentVisibleImg.classList.remove('visible');
   currentVisibleImg = null;
+
+    resetCalendarLabel();
 });
+
+
+
 
 // ══════════════════════════════════════════════
 // ── LOGOS SVG ─────────────────────────────────
@@ -1561,7 +1669,7 @@ setOpacity(document.getElementById('btn-lang'), '0', '0.6s');
   document.querySelector('#gauche .titre').style.opacity = '0'; 
 document.getElementById('btn_home').style.opacity = '0';
 document.getElementById('btn_home').style.pointerEvents = 'none';
-
+setCalendarVisible(false);
   const id = e.target.dataset.artiste;
   artisteCourant = parseInt(id, 10);
   const data = artistes[id];
@@ -1574,6 +1682,10 @@ const titreEl0 = document.querySelector('#gauche .titre');
 const details0 = currentLang === "FR" && data.detailsFR ? data.detailsFR : data.details;
 titreEl0.innerHTML = formatTitreArtiste(data.nom, data.titre, titreEl0, details0);
 loadArtistMedia(data);
+
+if (!isArtistAvailableToday(data.nom)) {
+  setTimeout(() => showNextDatesForArtist(data.nom), 3200);
+}
 
 document.getElementById('fullscreen').style.display = 'none';
 btnPlay.classList.add('hidden');
@@ -1588,8 +1700,6 @@ renderTexteOeuvre(data, currentLang);
   artistesContainer.classList.add('hidden-content');
   logosContainer.classList.add('hidden-content');
   about.classList.add('hidden-content');
-
-
 enterCinemaFromHome();
 document.getElementById('btn-lang').classList.add('nav_link');
   const part3 = document.getElementById('part_3');
@@ -1617,12 +1727,16 @@ setOpacity(document.getElementById('info'), '1', '1.5s');
 setTimeout(() => {
   part3.classList.add('part3-info2-visible');
   btnPlay.classList.remove('hidden');
-  const data = artistes[artisteCourant];
-  if (data?.vimeo) {
+  const currentData = artistes[artisteCourant];
+  if (!isArtistAvailableToday(currentData.nom)) {
+    btnPlay.style.opacity = '0.15';
+    btnPlay.style.pointerEvents = 'none';
+    btnPlay.classList.add('hidden');
+  } else if (currentData?.vimeo) {
     btnPlay.style.opacity = '1';
     btnPlay.style.pointerEvents = 'auto';
   }
-    }, 3000);
+}, 3000);
 
   }, 1000);
 });
@@ -1714,7 +1828,7 @@ setOpacity(document.getElementById('btn-lang'), '1', '1.5s');
 setOpacity(document.getElementById('btn_cine_switch'), '1', '1.5s');
 
   document.getElementById('btn_cine_switch').style.transition = 'opacity 1.5s ease'; // ← ici
-  document.getElementById('btn_cine_switch').style.opacity = '1';    
+  document.getElementById('btn_cine_switch').style.opacity = '1';
     }, 1200);
 
   });
@@ -2124,22 +2238,6 @@ videoWrapper.addEventListener('mouseleave', () => {
 
   videoWrapper.style.cursor = 'default';
 });
-videoWrapper.addEventListener('mouseleave', () => {
-  clearTimeout(hideTimer);
-
-  if (!video.paused || hasStarted) {
-    btnPlay.style.opacity = '0';
-    btnPlay.style.pointerEvents = 'none';
-  }
-
-  if (document.fullscreenElement) {
-    btnRestart.style.opacity = '0';
-    fullscreenExit.style.opacity = '0';
-    timelineFull.style.opacity = '0';
-  }
-
-  videoWrapper.style.cursor = 'default';
-});
 
 
 // ══════════════════════════════════════════════
@@ -2411,100 +2509,98 @@ btnRestart.addEventListener('click', () => {
 document.getElementById('info').addEventListener('click', () => {
   const texte = document.getElementById('texte-oeuvre');
   const info = document.getElementById('info');
+  const data = artistes[artisteCourant];
+  const isAvailable = isArtistAvailableToday(data.nom);
+  const showingDates = texte.dataset.mode === 'dates';
   const isVisible = texte.classList.contains('visible');
 
-if (isVisible) {
-  // FERMETURE
+  if (isVisible && !showingDates) {
+    // FERMETURE du texte oeuvre
     texte.style.transition = 'opacity 0.4s ease';
     texte.style.opacity = '0';
-    document.querySelector('.artiste-details')?.classList.remove('visible');
-
     setTimeout(() => {
       texte.classList.remove('visible');
       texte.style.transition = '';
       texte.style.opacity = '';
       texteWrapper.classList.remove('visible');
       info.textContent = '+';
-const part3 = document.getElementById('part_3');
-if (part3) {
-  const startY = part3.scrollTop;
-  const duration = 900; // ms — augmente pour encore plus lent/doux
-  const startTime = performance.now();
-
-  function easeInOutCubic(t) {
-    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-  }
-
-  function step(now) {
-    const elapsed = now - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    const eased = easeInOutCubic(progress);
-    part3.scrollTop = startY * (1 - eased);
-    if (progress < 1) requestAnimationFrame(step);
-  }
-
-  requestAnimationFrame(step);
-}
+      if (!isAvailable) showNextDatesForArtist(data.nom);
       setOpacity(document.getElementById('btn_cine_switch'), '0', '0.8s');
     }, 420);
 
-   } else {
-    // OUVERTURE
+  } else if (showingDates || !isVisible) {
+    // OUVERTURE du texte oeuvre
     texte.style.transition = 'opacity 0.4s ease';
     texte.style.opacity = '0';
-    texte.classList.add('visible');
-    texteWrapper.classList.add('visible');
-
-    requestAnimationFrame(() => {
+    setTimeout(() => {
+      renderTexteOeuvre(data, currentLang);
+      texte.dataset.mode = 'text';
+      texte.classList.add('visible');
+      texteWrapper.classList.add('visible');
       requestAnimationFrame(() => {
-        texte.style.opacity = '1';
-        info.textContent = '–';
-        document.querySelector('.artiste-details')?.classList.add('visible');
-
-        setTimeout(() => {
-          texte.style.transition = '';
-          texte.style.opacity = '';
-          if (typeof window.updateBottomMaskMobile === 'function') {
-            window.updateBottomMaskMobile(); // ← recalcul après ouverture
-          }
-        }, 450);
+        requestAnimationFrame(() => {
+          texte.style.opacity = '1';
+          info.textContent = '–';
+          document.querySelector('.artiste-details')?.classList.add('visible');
+          setTimeout(() => {
+            texte.style.transition = '';
+            texte.style.opacity = '';
+          }, 450);
+        });
       });
-    });
-
-
+    }, 420);
 
     setTimeout(() => {
       showInfo3();
       setOpacity(document.getElementById('btn_cine_switch'), '1', '0.8s');
-
-      if (isMobile()) {
-      const part3El = document.getElementById('part_3');
-      const videoContainer = document.getElementById('video-container');
-      if (part3El && videoContainer) {
-        const targetY = videoContainer.offsetHeight * 0.75;
-        const startY = part3El.scrollTop;
-        const duration = 1000;
-        const startTime = performance.now();
-
-        function easeInOutCubic(t) {
-          return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-        }
-
-        function step(now) {
-          const elapsed = now - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          const eased = easeInOutCubic(progress);
-          part3El.scrollTop = startY + (targetY - startY) * eased;
-          if (progress < 1) requestAnimationFrame(step);
-        }
-
-        requestAnimationFrame(step);
-      }
-    }
-
     }, 1500);
   }
+});
+
+
+
+function showNextDatesForArtist(nom) {
+  const texte = document.getElementById('texte-oeuvre');
+  if (!texte) return;
+  texte.dataset.mode = 'dates';
+
+
+  const today = getToday();
+  const entries = schedule.filter(e => e.artist === nom && e.date >= today);
+
+  if (entries.length === 0) {
+    texte.innerHTML = '<div class="texte-dates">no upcoming screenings</div>';
+  } else {
+    const label = currentLang === 'FR' ? 'prochaines diffusions' : 'upcoming screenings';
+    const dates = entries.map(e => {
+      const dateObj = new Date(e.date + 'T12:00:00');
+      return dateObj.toLocaleDateString(currentLang === 'FR' ? 'fr-FR' : 'en-GB', 
+        { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    }).join('<br>');
+texte.innerHTML = `<div class="texte-dates"><u>${label}</u><div style="margin-top: 0.8em">${dates}</div></div>`;
+  }
+
+  texte.style.opacity = '0';
+  texte.classList.add('visible');
+  texteWrapper.classList.add('visible');
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      texte.style.transition = 'opacity 0.4s ease';
+      texte.style.opacity = '1';
+      setTimeout(() => {
+        texte.style.transition = '';
+        texte.style.opacity = '';
+      }, 450);
+    });
   });
+setTimeout(() => {
+  showInfo3();
+  setOpacity(document.getElementById('btn_cine_switch'), '1', '0.8s');
+}, 800);
+
+
+}
 
 
 // ══════════════════════════════════════════════
@@ -2631,13 +2727,20 @@ titreHaut.style.transform = '';
           isTransitioning = false;
           video.dispatchEvent(new Event('loadedmetadata'));
 
-          setTimeout(() => {
-            btnPlay.style.transition = 'opacity 0.6s ease';
-            btnPlay.style.opacity = '1';
-            setTimeout(() => {
-              btnPlay.style.transition = '';
-            }, 650);
-          }, 100);
+setTimeout(() => {
+  btnPlay.style.transition = 'opacity 0.6s ease';
+  const currentData = artistes[artisteCourant];
+  if (!isArtistAvailableToday(currentData.nom)) {
+    btnPlay.style.opacity = '0.15';
+    btnPlay.style.pointerEvents = 'none';
+  } else {
+    btnPlay.classList.remove('hidden');
+    btnPlay.style.opacity = '1';
+  }
+  setTimeout(() => {
+    btnPlay.style.transition = '';
+  }, 650);
+}, 100);
         }, 1500);
       });
     });
@@ -2732,6 +2835,261 @@ document.addEventListener('click', (e) => {
     closeAbout();
   }
 });
+
+
+// ══════════════════════════════
+// ── CALENDAR PANEL
+// ══════════════════════════════
+
+function openCalendar() {
+  if (calendarOpen) return;
+  calendarOpen = true;
+  const nav = document.getElementById('calendar-artists-nav');
+  if (nav) nav.style.pointerEvents = 'auto';
+    clearTimeout(calendarTextTimer);
+  buildCalendarContent();
+  boiteCalendar.classList.add('open');
+  boiteCalendar.classList.remove('show-text');
+  calendarTextTimer = setTimeout(() => {
+    boiteCalendar.classList.add('show-text');
+    setTimeout(() => {
+      const todayEl = calendarContent.querySelector('.today');
+      if (todayEl) scrollToToday();
+    }, 100);
+  }, 850);
+}
+
+function closeCalendar() {
+  if (!calendarOpen) return;
+  calendarOpen = false;
+  clearTimeout(calendarTextTimer);
+  resetCalendarHighlight();
+  boiteCalendar.classList.remove('show-text', 'open');
+    const nav = document.getElementById('calendar-artists-nav');
+  if (nav) nav.style.pointerEvents = 'none';
+}
+
+document.getElementById('calendar-label').addEventListener('click', e => {
+  e.stopPropagation();
+  calendarOpen ? closeCalendar() : openCalendar();
+});
+
+document.addEventListener('click', () => {
+  if (calendarOpen) closeCalendar();
+});
+
+// visible comme le boite_about — déclenché depuis playIntro()
+// ajouter dans playIntro() au même moment que boite_about :
+// boiteCalendar?.classList.add('visible');
+
+function getNextDateForArtist(nom) {
+  const today = getToday();
+  const entry = schedule.find(e => e.artist === nom && e.date >= today);
+  if (!entry) return null;
+  const dateObj = new Date(entry.date + 'T12:00:00');
+  return dateObj.toLocaleDateString(currentLang === 'FR' ? 'fr-FR' : 'en-GB', 
+    { weekday: 'long', day: 'numeric', month: 'long' });
+}
+
+function updateCalendarLabelForArtist(nom) {
+  const label = document.getElementById('calendar-label');
+  if (!label || calendarOpen) return;
+  const today = getToday();
+  const todayEntry = schedule.find(e => e.date === today);
+  if (todayEntry && (todayEntry.artist === nom || todayEntry.artist === 'ALL')) {
+    resetCalendarLabel();
+    return;
+  }
+  const date = getNextDateForArtist(nom);
+  if (date) {
+    label.style.opacity = '0';
+setTimeout(() => {
+  const text = currentLang === 'FR' 
+    ? `prochaine diffusion : ${date}` 
+    : `next screening : ${date}`;
+  label.innerHTML = currentLang === 'FR'
+    ? `<u>prochaine diffusion</u> : ${date}`
+    : `<u>next screening</u> : ${date}`;
+  label.style.whiteSpace = 'nowrap';
+  label.style.opacity = '1';
+}, 200);
+  }
+}
+
+function resetCalendarLabel() {
+  const label = document.getElementById('calendar-label');
+  if (!label || calendarOpen) return;
+  label.style.opacity = '0';
+  setTimeout(() => {
+    label.textContent = currentLang === 'FR' ? 'calendrier' : 'calendar';
+    label.style.whiteSpace = '';
+    label.style.opacity = '1';
+  }, 200);
+}
+
+function highlightCalendarArtist(nom) {
+  calendarContent.querySelectorAll('.calendar-entry').forEach(el => {
+    const isMatch = el.dataset.artistName === nom || el.dataset.artistName === 'ALL';
+    if (isMatch) {
+      el.classList.remove('collapsed');
+      el.style.opacity = '1';
+      const artistSpan = el.querySelector('.calendar-artist');
+      const dateSpan = el.querySelector('.calendar-date');
+if (artistSpan) {
+  artistSpan.style.opacity = el.dataset.artistName === 'ALL' ? '1' : '0';
+  artistSpan.style.transition = 'opacity 0.3s ease';
+}
+      if (dateSpan) {
+        dateSpan.style.opacity = '1';
+        dateSpan.style.transition = 'opacity 0.3s ease';
+      }
+    } else {
+      el.classList.add('collapsed');
+    }
+  });
+}
+
+function resetCalendarHighlight() {
+  calendarContent.querySelectorAll('.calendar-entry').forEach(el => {
+    el.classList.remove('collapsed');
+    el.style.opacity = '1';
+    const dateSpan = el.querySelector('.calendar-date');
+    if (dateSpan) {
+      dateSpan.style.opacity = '0.6';
+      dateSpan.style.transition = 'opacity 0.3s ease';
+    }
+    const artistSpan = el.querySelector('.calendar-artist');
+    if (artistSpan) {
+      artistSpan.style.opacity = '0';
+      artistSpan.style.transition = 'none';
+    }
+  });
+
+  setTimeout(() => {
+    // vérifie qu'on n'est plus en hover d'aucun nom
+    const anyHovered = document.querySelector('.calendar-nav-artist:hover');
+    if (!anyHovered) {
+      calendarContent.querySelectorAll('.calendar-entry').forEach(el => {
+        const artistSpan = el.querySelector('.calendar-artist');
+        if (artistSpan) {
+          artistSpan.style.transition = 'opacity 0.4s ease';
+          artistSpan.style.opacity = '1';
+        }
+      });
+    }
+  }, 450);
+}
+
+function getOrdinal(n) {
+  const s = ['th','st','nd','rd'];
+  const v = n % 100;
+  return n + (s[(v-20)%10] || s[v] || s[0]);
+}
+
+function buildCalendarContent() {
+  const today = getToday();
+  calendarContent.innerHTML = '';
+
+  const nav = document.getElementById('calendar-artists-nav');
+  nav.innerHTML = '';
+  const artistNames = [...new Set(schedule
+    .filter(e => e.artist !== 'ALL' && e.artist !== 'CLOSED')
+    .map(e => e.artist))];
+
+  artistNames.forEach((nom, index) => {
+    if (index === 4) {
+      const br = document.createElement('div');
+      br.style.width = '100%';
+      nav.appendChild(br);
+    }
+    const span = document.createElement('span');
+    span.className = 'calendar-nav-artist';
+    span.textContent = nom;
+    span.addEventListener('mouseenter', () => {
+      highlightCalendarArtist(nom);
+      nav.querySelectorAll('.calendar-nav-artist').forEach(el => {
+        el.style.opacity = el.textContent === nom ? '1' : '0.15';
+      });
+    });
+    span.addEventListener('mouseleave', () => {
+      resetCalendarHighlight();
+      nav.querySelectorAll('.calendar-nav-artist').forEach(el => {
+        el.style.opacity = '';
+      });
+    });
+    nav.appendChild(span);
+  });
+
+  schedule.forEach(entry => {
+    const div = document.createElement('div');
+    div.className = 'calendar-entry' + (entry.date === today ? ' today' : '');
+    div.dataset.artistName = entry.artist;
+
+    const dateObj = new Date(entry.date + 'T12:00:00');
+    const dateStr = currentLang === 'FR'
+      ? dateObj.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })
+      : dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+    let artistText;
+    if (entry.artist === 'ALL') {
+      artistText = currentLang === 'FR' ? 'tous les artistes' : 'all artists';
+    } else if (entry.artist === 'CLOSED') {
+      artistText = currentLang === 'FR' ? 'fermé' : 'closed';
+    } else {
+      artistText = entry.work
+        ? `${entry.artist} — <em>${entry.work}</em>`
+        : entry.artist;
+    }
+
+    div.innerHTML = `<span class="calendar-date">${dateStr}</span><span class="calendar-artist">${artistText}</span>`;
+    calendarContent.appendChild(div);
+  });
+
+  setTimeout(() => {
+    const todayEl = calendarContent.querySelector('.today');
+    if (todayEl) todayEl.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }, 900);
+}
+
+
+function scrollToToday() {
+  const todayEl = calendarContent.querySelector('.today');
+  if (!todayEl) return;
+
+  const start = calendarContent.scrollTop;
+  const target = todayEl.offsetTop;
+  const duration = 600; // ← change cette valeur en ms
+  const startTime = performance.now();
+
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
+  }
+
+  function step(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    calendarContent.scrollTop = start + (target - start) * easeInOutCubic(progress);
+    if (progress < 1) requestAnimationFrame(step);
+  }
+
+  requestAnimationFrame(step);
+}
+
+
+function setCalendarVisible(visible) {
+  if (visible) {
+    boiteCalendar.classList.add('visible');
+    boiteCalendar.classList.remove('hidden-in-part3');
+    boiteCalendar.style.pointerEvents = 'auto';
+    setOpacity(boiteCalendar, '1', '1.5s');
+  } else {
+    boiteCalendar.classList.remove('visible');
+    boiteCalendar.classList.add('hidden-in-part3');
+    boiteCalendar.style.pointerEvents = 'none';
+    setOpacity(boiteCalendar, '0', '0.6s');
+  }
+}
+
 
 // ══════════════════════════════════════════════
 // ── CURATED ARTISTS LIST
@@ -3033,6 +3391,7 @@ function renderTexteOeuvre(data, lang) {
   
   el.innerHTML = html;
   el.scrollTop = 0; 
+  el.dataset.mode = 'text';
 }
 
 
