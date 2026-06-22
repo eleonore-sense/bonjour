@@ -1683,7 +1683,7 @@ const details0 = currentLang === "FR" && data.detailsFR ? data.detailsFR : data.
 titreEl0.innerHTML = formatTitreArtiste(data.nom, data.titre, titreEl0, details0);
 loadArtistMedia(data);
 
-if (!isArtistAvailableToday(data.nom)) {
+if (!isArtistAvailableToday(data.nom) && !isMobile()) {
   setTimeout(() => showNextDatesForArtist(data.nom), 3200);
 }
 
@@ -2516,7 +2516,7 @@ document.getElementById('info').addEventListener('click', () => {
 
   if (isVisible && !showingDates) {
     // FERMETURE du texte oeuvre
-    texte.style.transition = 'opacity 0.4s ease';
+    texte.style.transition = 'opacity 0.8s ease';
     texte.style.opacity = '0';
     setTimeout(() => {
       texte.classList.remove('visible');
@@ -2560,6 +2560,9 @@ document.getElementById('info').addEventListener('click', () => {
 
 
 function showNextDatesForArtist(nom) {
+  if (isMobile() && !info3AlreadyShown) {
+  showInfo3Mobile();
+}
   const texte = document.getElementById('texte-oeuvre');
   if (!texte) return;
   texte.dataset.mode = 'dates';
@@ -2594,6 +2597,33 @@ texte.innerHTML = `<div class="texte-dates"><u>${label}</u><div style="margin-to
       }, 450);
     });
   });
+
+if (isMobile()) {
+  setTimeout(() => {
+    const part3El = document.getElementById('part_3');
+    const texteEl = document.getElementById('texte-oeuvre');
+    if (part3El && texteEl) {
+      const start = part3El.scrollTop;
+const target = texteEl.getBoundingClientRect().top + part3El.scrollTop - 100;
+      const duration = 1200;
+      const startTime = performance.now();
+
+      function ease(t) {
+        return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
+      }
+
+      function step(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        part3El.scrollTop = start + (target - start) * ease(progress);
+        if (progress < 1) requestAnimationFrame(step);
+      }
+
+      requestAnimationFrame(step);
+    }
+  }, 300);
+}
+
 setTimeout(() => {
   showInfo3();
   setOpacity(document.getElementById('btn_cine_switch'), '1', '0.8s');
@@ -2622,7 +2652,10 @@ function transitionToArtist(id) {
   const infoBtn = document.getElementById('info');
   const texteVisible = texte.classList.contains('visible');
   isTransitioning = true;
-
+if (!isArtistAvailableToday(data.nom)) {
+  texte.classList.remove('visible');
+  texteWrapper.classList.remove('visible');
+}
   // — SORTIE
 [video, titre, infoBtn].forEach(el => {
   el.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
@@ -2631,11 +2664,13 @@ function transitionToArtist(id) {
 });
 btnPlay.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
 btnPlay.style.opacity = '0';
-  if (texteVisible) {
-    texte.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-    texte.style.opacity = '0';
-    texte.style.transform = 'translateY(12px)';
-  }
+if (texteVisible) {
+  texte.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+  texte.style.opacity = '0';
+  texte.style.transform = 'translateY(12px)';
+  texte.classList.remove('visible');
+  texteWrapper.classList.remove('visible');
+}
 
 setTimeout(() => {
     // — RESET contenu
@@ -2643,7 +2678,9 @@ const detailsT = currentLang === "FR" && data.detailsFR ? data.detailsFR : data.
 titre.innerHTML = formatTitreArtiste(data.nom, data.titre, titre, detailsT);
 
 loadArtistMedia(data);
-    texte.textContent = currentLang === "FR" && data.textFR ? data.textFR : data.text;
+if (isArtistAvailableToday(data.nom)) {
+  texte.textContent = currentLang === "FR" && data.textFR ? data.textFR : data.text;
+}
     texte.scrollTop = 0;
     const texteWrapperEl = document.getElementById('texte-wrapper');
     if (texteWrapperEl) texteWrapperEl.scrollTop = 0;
@@ -2686,11 +2723,11 @@ loadArtistMedia(data);
       el.style.opacity = '0';
       el.style.transform = 'translateY(12px)';
     });
-    if (texteVisible) {
-      texte.style.transition = 'none';
-      texte.style.opacity = '0';
-      texte.style.transform = 'translateY(12px)';
-    }
+if (texteVisible && isArtistAvailableToday(data.nom)) {
+  texte.style.transition = 'none';
+  texte.style.opacity = '0';
+  texte.style.transform = 'translateY(12px)';
+}
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -2699,11 +2736,11 @@ loadArtistMedia(data);
   el.style.opacity = '1';
   el.style.transform = 'translateY(0)';
 });
-        if (texteVisible) {
-          texte.style.transition = 'opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1)';
-          texte.style.opacity = '1';
-          texte.style.transform = 'translateY(0)';
-        }
+if (texteVisible && isArtistAvailableToday(data.nom)) {
+  texte.style.transition = 'opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1)';
+  texte.style.opacity = '1';
+  texte.style.transform = 'translateY(0)';
+}
 
         // nettoyage
         setTimeout(() => {
@@ -2731,11 +2768,17 @@ setTimeout(() => {
   btnPlay.style.transition = 'opacity 0.6s ease';
   const currentData = artistes[artisteCourant];
   if (!isArtistAvailableToday(currentData.nom)) {
-    btnPlay.style.opacity = '0.15';
+    btnPlay.classList.add('hidden');
+    btnPlay.style.opacity = '0';
     btnPlay.style.pointerEvents = 'none';
+
+      if (isMobile()) showInfo3Mobile();
+      else showInfo3();
+      showNextDatesForArtist(currentData.nom);
   } else {
     btnPlay.classList.remove('hidden');
     btnPlay.style.opacity = '1';
+    btnPlay.style.pointerEvents = 'auto';
   }
   setTimeout(() => {
     btnPlay.style.transition = '';
@@ -2744,7 +2787,7 @@ setTimeout(() => {
         }, 1500);
       });
     });
-  }, 850);
+}, isMobile() ? 400 : 850);
 }
 
 // ══════════════════════════════════════════════
@@ -2849,7 +2892,24 @@ function openCalendar() {
     clearTimeout(calendarTextTimer);
   buildCalendarContent();
   boiteCalendar.classList.add('open');
+  const btnClose = document.getElementById('calendar-close-mobile');
+  if (btnClose) {
+    btnClose.style.opacity = '1';
+    btnClose.style.pointerEvents = 'auto';
+  }
+
+
+const btnSee = document.getElementById('mobile-see-artists');
+if (btnSee && isMobile()) {
+  btnSee.style.opacity = '0.2';
+  btnSee.style.pointerEvents = 'none';
+}
+
+
   boiteCalendar.classList.remove('show-text');
+
+
+
   calendarTextTimer = setTimeout(() => {
     boiteCalendar.classList.add('show-text');
     setTimeout(() => {
@@ -2865,9 +2925,24 @@ function closeCalendar() {
   clearTimeout(calendarTextTimer);
   resetCalendarHighlight();
   boiteCalendar.classList.remove('show-text', 'open');
-    const nav = document.getElementById('calendar-artists-nav');
+
+  if (isMobile()) {
+    const btnClose = document.getElementById('calendar-close-mobile');
+    if (btnClose) {
+      btnClose.style.opacity = '0';
+      btnClose.style.pointerEvents = 'none';
+    }
+  }
+
+  const btnSee = document.getElementById('mobile-see-artists');
+  if (btnSee && isMobile()) {
+    btnSee.style.opacity = '1';
+    btnSee.style.pointerEvents = 'auto';
+  }
+
+  const nav = document.getElementById('calendar-artists-nav');
   if (nav) nav.style.pointerEvents = 'none';
-}
+}  // ← cette accolade manquait
 
 document.getElementById('calendar-label').addEventListener('click', e => {
   e.stopPropagation();
@@ -2877,6 +2952,7 @@ document.getElementById('calendar-label').addEventListener('click', e => {
 document.addEventListener('click', () => {
   if (calendarOpen) closeCalendar();
 });
+
 
 // visible comme le boite_about — déclenché depuis playIntro()
 // ajouter dans playIntro() au même moment que boite_about :
@@ -2932,11 +3008,11 @@ function highlightCalendarArtist(nom) {
     const isMatch = el.dataset.artistName === nom || el.dataset.artistName === 'ALL';
     if (isMatch) {
       el.classList.remove('collapsed');
-      el.style.opacity = '1';
+el.style.opacity = '1';
       const artistSpan = el.querySelector('.calendar-artist');
       const dateSpan = el.querySelector('.calendar-date');
 if (artistSpan) {
-  artistSpan.style.opacity = el.dataset.artistName === 'ALL' ? '1' : '0';
+  artistSpan.style.opacity = (el.dataset.artistName === 'ALL' || isMobile()) ? '1' : '0';
   artistSpan.style.transition = 'opacity 0.3s ease';
 }
       if (dateSpan) {
@@ -3041,8 +3117,44 @@ function buildCalendarContent() {
         : entry.artist;
     }
 
-    div.innerHTML = `<span class="calendar-date">${dateStr}</span><span class="calendar-artist">${artistText}</span>`;
-    calendarContent.appendChild(div);
+// Dans buildCalendarContent(), remplacer la ligne div.innerHTML par :
+const dateSpan = document.createElement('span');
+dateSpan.className = 'calendar-date';
+dateSpan.textContent = dateStr;
+
+const artistSpan = document.createElement('span');
+artistSpan.className = 'calendar-artist';
+
+
+artistSpan.innerHTML = artistText;
+if (isMobile() && entry.artist !== 'ALL' && entry.artist !== 'CLOSED') {
+  artistSpan.style.cursor = 'pointer';
+  artistSpan.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isFiltered = calendarContent.querySelector('.calendar-entry.collapsed');
+    if (isFiltered) {
+      resetCalendarHighlight();
+    } else {
+      highlightCalendarArtist(entry.artist);
+    }
+  });
+}
+
+if (isMobile() && entry.artist === 'ALL') {
+  artistSpan.style.cursor = 'pointer';
+  artistSpan.addEventListener('click', (e) => {
+    e.stopPropagation();
+    resetCalendarHighlight();
+  });
+}
+
+div.appendChild(dateSpan);
+div.appendChild(artistSpan);
+
+
+
+calendarContent.appendChild(div);
+
   });
 
   setTimeout(() => {
@@ -3050,6 +3162,8 @@ function buildCalendarContent() {
     if (todayEl) todayEl.scrollIntoView({ block: 'center', behavior: 'smooth' });
   }, 900);
 }
+
+
 
 
 function scrollToToday() {

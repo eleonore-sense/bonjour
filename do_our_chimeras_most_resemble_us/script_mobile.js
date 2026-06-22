@@ -53,6 +53,14 @@ function initMobileArtistsList() {
     item.className = 'mobile-artist-item';
     item.dataset.artiste = id;
     item.textContent = data.nom;
+
+
+if (!isArtistAvailableToday(data.nom)) {
+  item.style.opacity = '0.6';
+}
+
+
+
     list.appendChild(item);
   });
 
@@ -71,6 +79,8 @@ setTransitionFor(['editor-mobile', 'logos-container', 'btn-lang', 'about'], '1s'
 
 void document.body.offsetHeight;
 list.classList.add('visible');
+setOpacity(boiteCalendar, '0', '0.4s');
+boiteCalendar.style.pointerEvents = 'none';
     document.body.classList.add('artists-list-open'); 
 
     const editorMobile = document.getElementById('editor-mobile');
@@ -135,6 +145,8 @@ function closeMobileList() {
     document.getElementById('logos-container')?.style.setProperty('opacity', '1');
     document.getElementById('btn-lang')?.style.setProperty('opacity', '1');
     document.getElementById('about')?.style.setProperty('opacity', '1');
+    setOpacity(boiteCalendar, '1', '0.4s');
+boiteCalendar.style.pointerEvents = 'auto';
   }, 700);
 }
 
@@ -173,9 +185,16 @@ titreEl.innerHTML = formatTitreArtiste(data.nom, data.titre, titreEl, detailsM1)
     document.body.classList.add('part3-active');
 loadArtistMedia(data);
 if (!isArtistAvailableToday(data.nom)) {
-  btnPlay.style.opacity = '0.3';
+  btnPlay.classList.add('hidden');
+  btnPlay.style.opacity = '0';
   btnPlay.style.pointerEvents = 'none';
-  // afficher la date — on décidera où ensemble
+
+}
+if (!isArtistAvailableToday(data.nom)) {
+  setTimeout(() => {
+    showInfo3Mobile();
+    showNextDatesForArtist(data.nom);
+  }, 3200);
 }
     const fullscreenBtnMobile = document.getElementById('fullscreen');
     if (fullscreenBtnMobile) {
@@ -623,6 +642,8 @@ function enterCinemaFromHomeMobile() {
 
   titreHaut.style.transition = 'opacity 0.5s ease';
   titreGauche.style.transition = 'opacity 0.5s ease';
+  setOpacity(boiteCalendar, '0', '0.5s');
+boiteCalendar.style.pointerEvents = 'none';
   titreHaut.style.opacity = '0';
   titreGauche.style.opacity = '0';
   void titreHaut.offsetHeight;

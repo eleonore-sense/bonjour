@@ -53,7 +53,7 @@ div[style*="top:15px"] {
 
   #btn-lang {
   position: fixed;
-  top: 6svh;
+  top: 7svh;
   left: 15px;
   right: auto;
   z-index: 350;
@@ -723,6 +723,85 @@ top:calc(26px + 3.5em + 34px);
 .part3-video-visible .video-pack #btn-play {
   opacity: 0;
 }
+
+
+
+  /* ══════════════════════════════════════════════
+     CALENDRIER
+     ══════════════════════════════════════════════ */
+
+
+
+#calendar-close-mobile {
+  display: block;
+}
+
+  #boite_calendar {
+    position: fixed;
+    top: 6.8svh;
+    left: 65px; /* à ajuster selon la largeur de →fr */
+    z-index: 1999;
+  }
+
+
+  #calendar-label{
+    margin-top: 0px;
+  }
+
+  #calendar-artists-nav {
+    display: none;
+  }
+
+  #calendar-close-mobile {
+    display: block;
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4000;
+    background: none;
+    border: none;
+    font-family: Abordage;
+    font-size: 1em;
+    color: black;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+
+
+
+#calendar-content{
+  margin-left: -48px;
+  margin-top: 20px;
+  max-height: 64vh;
+
+}
+
+
+.calendar-entry{
+  gap: 0.8em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /* ══════════════════════════════════════════════
      TOUCH — SUPPRESSION DES HOVER STATES
      ══════════════════════════════════════════════ */

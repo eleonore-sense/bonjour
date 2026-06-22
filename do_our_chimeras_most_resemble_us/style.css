@@ -476,6 +476,12 @@ text-shadow:
   margin-bottom: 1em;
   cursor: default;
 }
+
+#calendar-close-mobile {
+  display: none;
+}
+
+
 /* ══════════════════════════════════════════════
    FOND COULEUR ANIMÉ
    ══════════════════════════════════════════════ */
