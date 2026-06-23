@@ -209,7 +209,7 @@ span {
 #about-content {
   position: absolute;
   margin-top: 45px;
-  padding-bottom: 300px;
+  padding-bottom: 100px;
   top: 0px;
   left: 14px;
   right: 14px;
@@ -1654,7 +1654,7 @@ font-style: italic;
   display: none;
 }
 
-
+/* --- CREDIT --- */
 
 
 
@@ -1665,4 +1665,93 @@ font-style: italic;
 #btn_cine_switch,
 #logos-container {
   opacity: 0;
+}
+
+
+.p_titre{
+  font-family: Abordage;
+  font-size: 1em;
+  text-decoration: underline;
+  display: block;
+  margin-bottom: -11px;
+}
+
+
+#about-links {
+  margin-top: 1.5em;
+  display: flex;
+  gap: 1.5em;
+  font-family: Abordage;
+  font-size: 0.85em;
+}
+
+#about-links a {
+  color: darkblue;
+  text-decoration: underline;
+}
+
+a{
+  color: darkblue;
+}
+#credits-section {
+  margin-top: 2.5em;
+  padding-top: 0;
+  border-top: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55em;
+}
+
+.credit-titre {
+  margin-bottom: 0.5em;
+}
+
+
+.credit-titre,
+.credit-institution {
+  font-size: 1em;
+  text-decoration: underline;
+  font-family: Abordage;
+  color: black;
+}
+.credit-institution {
+  font-family: Abordage;
+  margin-top: 1.7em;
+  margin-bottom: -15px;
+  text-decoration: underline;
+  color: black;
+}
+
+
+.credit-role {
+  text-decoration: underline;
+  display: inline;
+  color: black;
+  margin-bottom: 0;
+  font-size:0.9em;
+}
+
+.credit-block {
+  display: block;
+  font-family: Abordage;
+  color: black;
+  font-size:0.9em;
+  line-height: 1;
+}
+
+
+#about-content p {
+  margin-top: 0;
+  margin-bottom: -20px;
+}
+
+.credit-names {
+  margin-left:25px;
+}
+.credit-name {
+  display: inline-block;
+}
+
+.credit-spacer {
+  margin-top: 25px;
 }

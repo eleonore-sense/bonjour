@@ -167,6 +167,9 @@ function applyLang() {
       setTimeout(() => { boiteAbout.style.transition = ""; }, 300);
     }
 
+
+
+    buildCredits(currentLang); 
     lines = linesConfig[currentLang];
 
 
@@ -243,6 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
   buildMobileWaveLines();
   buildTitreHaut();
   applyLang();
+    buildCredits(currentLang); 
   isMobile() ? initTunnelMobile() : initTunnel();
 });
 
@@ -763,7 +767,7 @@ const boiteCalendar = document.getElementById('boite_calendar');
 const calendarContent = document.getElementById('calendar-content');
 
 /*CHANGE DATE*/
-const DEBUG_DATE = '2026-09-18';
+const DEBUG_DATE = '2026-09-14';
 function getToday() {
   return DEBUG_DATE || new Date().toISOString().split('T')[0];
 }
@@ -3663,4 +3667,128 @@ function formatTitreArtiste(nom, titre, containerEl, details) {
     return `<span class="artiste-nom">${nom}</span><br>— <span class="artiste-titre">${titre}</span>${detailsHtml}`;
   }
   return `<span class="artiste-nom">${nom}</span> — <span class="artiste-titre">${titre}</span>${detailsHtml}`;
+}
+
+
+
+
+
+
+
+// ══════════════════════════════════════════════
+// ── MISE EN PAGE CREDIT ───────────────────────
+// ══════════════════════════════════════════════
+
+
+
+
+const creditsData = {
+  FR: {
+    uiux: "graphisme et programmation web",
+    pompidou: "Centre Pompidou<br>Musée national d'art moderne – service des Nouveaux Médias",
+    kadist: "Kadist",
+    roles: [
+      { role: "Conservatrice en chef, service des collections nouveaux médias", names: "Marcella Lista" },
+      { role: "Attaché·es de conservation", names: "Nicolas Ballet, Marie Vicet" },
+      { role: "Direction des Systèmes d'Information et de Télécommunications", names: "Philippe Benaïche, Elise Imhaus-Jurie, Christophe Andres" },
+      { role: "Directrice de la communication et du numérique", names: "Geneviève Paire" },
+      { role: "Directeur adjoint de la communication et du numérique", names: "Paul Mourey" },
+      { role: "Services Communication et Presse", names: "Dorothée Mireux, Vanina Frasseto, Claire Galibert" },
+      { role: "Remerciements", names: "Agnès de Cayeux, Faustine Fraysse, Bruno Gonthier, Alexandre Michaan" },
+    ],
+    kadistRoles: [
+      { role: "Commissaire", names: "Joseph del Pesco" },
+      { role: "Directrice des opérations globales", names: "Anne Becker" },
+      { role: "Responsable des programmes", names: "Anna Ezequel" },
+      { role: "Direction de la communication", names: "Caroline Arce Ross" },
+      { role: "Remerciements", names: "Marie Martraire, Sandra Terdjman, Brice Terdjman, Vincent Worms" },
+    ],
+  },
+  EN: {
+    uiux: "graphic design and web programming",
+    pompidou: "Centre Pompidou<br>Musée national d'art moderne – service des Nouveaux Médias",
+    kadist: "Kadist",
+    roles: [
+      { role: "Head of service, curator", names: "Marcella Lista" },
+      { role: "Assistant curators", names: "Nicolas Ballet, Marie Vicet" },
+      { role: "Information Systems and Telecommunication Department", names: "Philippe Benaïche, Elise Imhaus-Jurie, Christophe Andres" },
+      { role: "Head of Communication and Digital Department", names: "Geneviève Paire" },
+      { role: "Deputy Director of Communication and Digital Department", names: "Paul Mourey" },
+      { role: "Communications and Press Units", names: "Dorothée Mireux, Vanina Frasseto, Claire Galibert" },
+      { role: "Acknowledgements", names: "Agnès de Cayeux, Faustine Fraysse, Bruno Gonthier, Alexandre Michaan" },
+    ],
+    kadistRoles: [
+      { role: "Curator", names: "Joseph del Pesco" },
+      { role: "Director of Global Operations", names: "Anne Becker" },
+      { role: "Program Manager", names: "Anna Ezequel" },
+      { role: "Communications Director", names: "Caroline Arce Ross" },
+      { role: "Acknowledgements", names: "Marie Martraire, Sandra Terdjman, Brice Terdjman, Vincent Worms" },
+    ],
+  }
+};
+
+function formatNames(names) {
+  const parts = names.split(', ');
+  if (parts.length === 1) return names;
+  return parts.map((name, i) => 
+    i < parts.length - 1 
+      ? `<span class="credit-name">${name},</span> ` 
+      : `<span class="credit-name">${name}</span>`
+  ).join('');
+}
+
+function buildCredits(lang) {
+  const el = document.getElementById('credits-section');
+  if (!el) return;
+  const d = creditsData[lang];
+
+  let html = `
+    <div class="credit-titre p_titre">${lang === 'FR' ? 'Crédits' : 'Credits'}</div>
+    <div class="credit-institution">${d.pompidou}</div>
+  `;
+
+  d.roles.forEach(item => {
+    html += `
+      <div class="credit-block">
+        <span class="credit-role">${item.role} :</span><span class="credit-names">${formatNames(item.names)}</span>
+      </div>
+    `;
+  });
+
+  html += `<div class="credit-institution">${d.kadist}</div>`;
+
+  d.kadistRoles.forEach(item => {
+    html += `
+      <div class="credit-block">
+        <span class="credit-role">${item.role} :</span><span class="credit-names">${formatNames(item.names)}</span>
+      </div>
+    `;
+  });
+
+  html += `<div class="credit-spacer"></div>`;
+
+  html += `
+    <div class="credit-block">
+      <span class="credit-role">${lang === 'FR' ? 'Développement web' : 'Web development'} :</span><span class="credit-names"><a href="https://eleonoresense.com" target="_blank">Eléonore Sense</a></span>
+    </div>
+    <div class="credit-block">
+      <span class="credit-role">${lang === 'FR' ? 'Typographie de titrage' : 'Display typeface'} :</span><span class="credit-names">Lagarto de <a href="https://www.sudtipos.com/font/lagarto" target="_blank">Sudtipos</a></span>
+    </div>
+    <div class="credit-block">
+      <span class="credit-role">${lang === 'FR' ? 'Typographie de labeur' : 'Body typeface'} :</span><span class="credit-names">Abordage de <a href="https://velvetyne.fr/degheest/fr.html" target="_blank">Ange Degheest</a></span>
+    </div>
+  `;
+
+  el.innerHTML = html;
+}
+
+
+function formatNames(names) {
+  const parts = names.split(', ');
+  if (parts.length === 1) return names;
+  return parts.map((name, i) => 
+    i < parts.length - 1 
+      ? `<span class="credit-name">${name},</span> ` 
+      : `<span class="credit-name">${name}</span>`
+  ).join('');
 }
