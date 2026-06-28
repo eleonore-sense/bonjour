@@ -767,7 +767,7 @@ const boiteCalendar = document.getElementById('boite_calendar');
 const calendarContent = document.getElementById('calendar-content');
 
 /*CHANGE DATE*/
-const DEBUG_DATE = '2026-09-14';
+const DEBUG_DATE = '2026-09-18';
 function getToday() {
   return DEBUG_DATE || new Date().toISOString().split('T')[0];
 }
