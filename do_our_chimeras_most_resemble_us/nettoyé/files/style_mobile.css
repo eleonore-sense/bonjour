@@ -1,0 +1,819 @@
+/* ══════════════════════════════════════════════
+   STYLE_MARS_MOBILE.CSS
+   Breakpoint : max-width 768px
+   ══════════════════════════════════════════════ */
+
+/* ── Transitions hors media query (s'appliquent partout) ── */
+#editor-mobile,
+#about,
+#logos-container,
+div[style*="top:15px"] {
+  transition: opacity 0.7s ease;
+}
+
+#editor-mobile.appearing {
+  transition: opacity 1.5s ease;
+}
+
+/* desktop — caché */
+#about-close-mobile {
+  display: none;
+}
+
+
+@media (max-width: 768px) {
+
+  /* ══════════════════════════════════════════════
+     BASE
+     ══════════════════════════════════════════════ */
+
+  body {
+    padding: 0;
+    overflow: hidden;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     LOGOS
+     ══════════════════════════════════════════════ */
+
+  div[style*="top:15px"] {
+    top: 15px !important;
+    left: 15px !important;
+    flex-direction: column !important;
+    align-items: start !important;
+    gap: 8px !important;
+  }
+
+  #logo-pompidou svg,
+  #logo-kadist svg {
+    height: 3.2vw !important;
+  }
+
+
+  #btn-lang {
+  position: fixed;
+  top: 7svh;
+  left: 15px;
+  right: auto;
+  z-index: 350;
+}
+#btn-lang.nav_link {
+  color: var(--p2typo);
+}
+
+body.part3-active #btn-lang {
+  position: fixed;
+  top: calc(26px + 3.5em + 34px);
+  right: 45px;
+  left: auto;
+  text-decoration: none;
+  z-index: 2500;
+}
+
+  /* ══════════════════════════════════════════════
+     ABOUT PANEL
+     ══════════════════════════════════════════════ */
+
+  #header-buttons {
+    top: 20px !important;
+    right: 27px !important;
+    font-size: 1.1em;
+  }
+
+  #boite_about {
+    width: 76px;
+    height: 42px;
+    padding-top: 14px;
+    padding-left: 18px;
+  }
+
+  #boite_about.open {
+    width: 84vw;
+    height: 100svh;
+    padding-top: 18px;
+    padding-left: 18px;
+    margin-right: 0;
+    border-radius: 0;
+    top: -18px;
+  }
+
+  #about-content {
+    font-size: 0.85em;
+    line-height: 1.5;
+    -webkit-mask: linear-gradient(to bottom, black 0%, black 70%, transparent 90%);
+    mask: linear-gradient(to bottom, black 0%, black 70%, transparent 90%);
+  }
+
+  #about-label {
+    text-decoration: underline !important;
+  }
+
+  #about-close-mobile {
+    display: block;
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4000;
+    background: none;
+    border: none;
+    font-family: Abordage;
+    font-size: 1em;
+    color: black;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 1 — TITRE WAVE MOBILE
+     ══════════════════════════════════════════════ */
+
+.editor-mobile {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 47%;
+  left: 50%;
+  z-index: 10;
+  width: 80vw;
+  max-width: 80vw;
+  transform: translate(-50%, -50%);
+  gap: 0px;
+  transition: opacity 2s ease;
+}
+
+body.lang-fr .editor-mobile {
+  width: 90vw;
+  max-width: 90vw;
+}
+
+  /* Épaisseur du contour titre mobile — modifier stroke-width ici */
+.titre-svg-letter path {
+    stroke-width: 0.8px;
+  }
+
+body.lang-fr .titre-svg-letter path {
+  stroke-width: 1px;
+}
+
+
+  .editor {
+    display: none;
+  }
+
+#mobile-wave-lines {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-top: 7vh;
+}
+
+body.lang-fr #mobile-wave-lines {
+  gap: 15px;
+}
+
+body.lang-fr #mobile-wave-lines > div:nth-child(4) {
+  margin-top: -15px;
+}
+
+  /* ══════════════════════════════════════════════
+     PART 1 — CARROUSEL → MASQUÉ SUR MOBILE
+     ══════════════════════════════════════════════ */
+
+  #artistes-container {
+    display: none;
+  }
+
+  #hover-previews {
+    display: none;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 1 — BOUTON "SEE CURATED ARTISTS"
+     ══════════════════════════════════════════════ */
+
+  #mobile-see-artists {
+    opacity: 0;
+    position: fixed;
+    bottom: 16px;
+    left: 20px;
+    z-index: 600;
+    padding-bottom: 1vh;
+    font-family: Abordage;
+    font-size: 1.2em;
+    text-decoration: underline;
+    color: var(--typo);
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition:
+      text-shadow var(--t-base) var(--ease),
+      opacity var(--t-base) var(--ease);
+  }
+
+  #mobile-see-artists:hover,
+  #mobile-see-artists:active {
+    text-shadow:
+      0 0 11px #ffffff,
+      0 0 13px #ffffff;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 1 — LISTE ARTISTES MOBILE (plein écran)
+     ══════════════════════════════════════════════ */
+
+#mobile-artists-list {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: 0 24px 90px 24px;
+    gap: 2.5vh;
+    background: transparent;
+    opacity: 0;
+    pointer-events: none;
+    clip-path: inset(100% 0 0% 0);
+    transition:
+      clip-path 0.7s var(--ease-in-out),
+      opacity 0s linear 0.7s,
+      gap 0.3s ease;
+  }
+
+  #mobile-artists-list.visible {
+    opacity: 1;
+    pointer-events: auto;
+    clip-path: inset(0% 0 0% 0);
+    transition:
+      clip-path 0.7s var(--ease-in-out),
+      opacity 0s linear 0s;
+  }
+
+  #mobile-artists-list .mobile-artist-item {
+    font-family: Abordage;
+    font-size: 1.4em;
+    color: var(--typo);
+    cursor: pointer;
+    position: relative;
+    transition:
+      text-shadow var(--t-base) var(--ease),
+      opacity var(--t-fast) var(--ease);
+  }
+
+  #mobile-artists-list .mobile-artist-item::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.08em;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    opacity: 0;
+    transform: scaleX(0.92);
+    transform-origin: left center;
+    transition:
+      opacity var(--t-underline) var(--ease),
+      transform var(--t-underline) var(--ease);
+  }
+
+  #mobile-artists-list .mobile-artist-item.active::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  #mobile-close-list {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 600;
+    padding: 0;
+    font-family: Abordage;
+    font-size: 1em;
+    color: var(--typo);
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-decoration: underline;
+  }
+
+  #mobile-close-list:active {
+    text-shadow:
+      0 0 11px #ffffff,
+      0 0 13px #ffffff;
+  }
+
+  body.artists-list-open #logos-container,
+body.artists-list-open div[style*="top:15px"],
+body.artists-list-open #about,
+body.artists-list-open #editor-mobile,
+body.artists-list-open #btn-lang,
+body.artists-list-open #btn_cine_switch {
+  pointer-events: none !important;
+}
+
+
+  /* ══════════════════════════════════════════════
+     SLIDESHOW BACKGROUND MOBILE
+     ══════════════════════════════════════════════ */
+
+  .mobile-bg-layer {
+    position: fixed;
+    z-index: 1;
+    width: 40vw;
+    height: auto;
+    object-fit: contain;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 2s ease;
+    -webkit-mask:
+      linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%),
+      linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask:
+      linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%),
+      linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    mask-composite: intersect;
+  }
+
+  .mobile-bg-layer.visible {
+    opacity: 0.8;
+  }
+
+  .mobile-artist-item {
+    transition:
+      text-shadow 1.2s ease,
+      opacity var(--t-fast) var(--ease);
+  }
+
+  .mobile-artist-item.bg-highlighted {
+    text-shadow:
+    0 0 11px #ffffff,
+    0 0 13px #ffffff,
+    0 0 15px #ffffff,
+    0 0 20px #ffffff,
+    0 0 24px #ffffff,
+    0 0 35px #ffffff;
+    transition: text-shadow 2s ease;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 3 — STRUCTURE GÉNÉRALE
+     ══════════════════════════════════════════════ */
+
+  #part_3 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  #part_3::-webkit-scrollbar {
+    display: none;
+  }
+
+
+
+
+
+
+  /* ══════════════════════════════════════════════
+     PART 3 — TITRES ET NAVIGATION FIXES
+     ══════════════════════════════════════════════ */
+
+  #titre-haut {
+    top: 18px;
+    left: 17px;
+    z-index: 250;
+    width: calc(100vw - 34px);
+  }
+
+#titre-haut .titre-svg-letter path {
+  stroke-width: 1.2px; /* ← garde l'épaisseur actuelle sur mobile */
+}
+
+body.cinema-mode #titre-haut .titre-svg-letter path {
+  stroke-width: 2px;
+}
+
+#titre-haut > div {
+  gap: 8px;
+}
+
+body.lang-fr:has(#mobile-artists-list.visible) #titre-haut .titre-svg-letter path {
+  stroke-width: 1.5px;
+}
+
+body.lang-fr.cinema-mode #titre-haut .titre-svg-letter path {
+  fill: white;
+  stroke: none;
+}
+#top-right-buttons {
+  position: fixed;
+top:calc(26px + 3.5em + 34px);
+  right: 19px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  height: fit-content;
+  z-index: 300;
+}
+
+#top-right-buttons .nav_link {
+  font-size: 1em;
+  text-decoration: underline;
+}
+  /* ══════════════════════════════════════════════
+     PART 3 — DROITE (vidéo)
+     ══════════════════════════════════════════════ */
+
+  #droite {
+    position: relative;
+    width: 100vw;
+    height: auto;
+    padding-top: 22vh;
+    order: 1;
+    flex-shrink: 0;
+  }
+
+  #video-container {
+    position: relative;
+    right: auto;
+    width: 100vw;
+    height: auto;
+     padding-bottom: 80px;
+  margin-bottom: -80px;
+  pointer-events: none;
+  }
+
+  #video {
+    width: 100vw;
+    height: auto;
+    max-height: 75svh;
+    object-fit: contain;
+    object-position: center center;
+  }
+
+
+#vimeo-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  height: calc(100vw * 9 / 16);
+  max-height: 75svh;
+}
+
+
+#youtube-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: auto;
+  width: 100vw;
+  height: calc(100vw * 9 / 16);
+  max-height: 75svh;
+}
+
+
+
+#video-wrapper.is-vimeo {
+  height: calc(100vw * 9 / 16);
+  max-height: 75svh;
+  width: 100vw;
+}
+
+
+  .video-hover-preview {
+    width: 100vw;
+    height: auto;
+    max-height: 75svh;
+    object-position: center center;
+  }
+
+  #video-wrapper {
+    width: 100vw;
+  }
+
+  #btn-play {
+    pointer-events: auto;
+    width: 100vw;
+    text-align: center;
+    font-size: 5em;
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translate(-50%, -50%) !important;
+    transition: opacity 1s ease, color 0.5s ease, text-shadow 0.8s ease, -webkit-text-stroke 1s ease-out;}
+
+
+
+
+/* ══════════════════════════════════════════════
+     PART 3 — PLEIN ÉCRAN MOBILE : ROTATION PAYSAGE
+     ══════════════════════════════════════════════ */
+
+
+
+#video-wrapper.pseudo-fullscreen {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100svh !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: black;
+    z-index: 9999;
+  }
+
+
+  
+#video-wrapper.pseudo-fullscreen #video {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 100svh !important;
+    height: 100vw !important;
+    transform: translate(-50%, -50%) rotate(90deg) !important;
+    transform-origin: center center !important;
+    object-fit: contain;
+  }
+
+  #video-wrapper.pseudo-fullscreen #vimeo-frame {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    height: 100svh !important;
+    width: calc(100svh * 16 / 9) !important;
+    transform: translate(-50%, -50%) rotate(90deg) !important;
+    transform-origin: center center !important;
+  }
+
+
+
+  #video-wrapper.pseudo-fullscreen #btn-play {
+    transform: translate(-50%, -50%) rotate(90deg) !important;
+  }
+
+
+#video-wrapper.pseudo-fullscreen #fullscreen-exit {
+  position: fixed;
+  bottom: 20px;
+  left: 6px;
+  top: auto;
+  right: auto;
+  transform: translate(-100%) rotate(90deg);
+  transform-origin: bottom right;
+  z-index: 10000;
+}
+
+#video-wrapper.pseudo-fullscreen #btn-restart {
+  position: fixed;
+  top: 1px;
+  left: 6px;
+  bottom: auto;
+  right: auto;
+  transform: rotate(90deg);
+  transform-origin: bottom left;
+  z-index: 10000;
+}
+
+#video-wrapper.pseudo-fullscreen #fullscreen-exit,
+  #video-wrapper.pseudo-fullscreen #btn-restart {
+    text-shadow:
+      0 0 6px #000000,
+      0 0 12px #000000,
+      0 0 20px #000000,
+      0 0 35px #000000;
+  }
+
+  /* ══════════════════════════════════════════════
+     PART 3 — GAUCHE (titre + texte)
+     ══════════════════════════════════════════════ */
+
+  #gauche {
+    position: relative;
+    width: 93vw;
+    height: auto;
+    min-height: 25svh;
+    padding: 19px 0 80px 13px;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 1.2em;
+    order: 2;
+    flex-shrink: 0;
+    z-index: 250;
+    isolation: isolate;
+  }
+
+.titre {
+  font-size: 1.1em;
+  position: sticky;
+  top: 22vh;
+  z-index: 270;
+}
+
+#info {
+  font-size: 2.2em;
+  position: sticky;
+  top: calc(22vh + var(--titre-h, 0.6em));
+  z-index: 270;
+}
+
+#texte-wrapper {
+  height: auto;
+  max-height: none;
+  overflow-y: visible;
+-webkit-mask: none;
+  mask: none;
+}
+
+
+#texte-oeuvre {
+  font-size: 0.85em;
+
+}
+
+  /* ══════════════════════════════════════════════
+     PART 3 — BOUTONS BAS
+     ══════════════════════════════════════════════ */
+
+  #fullscreen {
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    z-index: 500;
+  }
+
+  #list_artist {
+    display: none;
+    font-size: 1.1;
+  }
+
+  #next_artist {
+    position: fixed;
+    right: 20px;
+    bottom: 0;
+    padding-bottom: 1vh;
+    font-size: 1.1em;
+    z-index: 270;
+  }
+
+
+
+
+  /* ══════════════════════════════════════════════
+     PART 3 — CURATED ARTISTS LIST
+     ══════════════════════════════════════════════ */
+
+  #artists-list {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100svh;
+    padding: 0 24px;
+    z-index: 400;
+    justify-content: center;
+  }
+
+  .artist-list-item {
+    font-size: 1.2em;
+  }
+
+
+  /* ══════════════════════════════════════════════
+     PART 3 — CINEMA OVERLAY
+     ══════════════════════════════════════════════ */
+
+  #cinema-overlay.active {
+    width: 200vw;
+    height: 200svh;
+  }
+
+
+
+
+.part3-video-visible .video-pack #btn-play {
+  opacity: 0;
+}
+
+
+
+  /* ══════════════════════════════════════════════
+     CALENDRIER
+     ══════════════════════════════════════════════ */
+
+
+
+#calendar-close-mobile {
+  display: block;
+}
+
+  #boite_calendar {
+    position: fixed;
+    top: 6.8svh;
+    left: 65px; /* à ajuster selon la largeur de →fr */
+    z-index: 1999;
+  }
+
+
+  #calendar-label{
+    margin-top: 0px;
+  }
+
+  #calendar-artists-nav {
+    display: none;
+  }
+
+  #calendar-close-mobile {
+    display: block;
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4000;
+    background: none;
+    border: none;
+    font-family: Abordage;
+    font-size: 1em;
+    color: black;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+
+
+
+#calendar-content{
+  margin-left: -48px;
+  margin-top: 20px;
+  max-height: 64vh;
+
+}
+
+
+.calendar-entry{
+  gap: 0.8em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* ══════════════════════════════════════════════
+     TOUCH — SUPPRESSION DES HOVER STATES
+     ══════════════════════════════════════════════ */
+
+  @media (hover: none) {
+    .artiste_accueil:hover,
+    .btn_hover:hover,
+    .nav_link:hover,
+    .artist-list-item:hover {
+      text-shadow: none;
+    }
+  }
+
+} /* fin @media max-width: 768px */
+
