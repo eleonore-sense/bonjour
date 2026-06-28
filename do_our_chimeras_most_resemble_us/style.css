@@ -974,13 +974,15 @@ font-style: italic;
   width: 65vw;
   height: 80vh;
   padding-right: 20px;
+  
+
 }
 
 #video-container {
   position: absolute;
   right: 20px;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-end;
   width: 63vw;
   height: 80vh;
@@ -991,7 +993,7 @@ font-style: italic;
   width: 63vw;
   height: 80vh;
   object-fit: contain;
-  object-position: right top;
+  object-position: right center;
   cursor: inherit;
   opacity: 1;
   visibility: visible;
@@ -1020,7 +1022,7 @@ font-style: italic;
   width: 63vw;
   height: 80vh;
   object-fit: contain;
-  object-position: right top;
+  object-position: right center;
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--t-fast) var(--ease);
@@ -1533,11 +1535,22 @@ font-style: italic;
     0 0 25px #ffffff;
 }
 .texte-credits {
+  margin-top: 2em;
   font-family: Abordage;
-  font-size: 0.6em;
+  font-size: 0.67em;
   line-height: 1.5;
   margin-bottom: 2em;
 }
+
+
+.texte-credits strong {
+  margin-right: 4px;
+  letter-spacing: 0.1em;
+    -webkit-text-stroke: 0.9px currentColor;
+    font-size: 0.92em
+
+}
+
 
 .texte-main {
   font-family: Abordage;
@@ -1553,7 +1566,8 @@ font-style: italic;
 }
 
 .bio-nom {
-  text-decoration: underline;
+  letter-spacing: 0.1em;
+    -webkit-text-stroke: 1.1px currentColor;
   display: inline-block;
   margin-bottom: 0.4em;
   color: inherit;
@@ -1578,10 +1592,11 @@ font-style: italic;
 #vimeo-frame {
   display: none;
   position: absolute;
-  top: 0;
+  top: 50%;
+  transform: translateY(-50%);
   right: 0;
   width: 63vw;
-  height: calc(63vw * 9 / 16); /* hauteur exacte 16:9 depuis la largeur */
+  height: calc(63vw * 9 / 16);
   border: none;
   background-size: contain;
   background-repeat: no-repeat;
@@ -1593,9 +1608,15 @@ font-style: italic;
 #video-wrapper.is-vimeo {
   width: 63vw;
   height: calc(63vw * 9 / 16);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 20px;
 }
 
-
+#video-wrapper.is-vimeo #video {
+  height: auto;
+}
 #vimeo-tap-overlay-desktop {
   position: absolute;
   top: 0;
@@ -1627,17 +1648,16 @@ font-style: italic;
   left: 0;
 }
 
-
 #youtube-frame {
   display: none;
   position: absolute;
-  top: 0;
+  top: 50%;
+  transform: translateY(-50%);
   right: 0;
   width: 63vw;
   height: calc(63vw * 9 / 16);
   border: none;
 }
-
 
 
 
@@ -1670,10 +1690,11 @@ font-style: italic;
 
 .p_titre{
   font-family: Abordage;
-  font-size: 1em;
-  text-decoration: underline;
+  font-size: 0.96em;
   display: block;
   margin-bottom: -11px;
+  -webkit-text-stroke:0.9px currentColor;
+  letter-spacing:0.1em;
 }
 
 
@@ -1686,13 +1707,25 @@ font-style: italic;
 }
 
 #about-links a {
-  color: darkblue;
+  color: black;
   text-decoration: underline;
+  cursor: alias;
 }
 
 a{
-  color: darkblue;
+  color: black;
+  cursor: alias,
 }
+
+
+
+#about-calendar-link {
+  text-decoration: underline;
+  cursor: alias;
+  white-space: nowrap;
+}
+
+
 #credits-section {
   margin-top: 2.5em;
   padding-top: 0;
@@ -1710,25 +1743,27 @@ a{
 .credit-titre,
 .credit-institution {
   font-size: 1em;
-  text-decoration: underline;
   font-family: Abordage;
   color: black;
 }
 .credit-institution {
   font-family: Abordage;
   margin-top: 1.7em;
-  margin-bottom: -15px;
-  text-decoration: underline;
+  margin-bottom: -8px;
+  letter-spacing: 0.1em;
+    -webkit-text-stroke: 0.9px currentColor;
+    font-size: 0.96em
   color: black;
 }
 
 
 .credit-role {
-  text-decoration: underline;
+  letter-spacing: 0.1em;
+    -webkit-text-stroke: 0.9px currentColor;
+    font-size: 0.88em;
   display: inline;
   color: black;
   margin-bottom: 0;
-  font-size:0.9em;
 }
 
 .credit-block {
@@ -1736,7 +1771,9 @@ a{
   font-family: Abordage;
   color: black;
   font-size:0.9em;
-  line-height: 1;
+    white-space: normal;      /* ← ajoute */
+  overflow-wrap: break-word; /* ← ajoute */
+  word-break: break-word;
 }
 
 
@@ -1746,7 +1783,7 @@ a{
 }
 
 .credit-names {
-  margin-left:25px;
+  margin-left:5px;
 }
 .credit-name {
   display: inline-block;
@@ -1754,4 +1791,28 @@ a{
 
 .credit-spacer {
   margin-top: 25px;
+}
+
+.credit-block span,
+.credit-names span {
+  white-space: normal;
+}
+
+#carousel-tooltip {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  font-family: Abordage;
+  font-size: 0.85em;
+  color: black;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  text-shadow:
+    0 0 20px rgba(255,255,255,1),
+    0 0 12px rgba(255,255,255,1),
+    0 0 6px rgba(255,255,255,1);
+}
+#carousel-tooltip.visible {
+  opacity: 1;
 }

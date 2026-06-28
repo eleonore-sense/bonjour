@@ -256,6 +256,13 @@ document.body.addEventListener("click", (e) => {
   applyLang();
   if (typeof carrousel !== "undefined") cachedLoopWidth = carrousel.scrollWidth / 2;
 });
+
+document.getElementById('about-calendar-link').addEventListener('click', (e) => {
+  e.stopPropagation();
+  setTimeout(() => openCalendar(), 400);
+});
+
+
 // ══════════════════════════════════════════════
 // ── DONNÉES ARTISTES ──────────────────────────
 // ══════════════════════════════════════════════
@@ -767,7 +774,7 @@ const boiteCalendar = document.getElementById('boite_calendar');
 const calendarContent = document.getElementById('calendar-content');
 
 /*CHANGE DATE*/
-const DEBUG_DATE = '2026-09-18';
+const DEBUG_DATE = '2026-09-14';
 function getToday() {
   return DEBUG_DATE || new Date().toISOString().split('T')[0];
 }
@@ -910,8 +917,6 @@ function setOpacity(el, val, duration = '0.8s') {
 // ══════════════════════════════════════════════
 
 video.addEventListener('loadedmetadata', () => {
-    if (isTransitioning) return;
-  if (videoWrapper.classList.contains('is-vimeo')) return;
   const ratio = video.videoWidth / video.videoHeight;
   const wrapperW = window.innerWidth * 0.63;
   const wrapperH = window.innerHeight * 0.8;
@@ -1217,10 +1222,9 @@ function enterCinemaFromHome() {
   isCinemaMode = true;
   cinemaIntroPlayed = true;
 
-animateTunnel();
-
+animateTunnel(() => {
   document.body.classList.add('cinema-mode');
-
+});
   document.documentElement.style.setProperty('--p2typo', 'white');
   btnPlay.style.color = 'black';
   document.getElementById('btn_home').style.opacity = '0';
@@ -1372,13 +1376,54 @@ let currentVisibleImg = null;
 let mousoverPending = false;
 let lastHoveredId = null;
 
+
+let lastMouseX = 0;
+let lastMouseY = 0;
+
+const carouselTooltip = document.createElement('div');
+carouselTooltip.id = 'carousel-tooltip';
+document.body.appendChild(carouselTooltip);
+
+document.addEventListener('mousemove', (e) => {
+  lastMouseX = e.clientX;
+  lastMouseY = e.clientY;
+  const tooltipW = carouselTooltip.offsetWidth;
+  const margin = 15;
+  let x = e.clientX + 18;
+  if (x + tooltipW + margin > window.innerWidth) {
+    x = e.clientX - tooltipW - 18;
+  }
+  carouselTooltip.style.left = x + 'px';
+  carouselTooltip.style.top  = (e.clientY - 40) + 'px';
+});
+
+function showCarouselTooltip(nom) {
+  const date = getNextDateForArtist(nom);
+  if (!date) { hideCarouselTooltip(); return; }
+  const today = getToday();
+  const todayEntry = schedule.find(e => e.date === today);
+  if (todayEntry && (todayEntry.artist === nom || todayEntry.artist === 'ALL')) {
+    hideCarouselTooltip();
+    return;
+  }
+  carouselTooltip.textContent = currentLang === 'FR'
+    ? `prochaine diffusion : ${date}`
+    : `next screening : ${date}`;
+  carouselTooltip.classList.add('visible');
+}
+
+function hideCarouselTooltip() {
+  carouselTooltip.classList.remove('visible');
+}
+
+
 artistesContainer.addEventListener('mouseover', (e) => {
   if (!e.target.classList.contains('artiste_accueil')) return;
   const id = e.target.dataset.artiste;
 
   if (!id || id === lastHoveredId) return; // ← même élément, on ignore
   const nom = artistes[id]?.nom;
-  if (nom) updateCalendarLabelForArtist(nom);
+if (nom) showCarouselTooltip(nom);
   lastHoveredId = id;
 
   if (mousoverPending) return; // ← un rAF est déjà en attente
@@ -1398,8 +1443,7 @@ artistesContainer.addEventListener('mouseleave', () => {
   lastHoveredId = null;
   if (currentVisibleImg) currentVisibleImg.classList.remove('visible');
   currentVisibleImg = null;
-
-    resetCalendarLabel();
+hideCarouselTooltip();
 });
 
 
@@ -1697,6 +1741,8 @@ btnPlay.classList.add('hidden');
 btnPlay.style.pointerEvents = 'none';
 btnPlay.style.opacity = '0';
 renderTexteOeuvre(data, currentLang);
+document.getElementById('texte-oeuvre').scrollTop = 0;
+document.getElementById('texte-wrapper').scrollTop = 0;
   document.getElementById('texte-oeuvre').classList.remove('visible');
 
   if (!info3AlreadyShown) hideInfo3();
@@ -1820,6 +1866,7 @@ videoWrapper.classList.remove('is-vimeo');
   document.getElementById('btn_cine_switch').style.transition = 'opacity 0.6s ease';
 document.getElementById('btn_cine_switch').style.opacity = '0';
   exitCinemaMode();
+  document.getElementById('info').textContent = '+';
 }, 600);
 
     // 4. Après 0.6s + 1s — réapparition page 1
@@ -1831,9 +1878,12 @@ document.getElementById('btn_cine_switch').style.opacity = '0';
       startCarousel();
 setOpacity(document.getElementById('btn-lang'), '1', '1.5s');
 setOpacity(document.getElementById('btn_cine_switch'), '1', '1.5s');
-
+setCalendarVisible(true);
   document.getElementById('btn_cine_switch').style.transition = 'opacity 1.5s ease'; // ← ici
   document.getElementById('btn_cine_switch').style.opacity = '1';
+document.getElementById('texte-oeuvre').scrollTop = 0;
+document.getElementById('texte-wrapper').scrollTop = 0;
+
     }, 1200);
 
   });
@@ -2632,6 +2682,7 @@ const target = texteEl.getBoundingClientRect().top + part3El.scrollTop - 100;
 setTimeout(() => {
   showInfo3();
   setOpacity(document.getElementById('btn_cine_switch'), '1', '0.8s');
+    setOpacity(document.getElementById('info'), '1', '0.8s');
 }, 800);
 
 
@@ -2643,6 +2694,7 @@ setTimeout(() => {
 // ══════════════════════════════════════════════
 
 document.getElementById('next_artist').addEventListener('click', () => {
+  if (isTransitioning) return;
   const next = getNextArtisteId(artisteCourant);
   artisteCourant = next;
   transitionToArtist(next);
@@ -2662,20 +2714,15 @@ if (!isArtistAvailableToday(data.nom)) {
   texteWrapper.classList.remove('visible');
 }
   // — SORTIE
-[video, titre, infoBtn].forEach(el => {
+[video, titre, infoBtn, texte].forEach(el => {
   el.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
   el.style.opacity = '0';
   el.style.transform = 'translateY(12px)';
 });
+texte.classList.remove('visible');
+texteWrapper.classList.remove('visible');
 btnPlay.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
 btnPlay.style.opacity = '0';
-if (texteVisible) {
-  texte.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-  texte.style.opacity = '0';
-  texte.style.transform = 'translateY(12px)';
-  texte.classList.remove('visible');
-  texteWrapper.classList.remove('visible');
-}
 
 setTimeout(() => {
     // — RESET contenu
@@ -2683,9 +2730,7 @@ const detailsT = currentLang === "FR" && data.detailsFR ? data.detailsFR : data.
 titre.innerHTML = formatTitreArtiste(data.nom, data.titre, titre, detailsT);
 
 loadArtistMedia(data);
-if (isArtistAvailableToday(data.nom)) {
-  texte.textContent = currentLang === "FR" && data.textFR ? data.textFR : data.text;
-}
+
     texte.scrollTop = 0;
     const texteWrapperEl = document.getElementById('texte-wrapper');
     if (texteWrapperEl) texteWrapperEl.scrollTop = 0;
@@ -2704,7 +2749,8 @@ if (isArtistAvailableToday(data.nom)) {
     btnPlay.classList.remove('playing');
     btnPlay.style.pointerEvents = '';
 
-    if (!info3AlreadyShown) { texte.classList.remove('visible'); infoBtn.textContent = '+'; texteWrapper.classList.remove('visible'); }
+infoBtn.textContent = '+';
+if (!info3AlreadyShown) { texte.classList.remove('visible'); texteWrapper.classList.remove('visible'); }
     if (!info3AlreadyShown) hideInfo3();
     if (info3AlreadyShown) showInfo3();
 
@@ -2741,11 +2787,6 @@ if (texteVisible && isArtistAvailableToday(data.nom)) {
   el.style.opacity = '1';
   el.style.transform = 'translateY(0)';
 });
-if (texteVisible && isArtistAvailableToday(data.nom)) {
-  texte.style.transition = 'opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1)';
-  texte.style.opacity = '1';
-  texte.style.transform = 'translateY(0)';
-}
 
         // nettoyage
         setTimeout(() => {
@@ -2760,13 +2801,23 @@ if (texteVisible && isArtistAvailableToday(data.nom)) {
           infoBtn.style.transform = '';
           titre.style.transition = '';
           titre.style.transform = '';
-          btnPlay.style.transition = '';
-          btnPlay.style.transform = '';
-          btnPlay.style.opacity = '0';
-titreHaut.style.transition = '';
-titreHaut.style.transform = '';          
+btnPlay.style.transition = '';
+btnPlay.style.transform = '';
+btnPlay.style.opacity = '0';
+btnPlay.style.top = '';
+btnPlay.style.right = '';
+btnPlay.style.left = '';
 
-          isTransitioning = false;
+const currentData = artistes[artisteCourant];
+if (currentData?.vimeo || currentData?.youtube) {
+  setTimeout(() => positionVimeoBtn(), 100);
+}
+          titreHaut.style.transition = '';
+          titreHaut.style.transform = '';    
+document.getElementById('texte-oeuvre').scrollTop = 0;
+document.getElementById('texte-wrapper').scrollTop = 0;       
+
+
           video.dispatchEvent(new Event('loadedmetadata'));
 
 setTimeout(() => {
@@ -2787,6 +2838,7 @@ setTimeout(() => {
   }
   setTimeout(() => {
     btnPlay.style.transition = '';
+          isTransitioning = false;
   }, 650);
 }, 100);
         }, 1500);
@@ -2830,44 +2882,50 @@ const aboutPanel = document.getElementById('about-panel');
 let aboutOpen = false;
 let aboutTextTimer = null;
 
+function handleAboutScroll() {
+  const scrollY = document.getElementById('about-content').scrollTop;
+  const label = document.getElementById('about-label');
+  label.style.transition = 'none';
+  const opacity = Math.max(0.2, 1 - scrollY / 50);
+  label.style.opacity = opacity;
+}
+
 function openAbout() {
+  document.getElementById('about-content').scrollTop = 0;
   if (aboutOpen) return;
   aboutOpen = true;
-boiteAbout.style.width = currentLang === "FR" ? "90px" : "70px";
-requestAnimationFrame(() => {
+  boiteAbout.style.width = currentLang === "FR" ? "90px" : "70px";
   requestAnimationFrame(() => {
-    boiteAbout.style.width = "";
+    requestAnimationFrame(() => {
+      boiteAbout.style.width = "";
+    });
   });
-});
   clearTimeout(aboutTextTimer);
-
   boiteAbout.classList.add('open');
   boiteAbout.classList.remove('show-text');
-
   aboutTextTimer = setTimeout(() => {
     boiteAbout.classList.add('show-text');
   }, 850);
-
   document.getElementById('about-close-mobile')?.style.setProperty('opacity', '1');
-document.getElementById('about-close-mobile')?.style.setProperty('pointer-events', 'auto');
-
-
+  document.getElementById('about-close-mobile')?.style.setProperty('pointer-events', 'auto');
+  document.getElementById('about-content').addEventListener('scroll', handleAboutScroll);
 }
 
 function closeAbout() {
   if (!aboutOpen) return;
   aboutOpen = false;
-
   clearTimeout(aboutTextTimer);
-
   boiteAbout.classList.remove('show-text');
   boiteAbout.classList.remove('open');
-   boiteAbout.style.width = currentLang === "FR" ? "90px" : "70px"; // ← ajoute ça
+  boiteAbout.style.width = currentLang === "FR" ? "90px" : "70px";
   document.getElementById('about-close-mobile')?.style.setProperty('opacity', '0');
-document.getElementById('about-close-mobile')?.style.setProperty('pointer-events', 'none');
-document.getElementById('about-content').scrollTop = 0;
+  document.getElementById('about-close-mobile')?.style.setProperty('pointer-events', 'none');
+  document.getElementById('about-content').removeEventListener('scroll', handleAboutScroll);
+  document.getElementById('about-content').scrollTop = 0;
+  const label = document.getElementById('about-label');
+  label.style.transition = 'opacity 0.5s ease';
+  label.style.opacity = '1';
 }
-
 boiteAbout.addEventListener('click', (e) => {
   e.stopPropagation();
 
@@ -2879,6 +2937,7 @@ boiteAbout.addEventListener('click', (e) => {
 });
 
 document.addEventListener('click', (e) => {
+  if (e.target.closest('#about-calendar-link')) return;
   if (!boiteAbout.contains(e.target)) {
     closeAbout();
   }
@@ -2972,41 +3031,7 @@ function getNextDateForArtist(nom) {
     { weekday: 'long', day: 'numeric', month: 'long' });
 }
 
-function updateCalendarLabelForArtist(nom) {
-  const label = document.getElementById('calendar-label');
-  if (!label || calendarOpen) return;
-  const today = getToday();
-  const todayEntry = schedule.find(e => e.date === today);
-  if (todayEntry && (todayEntry.artist === nom || todayEntry.artist === 'ALL')) {
-    resetCalendarLabel();
-    return;
-  }
-  const date = getNextDateForArtist(nom);
-  if (date) {
-    label.style.opacity = '0';
-setTimeout(() => {
-  const text = currentLang === 'FR' 
-    ? `prochaine diffusion : ${date}` 
-    : `next screening : ${date}`;
-  label.innerHTML = currentLang === 'FR'
-    ? `<u>prochaine diffusion</u> : ${date}`
-    : `<u>next screening</u> : ${date}`;
-  label.style.whiteSpace = 'nowrap';
-  label.style.opacity = '1';
-}, 200);
-  }
-}
 
-function resetCalendarLabel() {
-  const label = document.getElementById('calendar-label');
-  if (!label || calendarOpen) return;
-  label.style.opacity = '0';
-  setTimeout(() => {
-    label.textContent = currentLang === 'FR' ? 'calendrier' : 'calendar';
-    label.style.whiteSpace = '';
-    label.style.opacity = '1';
-  }, 200);
-}
 
 function highlightCalendarArtist(nom) {
   calendarContent.querySelectorAll('.calendar-entry').forEach(el => {
@@ -3446,6 +3471,7 @@ artistsList.addEventListener('mouseleave', () => {
 
 // clic sur un artiste de la liste → charger son œuvre
 artistsList.addEventListener('click', (e) => {
+  if (isTransitioning) return;
   const item = e.target.closest('.artist-list-item');
   if (!item) return;
 
@@ -3497,12 +3523,12 @@ function renderTexteOeuvre(data, lang) {
   // 3. CREDITS en dernier
   if (creditsText) {
     const creditsLines = creditsText.split('\n').map(line => {
-      const colonIdx = line.indexOf(':');
-      if (colonIdx > 0) {
-        const label = line.substring(0, colonIdx);
-        const value = line.substring(colonIdx + 1);
-        return `<span class="credit-label">${label}<span class="credit-colon">&thinsp;:</span></span>${value}`;
-      }
+const colonIdx = line.indexOf(':');
+if (colonIdx > 0) {
+  const label = line.substring(0, colonIdx);
+  const value = line.substring(colonIdx + 1);
+  return `<strong>${label}:</strong>${value}`;
+}
       return line;
     }).join('<br>');
     html += `<div class="texte-credits">${creditsLines}</div>`;
@@ -3769,7 +3795,7 @@ function buildCredits(lang) {
 
   html += `
     <div class="credit-block">
-      <span class="credit-role">${lang === 'FR' ? 'Développement web' : 'Web development'} :</span><span class="credit-names"><a href="https://eleonoresense.com" target="_blank">Eléonore Sense</a></span>
+      <span class="credit-role">${lang === 'FR' ? 'Graphisme et développement web' : 'Graphism and web development'} :</span><span class="credit-names"><a href="https://eleonoresense.com" target="_blank">Eléonore Sense</a></span>
     </div>
     <div class="credit-block">
       <span class="credit-role">${lang === 'FR' ? 'Typographie de titrage' : 'Display typeface'} :</span><span class="credit-names">Lagarto de <a href="https://www.sudtipos.com/font/lagarto" target="_blank">Sudtipos</a></span>
