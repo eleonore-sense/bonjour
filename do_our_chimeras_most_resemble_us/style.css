@@ -357,6 +357,23 @@ span {
           drop-shadow(0 0 3px rgba(255,255,255,1));
 }
 
+
+@media not all and (min-resolution:.001dpcm) {
+  @supports (-webkit-appearance:none) {
+
+    #calendar-label,
+    .calendar-nav-artist {
+      text-shadow:
+        0 0 6px rgba(255,255,255,1),
+        0 0 12px rgba(255,255,255,1),
+        0 0 20px rgba(255,255,255,1),
+        0 0 35px rgba(255,255,255,1);
+    }
+
+  }
+}
+
+
 #boite_calendar.open #calendar-panel {
   opacity: 1;
   pointer-events: auto;
@@ -392,7 +409,7 @@ span {
   padding: 2px 0;
   max-height: 2em;
   transition: max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease;
-}
+cursor: default;}
 
 .calendar-entry.today {
   text-decoration: underline;
@@ -481,6 +498,17 @@ text-shadow:
   display: none;
 }
 
+body.calendar-open-cursor {
+  cursor: pointer;
+}
+
+body.calendar-open-cursor .calendar-entry {
+  cursor: default;
+}
+
+body.calendar-open-cursor #about-content {
+  cursor: default;
+}
 
 /* ══════════════════════════════════════════════
    FOND COULEUR ANIMÉ
@@ -949,7 +977,7 @@ font-style: italic;
 
 #texte-oeuvre {
   font-family: Abordage;
-  padding-bottom: 20px;
+  padding-bottom: 60px;
   font-size: 0.8em;
   line-height: 1.5;
   white-space: pre-line;
@@ -1563,7 +1591,16 @@ font-style: italic;
   font-family: Abordage;
   font-size: 0.9em;
   line-height: 1.6;
+
 }
+
+.titre-oeuvre {
+  letter-spacing: 0.1em;
+    -webkit-text-stroke: 1.1px currentColor;
+  color: inherit;
+  white-space: normal;
+}
+
 
 .bio-nom {
   letter-spacing: 0.1em;
@@ -1572,6 +1609,14 @@ font-style: italic;
   margin-bottom: 0.4em;
   color: inherit;
 }
+
+
+.bio-parenthese {
+  -webkit-text-stroke: 0px currentColor;
+  letter-spacing: normal;
+      color: inherit;
+}
+
 
 .credit-label {
   text-decoration: underline;
@@ -1611,7 +1656,7 @@ font-style: italic;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 20px;
+  right: 0;
 }
 
 #video-wrapper.is-vimeo #video {
@@ -1714,7 +1759,7 @@ font-style: italic;
 
 a{
   color: black;
-  cursor: alias,
+  cursor: alias;
 }
 
 
@@ -1784,6 +1829,7 @@ a{
 
 .credit-names {
   margin-left:5px;
+  cursor: alias;
 }
 .credit-name {
   display: inline-block;

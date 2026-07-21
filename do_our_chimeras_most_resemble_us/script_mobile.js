@@ -242,7 +242,7 @@ setTimeout(() => {
     if (window.recalcTitreStartY) window.recalcTitreStartY();
     titre.style.transition = 'opacity 0.5s ease';
     titre.style.opacity = '0';
-    setTimeout(() => {
+setTimeout(() => {
 const titreEl2 = document.querySelector('#gauche .titre');
 const detailsM2 = currentLang === "FR" && data.detailsFR ? data.detailsFR : data.details;
 titreEl2.innerHTML = formatTitreArtiste(data.nom, data.titre, titreEl2, detailsM2);
@@ -260,6 +260,7 @@ loadArtistMedia(data);
       titre.style.transition = 'opacity 0.8s ease';
       titre.style.opacity = '1';
       if (!fullscreenUnlocked) btnPlay.style.opacity = '1';
+      if (btnFs) { btnFs.style.opacity = '0'; btnFs.style.pointerEvents = 'none'; }
     }, 500);
   }
 }

@@ -15,6 +15,7 @@ const translations = {
     exitFullscreen: "quitter le plein écran",
     fullscreen: "plein écran",
     artists: "artistes",
+    viewingSchedule: "programme de diffusion",    
   },
   EN: {
     titre: "Do Our Chimeras Most Resemble Us?",
@@ -28,6 +29,7 @@ const translations = {
     exitFullscreen: "exit fullscreen",
     fullscreen: "fullscreen",
     artists: "artists",
+    viewingSchedule: "viewing schedule",
   }
 };
 
@@ -125,6 +127,7 @@ function applyLang() {
     document.getElementById('info'),
     document.getElementById('list_artist'),
     document.getElementById('next_artist'),
+    document.getElementById('calendar-label'),
   ];
 
   // Fade out
@@ -153,6 +156,7 @@ function applyLang() {
     setText("btn-restart", t.restart);
     setText("fullscreen-exit", t.exitFullscreen);
     setText("fullscreen", t.fullscreen);
+    setText("calendar-label", t.viewingSchedule);
 
     const mobileSeeArtists = document.getElementById('mobile-see-artists');
     if (mobileSeeArtists && !mobileSeeArtists.classList.contains('open')) {
@@ -214,6 +218,8 @@ if (isPage2 && artisteCourant) {
         setOpacity(el, isPage2 ? '1' : '0', '0.8s');
       } else if (el.id === "btn_home") {
         setOpacity(el, isPage2 ? '0.8' : '0', '0.8s');
+      }else if (el.id === "calendar-label") {
+        setOpacity(el, introPlayed && !isPage2 ? '1' : '0', '0.8s');
       } else if (el.id === "btn-play") {
         if (isMobile()) {
           setOpacity(el, introPlayed ? '1' : '0', '0.8s');
@@ -270,434 +276,198 @@ document.getElementById('about-calendar-link').addEventListener('click', (e) => 
 const artistes = {
   1: {
     nom: "Agnieszka Polska",
-    bioTitre: "Agnieszka Polska (b. 1985, Lublin, Poland)",
+        bioTitre: "Agnieszka Polska (b. 1985, Poland)",
+    bioTitreFr: "Agnieszka Polska (née en 1985, Pologne)",
     titre: "The Book of Flowers",
 details: "2023 — HD video, 9:38 minutes",
 detailsFR: "2023 — vidéo HD, 9:38 minutes",
     video: "img/agnieszka_polska.mp4",
     poster: "img/agnieszka_polska.jpg",
-text: `In her practice, Agnieszka Polska uses cinematic storytelling and affective technologies to address the perpetually negotiated relationship between human and technology, examining the processes that mutually influence and legitimate this relationship in language, history and consciousness. She is interested in the question of individual social responsibility against the background of technology-driven disorientation and ideologies of technological determinism.
-
-Polska’s works combine historical research, cinematic storytelling and affective communication technologies, seeking new narrative formats that correspond with the rapidly changing requirements of information-driven societies. According to Polska, such formats are available at the intersection of poetry and narration, art and cinema.
-
-A major strand of her current practice and thinking is the construction of a pre-history of an emerging global cybernetic consciousness. The animation The Book of Flowers (2023), devoted to gendered reproductive labor, takes this process a step further - as the pre-history depicted in the film is obviously fabricated. 
-
-In the film, deep and enchanting voice of the actress Tina Greatrex guides the listener through the joined history of humankind and flowers. According to the narrator, blooming plants used to be enormous and humans were their main pollinators. A complex symbiosis existed between the species, both humans and flowers unable to reproduce without one another. Over the centuries, humans mastered technologies that allowed them to reproduce without participation of plants and reduced sizes of flowers. Especially one technology played an important role in this morally-ambiguous process: technology of storytelling. 
-
-This fantastic history that led to the contemporary state of affairs is told against the backdrop of impassioned Charles-Marie Widor's Symphony No. 5 Toccata for Organ and a succession of dynamic animations of surreal flowers, often equipped with animal- or machine-like textures. A complex process of re-writing early time-lapse plant videos with Artificial Intelligence tools led to creation of material that could be described as found footage - but with not a single original frame used.  
-
-“What if what we believe is required of humans by nature is just a story that we told ourselves about what being human is and what nature is? What if who we think we are, what we believe at a gut level about our kinship loyalty and our perceived survival needs are responses to a story we made up and told ourselves was written by our genes?,” writes Alexis Pauline Gumbs on Sylvia Wynter. This “discursive construction of man” echoes in Polska’s film, where the main power and, at the same time, threat to humanity is becoming enchanted in one’s own story, whispered into a human ear by technological mouth. The Book of Flowers, itself constituting a sci-fi story, is designed as a “thought experiment” in immersion and dissociation.
-<bio>Agnieszka Polska is a visual artist, film and theatre director based in Berlin. Polska employs computer-generated media to explore themes of individual agency, social responsibility, and the shaping of historical narratives within environments driven by rapid technological changes and the flow of information. Her work bridges the past and the digital present, using hallucinatory animations and poetic storytelling to delve into the ethical ambiguities of contemporary society. Polska’s art has been showcased internationally, including exhibitions at the New Museum and MoMA in New York, Centre Pompidou in Paris, Tate Modern in London, and the Hirshhorn Museum in Washington, D.C. She has held solo exhibitions at Hamburger Bahnhof in Berlin, the Museum of Modern Art in Warsaw, M HKA in Antwerp, Frye Art Museum in Seattle, Nottingham Contemporary, and Salzburger Kunstverein. She participated in the 57th Venice Biennale, 11th Gwangju Biennale, 19th and 24th Biennale of Sydney, 14th Shanghai Biennale, and 13th Istanbul Biennial. In 2023, she premiered her first theatre play, The Talking Car, in the frame of BoCA Biennale, Lisbon.</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
-`,
+text: `Agnieszka Polska’s <span class="titre-oeuvre">The Book of Flowers</span> imagines an alternate world and speculative fiction in which humans and flowering plants co-evolve through deep symbiosis. Using AI-generated animation to overwrite 16mm time-lapse footage of blooming flowers, she transforms archival scientific imagery that once reshaped how the wider public perceived the movement of plants Integrating human bodies into botanical cycles, Polska’s narrative inverts gender hierarchies while highlighting ecological awareness. 
+<bio>Agnieszka Polska is a visual artist, film, and theatre director based in Berlin. Her work uses computer-generated media to explore individual agency, social responsibility, and the construction of historical narratives amid rapid technological change. The central friction in her practice is between subjective experience and systems — political, informational, algorithmic — that shape and constrain it. She has exhibited at the New Museum and MoMA in New York, the Centre Pompidou in Paris, and Tate Modern in London, and has participated in the Venice, Gwangju, and Sydney biennials. In 2023, she premiered her first theatre production, The Talking Car, at the BoCA Biennale in Lisbon.</bio>`,
 textFR: `Texte en français
 
-<bio>txt en francais</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
-
+<bio>Agnieszka Polska est une artiste visuelle, réalisatrice et metteuse en scène basée à Berlin. Son travail recourt aux médias générés par ordinateur pour explorer l'agentivité individuelle, la responsabilité sociale et la construction des récits historiques dans un contexte de transformations technologiques rapides. La friction centrale de sa pratique s'articule entre l'expérience subjective et les systèmes — politiques, informationnels, algorithmiques — qui la façonnent et la contraignent. Elle a exposé au New Museum et au MoMA à New York, au Centre Pompidou à Paris et à la Tate Modern à Londres, et a participé aux biennales de Venise, Gwangju et Sydney. En 2023, elle a présenté sa première mise en scène théâtrale, The Talking Car, à la BoCA Biennale de Lisbonne.</bio>
 `,  },
+
+
   2: {
     nom: "Lu Yang",
-    bioTitre: "Agnieszka Polska (b. 1985, Lublin, Poland)",
+    bioTitre: "Lu Yang (b. 1984, China)",
+    bioTitreFr: "Lu Yang (né·e en 1984, Chine)",
     titre: "DOKU, The Creator",
     details: "2025 — video, color, sound, 59:52 minutes",
 detailsFR: "2025 — vidéo, couleur, son, 59:52 minutes",
     vimeo: "1099319080",
     vimeoHash: "33b083d2e4",
     poster: "img/lu_yang.jpg",
-text: `In her practice, Agnieszka Polska uses cinematic storytelling and affective technologies to address the perpetually negotiated relationship between human and technology, examining the processes that mutually influence and legitimate this relationship in language, history and consciousness. She is interested in the question of individual social responsibility against the background of technology-driven disorientation and ideologies of technological determinism.
+text: `Lu Yang’s <span class="titre-oeuvre">DOKU the Creator</span> is one of their investigations featuring the digital being DOKU. Its name coined from the Japanese concept “Dokusho Dokushi” : “We are born alone, and we die alone.” The film stages DOKU as artist, agent, and actor, in a kind of initiatory journey accompanied byan introspective voiceover. Through vivid sequences partly fed with a dataset of their previous works, the artist questions their own creative path from the standpoint of their digital self, addressing art itself as a set of values at the crossroads of various belief systems. Lu Yang’s work poetically investigates the multitude inside each of us, within a quantum universe made of constantly changing aggregations, calling upon a state of “non-dual emptyness.”
+<bio>Lu Yang is a multidisciplinary artist based between Shanghai and Tokyo whose practice integrates advanced digital technology, Buddhist philosophy, and speculative cultural thought. Since 2018, they have developed the shapeshifting digital being DOKU in collaboration with scientists, 3D animators, and digital technicians using motion capture technology — exploring the boundaries of consciousness, the illusory nature of identity, and the fictionality of life and death. They earned their BA and MA in New Media Art from the China Academy of Art. In 2022, they were named Artist of the Year by Deutsche Bank. Solo exhibitions include presentations at Kunsthalle Basel, Palais Populaire in Berlin, ARoS Museum in Aarhus, MOCA Cleveland, and the Ullens Center for Contemporary Art in Beijing. Their most recent video installation DOKU The Illusion premiered at Espace Louis Vuitton in Venice.
+</bio>`,
+textFR: `<span class="titre-oeuvre">DOKU the Creator</span> de Lu Yang s’inscrit dans la série d’explorations que l’artiste consacre à l’entité numérique DOKU. Son nom provient du concept japonais « Dokusho Dokushi » : « Nous naissons seuls et nous mourons seuls. » La vidéo met en scène DOKU à la fois comme artiste, agent et acteur, dans une sorte de parcours initiatique accompagné d’une voix off introspective. À travers des séquences saisissantes, nourries en partie par un ensemble de données issues de ses œuvres antérieures, l’artiste interroge son propre cheminement créatif depuis la perspective de son double numérique, abordant l’art comme un ensemble de valeurs au croisement de différents systèmes de croyance. L’œuvre de Lu Yang explore de manière poétique la multiplicité qui réside en chacun de nous, au sein d’un univers quantique fait d’agrégations en perpétuelle mutation, tout en invoquant un état de «vacuité non duelle».
 
-Polska’s works combine historical research, cinematic storytelling and affective communication technologies, seeking new narrative formats that correspond with the rapidly changing requirements of information-driven societies. According to Polska, such formats are available at the intersection of poetry and narration, art and cinema.
+<bio>Artiste pluridisciplinaire établi·e entre Shanghai et Tokyo, Lu Yang intègre à sa pratique des technologies numériques de pointe, la philosophie bouddhiste et une réflexion culturelle spéculative. Depuis 2018, iel développe l’entité numérique aux formes changeantes DOKU en collaboration avec des scientifiques, des animateurs 3D et des spécialistes du numérique utilisant la technologie de capture de mouvement. Ce projet explore les frontières de la conscience, la nature illusoire de l’identité ainsi que le caractère fictionnel de la vie et de la mort. Lu Yang est titulaire d’une licence et d’un master en art des nouveaux médias de la China Academy of Art. En 2022, iel a été désigné·e « Artist of the Year » par la Deutsche Bank. Ses expositions personnelles ont notamment été présentées à la Kunsthalle de Bâle, au Palais Populaire de Berlin, au musée ARoS d'Aarhus, au MOCA de Cleveland et au Ullens Center for Contemporary Art de Pékin. Sa plus récente installation vidéo, DOKU The Illusion, a été présentée en avant-première à l'Espace Louis Vuitton de Venise. 
+</bio>`,  },
 
-A major strand of her current practice and thinking is the construction of a pre-history of an emerging global cybernetic consciousness. The animation The Book of Flowers (2023), devoted to gendered reproductive labor, takes this process a step further - as the pre-history depicted in the film is obviously fabricated. 
 
-In the film, deep and enchanting voice of the actress Tina Greatrex guides the listener through the joined history of humankind and flowers. According to the narrator, blooming plants used to be enormous and humans were their main pollinators. A complex symbiosis existed between the species, both humans and flowers unable to reproduce without one another. Over the centuries, humans mastered technologies that allowed them to reproduce without participation of plants and reduced sizes of flowers. Especially one technology played an important role in this morally-ambiguous process: technology of storytelling. 
-
-This fantastic history that led to the contemporary state of affairs is told against the backdrop of impassioned Charles-Marie Widor's Symphony No. 5 Toccata for Organ and a succession of dynamic animations of surreal flowers, often equipped with animal- or machine-like textures. A complex process of re-writing early time-lapse plant videos with Artificial Intelligence tools led to creation of material that could be described as found footage - but with not a single original frame used.  
-
-“What if what we believe is required of humans by nature is just a story that we told ourselves about what being human is and what nature is? What if who we think we are, what we believe at a gut level about our kinship loyalty and our perceived survival needs are responses to a story we made up and told ourselves was written by our genes?,” writes Alexis Pauline Gumbs on Sylvia Wynter. This “discursive construction of man” echoes in Polska’s film, where the main power and, at the same time, threat to humanity is becoming enchanted in one’s own story, whispered into a human ear by technological mouth. The Book of Flowers, itself constituting a sci-fi story, is designed as a “thought experiment” in immersion and dissociation.
-<bio>Agnieszka Polska is a visual artist, film and theatre director based in Berlin. Polska employs computer-generated media to explore themes of individual agency, social responsibility, and the shaping of historical narratives within environments driven by rapid technological changes and the flow of information. Her work bridges the past and the digital present, using hallucinatory animations and poetic storytelling to delve into the ethical ambiguities of contemporary society. Polska’s art has been showcased internationally, including exhibitions at the New Museum and MoMA in New York, Centre Pompidou in Paris, Tate Modern in London, and the Hirshhorn Museum in Washington, D.C. She has held solo exhibitions at Hamburger Bahnhof in Berlin, the Museum of Modern Art in Warsaw, M HKA in Antwerp, Frye Art Museum in Seattle, Nottingham Contemporary, and Salzburger Kunstverein. She participated in the 57th Venice Biennale, 11th Gwangju Biennale, 19th and 24th Biennale of Sydney, 14th Shanghai Biennale, and 13th Istanbul Biennial. In 2023, she premiered her first theatre play, The Talking Car, in the frame of BoCA Biennale, Lisbon.</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
-`,
-textFR: `Texte en français
-
-<bio>txt en francais</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
-
-`,  },
   3: {
     nom: "Jonas Lund",
+        bioTitre: "Jonas Lund (b. 1984, Sweden)",
+    bioTitreFr: "Jonas Lund (né en 1984, Suède)",
     titre: "The Future of Life",
     details: "2024 — video, 28:02 minutes",
 detailsFR: "2024 — vidéo, 28:02 minutes",
     video: "img/jonas_lund.mp4",
     poster: "img/jonas_lund.jpg",
-text: `In her practice, Agnieszka Polska uses cinematic storytelling and affective technologies to address the perpetually negotiated relationship between human and technology, examining the processes that mutually influence and legitimate this relationship in language, history and consciousness. She is interested in the question of individual social responsibility against the background of technology-driven disorientation and ideologies of technological determinism.
+text: `Jonas Lund’s <span class="titre-oeuvre">The Future of Life</span> stages immortality as a corporate product launch, where an AI promises to “make all the right decisions” so humans can “enjoy eternity,” even as internal politics and emotion threaten the rollout. Lund’s premise is quintessentially chimeric: the oldest human aspiration (endless life) braided to the newest managerial dogma (optimization). The Future of Life is part of the The Future of series by Lund on humanity’s relationship with A, following The Future of Nothing, and The Future of Something, both from 2023. Each film is made in close collaboration with a range of different generative AI’s, highlighting the rapid changes in performance of visual credibility.
 
-Polska’s works combine historical research, cinematic storytelling and affective communication technologies, seeking new narrative formats that correspond with the rapidly changing requirements of information-driven societies. According to Polska, such formats are available at the intersection of poetry and narration, art and cinema.
+<bio>Jonas Lund is a Swedish artist whose paintings, sculptures, photographs, websites, and performances probe the power structures and mechanisms of contemporary networked society. His practice is built on a particular formal proposition: rather than depicting systems from the outside, he constructs them, building rulesets and algorithms that then generate the work. This puts authorship in an unstable position — Lund authors the conditions, but the conditions author the output — and that instability is the subject. He has applied the same logic to the art world itself, creating works that expose how taste, market value, and institutional authority are produced. His work is held in public collections including the Centre Pompidou, the Stedelijk Museum, MACBA Barcelona, and ZKM Karlsruhe. In 2025, he received the inaugural Prix Arts numériques from the Fondation Etrillard and the Académie des beaux-arts.
+</bio>`,
+textFR: `Dans <span class="titre-oeuvre">The Future of Life</span>, l’artiste Jonas Lund met en scène l’immortalité comme un nouveau produit lancé par une entreprise. Une IA promet de « prendre toutes les bonnes décisions » afin que les humains puissent « profiter de l’éternité », alors même que des luttes de pouvoir internes et les émotions des personnages [VM1] menacent le déploiement du projet. Le postulat de Lund est par excellence chimérique : la plus ancienne aspiration humaine (la vie éternelle) s’entremêle avec le dogme managérial le plus récent (l’optimisation). The Future of Life fait partie de la série The Future of que Lund consacre à la relation de l’humanité à l’IA, après The Future of Nothing et The Future of Something, tous deux datant de 2023. Chaque film est réalisé en étroite collaboration avec toute une gamme d’IA génératives, mettant en évidence l’évolution rapide de leurs performances en matière de crédibilité visuelle.
 
-A major strand of her current practice and thinking is the construction of a pre-history of an emerging global cybernetic consciousness. The animation The Book of Flowers (2023), devoted to gendered reproductive labor, takes this process a step further - as the pre-history depicted in the film is obviously fabricated. 
 
-In the film, deep and enchanting voice of the actress Tina Greatrex guides the listener through the joined history of humankind and flowers. According to the narrator, blooming plants used to be enormous and humans were their main pollinators. A complex symbiosis existed between the species, both humans and flowers unable to reproduce without one another. Over the centuries, humans mastered technologies that allowed them to reproduce without participation of plants and reduced sizes of flowers. Especially one technology played an important role in this morally-ambiguous process: technology of storytelling. 
+<bio>Jonas Lund est un artiste suédois dont les peintures, sculptures, photographies, sites web et performances explorent les structures de pouvoir et les mécanismes de la société contemporaine en réseau. Sa pratique repose sur une proposition formelle particulière : au lieu de représenter des systèmes de l’extérieur, il les construit, en élaborant des ensembles de règles et des algorithmes qui génèrent ensuite l’œuvre. Cela place la paternité de l’œuvre dans une position instable — Lund crée les conditions, mais ce sont ces conditions qui créent le résultat — et c’est cette instabilité qui constitue le sujet. Il a appliqué cette même logique au monde de l’art lui-même, en créant des œuvres qui révèlent comment le goût, la valeur marchande et l’autorité institutionnelle sont produits. Ses œuvres font partie de collections publiques, dont celles du Centre Pompidou (Paris), du Stedelijk Museum (Amsterdam), du MACBA (Barcelone) et du ZKM (Karlsruhe). En 2025, il a été le premier lauréat du Prix Arts numériques décerné à Paris par la Fondation Etrillard et l’Académie des beaux-arts.
+</bio>`,  },
 
-This fantastic history that led to the contemporary state of affairs is told against the backdrop of impassioned Charles-Marie Widor's Symphony No. 5 Toccata for Organ and a succession of dynamic animations of surreal flowers, often equipped with animal- or machine-like textures. A complex process of re-writing early time-lapse plant videos with Artificial Intelligence tools led to creation of material that could be described as found footage - but with not a single original frame used.  
 
-“What if what we believe is required of humans by nature is just a story that we told ourselves about what being human is and what nature is? What if who we think we are, what we believe at a gut level about our kinship loyalty and our perceived survival needs are responses to a story we made up and told ourselves was written by our genes?,” writes Alexis Pauline Gumbs on Sylvia Wynter. This “discursive construction of man” echoes in Polska’s film, where the main power and, at the same time, threat to humanity is becoming enchanted in one’s own story, whispered into a human ear by technological mouth. The Book of Flowers, itself constituting a sci-fi story, is designed as a “thought experiment” in immersion and dissociation.
-<bio>Agnieszka Polska is a visual artist, film and theatre director based in Berlin. Polska employs computer-generated media to explore themes of individual agency, social responsibility, and the shaping of historical narratives within environments driven by rapid technological changes and the flow of information. Her work bridges the past and the digital present, using hallucinatory animations and poetic storytelling to delve into the ethical ambiguities of contemporary society. Polska’s art has been showcased internationally, including exhibitions at the New Museum and MoMA in New York, Centre Pompidou in Paris, Tate Modern in London, and the Hirshhorn Museum in Washington, D.C. She has held solo exhibitions at Hamburger Bahnhof in Berlin, the Museum of Modern Art in Warsaw, M HKA in Antwerp, Frye Art Museum in Seattle, Nottingham Contemporary, and Salzburger Kunstverein. She participated in the 57th Venice Biennale, 11th Gwangju Biennale, 19th and 24th Biennale of Sydney, 14th Shanghai Biennale, and 13th Istanbul Biennial. In 2023, she premiered her first theatre play, The Talking Car, in the frame of BoCA Biennale, Lisbon.</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
-`,
-textFR: `Texte en français
-
-<bio>txt en francais</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
-
-`,  },
   4: {
     nom: "Egor Kraft",
+        bioTitre: "Egor Kraft (b. 1986, Russia)",
+    bioTitreFr: "AEgor Kraft (né en 1986, Russie)",
     titre: "One and Infinite Chairs",
     details: "2023 — self-hosted and custom-trained Stable Diffusion, .ckpt-format file of a collapsed AI model, essay-film, 6:36 minutes",
 detailsFR: "2023 — modèle de diffusion stable auto-hébergé et entraîné sur mesure, fichier au format .ckpt d'un modèle d'IA réduit, essai-film, 6:36 minutes",
     video: "img/egor_kraft.mp4",
     poster: "img/egor_kraft.jpg",
-text: `In her practice, Agnieszka Polska uses cinematic storytelling and affective technologies to address the perpetually negotiated relationship between human and technology, examining the processes that mutually influence and legitimate this relationship in language, history and consciousness. She is interested in the question of individual social responsibility against the background of technology-driven disorientation and ideologies of technological determinism.
+text: `Egor Kraft’s <span class="titre-oeuvre">One & Infinite Chairs (1&∞⑁)</span> makes the chimera visible at the level of linguistic interpretation and breakdown. Kraft describes training a text-to-image model on the prompt, “a single chair on a white background,” and then repeatedly retraining it on its own output. After several iterations, the model gradually loses its ability to produce a chair, yielding instead a para-figurative abstraction. This conceptual machine explores the symptom of recursive feedback and the projected “model collapse” of the near future — where there’s more AI generated content on the internet, and AI loses its primary referent, us. The work positions a classic philosophical query (“what is a chair?”), explored in conceptual art history by Joseph Kosuth, against the fragile ontology of AI: when representation cannibalizes itself, and the “idea” falters into a state of disarticulation.
+<bio>
+Egor Kraft (映治 克夫斗) is an artist based between Tokyo and Vienna with ties to London and Berlin. His research-informed practice examines the disrupted conditions of contemporary life as products of planetary-scale sociotechnical change. Where much art about technology takes its surface as subject — the screen, the interface, the platform — Kraft goes further back, into the recursive, feedback-driven processes through which technological systems rewrite their own conditions of possibility and, with them, the categories humans use to understand agency, value, and time. His work often requires new vocabulary precisely because the phenomena it addresses have outrun existing description. His multi-award-winning work has been exhibited in museums, galleries, and festivals worldwide. He lectures at European and Asian universities, publishes in the field, and speaks at international conferences.
+</bio>`,
+textFR: `<span class="titre-oeuvre">One & Infinite Chairs (1&∞⑁)</span> d'Egor Kraft transpose  la chimère au niveau de l'interprétation et du délitement linguistique. Kraft décrit l'entraînement d'un modèle texte-image sur le prompt « une chaise unique sur fond blanc », puis son ré-entraînement répété sur ses propres productions. Après plusieurs itérations, le modèle perd progressivement sa capacité à produire une chaise, générant à la place une abstraction para-figurative. Cette machine conceptuelle explore le symptôme de la rétroaction récursive et « l'effondrement du modèle » projeté dans un futur proche — où le contenu généré par l'IA prolifère sur internet au point que l'IA perd son référent premier : celui que nous produisons. L'œuvre confronte une question philosophique classique (« qu'est-ce qu'une chaise ? »), explorée dans l'histoire de l'art conceptuel par Joseph Kosuth, à la fragile ontologie de l'IA : lorsque la représentation se cannibalise elle-même et que l'« idée » vacille vers un état de désarticulation.
 
-Polska’s works combine historical research, cinematic storytelling and affective communication technologies, seeking new narrative formats that correspond with the rapidly changing requirements of information-driven societies. According to Polska, such formats are available at the intersection of poetry and narration, art and cinema.
-
-A major strand of her current practice and thinking is the construction of a pre-history of an emerging global cybernetic consciousness. The animation The Book of Flowers (2023), devoted to gendered reproductive labor, takes this process a step further - as the pre-history depicted in the film is obviously fabricated. 
-
-In the film, deep and enchanting voice of the actress Tina Greatrex guides the listener through the joined history of humankind and flowers. According to the narrator, blooming plants used to be enormous and humans were their main pollinators. A complex symbiosis existed between the species, both humans and flowers unable to reproduce without one another. Over the centuries, humans mastered technologies that allowed them to reproduce without participation of plants and reduced sizes of flowers. Especially one technology played an important role in this morally-ambiguous process: technology of storytelling. 
-
-This fantastic history that led to the contemporary state of affairs is told against the backdrop of impassioned Charles-Marie Widor's Symphony No. 5 Toccata for Organ and a succession of dynamic animations of surreal flowers, often equipped with animal- or machine-like textures. A complex process of re-writing early time-lapse plant videos with Artificial Intelligence tools led to creation of material that could be described as found footage - but with not a single original frame used.  
-
-“What if what we believe is required of humans by nature is just a story that we told ourselves about what being human is and what nature is? What if who we think we are, what we believe at a gut level about our kinship loyalty and our perceived survival needs are responses to a story we made up and told ourselves was written by our genes?,” writes Alexis Pauline Gumbs on Sylvia Wynter. This “discursive construction of man” echoes in Polska’s film, where the main power and, at the same time, threat to humanity is becoming enchanted in one’s own story, whispered into a human ear by technological mouth. The Book of Flowers, itself constituting a sci-fi story, is designed as a “thought experiment” in immersion and dissociation.
-<bio>Agnieszka Polska is a visual artist, film and theatre director based in Berlin. Polska employs computer-generated media to explore themes of individual agency, social responsibility, and the shaping of historical narratives within environments driven by rapid technological changes and the flow of information. Her work bridges the past and the digital present, using hallucinatory animations and poetic storytelling to delve into the ethical ambiguities of contemporary society. Polska’s art has been showcased internationally, including exhibitions at the New Museum and MoMA in New York, Centre Pompidou in Paris, Tate Modern in London, and the Hirshhorn Museum in Washington, D.C. She has held solo exhibitions at Hamburger Bahnhof in Berlin, the Museum of Modern Art in Warsaw, M HKA in Antwerp, Frye Art Museum in Seattle, Nottingham Contemporary, and Salzburger Kunstverein. She participated in the 57th Venice Biennale, 11th Gwangju Biennale, 19th and 24th Biennale of Sydney, 14th Shanghai Biennale, and 13th Istanbul Biennial. In 2023, she premiered her first theatre play, The Talking Car, in the frame of BoCA Biennale, Lisbon.</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
-`,
-textFR: `Texte en français
-
-<bio>txt en francais</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
-
+<bio>Egor Kraft (映治 克夫斗) est un artiste basé entre Tokyo et Vienne, avec des liens à Londres et Berlin. Sa pratique, ancrée dans la recherche, examine les conditions perturbées de la vie contemporaine comme produits d'une mutation socio-technique à l'échelle planétaire. Là où bien des œuvres traitant de la technologie prennent sa surface pour sujet — l'écran, l'interface, la plateforme — Kraft remonte plus loin, vers les processus récursifs et rétroactifs par lesquels les systèmes technologiques réécrivent leurs propres conditions de possibilité et, avec elles, les catégories que les humains utilisent pour appréhender l'agentivité, la valeur et le temps. Son travail requiert souvent un vocabulaire nouveau, précisément parce que les phénomènes qu'il aborde ont dépassé les descriptions existantes. Son œuvre, récompensée par de nombreux prix, a été exposée dans des musées, galeries et festivals à travers le monde. Il enseigne dans des universités européennes et asiatiques, publie dans son domaine et intervient dans des conférences internationales.
+</bio>
 `,  },
+
+
   5: {
     nom: "Elsa Werth",
+        bioTitre: "Elsa Werth (b. 1985, France)",
+    bioTitreFr: "Elsa Werth (né en 1985, France)",
     titre: "IF / THEN",
     details: "2024 — video, color, silent, loop, 42:22 minutes. Edition of 5 + 1AP",
-detailsFR: "2024 — video, color, silent, loop, 42:22 minutes. Edition of 5 + 1AP",
+detailsFR: "2024 — video, couleur, muet, boucle, 42:22 minutes. Edition of 5 + 1AP",
     video: "img/elsa_werth.mp4",
     poster: "img/elsa_werth.jpg",
-text: `This video explores the relationship between technology, particularly Artificial Intelligence, and the production of goods.
-AI-generated futuristic objects related to work appear to be bound by conditional relationships.
-However, these connections lack clear logic, resulting in ambiguous links between various shapes and unexpected functionalities.
-The video invites viewers to contemplate the implications of AI-driven decision-making processes on consumption and human labor in contemporary society.
+text: `Elsa Werth’s <span class="titre-oeuvre">If/Then</span> names a foundational grammar of computer systems, one of its primary operational logics. Declared upfront in its title, “if/then” is a conditional statement that underpins programming, policy, and predictive output of computational systems. At the core of this work is a question about the use-value of abstraction, and a gestural and critical equivalence to what arises as a result of generative AI. The silent video is an example of Werth’s broader practice—concerned with “the economy of work” and the destabilization of ordinary gestures through displacement and misuse.
 
-In this project, I also explore the common perception of dematerialized AI. The futuristic AI-generated objects raises the question of the materiality/immateriality of data, whose energy-intensive storage relies on the quantifiable exploitation of non-renewable energies and resources (water, rare earths, oil, and coal).
- 
 <bio>
 Elsa Werth is a Paris-based artist working across installation, sculpture, video, artist books, and sound. Her practice centers on the economies of labor and the ordinary gestures that sustain them. What interests her is the texture of work as it is actually lived — the repetitive, the habitual, the barely noticed — and she approaches it through operations of displacement and counter-use that make familiar actions strange without aestheticizing them. The anti-spectacular is a deliberate position: in a context that valorizes productivity and growth, her refusal of spectacle is itself a form of argument. She received the 23rd Prix de la Fondation Pernod Ricard pour l'Art Contemporain in 2022 and has exhibited at the Centre Pompidou, the West Bund Museum in Shanghai, and the National Taiwan Museum of Fine Arts, among other venues.
 </bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
 `,
-textFR: `Texte en français
+textFR: `L’œuvre d’Elsa Werth intitulée <span class="titre-oeuvre">If/Then</span> fait référence à une grammaire fondamentale des systèmes informatiques, l’une de leurs principales logiques opérationnelles. Comme le titre l’indique d’emblée, l’expression « if/then » est une instruction conditionnelle qui sous-tend la programmation, les règles et les résultats prédictifs des systèmes informatiques. L’œuvre remet en question la valeur d’usage de l’abstraction et utilise une équivalence gestuelle et critique pour montrer ce qui émerge avec l’IA générative. Cette vidéo silencieuse illustre la pratique plus large d’Elsa Werth, qui s’intéresse à « l’économie du travail » et à la déstabilisation des gestes ordinaires par le déplacement et le détournement. 
 
-<bio>txt en francais</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
 
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
+<bio>Elsa Werth est une artiste vivant à Paris dont le travail prend la forme d’installations, de sculptures, de vidéos, de livres d’artiste et d’œuvres sonores. Sa pratique s’articule autour des économies du travail et des gestes ordinaires qui les sous-tendent. C’est la texture du travail tel qu’il est réellement vécu qui l’intéresse en particulier – ce qui est répétitif, habituel et à peine remarqué. Elle l’aborde à travers des opérations de déplacement et de contre-usage qui rendent étranges des actions familières sans pour autant les esthétiser. L’anti-spectaculaire est une position délibérée : dans un contexte qui valorise la productivité et la croissance, son refus du spectacle est en soi une forme d’argumentation. Elle a reçu le 23e Prix de la Fondation Pernod Ricard pour l’Art Contemporain en 2022 et a exposé notamment au Centre Pompidou, au West Bund Museum de Shanghai et au National Taiwan Museum of Fine Arts.
+</bio>`,  },
 
-`,  },
+
   6: {
     nom: "Emmanuel Van der Auwera",
+        bioTitre: "Emmanuel Van der Auwera (b. 1982, Belgium)",
+    bioTitreFr: "Emmanuel Van der Auwera (né en 1982, Belgium)",
     titre: "The Gospel",
     details: "2024 — HD video, color, sound, 17:53 minutes",
 detailsFR: "2024 — vidéo HD, couleur, son, 17:53 minutes",
     video: "img/emmanuel_van_der_auwera.mp4",
     poster: "img/emmanuel_van_der_auwera.jpg",
-text: `In her practice, Agnieszka Polska uses cinematic storytelling and affective technologies to address the perpetually negotiated relationship between human and technology, examining the processes that mutually influence and legitimate this relationship in language, history and consciousness. She is interested in the question of individual social responsibility against the background of technology-driven disorientation and ideologies of technological determinism.
-
-Polska’s works combine historical research, cinematic storytelling and affective communication technologies, seeking new narrative formats that correspond with the rapidly changing requirements of information-driven societies. According to Polska, such formats are available at the intersection of poetry and narration, art and cinema.
-
-A major strand of her current practice and thinking is the construction of a pre-history of an emerging global cybernetic consciousness. The animation The Book of Flowers (2023), devoted to gendered reproductive labor, takes this process a step further - as the pre-history depicted in the film is obviously fabricated. 
-
-In the film, deep and enchanting voice of the actress Tina Greatrex guides the listener through the joined history of humankind and flowers. According to the narrator, blooming plants used to be enormous and humans were their main pollinators. A complex symbiosis existed between the species, both humans and flowers unable to reproduce without one another. Over the centuries, humans mastered technologies that allowed them to reproduce without participation of plants and reduced sizes of flowers. Especially one technology played an important role in this morally-ambiguous process: technology of storytelling. 
-
-This fantastic history that led to the contemporary state of affairs is told against the backdrop of impassioned Charles-Marie Widor's Symphony No. 5 Toccata for Organ and a succession of dynamic animations of surreal flowers, often equipped with animal- or machine-like textures. A complex process of re-writing early time-lapse plant videos with Artificial Intelligence tools led to creation of material that could be described as found footage - but with not a single original frame used.  
-
-“What if what we believe is required of humans by nature is just a story that we told ourselves about what being human is and what nature is? What if who we think we are, what we believe at a gut level about our kinship loyalty and our perceived survival needs are responses to a story we made up and told ourselves was written by our genes?,” writes Alexis Pauline Gumbs on Sylvia Wynter. This “discursive construction of man” echoes in Polska’s film, where the main power and, at the same time, threat to humanity is becoming enchanted in one’s own story, whispered into a human ear by technological mouth. The Book of Flowers, itself constituting a sci-fi story, is designed as a “thought experiment” in immersion and dissociation.
-<bio>Agnieszka Polska is a visual artist, film and theatre director based in Berlin. Polska employs computer-generated media to explore themes of individual agency, social responsibility, and the shaping of historical narratives within environments driven by rapid technological changes and the flow of information. Her work bridges the past and the digital present, using hallucinatory animations and poetic storytelling to delve into the ethical ambiguities of contemporary society. Polska’s art has been showcased internationally, including exhibitions at the New Museum and MoMA in New York, Centre Pompidou in Paris, Tate Modern in London, and the Hirshhorn Museum in Washington, D.C. She has held solo exhibitions at Hamburger Bahnhof in Berlin, the Museum of Modern Art in Warsaw, M HKA in Antwerp, Frye Art Museum in Seattle, Nottingham Contemporary, and Salzburger Kunstverein. She participated in the 57th Venice Biennale, 11th Gwangju Biennale, 19th and 24th Biennale of Sydney, 14th Shanghai Biennale, and 13th Istanbul Biennial. In 2023, she premiered her first theatre play, The Talking Car, in the frame of BoCA Biennale, Lisbon.</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
-`,
-textFR: `Texte en français
+text: `<span class="titre-oeuvre">The Gospel</span> by Emmanuel Van der Auwera explores the unstable boundary between belief, mediation, and power. Working with photogrammetry and generated images tracing contemporary technologies and their intervention into social life. Van der Auwera points to how data analysis and systems of control are produced by AI, marking a pivotal moment, “...the first time that AI selected targets without human intervention.” In this video, the “gospel” is described as a surveillance technology, displaced from the sacred into the political, where images acquire power and inform networks of control—a new faith is born in the technology itself. That faith extends to intimate relationships with AI, and contrasted with vignettes of a Chinese miner searching for rare earth minerals used in various technologies, including the GPUs that power LLMs. 
+<bio>
+Emmanuel Van der Auwera is a Belgian artist whose work examines the production and consumption of images within a new visual economy shaped by digital space, and the ethical weight of looking. His practice is organized around the chain that runs from raw extraction to finished image: the mines supplying rare earth minerals, the supply chains and labor regimes of device manufacturing, the platforms that distribute visual content, and the viewers who consume it without seeing any of that infrastructure. By making those connections visible, his work asks what it means to be complicit in a system of image-making whose material conditions are deliberately kept out of frame. He is a 2015 Langui Award recipient of the Young Belgian Art Prize and the first winner of the Goldwasserschenking awarded by the WIELS Contemporary Art Centre. His work has been shown at the Palais de Tokyo in Paris, Pinakothek der Moderne in Munich, and KW Institute for Contemporary Art in Berlin, among others.
+</bio>`,
+textFR: `<span class="titre-oeuvre">The Gospel</span> d’Emmanuel Van der Auwera explore la frontière instable entre croyance, médiation et pouvoir. S’appuyant sur la photogrammétrie et des images générées qui retracent les technologies contemporaines et leur intervention dans la vie sociale, Van der Auwera met en lumière la manière dont l’analyse des données et les systèmes de contrôle sont produits par l’IA, marquant ainsi un tournant décisif : « …la première fois que l’IA a sélectionné des cibles sans intervention humaine. » Dans cette vidéo, l’« Évangile » est présenté comme une technologie de surveillance, déplacée du domaine du sacré vers celui du politique, où les images acquièrent un pouvoir et alimentent des réseaux de contrôle, faisant naître une nouvelle foi dans la technologie elle-même. Cette foi s'étend aux relations intimes entretenues avec l'IA et se trouve mise en contraste avec des séquences montrant un mineur chinois à la recherche de terres rares – des minerais essentiels à diverses technologies, notamment aux processeurs graphiques (GPU) qui alimentent les grands modèles de langage (LLM).  
 
 <bio>txt en francais</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
-
 `,  },
+
+
   7: {
     nom: "Jon Rafman",
+        bioTitre: "Jon Rafman (b. 1981, Montréal)",
+    bioTitreFr: "Jon Rafman (né en 1981, Montréal)",
     titre: "Catastrophonics I–IV",
     details: "2025 — HD single-channel video, color, sound, 21:20 minutes",
-detailsFR: "2025 — HD single-channel video, color, sound, 21:20 minutes",
+detailsFR: "2025 — Vidéo HD monocanal, couleur, son, 21:20 minutes",
     video: "img/jon_rafman.mp4",
     poster: "img/jon_rafman.jpg",
-text: `In her practice, Agnieszka Polska uses cinematic storytelling and affective technologies to address the perpetually negotiated relationship between human and technology, examining the processes that mutually influence and legitimate this relationship in language, history and consciousness. She is interested in the question of individual social responsibility against the background of technology-driven disorientation and ideologies of technological determinism.
+text: `Jon Rafman’s <span class="titre-oeuvre">Catastrophonics I–IV</span> turns the chimera into a broadcast program: a rapid sequence of uncanny vignettes that compile internet streams stitched together, across  impossible chasms via generative AI. The series (I, II, III and IV) is presented here in a variable sequence, but no matter where you enter the work its persistent rhythm and vertiginous scenography deepen the chaotic avalanche of various natural disasters and human made catastrophes. Rafman’s chimera is asking whether the apocalypse we imagine is now inseparable from the media systems that package, distribute and may ultimately produce it.
+<bio>Jon Rafman is a Montreal-born artist whose video, animation, photography, sculpture, and installation draw on internet-sourced imagery to investigate the losses, fantasies, and alienations of life online. His practice takes seriously what others treat as subcultural noise: the online communities, image boards, memes, and virtual spaces that shape how people relate to each other and to themselves. He approaches these worlds with something closer to ethnographic care than ironic detachment, finding in them genuine registers of loneliness, desire, and grief rather than symptoms to diagnose from a safe distance. Recent solo exhibitions include Louisiana Museum of Modern Art (2025), Kunsthalle Praha, Taipei Fine Arts Museum, and Whangarei Museum of Art (all 2024), and 180 The Strand, London (2023). He has participated in the Venice and Sharjah biennials and lives and works in Los Angeles.
+</bio>`,
+textFR: `<span class="titre-oeuvre">Catastrophonics I–IV</span> de Jon Rafman transforme la chimère en un programme d’information. Une séquence rapide de vignettes d'une étrange familiarité,compile des flux internet suturés bout à bout, traversant des gouffres d’impossibilités produits par l’IA générative. La série (I, II, III et IV) est présentée ici dans un ordre variable. Mais où que l'on entre dans l'œuvre, son rythme persistant et sa scénographie vertigineuse intensifient l'avalanche chaotique de désastres naturels et de catastrophes d'origine humaine. La chimère de Rafman se demande si l'apocalypse que nous imaginons est désormais inséparable des systèmes médiatiques qui la mettent en forme et la diffusent.
 
-Polska’s works combine historical research, cinematic storytelling and affective communication technologies, seeking new narrative formats that correspond with the rapidly changing requirements of information-driven societies. According to Polska, such formats are available at the intersection of poetry and narration, art and cinema.
+<bio>Jon Rafman est un artiste originaire de Montréal dont la vidéo, l'animation, la photographie, la sculpture et l'installation puisent dans des images issues d'internet pour interroger les pertes, les fantasmes et les aliénations de la vie en ligne. Sa pratique prend au sérieux ce que d'autres traitent comme du bruit subculturel : les communautés en ligne, les imageboards, les mèmes et les espaces virtuels qui façonnent la manière dont les individus interagissent aussi bien les uns avec les autres qu’avec eux-mêmes. Il aborde ces mondes avec quelque chose qui tient davantage d'une attention ethnographique que d'un détachement ironique, y décelant de véritables registres de solitude, de désir et de deuil plutôt que des symptômes à diagnostiquer à distance. Parmi ses expositions individuelles récentes figurent le Louisiana Museum of Modern Art (2025), la Kunsthalle Praha, le Taipei Fine Arts Museum et le Whangarei Museum of Art (tous en 2024), ainsi que 180 The Strand, Londres (2023). Il a participé aux biennales de Venise et de Sharjah, et vit et travaille à Los Angeles.
+</bio>`,  },
 
-A major strand of her current practice and thinking is the construction of a pre-history of an emerging global cybernetic consciousness. The animation The Book of Flowers (2023), devoted to gendered reproductive labor, takes this process a step further - as the pre-history depicted in the film is obviously fabricated. 
 
-In the film, deep and enchanting voice of the actress Tina Greatrex guides the listener through the joined history of humankind and flowers. According to the narrator, blooming plants used to be enormous and humans were their main pollinators. A complex symbiosis existed between the species, both humans and flowers unable to reproduce without one another. Over the centuries, humans mastered technologies that allowed them to reproduce without participation of plants and reduced sizes of flowers. Especially one technology played an important role in this morally-ambiguous process: technology of storytelling. 
-
-This fantastic history that led to the contemporary state of affairs is told against the backdrop of impassioned Charles-Marie Widor's Symphony No. 5 Toccata for Organ and a succession of dynamic animations of surreal flowers, often equipped with animal- or machine-like textures. A complex process of re-writing early time-lapse plant videos with Artificial Intelligence tools led to creation of material that could be described as found footage - but with not a single original frame used.  
-
-“What if what we believe is required of humans by nature is just a story that we told ourselves about what being human is and what nature is? What if who we think we are, what we believe at a gut level about our kinship loyalty and our perceived survival needs are responses to a story we made up and told ourselves was written by our genes?,” writes Alexis Pauline Gumbs on Sylvia Wynter. This “discursive construction of man” echoes in Polska’s film, where the main power and, at the same time, threat to humanity is becoming enchanted in one’s own story, whispered into a human ear by technological mouth. The Book of Flowers, itself constituting a sci-fi story, is designed as a “thought experiment” in immersion and dissociation.
-<bio>Agnieszka Polska is a visual artist, film and theatre director based in Berlin. Polska employs computer-generated media to explore themes of individual agency, social responsibility, and the shaping of historical narratives within environments driven by rapid technological changes and the flow of information. Her work bridges the past and the digital present, using hallucinatory animations and poetic storytelling to delve into the ethical ambiguities of contemporary society. Polska’s art has been showcased internationally, including exhibitions at the New Museum and MoMA in New York, Centre Pompidou in Paris, Tate Modern in London, and the Hirshhorn Museum in Washington, D.C. She has held solo exhibitions at Hamburger Bahnhof in Berlin, the Museum of Modern Art in Warsaw, M HKA in Antwerp, Frye Art Museum in Seattle, Nottingham Contemporary, and Salzburger Kunstverein. She participated in the 57th Venice Biennale, 11th Gwangju Biennale, 19th and 24th Biennale of Sydney, 14th Shanghai Biennale, and 13th Istanbul Biennial. In 2023, she premiered her first theatre play, The Talking Car, in the frame of BoCA Biennale, Lisbon.</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
-`,
-textFR: `Texte en français
-
-<bio>txt en francais</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
-
-`,  },
   8: {
     nom: "Ho Tzu Nyen",
+        bioTitre: "Ho Tzu Nyen (b. 1976, Singapore)",
+    bioTitreFr: "Ho Tzu Nyen (né en 1976, Singapour)",
     titre: "P for Power",
     details: "2023 — HD video, 9:38 minutes",
 detailsFR: "2023 — vidéo HD, 9:38 minutes",
     video: "img/ho_tzu_nyen.mp4",
     poster: "img/ho_tzu_nyen.jpg",
-text: `In her practice, Agnieszka Polska uses cinematic storytelling and affective technologies to address the perpetually negotiated relationship between human and technology, examining the processes that mutually influence and legitimate this relationship in language, history and consciousness. She is interested in the question of individual social responsibility against the background of technology-driven disorientation and ideologies of technological determinism.
+text: `
+Ho Tzu Nyen’s <span class="titre-oeuvre">P for Power</span> was commissioned by Bozar as part of his ongoing Critical Dictionary of Southeast Asia. This video installation unfolds as “30 real-time edited chapters,” each a Q&A between Ho and an AI chatbot attempting to define “Power.” The chatbot becomes a contemporary oracle—verbose, confident, derivative—whose authority is inseparable from its statistical nature. By staging Singaporean children as protagonists who infiltrate found footage from the internet, Ho engages an open ended question as to the many possible uses and definitions of power in the future. In the artist’s words, “Power, not as domination, but as endurance, consistency, coherence over temporal extension.” Originally fed through a live internet input, P for Power is proposed here as three generated iterations alternating through the duration of the exhibition.
 
-Polska’s works combine historical research, cinematic storytelling and affective communication technologies, seeking new narrative formats that correspond with the rapidly changing requirements of information-driven societies. According to Polska, such formats are available at the intersection of poetry and narration, art and cinema.
+<bio>Ho Tzu Nyen is a Singapore-based artist whose installations, films, and theatrical works weave together archival images, animation, and speculative narrative to investigate the plural, contested cultural identities of Southeast Asia. His ongoing Critical Dictionary of Southeast Asia forms the conceptual spine of much of his output: an open-ended, accumulative project that refuses the idea that a region so multiple in its languages, religions, and histories could be gathered under a single account. His work proceeds by layering rather than resolving — different historical sources, knowledge systems, and representational modes placed in proximity so that their contradictions remain legible. Solo exhibitions have been held at Hamburger Kunsthalle, LUMA Arles, Mudam, the Hammer Museum, and Museum of Contemporary Art Tokyo, among others. His films have screened at Cannes, Venice, and Sundance. He was appointed Artistic Director of the 2026 Gwangju Biennale.
+</bio>`,
+textFR: `L’œuvre <span class="titre-oeuvre">P for Power</span> de Ho Tzu Nyen a été commandée par Bozar dans le cadre de son projet en cours Critical Dictionary of Southeast Asia. Cette installation vidéo se déploie en « trente chapitres montés en temps réel », chacun prenant la forme d’un échange de questions-réponses entre l’artiste et un agent conversationnel (chatbot) tentant de définir le terme « Pouvoir ». Le chatbot devient un oracle contemporain – prolixe, sûr de lui et tributaire de données préexistantes – dont l’autorité est indissociable de sa nature statistique. En mettant en scène des enfants singapouriens comme protagonistes s’infiltrant dans des images trouvées sur Internet, Ho Tzu Nyen explore une question ouverte sur les multiples usages et définitions possibles du pouvoir dans les temps à venir. Selon l’artiste : « Le pouvoir, non pas comme domination, mais comme endurance, constance et cohérence dans la durée. » Initialement alimentée par un flux Internet en direct, l’œuvre P for Power est présentée ici sous la forme de trois itérations générées, alternant tout au long de la durée de l’exposition. 
 
-A major strand of her current practice and thinking is the construction of a pre-history of an emerging global cybernetic consciousness. The animation The Book of Flowers (2023), devoted to gendered reproductive labor, takes this process a step further - as the pre-history depicted in the film is obviously fabricated. 
+<bio>Ho Tzu Nyen est un artiste établi à Singapour dont les installations, les films et les œuvres théâtrales entremêlent images d'archives, animation et récits spéculatifs pour explorer les identités culturelles plurielles et disputées de l'Asie du Sud-Est. Son projet en cours d'élaboration, Critical Dictionary of Southeast Asia, constitue la structure conceptuelle d'une grande partie de son travail : un projet ouvert et cumulatif qui rejette l'idée selon laquelle une région d'une telle diversité de langues, de religions et d'histoires pourrait être ramenée à un récit unique. Son travail procède par stratification plutôt que par résolution, rapprochant différentes sources historiques, systèmes de savoir et modes de représentation afin de rendre visible leurs contradictions. Il a fait l'objet d'expositions personnelles dans des institutions telles que la Hamburger Kunsthalle, LUMA Arles, le Mudam, le Hammer Museum et le Museum of Contemporary Art Tokyo. Ses films ont été projetés aux festivals de Cannes, de Venise et de Sundance. Il a été nommé directeur artistique de la Biennale de Gwangju 2026. 
+</bio>`,  },
 
-In the film, deep and enchanting voice of the actress Tina Greatrex guides the listener through the joined history of humankind and flowers. According to the narrator, blooming plants used to be enormous and humans were their main pollinators. A complex symbiosis existed between the species, both humans and flowers unable to reproduce without one another. Over the centuries, humans mastered technologies that allowed them to reproduce without participation of plants and reduced sizes of flowers. Especially one technology played an important role in this morally-ambiguous process: technology of storytelling. 
 
-This fantastic history that led to the contemporary state of affairs is told against the backdrop of impassioned Charles-Marie Widor's Symphony No. 5 Toccata for Organ and a succession of dynamic animations of surreal flowers, often equipped with animal- or machine-like textures. A complex process of re-writing early time-lapse plant videos with Artificial Intelligence tools led to creation of material that could be described as found footage - but with not a single original frame used.  
-
-“What if what we believe is required of humans by nature is just a story that we told ourselves about what being human is and what nature is? What if who we think we are, what we believe at a gut level about our kinship loyalty and our perceived survival needs are responses to a story we made up and told ourselves was written by our genes?,” writes Alexis Pauline Gumbs on Sylvia Wynter. This “discursive construction of man” echoes in Polska’s film, where the main power and, at the same time, threat to humanity is becoming enchanted in one’s own story, whispered into a human ear by technological mouth. The Book of Flowers, itself constituting a sci-fi story, is designed as a “thought experiment” in immersion and dissociation.
-<bio>Agnieszka Polska is a visual artist, film and theatre director based in Berlin. Polska employs computer-generated media to explore themes of individual agency, social responsibility, and the shaping of historical narratives within environments driven by rapid technological changes and the flow of information. Her work bridges the past and the digital present, using hallucinatory animations and poetic storytelling to delve into the ethical ambiguities of contemporary society. Polska’s art has been showcased internationally, including exhibitions at the New Museum and MoMA in New York, Centre Pompidou in Paris, Tate Modern in London, and the Hirshhorn Museum in Washington, D.C. She has held solo exhibitions at Hamburger Bahnhof in Berlin, the Museum of Modern Art in Warsaw, M HKA in Antwerp, Frye Art Museum in Seattle, Nottingham Contemporary, and Salzburger Kunstverein. She participated in the 57th Venice Biennale, 11th Gwangju Biennale, 19th and 24th Biennale of Sydney, 14th Shanghai Biennale, and 13th Istanbul Biennial. In 2023, she premiered her first theatre play, The Talking Car, in the frame of BoCA Biennale, Lisbon.</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
-`,
-textFR: `Texte en français
-
-<bio>txt en francais</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
-
-`,  },
   9: {
     nom: "John Menick",
+        bioTitre: "John Menick (b. 1976, USA)",
+    bioTitreFr: "John Menick (né en 1976, États-Unis)",
     titre: "Telharmonium",
     details: "2025 —  generative film and score, infinite runtime, custom software, 4K video, stereo sound",
 detailsFR: "2025 —  generative film and score, infinite runtime, custom software, 4K video, stereo sound",
  youtube: "dQw4w9WgXcQ",
     poster: "img/john_menick.jpg",
-text: `In her practice, Agnieszka Polska uses cinematic storytelling and affective technologies to address the perpetually negotiated relationship between human and technology, examining the processes that mutually influence and legitimate this relationship in language, history and consciousness. She is interested in the question of individual social responsibility against the background of technology-driven disorientation and ideologies of technological determinism.
+text: `John Menick’s <span class="titre-oeuvre">Telharmonium</span> explores automation through the historic Telharmonium—an early 1900s predecessor to the synthesizer that centralized musical production and distributed it through telephone networks. It’s framed here as an ancestor of today’s network automation and ”links the history of technology with contemporary anxieties about artificial intelligence and the mechanization of creative labor.” The film is variably sequenced and controlled by economic data which orients the montage and score in real time, producing a work that never repeats. Here, the chimera is temporal: a recombinatory organism that disorients Menick’s footage, which was shot in Holyoke, Massachusetts (USA) during a residency at Lower Cavity, and is accompanied by an algorithmically situated score by composer Ben Shirken.
+<bio>John Menick is a New York-based artist working in moving image, sound, performance, and technological systems. His work is preoccupied with the ways technology generates its own mythologies: the stories a culture tells about automation, about what machines can or will eventually do, and about what gets lost or forgotten when one technical era gives way to the next. He tends to find his subjects at the edges of the historical record — failed inventions, obsolete systems, discarded futures — and uses them to think about the anxieties of the present. Recently, his work often enacts what it describes, using generative software to produce films whose structure is itself a kind of machine. He has exhibited in DOCUMENTA(13) and Greater New York, and his films have screened at the International Film Festival Rotterdam and CPH:DOX, among others. Recent work includes autoextinction (2023), narrated by three superintelligent machines, and Edge of Life (2025), a performance on digital resurrection commissioned by Lo Schermo dell'arte and later restaged at the Palazzo Grassi.
+</bio>`,
+textFR: `<span class="titre-oeuvre">Telharmonium</span> de John Menick aborde la question de l'automatisation en s’intéressant au  Telharmonium historique — un prédécesseur du synthétiseur du début des années 1900, capable de centraliser la production musicale et de la distribuer via les réseaux téléphoniques. Il devient ici un ancêtre de l'automatisation des réseaux d'aujourd'hui et « relie l'histoire de la technologie aux angoisses contemporaines autour de l'intelligence artificielle et de la mécanisation du travail créatif. » Le film est séquencé et contrôlé de manière variable par des données économiques qui orientent le montage et la partition en temps réel, produisant une œuvre qui ne se répète jamais. La chimère est ici temporelle : un organisme recombinatoire qui désoriente les séquences de Menick, tournées à Holyoke, Massachusetts (États-Unis) lors d'une résidence à Lower Cavity, accompagnées d'une partition algorithmiquement située composée par Ben Shirken.
 
-Polska’s works combine historical research, cinematic storytelling and affective communication technologies, seeking new narrative formats that correspond with the rapidly changing requirements of information-driven societies. According to Polska, such formats are available at the intersection of poetry and narration, art and cinema.
 
-A major strand of her current practice and thinking is the construction of a pre-history of an emerging global cybernetic consciousness. The animation The Book of Flowers (2023), devoted to gendered reproductive labor, takes this process a step further - as the pre-history depicted in the film is obviously fabricated. 
+<bio>John Menick est un artiste new-yorkais dont la pratique traverse l'image en mouvement, le son, la performance et les systèmes technologiques. Il s’intéresse à la manière dont la technologie génère ses propres mythologies : les histoires qu'une culture se raconte sur l'automatisation, sur ce que les machines peuvent ou pourront un jour accomplir, et sur ce qui se perd ou s'oublie lorsqu'une ère technique cède la place à la suivante. Il tend à trouver ses sujets aux marges du récit historique — inventions manquées, systèmes obsolètes, futurs écartés — et s'en sert pour réfléchir aux angoisses du présent. Récemment, son travail met souvent en acte ce qu'il décrit, en utilisant des logiciels génératifs pour produire des films dont la structure est elle-même une forme de machine. Il a exposé à la DOCUMENTA(13) et à Greater New York, et ses films ont été projetés notamment à l'International Film Festival Rotterdam et au CPH:DOX. Parmi ses œuvres récentes figurent autoextinction (2023), narrée par trois machines superintelligentes, et Edge of Life (2025), une performance sur la résurrection numérique commandée par Lo Schermo dell'arte et reprise ultérieurement au Palazzo Grassi.
+</bio>`,  },
 
-In the film, deep and enchanting voice of the actress Tina Greatrex guides the listener through the joined history of humankind and flowers. According to the narrator, blooming plants used to be enormous and humans were their main pollinators. A complex symbiosis existed between the species, both humans and flowers unable to reproduce without one another. Over the centuries, humans mastered technologies that allowed them to reproduce without participation of plants and reduced sizes of flowers. Especially one technology played an important role in this morally-ambiguous process: technology of storytelling. 
 
-This fantastic history that led to the contemporary state of affairs is told against the backdrop of impassioned Charles-Marie Widor's Symphony No. 5 Toccata for Organ and a succession of dynamic animations of surreal flowers, often equipped with animal- or machine-like textures. A complex process of re-writing early time-lapse plant videos with Artificial Intelligence tools led to creation of material that could be described as found footage - but with not a single original frame used.  
-
-“What if what we believe is required of humans by nature is just a story that we told ourselves about what being human is and what nature is? What if who we think we are, what we believe at a gut level about our kinship loyalty and our perceived survival needs are responses to a story we made up and told ourselves was written by our genes?,” writes Alexis Pauline Gumbs on Sylvia Wynter. This “discursive construction of man” echoes in Polska’s film, where the main power and, at the same time, threat to humanity is becoming enchanted in one’s own story, whispered into a human ear by technological mouth. The Book of Flowers, itself constituting a sci-fi story, is designed as a “thought experiment” in immersion and dissociation.
-<bio>Agnieszka Polska is a visual artist, film and theatre director based in Berlin. Polska employs computer-generated media to explore themes of individual agency, social responsibility, and the shaping of historical narratives within environments driven by rapid technological changes and the flow of information. Her work bridges the past and the digital present, using hallucinatory animations and poetic storytelling to delve into the ethical ambiguities of contemporary society. Polska’s art has been showcased internationally, including exhibitions at the New Museum and MoMA in New York, Centre Pompidou in Paris, Tate Modern in London, and the Hirshhorn Museum in Washington, D.C. She has held solo exhibitions at Hamburger Bahnhof in Berlin, the Museum of Modern Art in Warsaw, M HKA in Antwerp, Frye Art Museum in Seattle, Nottingham Contemporary, and Salzburger Kunstverein. She participated in the 57th Venice Biennale, 11th Gwangju Biennale, 19th and 24th Biennale of Sydney, 14th Shanghai Biennale, and 13th Istanbul Biennial. In 2023, she premiered her first theatre play, The Talking Car, in the frame of BoCA Biennale, Lisbon.</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
-`,
-textFR: `Texte en français
-
-<bio>txt en francais</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
-
-`,  },
   10: {
     nom: "Sofia Crespo",
+        bioTitre: "Sofia Crespo (b. 1991, Argentina)",
+    bioTitreFr: "Sofia Crespo (née en 1991, Argentine)",
     titre: "Temporally Uncaptured",
     details: "2023-2024 — neural networks and digital video from scanned cyanotypes, 4:10 minutes",
 detailsFR: "2023-2024 — réseaux neuronaux et vidéo numérique à partir de cyanotypes numérisés, 4:10 minutes",
     video: "img/sofia_crespo.mp4",
     poster: "img/sofia_crespo.jpg",
-text: `In her practice, Agnieszka Polska uses cinematic storytelling and affective technologies to address the perpetually negotiated relationship between human and technology, examining the processes that mutually influence and legitimate this relationship in language, history and consciousness. She is interested in the question of individual social responsibility against the background of technology-driven disorientation and ideologies of technological determinism.
+text: `<span class="titre-oeuvre">Temporally Uncaptured</span> by Sofia Crespo is a series of short videos inspired by the historical figure Anna Atkins and her Photographs of British Algae: Cyanotype Impressions (1843) — the first book to be photographically printed and illustrated, a landmark in the history of photography. Atkins completed her book in an era when female scientists were routinely ignored or misattributed. As a result its significance went largely unrecognized for over a century. 
+Crespo's videos employ custom neural networks, small models trained by the artist, in contrast to today's large-scale generative AI, to produce a sequence of still images capturing the morphological range of a variety of organisms synthesized from historical archives, focusing on some of the earliest depictions of these creatures. The resulting videos are assembled frame-by-frame, transforming the digital images by hand via the chemical process of cyanotype, and then digitized. The work attends to the often imperceptible transitions in the life cycles of organisms, including but not limited to the microscopic, that unfold at a temporal scale invisible to the human eye.
+<bio>
+Sofia Crespo is an Argentine artist based in Lisbon whose practice examines the convergence of artificial intelligence and biological systems. Working independently and as part of the duo Entangled Others with Norwegian artist Feileacan Kirkbride McCormick, she investigates how organic life and artificial mechanisms simulate and evolve each other — drawing parallels between historical optical instruments and contemporary neural networks. Their work has been shown at the Victoria & Albert Museum in London and Times Square in New York, and their piece Swim entered the Buffalo AKG Art Museum's permanent collection in 2022. Crespo received the AI Newcomer Award from the German Informatics Society and has lectured at MIT and the Oxford Artificial Intelligence Society.</bio>
 
-Polska’s works combine historical research, cinematic storytelling and affective communication technologies, seeking new narrative formats that correspond with the rapidly changing requirements of information-driven societies. According to Polska, such formats are available at the intersection of poetry and narration, art and cinema.
+<credits></credits>`,
+textFR: `<span class="titre-oeuvre">Temporally Uncaptured</span> de Sofia Crespo est une série de courtes vidéos inspirées de la figure historique d'Anna Atkins et de son ouvrage Photographs of British Algae: Cyanotype Impressions (1843) — le premier livre à être imprimé et illustré par photographie, un jalon majeur dans l'histoire de la photographie. Atkins acheva son ouvrage à une époque où les femmes scientifiques étaient systématiquement ignorées ou voyaient leur travail attribué à d'autres. De ce fait, son importance passa largement inaperçue pendant plus d'un siècle.
+Les vidéos de Crespo mobilisent des réseaux de neurones personnalisés, au contraire des  IA génératives actuelles à grande échelle, pour produire une séquence d'images fixes capturant l'étendue morphologique d'une variété d'organismes synthétisés à partir d'archives historiques, en se concentrant sur certaines des premières représentations de ces créatures. Les vidéos qui en résultent sont assemblées image par image, transformant les images numériques à la main via le procédé chimique du cyanotype, puis numérisées. L'œuvre prête attention aux transitions souvent imperceptibles dans les cycles de vie des organismes, y compris, sans s'y limiter, les organismes microscopiques, qui se déploient à une échelle temporelle invisible à l'œil nu.
 
-A major strand of her current practice and thinking is the construction of a pre-history of an emerging global cybernetic consciousness. The animation The Book of Flowers (2023), devoted to gendered reproductive labor, takes this process a step further - as the pre-history depicted in the film is obviously fabricated. 
-
-In the film, deep and enchanting voice of the actress Tina Greatrex guides the listener through the joined history of humankind and flowers. According to the narrator, blooming plants used to be enormous and humans were their main pollinators. A complex symbiosis existed between the species, both humans and flowers unable to reproduce without one another. Over the centuries, humans mastered technologies that allowed them to reproduce without participation of plants and reduced sizes of flowers. Especially one technology played an important role in this morally-ambiguous process: technology of storytelling. 
-
-This fantastic history that led to the contemporary state of affairs is told against the backdrop of impassioned Charles-Marie Widor's Symphony No. 5 Toccata for Organ and a succession of dynamic animations of surreal flowers, often equipped with animal- or machine-like textures. A complex process of re-writing early time-lapse plant videos with Artificial Intelligence tools led to creation of material that could be described as found footage - but with not a single original frame used.  
-
-“What if what we believe is required of humans by nature is just a story that we told ourselves about what being human is and what nature is? What if who we think we are, what we believe at a gut level about our kinship loyalty and our perceived survival needs are responses to a story we made up and told ourselves was written by our genes?,” writes Alexis Pauline Gumbs on Sylvia Wynter. This “discursive construction of man” echoes in Polska’s film, where the main power and, at the same time, threat to humanity is becoming enchanted in one’s own story, whispered into a human ear by technological mouth. The Book of Flowers, itself constituting a sci-fi story, is designed as a “thought experiment” in immersion and dissociation.
-<bio>Agnieszka Polska is a visual artist, film and theatre director based in Berlin. Polska employs computer-generated media to explore themes of individual agency, social responsibility, and the shaping of historical narratives within environments driven by rapid technological changes and the flow of information. Her work bridges the past and the digital present, using hallucinatory animations and poetic storytelling to delve into the ethical ambiguities of contemporary society. Polska’s art has been showcased internationally, including exhibitions at the New Museum and MoMA in New York, Centre Pompidou in Paris, Tate Modern in London, and the Hirshhorn Museum in Washington, D.C. She has held solo exhibitions at Hamburger Bahnhof in Berlin, the Museum of Modern Art in Warsaw, M HKA in Antwerp, Frye Art Museum in Seattle, Nottingham Contemporary, and Salzburger Kunstverein. She participated in the 57th Venice Biennale, 11th Gwangju Biennale, 19th and 24th Biennale of Sydney, 14th Shanghai Biennale, and 13th Istanbul Biennial. In 2023, she premiered her first theatre play, The Talking Car, in the frame of BoCA Biennale, Lisbon.</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
-`,
-textFR: `Texte en français
-
-<bio>txt en francais</bio>
-<credits>Écrit et réalisé par Agnieszka Polska
-voix: Tina Greatrex
-workflow stable diffusion: Nathan Gray
-animation: Agnieszka Polska, Nathan Gray, Ewa Polska
-conception sonore: Igor Kłaczyński
-enregistrement sonore: The Sound Company
-musique: Charles-Marie Widor/Olivier Latry - 5e & 6e Symphonies Pour Orgue, BNL Productions 1986
-
-Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 2023, dans le cadre de Timisoara 2023, Capitale Européenne de la Culture</credits>
-
+<bio>
+Sofia Crespo est une artiste argentine basée à Lisbonne dont la pratique examine la convergence de l'intelligence artificielle et des systèmes biologiques. Travaillant de manière indépendante et au sein du duo Entangled Others avec l'artiste norvégien Feileacan Kirkbride McCormick, elle explore la manière dont le vivant et les mécanismes artificiels se simulent et se transforment mutuellement — établissant des parallèles entre les instruments optiques historiques et les réseaux de neurones contemporains. Leur travail a été présenté au Victoria & Albert Museum à Londres et à Times Square à New York, et leur œuvre Swim est entrée dans la collection permanente du Buffalo AKG Art Museum en 2022. Crespo a reçu le prix AI Newcomer de la Société allemande d'informatique et a donné des conférences au MIT et à l'Oxford Artificial Intelligence Society.</bio>
 `,  },
 };
 
@@ -931,7 +701,7 @@ video.addEventListener('loadedmetadata', () => {
     vidW = vidH * ratio;
   }
 
-  btnPlay.style.top   = (vidH / 2) + 'px';
+  btnPlay.style.top   = (wrapperH / 2) + 'px';
   btnPlay.style.right = (vidW / 2) + 'px';
   btnPlay.style.transform = 'translate(50%, -50%)';
 });
@@ -1049,6 +819,7 @@ function playIntro() {
     setCalendarVisible(true);
 setOpacity(document.getElementById('btn-lang'), '1', '1s');
 setOpacity(document.getElementById('btn_cine_switch'), '1', '1s');
+    setOpacity(document.getElementById('calendar-label'), '1', '1s'); 
     fadeIn('logos-container');
     document.getElementById('artistes-container').style.pointerEvents = 'auto';
 document.getElementById('mobile-see-artists')?.style.setProperty('opacity', '1');
@@ -1879,6 +1650,8 @@ document.getElementById('btn_cine_switch').style.opacity = '0';
 setOpacity(document.getElementById('btn-lang'), '1', '1.5s');
 setOpacity(document.getElementById('btn_cine_switch'), '1', '1.5s');
 setCalendarVisible(true);
+document.getElementById('about')?.classList.remove('hidden-content');
+setOpacity(document.getElementById('about'), '1', '1.5s');
   document.getElementById('btn_cine_switch').style.transition = 'opacity 1.5s ease'; // ← ici
   document.getElementById('btn_cine_switch').style.opacity = '1';
 document.getElementById('texte-oeuvre').scrollTop = 0;
@@ -1977,7 +1750,7 @@ function startYoutubePlayer() {
         if (ev.data === YT.PlayerState.ENDED) {
           btnPlay.textContent = translations[currentLang].playVideo;
           btnPlay.classList.remove('playing');
-          youtubeFrame.style.transition = 'opacity 0.8s ease';
+if (isMobile() && typeof onMobileVideoPause === 'function') onMobileVideoPause();          youtubeFrame.style.transition = 'opacity 0.8s ease';
           youtubeFrame.style.opacity = '0';
           setTimeout(() => {
             youtubeFrame.style.display = 'none';
@@ -2045,15 +1818,7 @@ btnPlay.style.pointerEvents = '';
 if (typeof window.toggleVimeoOverlay === 'function') window.toggleVimeoOverlay();
 if (typeof window.toggleVimeoOverlayDesktop === 'function') window.toggleVimeoOverlayDesktop();
 
-      setTimeout(() => {
-        fullscreenBtn.style.display = 'block';
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            fullscreenBtn.style.opacity = '1';
-            fullscreenVisible = true;
-          });
-        });
-      }, 2000);
+
 
       vimeoPlayer = new Vimeo.Player(vimeoFrame);
 
@@ -2062,11 +1827,12 @@ if (typeof window.toggleVimeoOverlayDesktop === 'function') window.toggleVimeoOv
         timelineFill.style.width = pct + '%';
       });
 
-      vimeoPlayer.on('play', () => {
+vimeoPlayer.on('play', () => {
         btnPlay.textContent = 'Pause';
         btnPlay.classList.add('playing');
         btnPlay.style.opacity = '0';
         btnPlay.style.pointerEvents = 'none';
+        scheduleShowFullscreenBtn();
         if (isMobile() && typeof onMobileVideoPlay === 'function') onMobileVideoPlay();
       });
 
@@ -2075,6 +1841,7 @@ if (typeof window.toggleVimeoOverlayDesktop === 'function') window.toggleVimeoOv
         btnPlay.classList.remove('playing');
         btnPlay.style.opacity = '1';
         btnPlay.style.pointerEvents = 'auto';
+        hideFullscreenBtn();
         showInfo3();
         if (isMobile() && typeof onMobileVideoPause === 'function') onMobileVideoPause();
       });
@@ -2082,6 +1849,7 @@ if (typeof window.toggleVimeoOverlayDesktop === 'function') window.toggleVimeoOv
       vimeoPlayer.on('ended', () => {
         btnPlay.textContent = translations[currentLang].playVideo;
         btnPlay.classList.remove('playing');
+if (isMobile() && typeof onMobileVideoPause === 'function') onMobileVideoPause();
         vimeoFrame.style.transition = 'opacity 0.8s ease';
         vimeoFrame.style.opacity = '0';
         setTimeout(() => {
@@ -2117,15 +1885,8 @@ if (typeof window.toggleVimeoOverlayDesktop === 'function') window.toggleVimeoOv
           btnPlay.style.pointerEvents = 'none';
           videoWrapper.style.cursor = 'none';
 
-          setTimeout(() => {
+setTimeout(() => {
             btnPlay.style.pointerEvents = '';
-            fullscreenBtn.style.display = 'block';
-            requestAnimationFrame(() => {
-              requestAnimationFrame(() => {
-                fullscreenBtn.style.opacity = '1';
-                fullscreenVisible = true;
-              });
-            });
           }, 2000);
 
         } catch (err) {
@@ -2146,7 +1907,27 @@ if (typeof window.toggleVimeoOverlayDesktop === 'function') window.toggleVimeoOv
 btnPlay.addEventListener('click', handlePlayPauseClick);
 
 
+let fullscreenShowTimer = null;
 
+function scheduleShowFullscreenBtn() {
+  clearTimeout(fullscreenShowTimer);
+  fullscreenShowTimer = setTimeout(() => {
+    fullscreenBtn.style.display = 'block';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        fullscreenBtn.style.opacity = '1';
+        fullscreenVisible = true;
+      });
+    });
+  }, 2000);
+}
+
+function hideFullscreenBtn() {
+  clearTimeout(fullscreenShowTimer);
+  fullscreenBtn.style.transition = 'opacity 0.5s ease';
+  fullscreenBtn.style.opacity = '0';
+  fullscreenVisible = false;
+}
 
 
 
@@ -2157,11 +1938,13 @@ btnPlay.addEventListener('click', handlePlayPauseClick);
 video.addEventListener('play', () => {
   btnPlay.textContent = 'Pause';
   btnPlay.classList.add('playing');
+  scheduleShowFullscreenBtn();
 });
 
 video.addEventListener('pause', () => {
   btnPlay.textContent = 'Play Video';
   btnPlay.classList.remove('playing');
+  hideFullscreenBtn();
 
   if (hasStarted) {
     setTimeout(() => showInfo3(), 1500);
@@ -2171,6 +1954,8 @@ video.addEventListener('pause', () => {
 video.addEventListener('ended', () => {
   btnPlay.textContent = 'Play Video';
   btnPlay.classList.remove('playing');
+  hideFullscreenBtn();
+  if (isMobile() && typeof onMobileVideoPause === 'function') onMobileVideoPause();
 });
 
 video.addEventListener('error', () => {
@@ -2530,7 +2315,7 @@ if (wasInCinemaModeBeforeFullscreen) {
   if (window.innerWidth > 768) {
     video.style.width          = '63vw';
     video.style.height         = '80vh';
-    video.style.objectPosition = 'right top';
+    video.style.objectPosition = 'right center';
   } else {
     video.style.width          = '';
     video.style.height         = '';
@@ -2754,14 +2539,9 @@ if (!info3AlreadyShown) { texte.classList.remove('visible'); texteWrapper.classL
     if (!info3AlreadyShown) hideInfo3();
     if (info3AlreadyShown) showInfo3();
 
-    if (isMobile()) {
-      fullscreenBtn.style.display = 'none';
-      fullscreenBtn.style.opacity = '0';
-      fullscreenVisible = false;
-    } else {
-      if (fullscreenUnlocked) { fullscreenBtn.style.display = 'block'; fullscreenBtn.style.opacity = '1'; fullscreenVisible = true; }
-      else { fullscreenBtn.style.display = 'none'; fullscreenBtn.style.opacity = '0'; fullscreenVisible = false; }
-    }
+fullscreenBtn.style.display = 'none';
+    fullscreenBtn.style.opacity = '0';
+    fullscreenVisible = false;
 
 
 
@@ -2951,6 +2731,7 @@ document.addEventListener('click', (e) => {
 function openCalendar() {
   if (calendarOpen) return;
   calendarOpen = true;
+    document.body.classList.add('calendar-open-cursor');  
   const nav = document.getElementById('calendar-artists-nav');
   if (nav) nav.style.pointerEvents = 'auto';
     clearTimeout(calendarTextTimer);
@@ -2986,6 +2767,7 @@ if (btnSee && isMobile()) {
 function closeCalendar() {
   if (!calendarOpen) return;
   calendarOpen = false;
+    document.body.classList.remove('calendar-open-cursor'); 
   clearTimeout(calendarTextTimer);
   resetCalendarHighlight();
   boiteCalendar.classList.remove('show-text', 'open');
@@ -3516,8 +3298,14 @@ function renderTexteOeuvre(data, lang) {
 
   // 2. BIO ensuite
   if (bioText) {
-    const titreBio = data.bioTitre || data.nom;
-    html += `<div class="texte-bio"><span class="bio-nom">${titreBio}</span><div class="bio-text">${bioText.replace(/\n/g, '<br>')}</div></div>`;
+    const titreBio = (lang === "FR" && data.bioTitreFr) ? data.bioTitreFr : (data.bioTitre || data.nom);
+
+    // sépare le nom de la partie entre parenthèses pour ne pas la mettre en gras
+    const parenMatch = titreBio.match(/^(.*?)(\s*\(.*\))\s*$/);
+    const titreBioHtml = parenMatch
+      ? `${parenMatch[1]}<span class="bio-parenthese">${parenMatch[2]}</span>`
+      : titreBio;
+    html += `<div class="texte-bio"><span class="bio-nom">${titreBioHtml}</span><div class="bio-text">${bioText.replace(/\n/g, '<br>')}</div></div>`;
   }
 
   // 3. CREDITS en dernier
@@ -3795,7 +3583,7 @@ function buildCredits(lang) {
 
   html += `
     <div class="credit-block">
-      <span class="credit-role">${lang === 'FR' ? 'Graphisme et développement web' : 'Graphism and web development'} :</span><span class="credit-names"><a href="https://eleonoresense.com" target="_blank">Eléonore Sense</a></span>
+      <span class="credit-role">${lang === 'FR' ? 'Graphisme et développement web' : 'Graphism and web development'} :</span><span class="credit-names"><a href="https://eleonore-sense.github.io/bonjour/" target="_blank">Eléonore Sense</a></span>
     </div>
     <div class="credit-block">
       <span class="credit-role">${lang === 'FR' ? 'Typographie de titrage' : 'Display typeface'} :</span><span class="credit-names">Lagarto de <a href="https://www.sudtipos.com/font/lagarto" target="_blank">Sudtipos</a></span>
