@@ -15,7 +15,7 @@ const translations = {
     exitFullscreen: "quitter le plein écran",
     fullscreen: "plein écran",
     artists: "artistes",
-    viewingSchedule: "programme de diffusion",    
+    viewingSchedule: "dates de diffusion",    
   },
   EN: {
     titre: "Do Our Chimeras Most Resemble Us?",
@@ -173,7 +173,7 @@ function applyLang() {
 
 
 
-    buildCredits(currentLang); 
+buildAboutContent(currentLang);
     lines = linesConfig[currentLang];
 
 
@@ -252,7 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
   buildMobileWaveLines();
   buildTitreHaut();
   applyLang();
-    buildCredits(currentLang); 
+  buildAboutContent(currentLang);
   isMobile() ? initTunnelMobile() : initTunnel();
 });
 
@@ -263,9 +263,11 @@ document.body.addEventListener("click", (e) => {
   if (typeof carrousel !== "undefined") cachedLoopWidth = carrousel.scrollWidth / 2;
 });
 
-document.getElementById('about-calendar-link').addEventListener('click', (e) => {
-  e.stopPropagation();
-  setTimeout(() => openCalendar(), 400);
+document.getElementById('about-content').addEventListener('click', (e) => {
+  if (e.target.closest('#about-calendar-link')) {
+    e.stopPropagation();
+    setTimeout(() => openCalendar(), 400);
+  }
 });
 
 
@@ -400,6 +402,9 @@ textFR: `<span class="titre-oeuvre">The Gospel</span> d’Emmanuel Van der Auwer
 detailsFR: "2025 — Vidéo HD monocanal, couleur, son, 21:20 minutes",
     video: "img/jon_rafman.mp4",
     poster: "img/jon_rafman.jpg",
+     loop: true,
+    randomStart: true,
+    noTimeline: true,   
 text: `Jon Rafman’s <span class="titre-oeuvre">Catastrophonics I–IV</span> turns the chimera into a broadcast program: a rapid sequence of uncanny vignettes that compile internet streams stitched together, across  impossible chasms via generative AI. The series (I, II, III and IV) is presented here in a variable sequence, but no matter where you enter the work its persistent rhythm and vertiginous scenography deepen the chaotic avalanche of various natural disasters and human made catastrophes. Rafman’s chimera is asking whether the apocalypse we imagine is now inseparable from the media systems that package, distribute and may ultimately produce it.
 <bio>Jon Rafman is a Montreal-born artist whose video, animation, photography, sculpture, and installation draw on internet-sourced imagery to investigate the losses, fantasies, and alienations of life online. His practice takes seriously what others treat as subcultural noise: the online communities, image boards, memes, and virtual spaces that shape how people relate to each other and to themselves. He approaches these worlds with something closer to ethnographic care than ironic detachment, finding in them genuine registers of loneliness, desire, and grief rather than symptoms to diagnose from a safe distance. Recent solo exhibitions include Louisiana Museum of Modern Art (2025), Kunsthalle Praha, Taipei Fine Arts Museum, and Whangarei Museum of Art (all 2024), and 180 The Strand, London (2023). He has participated in the Venice and Sharjah biennials and lives and works in Los Angeles.
 </bio>`,
@@ -416,8 +421,8 @@ textFR: `<span class="titre-oeuvre">Catastrophonics I–IV</span> de Jon Rafman 
     titre: "P for Power",
     details: "2023 — HD video, 9:38 minutes",
 detailsFR: "2023 — vidéo HD, 9:38 minutes",
-    video: "img/ho_tzu_nyen.mp4",
-    poster: "img/ho_tzu_nyen.jpg",
+    videoOptions: ["img/ho_tzu_nyen_1.mp4", "img/ho_tzu_nyen_2.mp4", "img/ho_tzu_nyen_3.mp4"],
+        poster: "img/ho_tzu_nyen.jpg",
 text: `
 Ho Tzu Nyen’s <span class="titre-oeuvre">P for Power</span> was commissioned by Bozar as part of his ongoing Critical Dictionary of Southeast Asia. This video installation unfolds as “30 real-time edited chapters,” each a Q&A between Ho and an AI chatbot attempting to define “Power.” The chatbot becomes a contemporary oracle—verbose, confident, derivative—whose authority is inseparable from its statistical nature. By staging Singaporean children as protagonists who infiltrate found footage from the internet, Ho engages an open ended question as to the many possible uses and definitions of power in the future. In the artist’s words, “Power, not as domination, but as endurance, consistency, coherence over temporal extension.” Originally fed through a live internet input, P for Power is proposed here as three generated iterations alternating through the duration of the exhibition.
 
@@ -438,6 +443,7 @@ textFR: `L’œuvre <span class="titre-oeuvre">P for Power</span> de Ho Tzu Nyen
 detailsFR: "2025 —  generative film and score, infinite runtime, custom software, 4K video, stereo sound",
  youtube: "dQw4w9WgXcQ",
     poster: "img/john_menick.jpg",
+        noTimeline: true,
 text: `John Menick’s <span class="titre-oeuvre">Telharmonium</span> explores automation through the historic Telharmonium—an early 1900s predecessor to the synthesizer that centralized musical production and distributed it through telephone networks. It’s framed here as an ancestor of today’s network automation and ”links the history of technology with contemporary anxieties about artificial intelligence and the mechanization of creative labor.” The film is variably sequenced and controlled by economic data which orients the montage and score in real time, producing a work that never repeats. Here, the chimera is temporal: a recombinatory organism that disorients Menick’s footage, which was shot in Holyoke, Massachusetts (USA) during a residency at Lower Cavity, and is accompanied by an algorithmically situated score by composer Ben Shirken.
 <bio>John Menick is a New York-based artist working in moving image, sound, performance, and technological systems. His work is preoccupied with the ways technology generates its own mythologies: the stories a culture tells about automation, about what machines can or will eventually do, and about what gets lost or forgotten when one technical era gives way to the next. He tends to find his subjects at the edges of the historical record — failed inventions, obsolete systems, discarded futures — and uses them to think about the anxieties of the present. Recently, his work often enacts what it describes, using generative software to produce films whose structure is itself a kind of machine. He has exhibited in DOCUMENTA(13) and Greater New York, and his films have screened at the International Film Festival Rotterdam and CPH:DOX, among others. Recent work includes autoextinction (2023), narrated by three superintelligent machines, and Edge of Life (2025), a performance on digital resurrection commissioned by Lo Schermo dell'arte and later restaged at the Palazzo Grassi.
 </bio>`,
@@ -704,6 +710,7 @@ video.addEventListener('loadedmetadata', () => {
   btnPlay.style.top   = (wrapperH / 2) + 'px';
   btnPlay.style.right = (vidW / 2) + 'px';
   btnPlay.style.transform = 'translate(50%, -50%)';
+
 });
 
 function showInfo3() {
@@ -1869,15 +1876,21 @@ if (typeof window.toggleVimeoOverlayDesktop === 'function') window.toggleVimeoOv
     return;
   }
 
-  if (video.paused) {
+if (video.paused) {
     if (!hasStarted) {
       video.style.transition = 'opacity 0.8s ease';
       video.style.opacity = '0';
       btnPlay.style.opacity = '0';
       btnPlay.style.pointerEvents = 'none';
 
-      setTimeout(async () => {
+setTimeout(async () => {
         try {
+          if (data?.randomStart && video.duration) {
+            await new Promise((resolve) => {
+              video.addEventListener('seeked', resolve, { once: true });
+              video.currentTime = Math.random() * video.duration;
+            });
+          }
           await video.play();
           hasStarted = true;
           fullscreenUnlocked = true;
@@ -2231,10 +2244,11 @@ function exitPseudoFullscreenMobile() {
 document.addEventListener('fullscreenchange', () => {
   const data = artistes[artisteCourant];
 
-  if (document.fullscreenElement) {
+if (document.fullscreenElement) {
     isFullscreen = true;
     fullscreenBtn.textContent = translations[currentLang].exitFullscreen;
-    timelineFull.style.display = 'block';
+    const currentDataFs = artistes[artisteCourant];
+    timelineFull.style.display = currentDataFs?.noTimeline ? 'none' : 'block';
     fullscreenExit.style.display = 'block';
     btnRestart.style.display = 'block';
     btnRestart.style.opacity = '1';
@@ -3389,7 +3403,7 @@ function loadArtistMedia(data) {
 // calcul identique à loadedmetadata mais pour 16:9
 setTimeout(() => positionVimeoBtn(), 1100);
 
-  } else {
+} else {
     // Vidéo native MP4
     if (vimeoFrame) {
       vimeoFrame.src           = '';
@@ -3397,8 +3411,12 @@ setTimeout(() => positionVimeoBtn(), 1100);
     }
         wrapper.classList.remove('is-vimeo'); 
     videoEl.style.display = 'block';
-    videoEl.src           = data.video;
-    videoEl.poster        = data.poster;
+    const chosenSrc = (data.videoOptions && data.videoOptions.length)
+      ? data.videoOptions[Math.floor(Math.random() * data.videoOptions.length)]
+      : data.video;
+    videoEl.src            = chosenSrc;
+    videoEl.poster         = data.poster;
+    videoEl.loop           = !!data.loop;
     videoEl.load();
   }
 }
@@ -3551,6 +3569,65 @@ function formatNames(names) {
   ).join('');
 }
 
+
+
+function buildAboutContent(lang) {
+  const el = document.getElementById('about-content');
+  if (!el) return;
+
+  if (lang === "FR") {
+    el.innerHTML = `
+      <p>Pour conclure une collaboration de plusieurs années explorant les intersections entre la création artistique et l'intelligence artificielle générative, le Centre Pompidou et KADIST présentent une exposition en ligne d'œuvres vidéo.</p>
+
+      <p>Cette exposition en ligne propose une sélection de vidéos selon un <span id="about-calendar-link">calendrier</span> rotatif, avec deux temps forts collectifs à l'occasion du lancement et de la clôture.</p>
+
+      <p>Dans Les Misérables (1862), Victor Hugo médite sur les paradoxes de la nature humaine, suggérant que « Nos chimères sont ce qui nous ressemble le mieux ». Créature mythologique, la chimère est un être composite, assemblé à partir de désirs, de peurs, de fantasmes et de contradictions. Selon Hugo, elles incarnent la vie intérieure de l'humanité dans la société moderne, tout ce que nous projetons, refoulons ou ne parvenons pas tout à fait à nommer.</p>
+
+      <p>Pour cette exposition, la chimère est ranimée alors que nous tentons de comprendre la présence des grands modèles de langage et des systèmes d'IA générative, ces hybrides monstrueux assemblés à partir de milliards de traces humaines, d'archives fragmentées et de motifs prismatiques. Comme la bête antique composée de corps incompatibles, ces systèmes fusionnent des fragments pour créer quelque chose qui nous persuade de sa cohérence, de sa présence. Ils parlent avec nos mots, recomposent nos histoires, imitent nos émotions — et ce faisant, soulèvent une possibilité troublante : ce qui semble synthétisé pourrait bien être un reflet saisissant de nous-mêmes.</p>
+
+      <p>Les œuvres réunies ici forment un bestiaire contemporain composé d'une sélection d'images synthétiques, plutôt que de créatures mythiques. Ici, les monstres sont procéduraux — nés de jeux de données, d'accumulations, d'images engendrant d'autres images. Si tout ce qui figure dans ces œuvres n'est pas généré, une grande partie de ce qui circule à l'écran émerge des vastes archives de la culture visuelle, recomposées par des systèmes formés à partir de notre imagination collective. Elles nous ressemblent parce qu'elles sont composées d'images faites par nous, pour nous.</p>
+
+      <p>Nos utopies et nos cauchemars ont toujours été chimériques — des composites de l'état d'esprit du présent, évoquant tout ce que nous pourrions un jour imaginer, mais que nous ne pouvons encore visualiser. Ce que font ces systèmes, c'est rendre le texte et l'image des composantes fluides d'un régime de données sans origine ni référent précis. Dans L'Iliade, la chimère est décrite comme « une chose d'une fabrication immortelle, non humaine, lion devant, serpent derrière, chèvre au milieu ». Ce qui frappe, c'est la grammaire de la bête : c'est une conjonction, une syntaxe élargie. Il y a un « et-et » là où il devrait y avoir un « ou ». Les systèmes génératifs partagent cette logique. Plutôt que de choisir entre des références, entre des styles, les grands modèles de langage produisent une image qui est à la fois lion, serpent et chèvre, combinant ce qui, selon les lois naturelles, devrait rester distinct. Le résultat réel ressemble davantage à un palimpseste : de nombreux textes et images à la fois, aucun n'étant tout à fait lisible. Pourtant, ils émergent de l'abîme mythique de l'oracle pour s'imposer dans un présent immaculé, en haute résolution.</p>
+
+      <p>La chimère est une créature native d'Internet, où le mythe viral l'emporte sur le fait brut, où les rumeurs se transforment en consensus et où la copie modifiée est plus largement vue que l'original. En ce sens, en tant qu'allégorie, elle a anticipé les propriétés du numérique — une créature de circulation, de recombinaison de l'image qui s'éloigne tellement de sa source qu'elle devient mutante. Les grands modèles de langage et leurs divers agents et interfaces sont soumis aux mêmes forces d'accumulation et de diffusion de masse. C'est dans cet espace natif — Internet, à la fois environnement principal de nombreuses pratiques artistiques aujourd'hui et vaste substrat à partir duquel la plupart des systèmes d'IA sont formés et alimentés — que cette exposition s'inscrit. Présenter des œuvres en images animées en ligne, c'est les voir dans le contexte des divers flux et courants qui y sont omniprésents, tout en s'en distinguant, reliées par un cadre institutionnel aux engagements discursifs et critiques de l'art contemporain.</p>
+
+      <div id="about-links">
+        <a href="https://kadist.org" target="_blank">kadist.org</a>
+        <a href="https://www.newmedia-art.org" target="_blank">newmedia-art.org</a>
+      </div>
+
+      <div id="credits-section"></div>
+    `;
+  } else {
+    el.innerHTML = `
+      <p>Concluding a multi-year collaboration exploring the intersections between artistic creation and generative artificial intelligence, the Centre Pompidou and KADIST present an online exhibition of video artworks.</p>
+
+      <p>This online exhibition presents a selection of videos on a rotating <span id="about-calendar-link">schedule</span>, with two moments of collective focus at the beginning and end. See the 'Viewing Schedule' link to the left for details.</p>
+
+      <p>In Les Misérables (1862), Victor Hugo reflects on the paradoxes of human nature, suggesting that, "Nos chimères sont ce qui nous ressemble le mieux" — our chimeras are what most resemble us. A mythological beast, the chimera is a composite creature stitched together from desire, fear, fantasy, and contradiction. In Hugo's view, they represent the inner life of humanity and the effects of modern society—everything we project, suppress, and cannot quite name. For this exhibition, the chimera is revived as we attempt to understand the presence of large language models and generative AI systems as monstrous hybrids assembled from billions of human traces, spliced archives, and prismatic patterns. Like the ancient beast composed of incompatible bodies, these systems fuse fragments into something that persuades us of its coherence, its presence. They speak with our words, recombine our histories, mimic our affect — and in doing so, raise a disquieting possibility: what appears synthesized may in fact be a vivid reflection of ourselves.</p>
+
+      <p>The works gathered here form a contemporary bestiary, but rather than mythical creatures, a selection of synthetic images. Here, the monsters are procedural — born of datasets, of accumulation, of images begetting images. While not all of what's included in these works is generated, much of what circulates on the screen emerges from the vast archive of visual culture, recombined by systems trained on our collective imagination. It resembles us because it is composed of images made by us, for us.</p>
+
+      <p>Our utopias and our nightmares have always been chimaeric — composites of the present mindset, conjuring everything we might one day imagine but cannot yet visualize. LLMs and AI systems render text and image as fluid components of a data-regime without a specific origin or referent. In The Iliad, the chimera is rendered as a "thing of immortal make, not human, lion in front, serpent behind, goat in the middle." What is striking is the grammar of the beast: it is a conjunction, an expanded syntax. There's "and-and" where there should be an "or." Generative systems share this logic. Rather than deliberate between references, between styles, LLMs produce an image that is lion-and-serpent-and-goat, combining what should by natural law remain discrete. The actual result is something closer to palimpsest: many texts and images at once, none of them quite legible. And they emerge from the mythic abyss of the black box into the pristine, high-resolution present.</p>
+
+      <p>The chimera is a native creature of the internet, where the viral myth overwhelms plain fact, where rumors mutate into consensus and the modified copy is more widely seen than the original. It functions as an allegory, anticipating the properties of the digital — a creature of circulation, of recombination, of the image that travels so far from its source that it becomes a mutant. LLMs and their various agents and interfaces are subject to the same forces of accumulation and mass distribution. It is within this native space — the internet as both the primary environment for many art practices today and the vast substrate from which most AI systems are trained and sustained — that this exhibition situates itself. To present moving image works online is to see them in the context of the various streams and currents pervasive here, yet also to allow them to stand apart, linked by institutional context to the discursive and critical commitments of contemporary art.</p>
+
+      <div id="about-links">
+        <a href="https://kadist.org" target="_blank">kadist.org</a>
+        <a href="https://www.newmedia-art.org" target="_blank">newmedia-art.org</a>
+      </div>
+
+      <div id="credits-section"></div>
+    `;
+  }
+
+  buildCredits(lang);
+}
+
+
+
+
+
 function buildCredits(lang) {
   const el = document.getElementById('credits-section');
   if (!el) return;
@@ -3586,10 +3663,10 @@ function buildCredits(lang) {
       <span class="credit-role">${lang === 'FR' ? 'Graphisme et développement web' : 'Graphism and web development'} :</span><span class="credit-names"><a href="https://eleonore-sense.github.io/bonjour/" target="_blank">Eléonore Sense</a></span>
     </div>
     <div class="credit-block">
-      <span class="credit-role">${lang === 'FR' ? 'Typographie de titrage' : 'Display typeface'} :</span><span class="credit-names">Lagarto de <a href="https://www.sudtipos.com/font/lagarto" target="_blank">Sudtipos</a></span>
+      <span class="credit-role">${lang === 'FR' ? 'Typographie de titrage' : 'Display typeface'} :</span><span class="credit-names">Lagarto ${lang === 'FR' ? 'de' : 'by'} <a href="https://www.sudtipos.com/font/lagarto" target="_blank">Sudtipos</a></span>
     </div>
     <div class="credit-block">
-      <span class="credit-role">${lang === 'FR' ? 'Typographie de labeur' : 'Body typeface'} :</span><span class="credit-names">Abordage de <a href="https://velvetyne.fr/degheest/fr.html" target="_blank">Ange Degheest</a></span>
+      <span class="credit-role">${lang === 'FR' ? 'Typographie de labeur' : 'Body typeface'} :</span><span class="credit-names">${lang === 'FR' ? `Abordage de <a href="https://www.eugéniebidaut.eu/" target="_blank">Eugénie Bidaut</a> d'après <a href="https://velvetyne.fr/degheest/fr.html" target="_blank">Ange Degheest</a>.` : `Typography by <a href="https://www.eugéniebidaut.eu/" target="_blank">Eugénie Bidaut</a>, based on the work of <a href="https://velvetyne.fr/degheest/fr.html" target="_blank">Ange Degheest</a>.`}</span>
     </div>
   `;
 
