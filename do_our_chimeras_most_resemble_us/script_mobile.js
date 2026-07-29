@@ -170,6 +170,7 @@ function openArtisteMobile(id) {
   const data = artistes[id];
   if (!data) return;
   artisteCourant = id;
+    btnPlayReady = false;
   const part3 = document.getElementById('part_3');
   const isPart3Visible = part3.classList.contains('visible');
   if (!isPart3Visible) {
@@ -234,6 +235,7 @@ setTimeout(() => {
         btnPlay.style.transition = '';
         btnPlay.style.opacity = '1';
         btnPlay.style.pointerEvents = 'auto';
+                btnPlayReady = true;
       }, 3000);
     }, 1000);
   } else {
@@ -261,6 +263,7 @@ loadArtistMedia(data);
       titre.style.opacity = '1';
       if (!fullscreenUnlocked) btnPlay.style.opacity = '1';
       if (btnFs) { btnFs.style.opacity = '0'; btnFs.style.pointerEvents = 'none'; }
+            btnPlayReady = true;  
     }, 500);
   }
 }
@@ -271,7 +274,9 @@ loadArtistMedia(data);
 btnHome.addEventListener('click', () => {
   if (!isMobile()) return;
 
-  document.body.classList.remove('part3-active');
+  setTimeout(() => {
+    document.body.classList.remove('part3-active');
+  }, 600);
   document.body.classList.remove('cinema-mode');
   document.documentElement.style.setProperty('--p2typo', 'black');
 
@@ -383,7 +388,7 @@ function initMobileScrollMask() {
   function calcSeuilScroll() {
     const remPx = parseFloat(getComputedStyle(document.documentElement).fontSize);
     const emPx = 0.6 * remPx;
-    const vh22 = window.innerHeight * 0.22;
+    const vh22 = window.innerHeight * 0.26;
     return vh22 + emPx;
   }
 
@@ -398,12 +403,10 @@ function updateTexteMask() {
   if (!texteOeuvre) return;
 
   const scrollY = part3.scrollTop;
-  const h = window.innerHeight;
   
-  // MASK HAUT
-  const seuilScroll = seuilScrollDynamic + 160;
+  // MASK HAUT — coupe nette, plus de dégradé
+  const seuilScroll = seuilScrollDynamic + 80;
   const hidden = Math.max(0, scrollY - seuilScroll);
-  const fadeEnd = hidden + h * 0.05;
 
   // MASK BAS — identique à avant, inchangé
   const fadeHeightPx = 100;
@@ -427,7 +430,7 @@ function updateTexteMask() {
   texteOeuvre.style.webkitMaskImage = `linear-gradient(to bottom,
     transparent 0px,
     transparent ${hidden}px,
-    black ${fadeEnd}px,
+    black ${hidden}px,
     black ${bottomStartPct}%,
     rgba(0,0,0,0.9) ${bottomQ1Pct}%,
     rgba(0,0,0,0.55) ${bottomQ2Pct}%,
@@ -519,7 +522,7 @@ function showNextMobileSlide() {
 
   nextLayer.src = data.poster;
   nextLayer.dataset.artiste = id;
-
+  nextLayer.style.transform = (data.nom === "Sofia Crespo") ? "scale(0.72)" : "";
 
 const prevX = parseFloat(currentLayer.style.left) || 0;
 const prevY = parseFloat(currentLayer.style.top) || 0;

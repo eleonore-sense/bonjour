@@ -53,9 +53,9 @@ div[style*="top:15px"] {
 
   #btn-lang {
   position: fixed;
-  top: 7svh;
-  left: 15px;
-  right: auto;
+  top: 15px;
+  right: 15px;
+  left: auto;
   z-index: 350;
 }
 #btn-lang.nav_link {
@@ -64,8 +64,8 @@ div[style*="top:15px"] {
 
 body.part3-active #btn-lang {
   position: fixed;
-  top: calc(26px + 3.5em + 34px);
-  right: 45px;
+  top: calc(18px + 3.5em + 34px + 2em);
+  right: 53px;
   left: auto;
   text-decoration: none;
   z-index: 2500;
@@ -76,8 +76,8 @@ body.part3-active #btn-lang {
      ══════════════════════════════════════════════ */
 
   #header-buttons {
-    top: 20px !important;
-    right: 27px !important;
+    top: 40px !important;
+    right: 30px !important;
     font-size: 1.1em;
   }
 
@@ -138,7 +138,7 @@ body.part3-active #btn-lang {
   display: flex;
   flex-direction: column;
   position: fixed;
-  top: 47%;
+  top: 50%;
   left: 50%;
   z-index: 10;
   width: 80vw;
@@ -415,7 +415,7 @@ body.cinema-mode #titre-haut .titre-svg-letter path {
 }
 
 #titre-haut > div {
-  gap: 8px;
+  gap: 3px;
 }
 
 body.lang-fr:has(#mobile-artists-list.visible) #titre-haut .titre-svg-letter path {
@@ -428,12 +428,12 @@ body.lang-fr.cinema-mode #titre-haut .titre-svg-letter path {
 }
 #top-right-buttons {
   position: fixed;
-top:calc(26px + 3.5em + 34px);
+top:calc(14px + 3.5em + 34px);
   right: 19px;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: flex-end;
-  gap: 6px;
+  gap: 18px;
   height: fit-content;
   z-index: 300;
 }
@@ -474,33 +474,11 @@ top:calc(26px + 3.5em + 34px);
   }
 
 
-#vimeo-frame {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100vw;
-  height: calc(100vw * 9 / 16);
-  max-height: 75svh;
-}
 
 
-#youtube-frame {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: auto;
-  width: 100vw;
-  height: calc(100vw * 9 / 16);
-  max-height: 75svh;
-}
-
-
-
-#video-wrapper.is-vimeo {
-  height: calc(100vw * 9 / 16);
-  max-height: 75svh;
-  width: 100vw;
+#video-wrapper.is-vimeo #video {
+  height: 100%;
+  max-height: none;
 }
 
 
@@ -563,17 +541,6 @@ top:calc(26px + 3.5em + 34px);
     object-fit: contain;
   }
 
-  #video-wrapper.pseudo-fullscreen #vimeo-frame {
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    right: auto !important;
-    bottom: auto !important;
-    height: 100svh !important;
-    width: calc(100svh * 16 / 9) !important;
-    transform: translate(-50%, -50%) rotate(90deg) !important;
-    transform-origin: center center !important;
-  }
 
 
 
@@ -613,6 +580,48 @@ top:calc(26px + 3.5em + 34px);
       0 0 35px #000000;
   }
 
+
+
+  /* ══════════════════════════════════════════════
+   VIMEO MOBILE — TOUT EST ICI
+   ══════════════════════════════════════════════ */
+
+/* État normal (page artiste, avant plein écran) */
+#video-wrapper.is-vimeo {
+  height: calc(100vw * 9 / 16);
+  max-height: 75svh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+  top: auto;
+  transform: none;
+}
+
+#vimeo-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  height: calc(100vw * 9 / 16);
+  max-height: 75svh;
+  transform: none;
+}
+
+/* État plein écran (pseudo-fullscreen) */
+#video-wrapper.is-vimeo.pseudo-fullscreen {
+  overflow: visible;
+}
+#video-wrapper.pseudo-fullscreen #vimeo-frame {
+  position: absolute !important;
+  inset: 0 !important;
+  margin: auto !important;
+  height: min(100vw, 100svh * 9 / 16) !important;
+  width: min(100vw * 16 / 9, 100svh) !important;
+  /* SCALE-VIMEO-FULLSCREEN : ajuste ce chiffre pour la taille du plein écran Vimeo */
+  transform:translate(-19%, 22%) rotate(90deg) scale(0.92) !important;
+  transform-origin: center center !important;
+}
   /* ══════════════════════════════════════════════
      PART 3 — GAUCHE (titre + texte)
      ══════════════════════════════════════════════ */
@@ -635,14 +644,14 @@ top:calc(26px + 3.5em + 34px);
 .titre {
   font-size: 1.1em;
   position: sticky;
-  top: 22vh;
+  top: 26vh;
   z-index: 270;
 }
 
 #info {
   font-size: 2.2em;
   position: sticky;
-  top: calc(22vh + var(--titre-h, 0.6em));
+  top: calc(26vh + var(--titre-h, 0.6em));
   z-index: 270;
 }
 
@@ -739,7 +748,7 @@ top:calc(26px + 3.5em + 34px);
   #boite_calendar {
     position: fixed;
     top: 6.8svh;
-    left: 65px; /* à ajuster selon la largeur de →fr */
+    left: 15px; /* à ajuster selon la largeur de →fr */
     z-index: 1999;
   }
 
@@ -775,17 +784,17 @@ top:calc(26px + 3.5em + 34px);
 
 
 #calendar-content{
-  margin-left: -48px;
   margin-top: 20px;
   max-height: 64vh;
 
 }
 
-
-.calendar-entry{
-  gap: 0.8em;
+.calendar-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  max-height: 3.4em;
 }
-
 
 
 

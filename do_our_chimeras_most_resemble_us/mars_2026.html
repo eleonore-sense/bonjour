@@ -11,7 +11,6 @@
 <script src="script.js" defer></script>
 <script src="script_mobile.js" defer></script>
 <script src="js/vimeo-player.js" defer></script>
-<script src="https://www.youtube.com/iframe_api" defer></script>
   <title>Do Our Chimeras Most Ressemble Us?</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -117,7 +116,7 @@
   <div id="droite">
     <div id="video-container">
       <div id="video-wrapper" class="video-pack">
-        <video id="video" playsinline></video>
+<video id="video" playsinline controlsList="nodownload noremoteplayback" oncontextmenu="return false;"></video>
 <img class="video-hover-preview" id="video-hover-preview-1" alt="">
 <img class="video-hover-preview" id="video-hover-preview-2" alt="">
         <div id="btn-play" class="">Play Video</div>

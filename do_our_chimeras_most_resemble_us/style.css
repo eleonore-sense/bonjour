@@ -1448,7 +1448,7 @@ font-style: italic;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 8px;
+  gap: 15px;
   opacity: 0;
   pointer-events: none;
   clip-path: inset(100% 0 0% 0);
@@ -1691,17 +1691,6 @@ font-style: italic;
   position: absolute;
   top: 0;
   left: 0;
-}
-
-#youtube-frame {
-  display: none;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 0;
-  width: 63vw;
-  height: calc(63vw * 9 / 16);
-  border: none;
 }
 
 
