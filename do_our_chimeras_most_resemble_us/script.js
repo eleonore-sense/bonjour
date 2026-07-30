@@ -279,7 +279,12 @@ document.body.addEventListener("click", (e) => {
 document.getElementById('about-content').addEventListener('click', (e) => {
   if (e.target.closest('#about-calendar-link')) {
     e.stopPropagation();
-    setTimeout(() => openCalendar(), 400);
+    if (isMobile()) {
+      closeAbout();
+      setTimeout(() => openCalendar(), 500);
+    } else {
+      setTimeout(() => openCalendar(), 400);
+    }
   }
 });
 
@@ -312,7 +317,7 @@ Commandé pour l'exposition Chronic desire - Sete cronica, 17 fév - 23 avril 20
 
 
 
-textFR: `Texte en français
+textFR: `Dans <span class="titre-oeuvre">The Book of Flowers</span>, Agnieszka Polska imagine un monde alternatif, une fiction spéculative, dans laquelle les humains et les plantes à fleurs co-évoluent à travers une symbiose profonde. En utilisant une animation générée par intelligence artificielle pour réécrire des images en accéléré sur pellicule 16mm de fleurs en train d'éclore, elle transforme des images scientifiques d'archives qui ont jadis instruit la perception d'un large public quant au mouvement des plantes. En intégrant des corps humains dans les cycles botaniques, Polska inverse les hiérarchies de genre tout en mettant en lumière une narration et une construction du mythe dans une perspective écologique.
 
 <bio>Agnieszka Polska est une artiste visuelle, réalisatrice et metteuse en scène basée à Berlin. Son travail recourt aux médias générés par ordinateur pour explorer l'agentivité individuelle, la responsabilité sociale et la construction des récits historiques dans un contexte de transformations technologiques rapides. La friction centrale de sa pratique s'articule entre l'expérience subjective et les systèmes — politiques, informationnels, algorithmiques — qui la façonnent et la contraignent. Elle a exposé au New Museum et au MoMA à New York, au Centre Pompidou à Paris et à la Tate Modern à Londres, et a participé aux biennales de Venise, Gwangju et Sydney. En 2023, elle a présenté sa première mise en scène théâtrale, The Talking Car, à la BoCA Biennale de Lisbonne.</bio>
 <credits>Écrit et réalisé par Agnieszka Polska
@@ -1771,24 +1776,33 @@ vimeoPlayer.on('play', () => {
         if (isMobile() && typeof onMobileVideoPause === 'function') onMobileVideoPause();
       });
 
-      vimeoPlayer.on('ended', () => {
-        btnPlay.textContent = translations[currentLang].playVideo;
-        btnPlay.classList.remove('playing');
-if (isMobile() && typeof onMobileVideoPause === 'function') onMobileVideoPause();
-        vimeoFrame.style.transition = 'opacity 0.8s ease';
-        vimeoFrame.style.opacity = '0';
-        setTimeout(() => {
-          vimeoFrame.style.display = 'none';
-          video.style.display = 'block';
-          video.style.opacity = '1';
-          positionVimeoBtn();
-        }, 800);
-hasStarted = false;
-vimeoPlayer = null;
-showInfo3();
-if (typeof window.toggleVimeoOverlay === 'function') window.toggleVimeoOverlay();
-if (typeof window.toggleVimeoOverlayDesktop === 'function') window.toggleVimeoOverlayDesktop();
-      });
+vimeoPlayer.on('ended', () => {
+  btnPlay.textContent = translations[currentLang].playVideo;
+  btnPlay.classList.remove('playing');
+  if (isMobile() && typeof onMobileVideoPause === 'function') onMobileVideoPause();
+  vimeoFrame.style.transition = 'opacity 0.8s ease';
+  vimeoFrame.style.opacity = '0';
+  setTimeout(() => {
+    vimeoFrame.style.display = 'none';
+    video.style.display = 'block';
+    video.style.opacity = '1';
+    positionVimeoBtn();
+  }, 800);
+  hasStarted = false;
+  vimeoPlayer = null;
+  showInfo3();
+  if (typeof window.toggleVimeoOverlay === 'function') window.toggleVimeoOverlay();
+  if (typeof window.toggleVimeoOverlayDesktop === 'function') window.toggleVimeoOverlayDesktop();
+
+  // sort automatiquement du plein écran si la vidéo Vimeo se termine pendant qu'on y est
+  if (isFullscreen) {
+    if (isMobile() && videoWrapper.classList.contains('pseudo-fullscreen')) {
+      exitPseudoFullscreenMobile();
+    } else if (!isMobile() && document.fullscreenElement) {
+      document.exitFullscreen();
+    }
+  }
+});
 
     }, 800);
     return;
@@ -1887,6 +1901,15 @@ video.addEventListener('ended', () => {
   btnPlay.classList.remove('playing');
   hideFullscreenBtn();
   if (isMobile() && typeof onMobileVideoPause === 'function') onMobileVideoPause();
+
+  // sort automatiquement du plein écran si la vidéo se termine pendant qu'on y est
+  if (isFullscreen) {
+    if (isMobile() && videoWrapper.classList.contains('pseudo-fullscreen')) {
+      exitPseudoFullscreenMobile();
+    } else if (!isMobile() && document.fullscreenElement) {
+      document.exitFullscreen();
+    }
+  }
 });
 
 video.addEventListener('error', () => {
@@ -2085,12 +2108,47 @@ function getPseudoFullscreenUIElements() {
 }
 
 function enterPseudoFullscreenMobile() {
+  mobileFullscreenLock = true;
+
+  const videoContainer = document.getElementById('video-container');
+  if (videoContainer) {
+    videoContainer.style.webkitMaskImage = 'none';
+    videoContainer.style.maskImage = 'none';
+  }
+
+  const titreHautEl = document.getElementById('titre-haut');
+  const videoEl = document.getElementById('video');
+
+  // cache instantanément la vidéo et le titre-haut, sans fade
+  if (titreHautEl) {
+    titreHautEl.style.transition = 'none';
+    titreHautEl.style.opacity = '0';
+  }
+  if (videoEl) {
+    videoEl.style.transition = 'none';
+    videoEl.style.opacity = '0';
+  }
+
+  // coupe aussi la transition du bouton play/pause pendant le passage en plein écran
+  btnPlay.style.transition = 'none';
+
+  document.body.classList.add('pseudo-fullscreen-active');
+
   const uiElements = getPseudoFullscreenUIElements();
 
-  // 1. fade out de tous les éléments de la page artiste (vidéo et fullscreen inclus)
-  uiElements.forEach(el => setOpacity(el, '0', '1s'));
+  // fade normal pour le reste de l'UI (mais on exclut video/titre-haut, déjà cachés)
+  uiElements.forEach(el => {
+    if (el === titreHautEl || el === videoEl) return;
+    setOpacity(el, '0', '1s');
+  });
 
   setTimeout(() => {
+    const part3ForScroll = document.getElementById('part_3');
+    if (part3ForScroll) {
+      part3ForScroll.scrollTop = 0;
+      part3ForScroll.style.overflow = 'hidden';
+    }
+
     videoWrapper.classList.add('pseudo-fullscreen');
     isFullscreen = true;
     fullscreenBtn.textContent = translations[currentLang].exitFullscreen;
@@ -2099,32 +2157,40 @@ function enterPseudoFullscreenMobile() {
     fullscreenExit.style.display = 'block';
     btnRestart.style.display = 'block';
 
-    // fade in vidéo, fullscreen btn (déjà dans uiElements) + restart + exit fullscreen
-// fade in vidéo + restart + exit fullscreen (fullscreen reste caché)
     setOpacity(fullscreenExit, '1', '1s');
     setOpacity(btnRestart, '1', '1s');
-    uiElements.forEach(el => {
-      if (el && el.id === 'video') {
-        setOpacity(el, '1', '1s');
-      }
-    });
 
-    // démarre automatiquement le minuteur de disparition (2s)
+    // la vidéo réapparaît en fade, une fois le scroll déjà resetté
+    if (videoEl) {
+      void videoEl.offsetHeight;
+      videoEl.style.transition = '';
+      setOpacity(videoEl, '1', '1s');
+    }
+
     if (typeof showBtnMobile === 'function') {
       showBtnMobile();
     }
 
+    // restaure la transition du bouton play/pause pour la suite
+    void btnPlay.offsetHeight;
+    btnPlay.style.transition = '';
+
+    // titre-haut reste caché en plein écran, on restaure juste sa transition pour plus tard
+    if (titreHautEl) {
+      void titreHautEl.offsetHeight;
+      titreHautEl.style.transition = '';
+    }
+
+    mobileFullscreenLock = false;
   }, 1000);
 }
 
 function exitPseudoFullscreenMobile() {
+    mobileFullscreenLock = true;
   const videoEl = document.getElementById('video');
   const uiElements = getPseudoFullscreenUIElements();
   const isPlaying = !video.paused;
-  const texteEl = document.getElementById('texte-oeuvre');
-  const texteWasOpen = texteEl && texteEl.classList.contains('visible');
 
-  // fade out : vidéo, fond noir, exit/restart
   setOpacity(videoEl, '0', '0.6s');
   setOpacity(fullscreenExit, '0', '0.6s');
   setOpacity(btnRestart, '0', '0.6s');
@@ -2132,10 +2198,16 @@ function exitPseudoFullscreenMobile() {
   videoWrapper.style.backgroundColor = 'transparent';
 
   setTimeout(() => {
-    // 2. on sort réellement du mode pseudo-fullscreen
     videoWrapper.classList.remove('pseudo-fullscreen');
+    document.body.classList.remove('pseudo-fullscreen-active');
     videoWrapper.style.transition = '';
     videoWrapper.style.backgroundColor = '';
+
+    const part3ForScrollExit = document.getElementById('part_3');
+    if (part3ForScrollExit) {
+      part3ForScrollExit.style.overflow = '';
+    }
+
     isFullscreen = false;
     fullscreenBtn.textContent = translations[currentLang].fullscreen;
     timelineFull.style.display = 'none';
@@ -2144,21 +2216,25 @@ function exitPseudoFullscreenMobile() {
 
     positionVimeoBtn();
 
-// 3. fade in : page artiste comme avant
 const infoConditionalIds = ['btn_home', 'btn_cine_switch', 'btn-lang'];
 
-    uiElements.forEach(el => {
-      if (!el) return;
-      if (el.id === 'fullscreen') return; // jamais réaffiché en sortie de pseudo-fullscreen
-      if (el.id === 'next_artist' && isPlaying) return;
-      if (el.id === 'texte-oeuvre') {
-        if (texteWasOpen) setOpacity(el, '1', '0.6s');
-        return;
-      }
-      if (infoConditionalIds.includes(el.id) && !info3AlreadyShown) return;
-      setOpacity(el, '1', '0.6s');
-    });
+uiElements.forEach(el => {
+  if (!el) return;
+  if (el.id === 'fullscreen') return;
+  if (el.id === 'next_artist' && isPlaying) return;
 
+  if (el.id === 'texte-oeuvre') {
+    // ne réaffiche le texte que s'il était réellement ouvert (état du +/-) avant le plein écran
+    if (el.classList.contains('visible')) {
+      setOpacity(el, '1', '0.6s');
+    }
+    return;
+  }
+
+  if (infoConditionalIds.includes(el.id) && !info3AlreadyShown) return;
+  setOpacity(el, '1', '0.6s');
+});
+  mobileFullscreenLock = false;
   }, 600);
 }
 
@@ -2324,7 +2400,10 @@ if (isVisible && !showingDates) {
     }, 420);
 
     setTimeout(() => {
-      showInfo3();
+      // n'affiche next_artist / list_artist que si la vidéo n'est pas en train de jouer
+      if (!btnPlay.classList.contains('playing')) {
+        showInfo3();
+      }
       setOpacity(document.getElementById('btn_cine_switch'), '1', '0.8s');
     }, 1500);
   }
@@ -2643,7 +2722,7 @@ function closeAbout() {
 }
 boiteAbout.addEventListener('click', (e) => {
   e.stopPropagation();
-
+  if (isMobile() && aboutOpen) return;
   if (aboutOpen) {
     closeAbout();
   } else {
@@ -2652,10 +2731,16 @@ boiteAbout.addEventListener('click', (e) => {
 });
 
 document.addEventListener('click', (e) => {
+  if (isMobile()) return;
   if (e.target.closest('#about-calendar-link')) return;
   if (!boiteAbout.contains(e.target)) {
     closeAbout();
   }
+});
+
+document.getElementById('about-close-mobile')?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  closeAbout();
 });
 
 

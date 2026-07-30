@@ -915,6 +915,14 @@ body:not(.cinema-mode) .artist-list-item:hover {
     visibility 0s linear var(--t-overlay);
 }
 
+body.pseudo-fullscreen-active #part_3 {
+  z-index: 10000;
+}
+
+
+body.pseudo-fullscreen-active #video-container {
+  height: 100svh;
+}
 #part_3.visible {
   opacity: 1;
   visibility: visible;

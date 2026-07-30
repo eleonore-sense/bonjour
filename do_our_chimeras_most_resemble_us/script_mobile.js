@@ -16,6 +16,16 @@ const mobileWaveLines = [
 ];
 
 
+let mobileFullscreenLock = false;
+
+  // Seuil du masque haut du texte-oeuvre, en % de la hauteur d'écran (vh)
+const maskThresholdByArtist = {
+  "Sofia Crespo": 25,
+  "Agnieszka Polska": 10,
+};
+const maskThresholdDefault = 0; // pour tous les autres artistes
+
+
 // ══════════════════════════════════════════════
 // ── UTILS
 // ══════════════════════════════════════════════
@@ -274,9 +284,17 @@ loadArtistMedia(data);
 btnHome.addEventListener('click', () => {
   if (!isMobile()) return;
 
+  const btnLangEl = document.getElementById('btn-lang');
+  if (btnLangEl) {
+    btnLangEl.style.transition = 'opacity 0.5s ease';
+    btnLangEl.style.opacity = '0';
+  }
+
   setTimeout(() => {
+    if (btnLangEl) btnLangEl.style.opacity = '0'; // sécurité anti-réapparition prématurée
     document.body.classList.remove('part3-active');
-  }, 600);
+  }, 550);
+
   document.body.classList.remove('cinema-mode');
   document.documentElement.style.setProperty('--p2typo', 'black');
 
@@ -373,12 +391,17 @@ function recalcTopButtonsHeight() {
 
 
 
+let currentScrollHandler = null;
 
 function initMobileScrollMask() {
   if (!isMobile()) return;
 
   const part3 = document.getElementById('part_3');
   if (!part3) return;
+
+if (currentScrollHandler) {
+    part3.removeEventListener('scroll', currentScrollHandler);
+  }
 
   const titreEl = document.querySelector('#gauche .titre');
   recalcTitreHeight();
@@ -401,12 +424,16 @@ function initMobileScrollMask() {
 
 function updateTexteMask() {
   if (!texteOeuvre) return;
-
   const scrollY = part3.scrollTop;
-  
+
   // MASK HAUT — coupe nette, plus de dégradé
-  const seuilScroll = seuilScrollDynamic + 80;
+  // Seuil variable selon l'artiste, en % de la hauteur d'écran (vh)
+  const currentDataForMask = artistes[artisteCourant];
+  const pctForArtist = maskThresholdByArtist[currentDataForMask?.nom] ?? maskThresholdDefault;
+  const extraOffset = window.innerHeight * (pctForArtist / 100);
+  const seuilScroll = seuilScrollDynamic + extraOffset;
   const hidden = Math.max(0, scrollY - seuilScroll);
+
 
   // MASK BAS — identique à avant, inchangé
   const fadeHeightPx = 100;
@@ -441,9 +468,10 @@ function updateTexteMask() {
 }
   updateTexteMask();
 
-  let scrollRafPending = false;
+let scrollRafPending = false;
 
-  part3.addEventListener('scroll', () => {
+currentScrollHandler = () => {
+    if (mobileFullscreenLock || videoWrapper.classList.contains('pseudo-fullscreen')) return;
     if (!info3AlreadyShown) {
       part3.scrollTop = 0;
       return;
@@ -484,7 +512,9 @@ function updateTexteMask() {
       }
       lastScrollY = scrollY;
     });
-  });
+  };
+
+  part3.addEventListener('scroll', currentScrollHandler);
 
   window.recalcTitreStartY = () => {
     if (titreEl) titreStartY = titreEl.getBoundingClientRect().top + part3.scrollTop;

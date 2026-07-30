@@ -64,7 +64,7 @@ div[style*="top:15px"] {
 
 body.part3-active #btn-lang {
   position: fixed;
-  top: calc(18px + 3.5em + 34px + 2em);
+  top: calc(30px + 3.5em + 34px + 2em);
   right: 53px;
   left: auto;
   text-decoration: none;
@@ -428,7 +428,7 @@ body.lang-fr.cinema-mode #titre-haut .titre-svg-letter path {
 }
 #top-right-buttons {
   position: fixed;
-top:calc(14px + 3.5em + 34px);
+top:calc(26px + 3.5em + 34px);
   right: 19px;
   display: flex;
   flex-direction: column-reverse;
@@ -510,7 +510,6 @@ top:calc(14px + 3.5em + 34px);
 /* ══════════════════════════════════════════════
      PART 3 — PLEIN ÉCRAN MOBILE : ROTATION PAYSAGE
      ══════════════════════════════════════════════ */
-
 
 
 #video-wrapper.pseudo-fullscreen {
@@ -642,7 +641,7 @@ top:calc(14px + 3.5em + 34px);
   }
 
 .titre {
-  font-size: 1.1em;
+  font-size: 1.3em;
   position: sticky;
   top: 26vh;
   z-index: 270;
@@ -665,7 +664,7 @@ top:calc(14px + 3.5em + 34px);
 
 
 #texte-oeuvre {
-  font-size: 0.85em;
+  font-size: 0.95em;
 
 }
 
@@ -786,6 +785,7 @@ top:calc(14px + 3.5em + 34px);
 #calendar-content{
   margin-top: 20px;
   max-height: 64vh;
+  font-size: 0.95em;
 
 }
 
