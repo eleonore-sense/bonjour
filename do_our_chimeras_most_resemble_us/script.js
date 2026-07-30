@@ -2179,13 +2179,8 @@ function getPseudoFullscreenUIElements() {
 function enterPseudoFullscreenMobile() {
   mobileFullscreenLock = true;
 
-
-
-  // tente de verrouiller l'orientation en portrait (option A — fonctionne selon navigateur)
   if (screen.orientation && screen.orientation.lock) {
-    screen.orientation.lock('portrait').catch(() => {
-      // silencieux si refusé — l'option B (listener orientationchange) prend le relais
-    });
+    screen.orientation.lock('portrait').catch(() => {});
   }
 
   const videoContainer = document.getElementById('video-container');
@@ -2196,8 +2191,9 @@ function enterPseudoFullscreenMobile() {
 
   const titreHautEl = document.getElementById('titre-haut');
   const videoEl = document.getElementById('video');
+  const vimeoFrameEl = document.getElementById('vimeo-frame'); // ← ajout
 
-  // cache instantanément la vidéo et le titre-haut, sans fade
+  // cache instantanément la vidéo (native ET vimeo) et le titre-haut, sans fade
   if (titreHautEl) {
     titreHautEl.style.transition = 'none';
     titreHautEl.style.opacity = '0';
@@ -2206,15 +2202,17 @@ function enterPseudoFullscreenMobile() {
     videoEl.style.transition = 'none';
     videoEl.style.opacity = '0';
   }
+  if (vimeoFrameEl) {                        // ← ajout
+    vimeoFrameEl.style.transition = 'none';  // ← ajout
+    vimeoFrameEl.style.opacity = '0';        // ← ajout
+  }                                          // ← ajout
 
-  // coupe aussi la transition du bouton play/pause pendant le passage en plein écran
   btnPlay.style.transition = 'none';
 
   document.body.classList.add('pseudo-fullscreen-active');
 
   const uiElements = getPseudoFullscreenUIElements();
 
-  // fade normal pour le reste de l'UI (mais on exclut video/titre-haut, déjà cachés)
   uiElements.forEach(el => {
     if (el === titreHautEl || el === videoEl) return;
     setOpacity(el, '0', '1s');
@@ -2238,22 +2236,24 @@ function enterPseudoFullscreenMobile() {
     setOpacity(fullscreenExit, '1', '1s');
     setOpacity(btnRestart, '1', '1s');
 
-    // la vidéo réapparaît en fade, une fois le scroll déjà resetté
     if (videoEl) {
       void videoEl.offsetHeight;
       videoEl.style.transition = '';
       setOpacity(videoEl, '1', '1s');
     }
+    if (vimeoFrameEl) {                              // ← ajout
+      void vimeoFrameEl.offsetHeight;                // ← ajout
+      vimeoFrameEl.style.transition = '';            // ← ajout
+      setOpacity(vimeoFrameEl, '1', '1s');           // ← ajout
+    }                                                // ← ajout
 
     if (typeof showBtnMobile === 'function') {
       showBtnMobile();
     }
 
-    // restaure la transition du bouton play/pause pour la suite
     void btnPlay.offsetHeight;
     btnPlay.style.transition = '';
 
-    // titre-haut reste caché en plein écran, on restaure juste sa transition pour plus tard
     if (titreHautEl) {
       void titreHautEl.offsetHeight;
       titreHautEl.style.transition = '';
