@@ -208,6 +208,7 @@ function updateMobileActiveItem() {
 function openArtisteMobile(id) {
   const data = artistes[id];
   if (!data) return;
+    lockPart3Scroll(); 
   artisteCourant = id;
     btnPlayReady = false;
   const part3 = document.getElementById('part_3');
@@ -421,6 +422,20 @@ function recalcTopButtonsHeight() {
 
 
 let currentScrollHandler = null;
+
+
+function lockPart3Scroll() {
+  if (!isMobile()) return;
+  const part3El = document.getElementById('part_3');
+  if (part3El) part3El.style.overflowY = 'hidden';
+}
+
+function unlockPart3Scroll() {
+  if (!isMobile()) return;
+  const part3El = document.getElementById('part_3');
+  if (part3El) part3El.style.overflowY = 'auto';
+}
+
 
 function initMobileScrollMask() {
   if (!isMobile()) return;
@@ -844,6 +859,7 @@ function showInfo3Mobile() {
   }
 
   info3AlreadyShown = true;
+    unlockPart3Scroll(); 
 }
 
 function hideInfo3Mobile() {

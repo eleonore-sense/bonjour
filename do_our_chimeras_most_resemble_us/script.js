@@ -649,7 +649,7 @@ const boiteCalendar = document.getElementById('boite_calendar');
 const calendarContent = document.getElementById('calendar-content');
 
 /*CHANGE DATE*/
-const DEBUG_DATE = '2026-09-14';
+const DEBUG_DATE = '2026-09-23';
 function getToday() {
   return DEBUG_DATE || new Date().toISOString().split('T')[0];
 }
@@ -2585,6 +2585,8 @@ document.getElementById('next_artist').addEventListener('click', () => {
 function transitionToArtist(id) {
   const data = artistes[id];
   if (!data) return;
+    lockPart3Scroll(); 
+
   const titre = document.querySelector('#gauche .titre');
   const texte = document.getElementById('texte-oeuvre');
    const titreHaut = document.getElementById('titre-haut');
