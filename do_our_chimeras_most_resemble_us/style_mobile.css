@@ -21,11 +21,13 @@ div[style*="top:15px"] {
 }
 
 
-.credit-block{
-  font-size: 0.95em;
-}
+
 
 @media (max-width: 768px) {
+
+  .credit-block{
+  font-size: 0.95em;
+}
 
   /* ══════════════════════════════════════════════
      BASE
@@ -36,16 +38,58 @@ html {
   width: 100%;
   overflow: hidden;
   position: fixed;
+      overscroll-behavior: none;
 }
 
 body {
-  height: 100%;
+  height: 200%;
   width: 100%;
   overflow: hidden;
   position: fixed;
+  inset: 0;
   overscroll-behavior: none;
 }
 
+
+/* ══════════════════════════════════════════════
+   HALO DE LISIBILITÉ — NOM ARTISTE / NEXT / FULLSCREEN
+   ══════════════════════════════════════════════ */
+
+#next_artist,
+#list_artist,
+#fullscreen,
+#gauche .titre,
+#titre-haut {
+  text-shadow:
+    0 0 80px rgba(255,255,255,1),
+    0 0 60px rgba(255,255,255,1),
+    0 0 50px rgba(255,255,255,1),
+    0 0 40px rgba(255,255,255,1),
+    0 0 30px rgba(255,255,255,1),
+    0 0 20px rgba(255,255,255,1),
+    0 0 15px rgba(255,255,255,1),
+    0 0 10px rgba(255,255,255,1),
+    0 0 6px rgba(255,255,255,1),
+    0 0 3px rgba(255,255,255,1);
+}
+
+body.cinema-mode #next_artist,
+body.cinema-mode #list_artist,
+body.cinema-mode #fullscreen,
+body.cinema-mode #gauche .titre,
+body.cinema-mode #titre-haut {
+  text-shadow:
+    0 0 80px rgba(0,0,0,1),
+    0 0 60px rgba(0,0,0,1),
+    0 0 50px rgba(0,0,0,1),
+    0 0 40px rgba(0,0,0,1),
+    0 0 30px rgba(0,0,0,1),
+    0 0 20px rgba(0,0,0,1),
+    0 0 15px rgba(0,0,0,1),
+    0 0 10px rgba(0,0,0,1),
+    0 0 6px rgba(0,0,0,1),
+    0 0 3px rgba(0,0,0,1);
+}
 
   /* ══════════════════════════════════════════════
      LOGOS
@@ -442,9 +486,15 @@ body.lang-fr.cinema-mode #titre-haut .titre-svg-letter path {
   stroke: none;
 }
 
+
 body.cinema-mode {
   background: black;
   height: 150svh;
+}
+
+body.lang-fr:not(.cinema-mode) #titre-haut .titre-svg-letter path {
+  fill: black;
+  stroke: none;
 }
 
 #top-right-buttons {

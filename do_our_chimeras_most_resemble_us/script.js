@@ -293,6 +293,9 @@ if (isPage2 && artisteCourant) {
         setOpacity(el, isPage2 ? '0.8' : '0', '0.8s');
       }else if (el.id === "calendar-label") {
         setOpacity(el, introPlayed && !isPage2 ? '1' : '0', '0.8s');
+          } else if (el.id === "fullscreen") {
+    // ne réaffiche le bouton fullscreen que s'il était réellement visible avant le changement de langue
+    setOpacity(el, fullscreenVisible ? '1' : '0', '0.8s');
       } else if (el.id === "btn-play") {
         if (isMobile()) {
           setOpacity(el, introPlayed ? '1' : '0', '0.8s');
