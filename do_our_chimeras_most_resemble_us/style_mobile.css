@@ -30,6 +30,7 @@ div[style*="top:15px"] {
   body {
     padding: 0;
     overflow: hidden;
+      overscroll-behavior: none; 
   }
 
 
@@ -384,6 +385,7 @@ body.artists-list-open #btn_cine_switch {
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    overscroll-behavior-y: contain; 
   }
 
   #part_3::-webkit-scrollbar {
