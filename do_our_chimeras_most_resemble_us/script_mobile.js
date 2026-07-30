@@ -18,6 +18,16 @@ const mobileWaveLines = [
 
 let mobileFullscreenLock = false;
 
+let orientationExitGuard = false;
+
+window.addEventListener('orientationchange', () => {
+  if (videoWrapper.classList.contains('pseudo-fullscreen') && !orientationExitGuard) {
+    orientationExitGuard = true;
+    exitPseudoFullscreenMobile();
+    setTimeout(() => { orientationExitGuard = false; }, 1000);
+  }
+});
+
   // Seuil du masque haut du texte-oeuvre, en % de la hauteur d'écran (vh)
 const maskThresholdByArtist = {
   "Sofia Crespo": 25,
