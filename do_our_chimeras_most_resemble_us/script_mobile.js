@@ -46,6 +46,25 @@ function isMobile() {
 
 
 // ══════════════════════════════════════════════
+// ── VIEWPORT MOBILE FIXE
+// ══════════════════════════════════════════════
+
+function lockViewportHeight() {
+  document.documentElement.style.setProperty(
+    '--app-height',
+    `${window.innerHeight}px`
+  );
+}
+
+lockViewportHeight();
+
+window.addEventListener('orientationchange', () => {
+  setTimeout(lockViewportHeight, 300);
+});
+
+
+
+// ══════════════════════════════════════════════
 // ── LISTE ARTISTES MOBILE
 // ══════════════════════════════════════════════
 
