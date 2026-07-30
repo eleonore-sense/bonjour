@@ -611,6 +611,7 @@ top:calc(26px + 3.5em + 34px);
   }
 
 
+
 #video-wrapper.pseudo-fullscreen #fullscreen-exit {
   position: fixed;
   bottom: 20px;
@@ -673,6 +674,7 @@ top:calc(26px + 3.5em + 34px);
 /* État plein écran (pseudo-fullscreen) */
 #video-wrapper.is-vimeo.pseudo-fullscreen {
   overflow: visible;
+   transform:translate(-39%, 123%) ;
 }
 #video-wrapper.pseudo-fullscreen #vimeo-frame {
   position: absolute !important;
@@ -681,8 +683,24 @@ top:calc(26px + 3.5em + 34px);
   height: min(100vw, 100svh * 9 / 16) !important;
   width: min(100vw * 16 / 9, 100svh) !important;
   /* SCALE-VIMEO-FULLSCREEN : ajuste ce chiffre pour la taille du plein écran Vimeo */
-  transform:translate(-22%, 69%) rotate(90deg) scale(0.92) !important;
+  transform:rotate(90deg) !important;
   transform-origin: center center !important;
+}
+
+
+#video-wrapper.is-vimeo.pseudo-fullscreen #btn-play {
+  transform:
+    translate(-10%, -50%)
+    rotate(90deg)
+    !important;
+}
+
+#video-wrapper.is-vimeo.pseudo-fullscreen #fullscreen-exit {
+    transform: translate(-4px, 287px) rotate(90deg) !important;
+}
+
+#video-wrapper.is-vimeo.pseudo-fullscreen #btn-restart {
+    transform: translate(167px, -299px) rotate(90deg) !important;
 }
   /* ══════════════════════════════════════════════
      PART 3 — GAUCHE (titre + texte)
