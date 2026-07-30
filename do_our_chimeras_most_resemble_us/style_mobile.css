@@ -33,20 +33,13 @@ div[style*="top:15px"] {
      BASE
      ══════════════════════════════════════════════ */
 
-html {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  position: fixed;
-      overscroll-behavior: none;
-}
-
+html,
 body {
-  height: 200%;
-  width: 100%;
-  overflow: hidden;
   position: fixed;
   inset: 0;
+  width: 100%;
+  height: var(--app-height);
+  overflow: hidden;
   overscroll-behavior: none;
 }
 
@@ -440,7 +433,7 @@ body.artists-list-open #btn_cine_switch {
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
-    /*-webkit-overflow-scrolling: touch;*/
+    webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     overscroll-behavior-y: contain; 
   }
