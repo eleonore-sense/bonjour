@@ -681,7 +681,7 @@ top:calc(26px + 3.5em + 34px);
   height: min(100vw, 100svh * 9 / 16) !important;
   width: min(100vw * 16 / 9, 100svh) !important;
   /* SCALE-VIMEO-FULLSCREEN : ajuste ce chiffre pour la taille du plein écran Vimeo */
-  transform:translate(-19%, 22%) rotate(90deg) scale(0.92) !important;
+  transform:translate(-22%, 69%) rotate(90deg) scale(0.92) !important;
   transform-origin: center center !important;
 }
   /* ══════════════════════════════════════════════
