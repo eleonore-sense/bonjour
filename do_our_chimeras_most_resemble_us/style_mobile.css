@@ -21,6 +21,10 @@ div[style*="top:15px"] {
 }
 
 
+.credit-block{
+  font-size: 0.95em;
+}
+
 @media (max-width: 768px) {
 
   /* ══════════════════════════════════════════════
@@ -431,6 +435,7 @@ body.lang-fr.cinema-mode #titre-haut .titre-svg-letter path {
 
 body.cinema-mode {
   background: black;
+  height: 150svh;
 }
 
 #top-right-buttons {
@@ -731,6 +736,8 @@ top:calc(26px + 3.5em + 34px);
     width: 200vw;
     height: 200svh;
   }
+
+
 
 
 
