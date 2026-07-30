@@ -383,7 +383,7 @@ body.artists-list-open #btn_cine_switch {
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
+    /*-webkit-overflow-scrolling: touch;*/
     scrollbar-width: none;
     overscroll-behavior-y: contain; 
   }
@@ -428,6 +428,11 @@ body.lang-fr.cinema-mode #titre-haut .titre-svg-letter path {
   fill: white;
   stroke: none;
 }
+
+body.cinema-mode {
+  background: black;
+}
+
 #top-right-buttons {
   position: fixed;
 top:calc(26px + 3.5em + 34px);

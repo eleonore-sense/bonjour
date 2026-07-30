@@ -1,3 +1,68 @@
+// ══════════════════════════════════════════════
+// ── FAVICON ANIMÉ (dégradé progressif entre les couleurs du site)
+// ══════════════════════════════════════════════
+
+function initFaviconAnimation() {
+  const CANVAS_SIZE = 96;   // plus grand pour laisser de la place au flou
+  const RADIUS = 34;        // rayon du disque, plus grand qu'avant
+  const BLUR_PX = 10;       // flou plus prononcé
+  const STEPS = 10;         // nombre d'étapes entre deux couleurs
+  const STEP_DURATION = 1000; // 1 étape par seconde → ~10s pour une transition complète
+
+  const faviconCanvas = document.createElement('canvas');
+  faviconCanvas.width = CANVAS_SIZE;
+  faviconCanvas.height = CANVAS_SIZE;
+  const ctx = faviconCanvas.getContext('2d');
+  const link = document.getElementById('dynamic-favicon');
+  if (!link) return;
+
+  // interpolation douce (cosinus), comme le fondu du fond de page
+  function interpolate(c1, c2, t) {
+    const t2 = (1 - Math.cos(t * Math.PI)) / 2;
+    const [r1, g1, b1] = c1.split(',').map(Number);
+    const [r2, g2, b2] = c2.split(',').map(Number);
+    return [
+      Math.round(r1 + (r2 - r1) * t2),
+      Math.round(g1 + (g2 - g1) * t2),
+      Math.round(b1 + (b2 - b1) * t2),
+    ];
+  }
+
+  function drawFavicon(rgbArray) {
+    ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+    ctx.filter = `blur(${BLUR_PX}px)`;
+    const center = CANVAS_SIZE / 2;
+    ctx.beginPath();
+    ctx.arc(center, center, RADIUS, 0, Math.PI * 2);
+    ctx.fillStyle = `rgb(${rgbArray[0]}, ${rgbArray[1]}, ${rgbArray[2]})`;
+    ctx.fill();
+    link.href = faviconCanvas.toDataURL('image/png');
+  }
+
+  let colorIndex = 0;
+  let step = 0;
+
+  drawFavicon(couleurs[colorIndex].split(',').map(Number));
+
+  setInterval(() => {
+    step++;
+    if (step > STEPS) {
+      step = 0;
+      colorIndex = (colorIndex + 1) % couleurs.length;
+    }
+    const nextIndex = (colorIndex + 1) % couleurs.length;
+    const t = step / STEPS;
+    const currentColor = interpolate(couleurs[colorIndex], couleurs[nextIndex], t);
+    drawFavicon(currentColor);
+  }, STEP_DURATION);
+}
+
+document.addEventListener('DOMContentLoaded', initFaviconAnimation);
+
+
+
+
+
 // ═══════════════════════════════════════════
 // LANGUE
 // ═══════════════════════════════════════════
@@ -144,6 +209,7 @@ function applyLang() {
     }
 
     setText("btn-lang", currentLang === "EN" ? "→fr" : "→en");
+    document.title = translations[currentLang].titre; // ← ajout : synchronise le titre d'onglet avec la langue
     document.body.classList.toggle('lang-fr', currentLang === "FR");
 
     buildTitreHaut();
@@ -2110,6 +2176,15 @@ function getPseudoFullscreenUIElements() {
 function enterPseudoFullscreenMobile() {
   mobileFullscreenLock = true;
 
+
+
+  // tente de verrouiller l'orientation en portrait (option A — fonctionne selon navigateur)
+  if (screen.orientation && screen.orientation.lock) {
+    screen.orientation.lock('portrait').catch(() => {
+      // silencieux si refusé — l'option B (listener orientationchange) prend le relais
+    });
+  }
+
   const videoContainer = document.getElementById('video-container');
   if (videoContainer) {
     videoContainer.style.webkitMaskImage = 'none';
@@ -2187,6 +2262,13 @@ function enterPseudoFullscreenMobile() {
 
 function exitPseudoFullscreenMobile() {
     mobileFullscreenLock = true;
+
+
+  // relâche le verrou d'orientation
+  if (screen.orientation && screen.orientation.unlock) {
+    screen.orientation.unlock();
+  }
+
   const videoEl = document.getElementById('video');
   const uiElements = getPseudoFullscreenUIElements();
   const isPlaying = !video.paused;
@@ -3653,3 +3735,136 @@ function formatNames(names) {
       : `<span class="credit-name">${name}</span>`
   ).join('');
 }
+
+
+// ══════════════════════════════════════════════
+// ── GLITCH DU TITRE D'ONGLET (lettres indépendantes)
+// ══════════════════════════════════════════════
+
+const glitchMap = {
+  a: ['@', 'α', '∆', '∀', 'ᴀ', '₳', 'λ'],
+  A: ['@', 'Α', '∆', '∀', 'ᗩ', '₳', 'Λ'],
+
+  b: ['β', '฿', 'ᛒ', 'ʙ'],
+  B: ['β', '฿', 'ᛒ', 'ʙ'],
+
+  c: ['¢', 'ϲ', 'ↄ', '⊂'],
+  C: ['¢', 'Ϲ', '⊂', '☾'],
+
+  d: ['∂', 'δ', '◖'],
+  D: ['Δ', '◗'],
+
+  e: ['3', 'ε', '∈', 'Ξ', '℮'],
+  E: ['3', 'Σ', 'Ξ', 'ℰ'],
+
+  f: ['ϝ', 'ƒ'],
+  F: ['Ғ', 'Ϝ'],
+
+  g: ['ɢ', '₲', 'ϱ'],
+  G: ['₲', 'ɢ', 'Ǥ'],
+
+  h: ['ħ', 'н', '♄'],
+  H: ['Η', '♄', 'н'],
+
+  i: ['1', 'ι', '!', '∣', '│'],
+  I: ['1', 'Ι', '!', '∣', '│'],
+
+  j: ['ʝ', 'ј'],
+  J: ['Ј', 'ʝ'],
+
+  k: ['κ', 'Ҡ'],
+  K: ['Κ', 'Ҡ'],
+
+  l: ['1', '|', '∣', '⎸', '┆'],
+  L: ['∟', '└', '⎸'],
+
+  m: ['м', 'ϻ', '♏'],
+  M: ['Μ', '♏', 'Ϻ'],
+
+  n: ['η', 'и', '₪'],
+  N: ['Ν', '₪', 'И'],
+
+  o: ['0', '°', '○', '◌', '◉', '⊙', '⊚', '⁕', '✶', '✹', '⦿'],
+  O: ['0', '○', '◉', '⊙', '⁕', '✶', '✹', '⦿'],
+
+  p: ['ρ', '₽', '♇'],
+  P: ['Ρ', '₽', '♇'],
+
+  q: ['φ', 'զ'],
+  Q: ['Φ', 'Ҩ'],
+
+  r: ['Я', 'ř', '☈'],
+  R: ['Я', '☈', 'ℜ'],
+
+  s: ['$', '§', 'ϟ', '⚡', 'ѕ'],
+  S: ['$', '§', 'Ϟ', '⚡'],
+
+  t: ['7', 'τ', '†', '⊥'],
+  T: ['7', 'Τ', '†', '⊥'],
+
+  u: ['υ', '∪', '⋃'],
+  U: ['∪', '⋃', 'Ս'],
+
+  v: ['ν', '✓', '∨'],
+  V: ['∨', '✓', 'Ν'],
+
+  w: ['ω', 'ѡ', '⍵'],
+  W: ['Ω', 'Ѡ', '⍵'],
+
+  x: ['×', 'χ', '✕'],
+  X: ['✕', 'Χ'],
+
+  y: ['γ', '¥', 'ɣ'],
+  Y: ['Υ', '¥', 'ɣ'],
+
+};
+
+let titleChars = [];
+let activeGlitches = {}; // { index: timeoutId }
+let glitchLoopTimer = null;
+
+function applyTitleFromChars() {
+  document.title = titleChars.join('');
+}
+
+function resetTitleGlitchSystem() {
+  // stoppe tous les timers de retour à la normale en cours
+  Object.values(activeGlitches).forEach(t => clearTimeout(t));
+  activeGlitches = {};
+  clearTimeout(glitchLoopTimer);
+
+  titleChars = translations[currentLang].titre.split('');
+  applyTitleFromChars();
+
+  scheduleNextGlitch();
+}
+
+function triggerOneGlitch() {
+  const glitchableIndexes = [];
+  titleChars.forEach((ch, i) => {
+    if (glitchMap[ch] && !activeGlitches[i]) glitchableIndexes.push(i);
+  });
+  if (glitchableIndexes.length === 0) return;
+
+  const idx = glitchableIndexes[Math.floor(Math.random() * glitchableIndexes.length)];
+  const originalChar = titleChars[idx];
+
+  titleChars[idx] = glitchMap[originalChar];
+  applyTitleFromChars();
+
+  activeGlitches[idx] = setTimeout(() => {
+    titleChars[idx] = originalChar;
+    delete activeGlitches[idx];
+    applyTitleFromChars();
+  }, 45000); // reste glitchée 45s
+}
+
+function scheduleNextGlitch() {
+  const delay = 10000 + Math.random() * 10000; // prochaine lettre glitchée dans 10 à 20s
+  glitchLoopTimer = setTimeout(() => {
+    triggerOneGlitch();
+    scheduleNextGlitch();
+  }, delay);
+}
+
+resetTitleGlitchSystem();
