@@ -1609,7 +1609,11 @@ font-style: italic;
   white-space: normal;
 }
 
-
+.italic_style{
+  color: inherit;
+  font-style: italic;
+    white-space: normal;
+}
 .bio-nom {
   letter-spacing: 0.1em;
     -webkit-text-stroke: 1.1px currentColor;
@@ -1791,7 +1795,7 @@ a{
 .credit-institution {
   font-family: Abordage;
   margin-top: 1.7em;
-  margin-bottom: -8px;
+  margin-bottom: 6px;
   letter-spacing: 0.1em;
     -webkit-text-stroke: 0.9px currentColor;
     font-size: 0.96em
