@@ -649,7 +649,7 @@ const boiteCalendar = document.getElementById('boite_calendar');
 const calendarContent = document.getElementById('calendar-content');
 
 /*CHANGE DATE*/
-const DEBUG_DATE = '2026-09-14';
+const DEBUG_DATE = '';
 function getToday() {
   return DEBUG_DATE || new Date().toISOString().split('T')[0];
 }
@@ -2504,11 +2504,11 @@ function showNextDatesForArtist(nom) {
   if (!texte) return;
   texte.dataset.mode = 'dates';
 
-
   const today = getToday();
-  const entries = schedule.filter(e => e.artist === nom && e.date >= today);
+  const entries = schedule.filter(e => (e.artist === nom || e.artist === 'ALL') && e.date >= today); // ← ajout du OR
 
   if (entries.length === 0) {
+    
     texte.innerHTML = '<div class="texte-dates">no upcoming screenings</div>';
   } else {
     const label = currentLang === 'FR' ? 'prochaines diffusions' : 'upcoming screenings';
@@ -2913,7 +2913,7 @@ document.addEventListener('click', () => {
 
 function getNextDateForArtist(nom) {
   const today = getToday();
-  const entry = schedule.find(e => e.artist === nom && e.date >= today);
+  const entry = schedule.find(e => (e.artist === nom || e.artist === 'ALL') && e.date >= today); // ← ajout du OR
   if (!entry) return null;
   const dateObj = new Date(entry.date + 'T12:00:00');
   return dateObj.toLocaleDateString(currentLang === 'FR' ? 'fr-FR' : 'en-GB', 
