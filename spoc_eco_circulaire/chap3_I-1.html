@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>cours</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/@rive-app/canvas@2.7.0"></script>
+  <script src="cours.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+
+<!-- Où est cette page dans le cours ? (le reste vient de cours.js) -->
+<body data-chapitre="3" data-partie="1">
+
+<div id="droite_contenu">
+<div id="contenu_chapitre">
+
+<div id="contenu_gauche">
+
+  <!-- ================= 1. DÉFINITIONS ================= -->
+  <div class="petit_titre">1. définitions</div>
+
+  <div class="contenu_gras">L’éco-conception, c’est une approche méthodique qui prend en considération les aspects environnementaux lors du processus de conception et développement dans le but de réduire les impacts environnementaux négatifs tout au long du cycle de vie d’un système.
+    <span class="span_source lien_page"><span class="souligne_fin">source:</span> <a class="source" href="">NF X30-264</a></span>
+  </div>
+
+  <div class="bloc_exemple">
+    <div class="exemple">
+      <span class="intro_exemple">exemple</span>
+      <p>Prenons l'exemple d'une basket.</p>
+      <p>C'est en moyenne 30 composants, 5 matériaux, fabriqué en Asie, acheminée par un transporteur, vendue par une enseigne, portée 2 ans par son utilisateur·rice, puis jetée.</p>
+      <p>L’eco-conception c’est <span class="souligne">réduire les impacts environnementaux négatifs</span> tout au long de leur cycle de vie de la chaussure (extraction des matières premières, fabrication, transport, utilisation, fin de vie), tout en conservant leurs performances techniques, économiques et sociales.</p>
+    </div>
+    <div class="media_exemple">
+      <canvas class="anim_riv" data-riv="dessin/chap_3/1/basket/marche.riv" data-machine="marche" width="424" height="589"></canvas>
+      <canvas class="anim_riv anim_decalee" data-riv="dessin/chap_3/1/basket/marche2.riv" data-machine="marche" width="424" height="589"></canvas>
+    </div>
+  </div>
+
+  <div class="txt_labeur">Eco-concevoir, c’est&nbsp;:
+    <br><span class="etoile"></span> Intégrer <span class="mot_notion" data-cible="performance_environnementale">la performance environnementale</span> d’un produit/ processus/ service dès sa conception et dans le processus décisionnel, au même titre que le cout et la performance technique.
+  </div>
+
+  <div class="bloc_exemple">
+    <div class="exemple">
+      <span class="intro_exemple">exemple</span>
+      <p>L’impact environnemental du polymère utilisé dans la semelle devra entrer en compte au même titre que son cout, sa performance technique (e.g. sa résistance aux frottements et à l’usure) et sa performance sociale (e.g. condition des travailleurs dans l’usine de production du caoutchouc).</p>
+    </div>
+    <div class="media_exemple">
+      <canvas class="anim_riv" data-riv="dessin/chap_3/1/basket/loupe.riv" data-machine="loupe" width="500" height="500" id="loupe"></canvas>
+    </div>
+  </div>
+
+  <div class="txt_labeur"><span class="etoile"></span> Minimiser le ratio quel impact / quelle performance selon son usage et ses besoins en terme de fonctionnalité.</div>
+
+  <div class="bloc_exemple">
+    <div class="exemple">
+      <span class="intro_exemple">exemple</span>
+      <p>Une basket citadine portée pour aller au bureau ne nécessite pas une semelle en caoutchouc haute résistance. Surdimensionner le matériau peut augmenter son impact environnemental sans performance supplémentaire pour l’utilisateur-rice.</p>
+    </div>
+    <div class="media_exemple">
+      <canvas class="anim_riv" data-riv="dessin/chap_3/1/basket/basket_sorte.riv" data-machine="basket_sorte" width="433" height="193" id="basket_sorte"></canvas>
+    </div>
+  </div>
+
+  <div class="contenu_gras ecart_grand">"Les choix effectués lors de la conception (matériaux, procédés de fabrication, architecture, masse, réparabilité, durée de vie, recyclabilité, etc.) conditionnent jusqu'à 80 % des impacts environnementaux qu'un produit générera au cours de son cycle de vie."<br>
+    <span class="span_source lien_page"><span class="souligne_fin">source:</span> <a class="source" href="https://environment.ec.europa.eu/strategy/circular-economy_en">environment.ec.europa.eu</a></span>
+  </div>
+
+
+  <!-- ================= 2. GRANDS PRINCIPES ================= -->
+  <div class="petit_titre">2. Les grands principes de l'éco-conception</div>
+
+  <div class="txt_labeur">L'éco-conception est une approche&nbsp;:
+    <br><span class="etoile"></span> <strong>cycle de vie&nbsp;:</strong> l’ensemble des étapes du cycle de vie du produit / service / système doit être pris en considération&nbsp;: depuis l’extraction et le raffinage des matières premières jusqu’à la fin de vie.
+  </div>
+
+  <!-- Schéma : étapes du cycle de vie -->
+  <div class="schema_cycle">
+    <svg class="fleches_cycle" viewBox="0 0 100 100" aria-hidden="true">
+      <defs>
+        <marker id="pointe_cycle" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="10" markerHeight="20" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--trait)"/>
+        </marker>
+      </defs>
+      <path d="M64.2 14.8 A38 38 0 0 1 79.1 25.6" marker-end="url(#pointe_cycle)"/>
+      <path d="M87.9 52.7 A38 38 0 0 1 82.2 70.1" marker-end="url(#pointe_cycle)"/>
+      <path d="M59.2 86.9 A38 38 0 0 1 40.8 86.9" marker-end="url(#pointe_cycle)"/>
+      <path d="M17.8 70.1 A38 38 0 0 1 12.1 52.7" marker-end="url(#pointe_cycle)"/>
+      <path d="M20.9 25.6 A38 38 0 0 1 35.8 14.8" marker-end="url(#pointe_cycle)"/>
+    </svg>
+
+    <div class="item_dessin etape_cycle" style="left:50%; top:12%;"
+         data-nom="Extraction des matières premières"
+         data-def="Le plastique composant notre paire de baskets est issu du pétrole. Ce dernier est extrait puis raffiné avant d'être transformé en polymère sous la forme de granulés.">
+      <img src="dessin/chap_3/1/multicritere/minerais.svg" alt="">
+      <span class="nom_dessin">extraction des matières premières</span>
+    </div>
+
+    <div class="item_dessin etape_cycle a_droite" style="left:86%; top:38%;"
+         data-nom="Production"
+         data-def="Les granulés plastiques sont transformés (moulage, extrusion, expansion, tissage…) pour fabriquer les composants de la basket (semelle, tige, renforts). Ces éléments sont ensuite assemblés.">
+      <img src="dessin/chap_3/1/cycle_de_vie/production.svg" alt="">
+      <span class="nom_dessin">production</span>
+    </div>
+
+    <div class="item_dessin etape_cycle a_droite" style="left:72%; top:81%;"
+         data-nom="Distribution"
+         data-def="Les baskets sont transportées depuis le site de production vers les sites de distribution, les magasins de vente ou les clients.">
+      <img src="dessin/chap_3/1/cycle_de_vie/distribution.svg" alt="">
+      <span class="nom_dessin">distribution</span>
+    </div>
+
+    <div class="item_dessin etape_cycle" style="left:28%; top:81%;"
+         data-nom="Usage et maintenance"
+         data-def="Les baskets sont portées par le client. Leur durée de vie dépend de l'intensité d'usage, de la qualité des matériaux et de l'entretien.">
+      <img src="dessin/chap_3/1/cycle_de_vie/usage.svg" alt="">
+      <span class="nom_dessin">usage et maintenance</span>
+    </div>
+
+    <div class="item_dessin etape_cycle" style="left:14%; top:38%;"
+         data-nom="Fin de vie et recyclage"
+         data-def="En fin de vie, les baskets peuvent être collectées pour être recyclées, incinérées ou mises en décharge.">
+      <img src="dessin/chap_3/1/multicritere/analyse_cycle_vie.svg" alt="">
+      <span class="nom_dessin">fin de vie, recyclage</span>
+    </div>
+  </div>
+
+  <div class="txt_labeur"><span class="etoile"></span> <strong>multicritères&nbsp;:</strong> on ne se limite pas à un seul indicateur environnemental. Il existe tout un tas d’impacts environnementaux qu’il est important d’analyser, en plus de l’impact sur le changement climatique (appelé aussi empreinte carbone), comme la consommation d’eau, la pollution atmosphérique mais aussi des sols, l’épuisement des ressources naturelles, la toxicité…</div>
+
+  <!-- Galerie : indicateurs multicritères -->
+  <div class="galerie_dessins">
+    <div class="item_dessin" data-nom="L'eutrophisation marine" data-def="L’eutrophisation marine correspond à un apport excessif de nutriments, surtout d’azote et de phosphore, qui favorise la prolifération des algues et peut réduire l’oxygène disponible dans l’eau.">
+      <img src="dessin/chap_3/1/multicritere/eutrophisation_marine.svg" alt="">
+      <span class="nom_dessin">eutrophisation marine</span>
+    </div>
+
+    <div class="item_dessin" data-nom="L'eutrophisation des eaux douces" data-def="L’eutrophisation des eaux douces se produit lorsque trop d’azote et de phosphore arrivent dans les lacs, rivières ou autres eaux douces, entraînant une croissance excessive des algues et une dégradation de la qualité de l’eau.">
+      <img src="dessin/chap_3/1/multicritere/eutrophisation_eau_douce.svg" alt="">
+      <span class="nom_dessin">eutrophisation des eaux douces</span>
+    </div>
+
+    <div class="item_dessin" data-nom="L'ozone photochimique" data-def="La formation d’ozone photochimique résulte de réactions entre certains polluants et la lumière du soleil, créant un ozone au niveau du sol qui contribue au smog et aux problèmes respiratoires.">
+      <img src="dessin/chap_3/1/multicritere/ozone_photochimique.svg" alt="">
+      <span class="nom_dessin">formation d'ozone photochimique</span>
+    </div>
+
+    <div class="item_dessin" data-nom="Les ressources fossiles" data-def="Cette catégorie mesure la consommation de ressources fossiles non renouvelables, comme le charbon, le pétrole et le gaz naturel.">
+      <img src="dessin/chap_3/1/multicritere/ressource_fossile.svg" alt="">
+      <span class="nom_dessin">utilisation des ressources fossiles</span>
+    </div>
+
+    <div class="item_dessin" data-nom="La toxicité humaine non-cancéreuse" data-def="Cette catégorie évalue les effets nocifs des substances chimiques sur la santé humaine, à l’exclusion des effets pouvant provoquer un cancer.">
+      <img src="dessin/chap_3/1/multicritere/toxicite_non_cancereuse.svg" alt="">
+      <span class="nom_dessin">toxicité humaine non-cancéreuse</span>
+    </div>
+
+    <div class="item_dessin" data-nom="Appauvrissement de la couche d'ozone" data-def="L’appauvrissement de la couche d’ozone est causé par certaines substances chimiques qui détruisent l’ozone stratosphérique, réduisant ainsi la protection contre les rayons UV du Soleil.">
+      <img src="dessin/chap_3/1/multicritere/couche_ozone.svg" alt="">
+      <span class="nom_dessin">appauvrissement de la couche d'ozone</span>
+    </div>
+
+    <div class="item_dessin" data-nom="La toxicité humaine cancéreuse" data-def="Cette catégorie évalue les risques de cancer liés à l’exposition des humains à certaines substances chimiques présentes dans l’air, l’eau ou les aliments.">
+      <img src="dessin/chap_3/1/multicritere/toxicite_cancereuse.svg" alt="">
+      <span class="nom_dessin">toxicité humaine cancéreuse</span>
+    </div>
+
+    <div class="item_dessin" data-nom="Les particules fines" data-def="Cette catégorie mesure les effets sur la santé des particules fines présentes dans l’air, notamment celles émises par les transports et la combustion.">
+      <img src="dessin/chap_3/1/multicritere/particules_fine.svg" alt="">
+      <span class="nom_dessin">particules fines</span>
+    </div>
+
+    <div class="item_dessin" data-nom="L'utilisation de l'eau" data-def="Cette catégorie mesure la quantité d’eau douce consommée par les activités humaines et leur contribution au risque de pénurie d’eau.">
+      <img src="dessin/chap_3/1/multicritere/eau.svg" alt="">
+      <span class="nom_dessin">utilisation de l'eau</span>
+    </div>
+
+    <div class="item_dessin" data-nom="L'eutrophisation terrestre" data-def="L’eutrophisation terrestre est causée par un excès d’azote dans les sols, qui peut modifier la végétation et déséquilibrer les écosystèmes terrestres.">
+      <img src="dessin/chap_3/1/multicritere/eutrophisation_terre.svg" alt="">
+      <span class="nom_dessin">eutrophisation terrestre</span>
+    </div>
+
+    <div class="item_dessin" data-nom="Les rayonnements ionisants" data-def="Cette catégorie mesure les effets potentiels des rayonnements ionisants, notamment radioactifs, sur la santé humaine.">
+      <img id="ionisant" src="dessin/chap_3/1/multicritere/ionisation.svg" alt="">
+      <span class="nom_dessin">rayonnements ionisants</span>
+    </div>
+
+    <div class="item_dessin" data-nom="L'écotoxicité de l'eau douce" data-def="L’écotoxicité en eau douce mesure les effets nocifs des substances chimiques sur les organismes vivant dans les écosystèmes aquatiques.">
+      <img src="dessin/chap_3/1/multicritere/toxicite_eau.svg" alt="">
+      <span class="nom_dessin">écotoxicité de l'eau douce</span>
+    </div>
+
+    <div class="item_dessin" data-nom="Le changement climatique" data-def="Cette catégorie mesure les émissions de gaz à effet de serre, comme le CO₂ et le méthane, qui contribuent au réchauffement de la planète.">
+      <img src="dessin/chap_3/1/multicritere/changement_climatique.svg" alt="">
+      <span class="nom_dessin">changement climatique</span>
+    </div>
+
+    <div class="item_dessin" data-nom="L'utilisation des minerais et métaux" data-def="Cette catégorie mesure la consommation de ressources minérales et métalliques non renouvelables et leur contribution à leur raréfaction.">
+      <img src="dessin/chap_3/1/multicritere/minerais.svg" alt="">
+      <span class="nom_dessin">utilisation des minerais et métaux</span>
+    </div>
+
+    <div class="item_dessin" data-nom="L'analyse du cycle de vie" data-def="LCA = Life Cycle Assessment = Analyse du cycle de vie. L’analyse du cycle de vie est une méthode qui permet d’évaluer les impacts environnementaux d’un produit tout au long de son cycle de vie, de sa fabrication jusqu’à sa fin de vie.">
+      <img src="dessin/chap_3/1/multicritere/analyse_cycle_vie.svg" alt="">
+      <span class="nom_dessin">analyse du cycle de vie</span>
+    </div>
+  </div>
+
+  <div class="bloc_exemple">
+    <div class="exemple exemple_large">
+      <span class="intro_exemple">exemple</span>
+      <p>La production de la chaussure a un impact sur le changement climatique (émission de GES – gaz à effet de serre), mais a aussi un impact sur l'épuisement des ressources fossiles (dues au pétrole extrait pour produire le plastique, mais aussi à l'énergie utilisée pour produire la chaussure) et un impact sur les émissions de particules (dues à la production d'énergie).</p>
+    </div>
+  </div>
+
+  <div class="txt_labeur">Ces approches cycle de vie et multicritère sont clés, car elles permettent d'éviter ce qu'on appelle <strong>des transferts d'impact</strong>. Un impact peut être déplacé d'une étape du cycle de vie à une autre, ou bien d'un type d'impact à un autre.</div>
+
+  <!-- Exemple + graphique A / B -->
+  <div class="bloc_exemple">
+    <div class="exemple exemple_large">
+      <span class="intro_exemple">exemple</span>
+      <p>Remplacer le polymère pétro-sourcé par un polymère biosourcé permet de diminuer les impacts sur le changement climatique et l'épuisement des ressources fossiles, mais augmente les impacts sur l'utilisation des sols, la consommation d'eau et l'eutrophisation (à cause de la culture des végétaux d'où sont extraits les composés nécessaires à la production du polymère biosourcé).</p>
+      <div class="choix_produit" data-graph="graph_transfert">
+        <button class="bouton_produit actif" data-produit="a">produit A : polymère pétro-sourcé</button>
+        <button class="bouton_produit" data-produit="b">produit B : polymère biosourcé</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="graphique" id="graph_transfert" data-max="10">
+    <div class="graph_donnee" data-nom="changement climatique" data-a="9" data-b="5"></div>
+    <div class="graph_donnee" data-nom="ressources fossiles"   data-a="8" data-b="3"></div>
+    <div class="graph_donnee" data-nom="consommation d'eau"    data-a="3" data-b="7"></div>
+    <div class="graph_donnee" data-nom="utilisation des sols"  data-a="2" data-b="6"></div>
+    <div class="graph_donnee" data-nom="eutrophisation"        data-a="3" data-b="5"></div>
+  </div>
+
+  <div class="txt_labeur"><span class="etoile"></span> <strong>multi-acteurs et collaborative&nbsp;:</strong> l’éco-conception est également une approche multi-acteur, multidisciplinaire, et collaborative, intégrant les parties prenantes internes et externes à l’organisation tout au long de la chaine de valeur (client, fournisseur, collaborateur, réparateur, recycleur …). Chaque acteur présente une expertise et des attentes spécifiques, qu’il faut prendre en compte pour structurer une vision partagée d’un projet d’éco-conception.</div>
+
+  <!-- Schéma : acteurs du cycle de vie -->
+  <div class="schema_cycle">
+    <svg class="fleches_cycle" viewBox="0 0 100 100" aria-hidden="true">
+      <defs>
+        <marker id="pointe_cycle_acteurs" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--trait)"/>
+        </marker>
+      </defs>
+      <path d="M64.2 14.8 A38 38 0 0 1 79.1 25.6" marker-end="url(#pointe_cycle_acteurs)"/>
+      <path d="M87.9 52.7 A38 38 0 0 1 82.2 70.1" marker-end="url(#pointe_cycle_acteurs)"/>
+      <path d="M59.2 86.9 A38 38 0 0 1 40.8 86.9" marker-end="url(#pointe_cycle_acteurs)"/>
+      <path d="M17.8 70.1 A38 38 0 0 1 12.1 52.7" marker-end="url(#pointe_cycle_acteurs)"/>
+      <path d="M20.9 25.6 A38 38 0 0 1 35.8 14.8" marker-end="url(#pointe_cycle_acteurs)"/>
+    </svg>
+
+    <div class="item_dessin etape_cycle" style="left:50%; top:12%;"
+         data-image-modal="dessin/chap_3/1/multiacteur/acheteur_fournisseur.svg"
+         data-nom="L'acheteur"
+         data-def="L'acheteur achète la matière première auprès des fournisseurs, et peut donc sélectionner les matériaux à plus faible impact environnemental.">
+      <img src="dessin/chap_3/1/multicritere/minerais.svg" alt="">
+      <span class="nom_dessin">extraction des matières premières</span>
+    </div>
+
+    <div class="item_dessin etape_cycle a_droite" style="left:86%; top:38%;"
+         data-image-modal="dessin/chap_3/1/multiacteur/recherche_developpement.svg"
+         data-nom="R&amp;D et ingénieur·e"
+         data-def="La R&amp;D et les ingénieur·es conçoivent la chaussure : le choix des matières, les procédés de fabrication et d'assemblage.">
+      <img src="dessin/chap_3/1/cycle_de_vie/production.svg" alt="">
+      <span class="nom_dessin">production</span>
+    </div>
+
+    <div class="item_dessin etape_cycle a_droite" style="left:72%; top:81%;"
+         data-image-modal="dessin/chap_3/1/multiacteur/logistique.svg"
+         data-nom="Le coordinateur logistique"
+         data-def="Le coordinateur logistique est en charge de l'acheminement et du transport de la chaussure vers le client (choix des modes de transport et des points de distribution).">
+      <img src="dessin/chap_3/1/cycle_de_vie/distribution.svg" alt="">
+      <span class="nom_dessin">distribution</span>
+    </div>
+
+    <div class="item_dessin etape_cycle" style="left:28%; top:81%;"
+         data-image-modal="dessin/chap_3/1/multiacteur/client.svg"
+         data-nom="Le client / consommateur"
+         data-def="L'usage du produit peut impacter son empreinte environnementale et sa durée de vie. Comprendre l'usage du consommateur permet de limiter les impacts et d'augmenter la durabilité du produit (en le rendant plus résistant, mais aussi réparable).">
+      <img src="dessin/chap_3/1/cycle_de_vie/usage.svg" alt="">
+      <span class="nom_dessin">usage et maintenance</span>
+    </div>
+
+    <div class="item_dessin etape_cycle" style="left:14%; top:38%;"
+         data-image-modal="dessin/chap_3/1/multiacteur/recycleur.svg"
+         data-nom="Le recycleur"
+         data-def="Le recycleur utilise des méthodes de recyclage spécifiques. Comprendre ces procédés permet de concevoir le produit de manière à ce qu'il soit facilement recyclé.">
+      <img src="dessin/chap_3/1/multicritere/analyse_cycle_vie.svg" alt="">
+      <span class="nom_dessin">fin de vie, recyclage</span>
+    </div>
+  </div>
+
+  <!-- le bouton « passer à la suite » est ajouté automatiquement ici -->
+</div>
+
+
+<!-- Boîtes de définition des mots notion de la page -->
+<div id="notion_droite">
+  <div class="boite_notion" id="performance_environnementale">
+    <strong>La performance environnementale</strong>
+    désigne la capacité d’une organisation, d’un produit, d’un service ou d’un projet à minimiser ses impacts négatifs sur l’environnement tout en optimisant l’utilisation des ressources.
+  </div>
+</div>
+
+</div>
+</div>
+
+</body>
+</html>
