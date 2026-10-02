@@ -35,8 +35,8 @@ const COURS = {
       fiches: '#',
       parties: [
         // I.
-        { section: "Qu'est-ce que l'éco-conception ?", nom: "Définitions et grands principes", duree: '10 min', lien: 'chap3_I-1.html' },
-        { section: "Qu'est-ce que l'éco-conception ?", nom: "Les réglementations liées à l'éco-conception", duree: '', lien: 'chap3_I-3.html' },
+        { section: "Qu'est-ce que l'éco-conception ?", nom: "Définitions et grands principes", duree: '10 min', lien: 'chap3_I-4.html' },
+        { section: "Qu'est-ce que l'éco-conception ?", nom: "Les réglementations liées à l'éco-conception", duree: '', lien: 'chap3_I-4.html' },
         { section: "Qu'est-ce que l'éco-conception ?", nom: "Activité: les niveaux d'éco-conception", duree: '10 min', lien: 'chap3_I-4.html', etoile: true },
         // II.
         { section: "Éco-solutions et outils de l'éco-conception", nom: "Éco-solutions et leviers par étape du cycle de vie", duree: '', lien: 'chap3_II-1.html' },
