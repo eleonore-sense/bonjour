@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Supabase</title>
+</head>
+<body>
+  <h1>Test de connexion au SPOC</h1>
+  <pre id="resultat">Chargement...</pre>
+
+  <script>
+    const URL = "https://dhssndnqurrpidyxatwj.supabase.co";
+    const CLE = "sb_publishable_p4s_GsZ9ThOQ0seA-qc2OQ_1xZAfpMC";
+
+    async function tester() {
+      const resultat = document.getElementById("resultat");
+
+      try {
+        const reponse = await fetch(
+          `${URL}/rest/v1/pages_cours?select=id,titre,contenu&id=eq.CH03-P04`,
+          {
+            headers: {
+              apikey: CLE
+            }
+          }
+        );
+
+        const donnees = await reponse.json();
+        resultat.textContent = JSON.stringify(donnees, null, 2);
+      } catch (erreur) {
+        resultat.textContent = "Erreur : " + erreur.message;
+      }
+    }
+
+    tester();
+  </script>
+</body>
+</html>
