@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SPOC — Éditeur pilote CH03-P04</title>
+<style>
+*{box-sizing:border-box}body{margin:0;color:#111;background:#f4f4f4;font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:#fff;border-bottom:1px solid #ccc;padding:18px 26px;display:flex;gap:14px;align-items:center}
+.logo{font-size:24px;font-weight:850;letter-spacing:-1px}header span{font-weight:650}
+main{max-width:1120px;margin:26px auto;padding:0 18px}.card{background:#fff;border:1px solid #ccc;border-radius:8px;padding:24px;margin-bottom:18px}
+h1{font-size:25px;margin:0 0 8px}h2{font-size:19px;margin:0 0 15px}h3{font-size:16px;margin:0 0 12px}
+.muted{color:#555}.field{display:block;font-weight:650;margin:0 0 18px}input[type=text],textarea{display:block;width:100%;padding:10px 11px;border:1px solid #aaa;border-radius:5px;font:inherit;margin-top:6px;color:#111;background:white}textarea{min-height:100px;resize:vertical}
+button{border:1px solid #222;border-radius:5px;padding:10px 14px;background:#fff;color:#111;font:inherit;font-weight:650;cursor:pointer}button.primary{background:#111;color:#fff}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.hidden{display:none!important}.row{display:grid;grid-template-columns:1fr 270px;gap:22px}.q{border:1px solid #ccc;border-radius:6px;padding:16px;margin:14px 0}.option{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:center;margin:9px 0}.option input{width:100%;padding:8px;border:1px solid #aaa;border-radius:4px;font:inherit}.tag{font-size:12px;border:1px solid #aaa;padding:3px 5px;border-radius:4px}.catalog{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.tile{border:1px solid #aaa;padding:8px;text-align:center;border-radius:5px;background:white}.tile.selected{outline:2px solid #111;background:#eee}.tile img{width:100%;height:66px;object-fit:contain;display:block;margin-bottom:5px}.notice{padding:12px;border:1px solid #777;background:#f8f8f8;margin-top:16px}.preview{padding:20px;border:1px solid #bbb;border-radius:5px}.preview h2{font-size:25px}.preview-question{border-top:1px solid #ccc;padding-top:14px;margin-top:14px}.preview img{max-width:100px;max-height:75px;object-fit:contain}
+@media(max-width:780px){.row{grid-template-columns:1fr}header{padding:15px}.card{padding:17px}.option{grid-template-columns:1fr}.catalog{grid-template-columns:repeat(4,1fr)}}
+</style></head>
+<body>
+<header><div class="logo">SPOC</div><span>Éditeur de contenu — pilote</span></header>
+<main>
+<section id="home" class="card">
+<h1>Choisir une page à modifier</h1><p class="muted">Cette première version est branchée sur le contenu réel de <strong>chap3_I-4.html</strong>.</p>
+<label class="field">Chapitre<input type="text" value="CH03 — Éco-conception" disabled></label>
+<label class="field">Page<input type="text" value="CH03-P04 — Activité : les niveaux de l’éco-conception" disabled></label>
+<p>On commence par cette page pilote avant d’étendre le format aux autres pages.</p>
+<div class="actions"><button class="primary" id="open">Ouvrir pour modification →</button></div>
+</section>
+
+<section id="edit" class="card hidden">
+<div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
+<button id="back">← Retour à l’accueil</button><span class="muted">CH03-P04 · Base Supabase</span>
+</div>
+<div class="row" style="margin-top:22px">
+<div>
+<label class="field">Titre de la page<input id="title" type="text"></label>
+<label class="field">Texte d’introduction<textarea id="intro"></textarea></label>
+<h2>Questions du QCM</h2>
+<div id="questions"></div>
+<h2>Activité de classement</h2>
+<label class="field">Consigne<textarea id="classIntro"></textarea></label>
+<label class="field">Instruction<textarea id="classInstruction"></textarea></label>
+<div id="levels"></div>
+</div>
+<aside>
+<div class="card" style="padding:16px;background:#fafafa">
+<h2>Images du catalogue</h2><p class="muted">Sélection d’une image déjà présente dans les fichiers du SPOC. Aucun import.</p>
+<div class="catalog" id="catalog"></div>
+<p id="selectedImage" class="muted"></p>
+</div>
+<div class="card" style="padding:16px">
+<h2>Aperçu simplifié</h2><div class="preview"><h2 id="pvTitle"></h2><p id="pvIntro"></p><div id="pvQ"></div></div>
+<p class="muted">L’aperçu simplifié sert à contrôler le texte. Il ne remplace pas l’activité interactive d’origine.</p>
+</div>
+</aside>
+</div>
+<div class="actions"><button id="cancel">Annuler les changements</button><button class="primary" id="save">Enregistrer dans Supabase</button><button id="reload">Recharger depuis Supabase</button><button id="export">Exporter le contenu JSON</button></div>
+<div id="notice" class="notice hidden" role="status"></div>
+</section>
+</main>
+<script src="supabase-config.js"></script>
+<script src="contenu-initial.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const original=JSON.parse(JSON.stringify(window.SPOC_CONTENT));
+let draft=JSON.parse(JSON.stringify(original));
+const typeLabels={juste:'Bonne réponse',neutre:'Neutre',faux:'Mauvaise réponse'};
+function render(){
+ $('title').value=draft.title;$('intro').value=draft.intro;
+ $('classIntro').value=draft.classification.intro||'';$('classInstruction').value=draft.classification.instruction||'';
+ $('questions').innerHTML='';
+ draft.questions.forEach((q,i)=>{
+  const box=document.createElement('section');box.className='q';
+  box.innerHTML=`<h3>Question ${i+1}</h3><label class="field">Énoncé<textarea data-q="${i}" data-prop="scenario"></textarea></label><div data-options="${i}"></div><label class="field">Correction<textarea data-q="${i}" data-prop="correction"></textarea></label>`;
+  box.querySelector('[data-prop="scenario"]').value=q.scenario;
+  box.querySelector('[data-prop="correction"]').value=q.correction;
+  const opts=box.querySelector('[data-options]');
+  q.options.forEach((o,j)=>{
+   const line=document.createElement('div');line.className='option';
+   const sel=document.createElement('select');sel.className='tag';sel.setAttribute('aria-label','Type de réponse');
+   [['juste','Bonne réponse'],['neutre','Neutre'],['faux','Mauvaise réponse']].forEach(([v,l])=>{let op=document.createElement('option');op.value=v;op.textContent=l;sel.appendChild(op)});
+   sel.value=o.type;sel.addEventListener('change',()=>{draft.questions[i].options[j].type=sel.value;renderPreview()});
+   const inp=document.createElement('input');inp.value=o.text;inp.setAttribute('aria-label',`Question ${i+1}, réponse ${j+1}`);inp.addEventListener('input',()=>{draft.questions[i].options[j].text=inp.value;renderPreview()});
+   line.append(sel,inp);opts.appendChild(line);
+  });
+  $('questions').appendChild(box);
+ });
+ $('levels').innerHTML='';
+ draft.classification.levels.forEach((lev,i)=>{
+  const box=document.createElement('div');box.className='q';
+  box.innerHTML=`<h3>Niveau ${i+1}</h3><label class="field">Titre<input type="text" data-level="${i}" data-prop="title"></label><label class="field">Description<textarea data-level="${i}" data-prop="description"></textarea></label>`;
+  box.querySelector('[data-prop="title"]').value=lev.title;box.querySelector('[data-prop="description"]').value=lev.description;
+  $('levels').appendChild(box);
+ });
+ $('catalog').innerHTML='';
+ draft.catalogImages.forEach(img=>{
+  const b=document.createElement('button');b.type='button';b.className='tile'+(draft.selectedImage===img.src?' selected':'');
+  const im=document.createElement('img');im.src=img.src;im.alt='';
+  const label=document.createElement('span');label.textContent=img.label;b.append(im,label);
+  b.onclick=()=>{draft.selectedImage=img.src;renderCatalog();$('selectedImage').textContent='Image sélectionnée : '+img.label};
+  $('catalog').appendChild(b);
+ });
+ renderPreview();renderCatalog();
+}
+function renderCatalog(){[...$('catalog').children].forEach((b,i)=>b.classList.toggle('selected',draft.selectedImage===draft.catalogImages[i].src));const im=draft.catalogImages.find(x=>x.src===draft.selectedImage);$('selectedImage').textContent=im?'Image sélectionnée : '+im.label:'Aucune image sélectionnée';}
+function renderPreview(){
+ $('pvTitle').textContent=draft.title;$('pvIntro').textContent=draft.intro;$('pvQ').innerHTML='';
+ draft.questions.forEach((q,i)=>{const box=document.createElement('div');box.className='preview-question';const h=document.createElement('strong');h.textContent=(i+1)+'. '+q.scenario;box.appendChild(h);q.options.forEach(o=>{const p=document.createElement('p');p.textContent='□ '+o.text;box.appendChild(p)});$('pvQ').appendChild(box)});
+}
+function readEdits(){
+ draft.title=$('title').value;draft.intro=$('intro').value;draft.classification.intro=$('classIntro').value;draft.classification.instruction=$('classInstruction').value;
+ document.querySelectorAll('[data-q][data-prop]').forEach(el=>draft.questions[Number(el.dataset.q)][el.dataset.prop]=el.value);
+ document.querySelectorAll('[data-level][data-prop]').forEach(el=>draft.classification.levels[Number(el.dataset.level)][el.dataset.prop]=el.value);
+}
+async function chargerSupabase(){
+ if(!window.SPOC_SUPABASE_URL || !window.SPOC_SUPABASE_KEY || window.SPOC_SUPABASE_KEY.includes('COLLE_')) throw new Error('Configure d’abord supabase-config.js avec ton URL et ta clé Publishable.');
+ const url=window.SPOC_SUPABASE_URL+'/rest/v1/pages_cours?select=id,titre,contenu,publie&id=eq.CH03-P04';
+ const res=await fetch(url,{headers:{apikey:window.SPOC_SUPABASE_KEY,Authorization:'Bearer '+window.SPOC_SUPABASE_KEY}});
+ const data=await res.json(); if(!res.ok) throw new Error(data.message||JSON.stringify(data));
+ if(!data.length) throw new Error('La page CH03-P04 est introuvable ou la lecture est interdite. Vérifie les règles SQL.');
+ const c=data[0].contenu;
+ if(c && Array.isArray(c.questions) && c.classification){draft=c;return 'Contenu chargé depuis Supabase.';}
+ draft=JSON.parse(JSON.stringify(original));
+ return 'La ligne Supabase existe, mais son contenu est encore le JSON de test simple. J’ai chargé le QCM initial dans l’éditeur. Enregistrer dans Supabase remplacera ce contenu par le contenu complet du QCM.';
+}
+async function ouvrirEditeur(){ $('home').classList.add('hidden');$('edit').classList.remove('hidden');draft=JSON.parse(JSON.stringify(original));render();$('notice').textContent='Connexion à Supabase…';$('notice').classList.remove('hidden');try{$('notice').textContent=await chargerSupabase();render()}catch(e){$('notice').textContent='Connexion impossible : '+e.message+' — Le QCM initial reste disponible localement.'} }
+$('open').onclick=ouvrirEditeur;
+$('back').onclick=()=>{$('edit').classList.add('hidden');$('home').classList.remove('hidden')};
+$('cancel').onclick=()=>{draft=JSON.parse(JSON.stringify(original));render();$('notice').textContent='Modifications du formulaire annulées. Rien n’a été envoyé à Supabase.';$('notice').classList.remove('hidden')};
+$('reload').onclick=async()=>{readEdits();$('notice').textContent='Chargement…';$('notice').classList.remove('hidden');try{$('notice').textContent=await chargerSupabase();render()}catch(e){$('notice').textContent='Erreur : '+e.message}};
+$('save').onclick=async()=>{readEdits();$('save').disabled=true;$('notice').textContent='Enregistrement dans Supabase…';$('notice').classList.remove('hidden');try{
+ if(!window.SPOC_SUPABASE_URL || !window.SPOC_SUPABASE_KEY || window.SPOC_SUPABASE_KEY.includes('COLLE_')) throw new Error('Configure supabase-config.js avec ton URL et ta clé Publishable.');
+ const res=await fetch(window.SPOC_SUPABASE_URL+'/rest/v1/pages_cours?id=eq.CH03-P04',{method:'PATCH',headers:{apikey:window.SPOC_SUPABASE_KEY,Authorization:'Bearer '+window.SPOC_SUPABASE_KEY,'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify({titre:draft.title,contenu:draft,publie:true,updated_at:new Date().toISOString()})});
+ const data=await res.json().catch(()=>[]);if(!res.ok)throw new Error(data.message||JSON.stringify(data));if(!data.length)throw new Error('Aucune ligne modifiée. Vérifie la policy UPDATE pour CH03-P04.');
+ $('notice').textContent='Enregistré dans Supabase ! La page CH03-P04 contient maintenant le QCM complet. La page apprenante doit encore être adaptée pour afficher ce format.';
+ }catch(e){$('notice').textContent='Échec de l’enregistrement : '+e.message}finally{$('save').disabled=false}renderPreview()};
+$('export').onclick=()=>{readEdits();const blob=new Blob([JSON.stringify(draft,null,2)],{type:'application/json;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='CH03-P04-contenu.json';a.click();URL.revokeObjectURL(url);$('notice').textContent='JSON exporté.';$('notice').classList.remove('hidden')};
+document.addEventListener('input',e=>{if(e.target.matches('#title,#intro,#classIntro,#classInstruction,[data-q],[data-level]')){draft.title=$('title').value;draft.intro=$('intro').value;renderPreview()}});
+render();
+</script>
+</body></html>
