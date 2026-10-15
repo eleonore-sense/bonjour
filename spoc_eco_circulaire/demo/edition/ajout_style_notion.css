@@ -1,0 +1,13 @@
+/* Liaison facultative d'une réponse à une fiche notion */
+.option_notion {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0 10px;
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+.option_notion input {
+  width: auto;
+  flex-shrink: 0;
+}

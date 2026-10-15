@@ -1,31 +1,42 @@
-
 /* =====================================================================
    1. VARIABLES, POLICES, GÉNÉRAL
    ===================================================================== */
+
+/* Les couleurs sont dans couleurs.css, à charger AVANT ce fichier. */
+
 :root {
-  --fond:               #ffffbe;
-  --barre_progression:  #dd7ad6;
-  --rouge:              #bb4d49;
-  --vert:               #4ba150;
-  --rose:               #dd7ad6;
-  --marron:             #844035;
-  --bleu:               #6f83ec;
-  --couleur_texte:      #000000;
-  --trait:              #000000;
+  /* animations */
   --apparition_boite:   .5s ease;
 
-  --titre:              Cooper;
-  --labeur:             Amiamie;
+  /* polices */
+  --titre:              Instrument_bold, Arial, sans-serif;
+  --labeur:             Instrument_medium, Arial, sans-serif;
   --etoile:             wingding;
 
-  --caractere_etoile:   "";
+  --caractere_etoile:   "";
+
+  /* arrondis */
+  --arrondi_pilule:     999px;
+  --arrondi_boite:      14px;
+
+  /* bandeau du bas (logos) */
+  --hauteur_bandeau_bas: 26px;
 }
 
 @font-face {
-  font-family: "Cooper";
-  src: url("typo/Cooper-Bold.ttf") format("truetype");
+  font-family: "Instrument_bold";
+  src: url("typo/InstrumentSans-SemiBold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Instrument_medium";
+  src: url("typo/InstrumentSans-Medium.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -33,6 +44,7 @@
   src: url("typo/Amiamie-RegularRound.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -46,14 +58,15 @@
   box-sizing: border-box;
 }
 
-html, body {
-  overflow-x: hidden;
+html {
+  font-size: 100%;   /* respecte la taille de police choisie dans le navigateur */
 }
 
 body {
   display: flex;
   margin: 0;
   font-family: var(--labeur);
+  line-height: 1.4;
   color: var(--couleur_texte);
   background-color: var(--fond);
 }
@@ -62,7 +75,7 @@ body {
    Le caractère est ajouté automatiquement si la balise est vide. */
 .etoile {
   font-family: var(--etoile);
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--trait);
 }
 
@@ -71,11 +84,68 @@ body {
 }
 
 
+/* ---------- Accessibilité : outils communs ---------- */
+
+/* texte lu par les lecteurs d'écran mais invisible à l'écran */
+.visuellement_cache {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* lien d'évitement « Aller au contenu » : visible seulement au clavier */
+.lien_evitement {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  z-index: 1000;
+  padding: 8px 16px;
+  background: var(--trait);
+  color: var(--texte_inverse);
+  border-radius: var(--arrondi_pilule);
+}
+
+.lien_evitement:focus {
+  top: 12px;
+}
+
+/* focus visible sur tout ce qui est interactif */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+
+/* ---------- Bandeau de la page de test ---------- */
+
+.clone-banner {
+  margin: 12px auto;
+  padding: 12px;
+  border: 2px solid #111;
+  background: #fff;
+  color: #111;
+  max-width: 1100px;
+  font: 1rem/1.4 sans-serif;
+}
+
+.clone-status {
+  font-weight: 700;
+}
+
+
+
 /* =====================================================================
    2. STRUCTURE COMMUNE
    ===================================================================== */
 
 /* ---------- Barre de progression du haut ---------- */
+
 #barre_progression {
   position: fixed;
   top: 0;
@@ -92,13 +162,16 @@ body {
   background: var(--barre_progression);
   transition: width .1s linear;
 }
-
+.fenetre_document::backdrop {
+  background: transparent;
+}
 
 /* ---------- Onglets des chapitres ---------- */
+
 #onglet_chapitre {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: calc(100vh - var(--hauteur_bandeau_bas));
   align-items: flex-start;
   align-self: flex-start;
   z-index: 100;
@@ -107,34 +180,36 @@ body {
 
 #onglet_chapitre > div {
   position: relative;
-  width: 20px;
-  height: 10.5vh;
+  width: 28px;
+  flex: 1;
+  min-height: 44px;
   overflow: hidden;
-  border: 0.8px solid var(--trait);
+  border: 1px solid var(--trait);
   border-left: none;
-  cursor: pointer;
+  border-radius: 0 var(--arrondi_boite) var(--arrondi_boite) 0;
   background: var(--fond);
   transition: width var(--apparition_boite);
   margin-top: -1px;
 }
 
-#onglet_chapitre > div:hover {
+/* l'onglet s'ouvre au survol ET quand on y arrive au clavier */
+#onglet_chapitre > div:hover,
+#onglet_chapitre > div:focus-within {
   width: 230px;
-  cursor: default;
 }
 
 #onglet_chapitre > div.en_cours,
 #onglet_chapitre > div.termine {
-  background: var(--rouge);
+  background: var(--onglet_fait);
 }
 
+/* le chiffre reste collé au bord droit : il suit l'ouverture de l'onglet */
 #onglet_chapitre > div .numero {
   position: absolute;
   top: 6px;
-  right: 4px;
+  right: 6px;
   font-family: var(--titre);
-  font-weight: bold;
-  font-size: 16px;
+  font-size: 1.25rem;
 }
 
 #onglet_chapitre > div .titre_onglet,
@@ -151,25 +226,25 @@ body {
   font-family: var(--titre);
   text-decoration: underline;
   line-height: 1.1em;
-  font-size: 0.8em;
+  font-size: 0.8rem;
 }
 
 #onglet_chapitre > div .titre_onglet a {
   color: inherit;
   text-decoration: inherit;
-  cursor: alias;
 }
 
 #onglet_chapitre > div .lien_fiche_onglet {
   bottom: 10px;
-  font-size: 0.7em;
+  font-size: 0.75rem;
   text-decoration: underline;
   color: var(--couleur_texte);
-  cursor: alias;
 }
 
 #onglet_chapitre > div:hover .titre_onglet,
-#onglet_chapitre > div:hover .lien_fiche_onglet {
+#onglet_chapitre > div:hover .lien_fiche_onglet,
+#onglet_chapitre > div:focus-within .titre_onglet,
+#onglet_chapitre > div:focus-within .lien_fiche_onglet {
   left: 10px;
 }
 
@@ -180,12 +255,13 @@ body {
 
 
 /* ---------- Menu de gauche : boutons ronds + infobulle ---------- */
+
 #gauche_menu {
   position: fixed;
   left: 0;
   top: 0;
   width: 10%;
-  height: 100vh;
+  height: calc(100vh - var(--hauteur_bandeau_bas));
   display: flex;
   flex-direction: column;
   background: var(--fond);
@@ -195,17 +271,17 @@ body {
 #bouton_rond {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
   align-items: center;
   position: absolute;
   left: 5vw;
-  top: 5vh;
+  top: 8vh;
 }
 
 .bouton_icone_wrap {
   position: relative;
-  width: 46px;
-  height: 46px;
+  width: 45px;
+  height: 45px;
 }
 
 .bouton_icone_wrap::before {
@@ -219,35 +295,39 @@ body {
 .bouton_icone {
   position: absolute;
   inset: 0;
-  width: 46px;
-  height: 46px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
-  background: var(--vert);
+  background: var(--trait);
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  border: 0.8px solid var(--trait);
-  transition: transform .2s ease;
-}
+  border: 1px solid var(--trait);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;}
 
 .bouton_icone img {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
+  filter: brightness(0) invert(1);   /* picto en blanc */
 }
 
-.bouton_icone:hover {
+.bouton_icone:hover,
+.bouton_icone:focus-visible {
   cursor: pointer;
   transform: translate(-4px, -4px);
+  border-color: var(--fond);            /* contour visible seulement au survol */
+  box-shadow: 4px 4px 0 var(--trait);   /* ombre noire */
 }
 
 #tooltip {
   position: fixed;
   pointer-events: none;
-  background: var(--vert);
-  border: 0.8px solid var(--trait);
-  padding: 4px 10px;
-  font-size: 0.8em;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  padding: 4px 12px;
+  font-size: 0.85rem;
   white-space: nowrap;
   opacity: 0;
   transition: opacity .15s ease;
@@ -260,6 +340,7 @@ body {
 
 
 /* ---------- Barre verticale des parties du chapitre ---------- */
+
 #barre_progression_chapitre {
   position: absolute;
   width: 20px;
@@ -269,12 +350,10 @@ body {
   left: 5.5vw;
 }
 
-
 /* cran plus long entre deux sections */
 #barre_progression_chapitre .trait_chapitre.trait_section {
   width: 14px;
 }
-
 
 #barre_progression_chapitre .ligne_fine {
   position: absolute;
@@ -383,6 +462,7 @@ body {
 }
 
 #barre_progression_chapitre .zone_hover:hover ~ .point_hover,
+#barre_progression_chapitre .zone_hover:focus-visible ~ .point_hover,
 #barre_progression_chapitre .point_hover.visible {
   transform: translate(-50%, -50%) scale(1);
 }
@@ -392,7 +472,7 @@ body {
   left: 20px;
   transform: translateY(-50%);
   white-space: nowrap;
-  font-size: 0.75em;
+  font-size: 0.8rem;
   opacity: 0;
   pointer-events: none;
   transition: opacity .15s ease;
@@ -401,10 +481,20 @@ body {
 
 #barre_progression_chapitre .label_partie.fait {
   background: var(--rose);
-  border: 0.8px solid var(--trait);
-  padding: 4px 8px;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  padding: 4px 10px;
   cursor: pointer;
   pointer-events: auto;
+}
+
+/* durée affichée à côté de la barre (« 5 min ») */
+#barre_progression_chapitre .duree_barre {
+  position: absolute;
+  left: 24px;
+  transform: translateY(-50%);
+  font-size: 0.85rem;
+  white-space: nowrap;
 }
 
 #barre_progression_chapitre .segment_fait {
@@ -427,19 +517,15 @@ body {
 
 
 /* ---------- Zone de contenu et titres ---------- */
+
 #droite_contenu {
   width: 89%;
   margin-left: 11%;
-  height: 100vh;
+  height: calc(100vh - var(--hauteur_bandeau_bas));
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior-x: none;
-  scrollbar-width: none;          /* Firefox */
-  -ms-overflow-style: none;       /* Edge ancien */
-}
-
-#droite_contenu::-webkit-scrollbar {
-  display: none;                  /* Chrome / Safari */
+  scrollbar-width: thin;   /* barre fine mais visible */
 }
 
 #haut {
@@ -447,23 +533,26 @@ body {
   top: 3px;
   background: var(--fond);
   z-index: 10;
-  font-size: 1.2em;
+  font-size: 1.25rem;
+  padding-right: 40px;
 }
 
 #titre_partie {
+  display: flex;
+  gap: 70px;
   font-family: var(--titre);
   text-transform: uppercase;
-  padding-top: 3px;
-  padding-bottom: 5px;
-  border-bottom: 0.9px solid var(--trait);
+  padding-top: 10px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--trait_doux);
 }
 
 #titre_chapitre {
   font-family: var(--titre);
-  margin-left: 108px;
-  padding-top: 3px;
-  padding-bottom: 5px;
-  border-bottom: 0.9px solid var(--trait);
+  margin-left: 185px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--trait_doux);
   display: flex;
   justify-content: space-between;   /* titre à gauche, durée à droite */
   align-items: center;
@@ -471,10 +560,10 @@ body {
 
 .duree_chapitre {
   font-family: var(--labeur);
-  font-size: 0.65em;
-  border: 0.7pt solid var(--trait);
-  border-radius: 20px;
-  padding: 4px 10px 1px;
+  font-size: 0.8rem;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  padding: 4px 10px 2px;
   margin-right: 10px;
 }
 
@@ -483,13 +572,12 @@ body {
   gap: 40px;
   align-items: flex-start;
   margin-left: 11vw;
-  margin-top: 10px;
+  margin-top: 30px;
   position: relative;
 }
 
 #contenu_gauche {
   width: 65%;
-  min-width: 700px;
   margin-bottom: 98px;
 }
 
@@ -499,11 +587,12 @@ body {
 
 
 /* ---------- Bouton « passer à la suite » ---------- */
+
 .conteneur_suite {
   display: flex;
   justify-content: center;
   margin-top: 90px;
-    transition: opacity .4s ease, visibility .4s;
+  transition: opacity .4s ease, visibility .4s;
 }
 
 .conteneur_suite.cache {
@@ -519,24 +608,27 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 
 .bouton_suite {
   font-family: var(--labeur);
+  font-size: 1rem;
   color: var(--couleur_texte);
   text-decoration: none;
   background: var(--rose);
-  border: 0.8pt solid var(--trait);
-  border-radius: 999px;
-  padding: 6px 20px;
-  cursor: alias;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  padding: 8px 22px;
+  cursor: pointer;
   box-shadow: 0 0 0 var(--trait);
   transition: transform .2s ease, box-shadow .2s ease;
 }
 
-.bouton_suite:hover {
+.bouton_suite:hover,
+.bouton_suite:focus-visible {
   transform: translate(-4px, -4px);
   box-shadow: 4px 4px 0 var(--trait);
 }
 
 
 /* ---------- Pop-up des dessins ---------- */
+
 .modal_dessin {
   display: none;
   position: fixed;
@@ -544,6 +636,7 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   z-index: 500;
   align-items: center;
   justify-content: center;
+  background: rgba(0, 0, 0, .25);
 }
 
 .modal_dessin.visible {
@@ -555,10 +648,11 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   display: flex;
   gap: 50px;
   background: var(--fond);
-  border: 0.9px solid var(--trait);
-  padding: 20px;
-  max-width: 700px;
-  font-size: 0.95em;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+  padding: 24px;
+  max-width: min(700px, 92vw);
+  font-size: 0.95rem;
 }
 
 .modal_dessin_image {
@@ -567,25 +661,26 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 }
 
 .modal_dessin_titre {
-  font-size: 1em;
+  font-size: 1rem;
   font-family: var(--titre);
 }
 
+/* bouton de fermeture : zone cliquable de 24px minimum */
 .fermer_modal {
   position: absolute;
-  top: 10px;
-  right: 14px;
-  width: 17px;
-  height: 17px;
+  top: 8px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: var(--rouge);
-  border: 0.9px solid var(--trait);
+  border: 1px solid var(--trait);
   cursor: pointer;
 }
 
 /* pop-up d'un acteur : dessin à gauche, texte à droite */
 .modal_dessin.modal_acteur .modal_dessin_contenu {
-  max-width: 600px;
+  max-width: min(600px, 92vw);
   gap: 25px;
   align-items: center;
 }
@@ -600,36 +695,60 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 }
 
 .modal_dessin.modal_acteur .modal_dessin_titre {
-  font-size: 1.1em;
+  font-size: 1.1rem;
   margin-top: 0;
 }
+
 
 
 /* =====================================================================
    3. TEXTES DU CONTENU
    ===================================================================== */
 
-.contenu_gras, {
-  padding-left: 15px;
-}
-
+/* titre d'activité : pilule noire */
 .petit_titre {
-  font-size: 1.3em;
+  display: inline-block;
+  font-size: 1.1rem;
   font-family: var(--titre);
-  padding-bottom: 3px;
-  margin-bottom: 20px;
-  margin-top: 50px;
-  border-bottom: 0.9px solid var(--trait);
+  color: var(--texte_inverse);
+  background: var(--trait);
+  border-radius: var(--arrondi_pilule);
+  padding: 8px 15px;
+  margin: 0 0 30px;
 }
 
 .contenu_gras {
-  font-size: 1.2em;
+  max-width: 860px;
+  margin: 0 0 30px 12px;
+  padding: 16px 18px;
+  font-size: 1.05rem;
   font-family: var(--titre);
-  line-height: 1.3em;
+  line-height: 1.35;
+  background: var(--vert_bleu);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+  position: relative;
 }
+
+
+.contenu_gras > .span_source {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 6px;
+  font-family: var(--labeur);
+}
+
+/* place sous l'encadré pour la source */
+.contenu_gras:has(> .span_source) {
+  margin-bottom: 55px;
+}
+
 
 .txt_labeur {
   margin-top: 60px;
+  font-size: 1rem;
+  line-height: 1.45;
 }
 
 .petit_titre + .txt_labeur {
@@ -643,16 +762,34 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   -webkit-text-stroke: 0.4px currentColor;
 }
 
+/* encadré d'introduction violet */
+.chapeau {
+  max-width: 860px;
+  margin: 0 0 30px 12px;
+  padding: 16px 18px;
+  font-size: 1.2rem;
+  line-height: 1.35;
+  background: var(--fond_intro);
+  border: 1px solid var(--violet_trait);
+  border-radius: var(--arrondi_boite);
+}
+
+.chapeau + .txt_labeur {
+  margin-top: 0;
+  margin-left: 12px;
+  max-width: 800px;
+}
+
 .souligne {
   text-decoration: underline;
   text-decoration-thickness: 1.5px;
-  text-underline-offset: 1.5px;
+  text-underline-offset: 2px;
 }
 
 .souligne_fin {
   text-decoration: underline;
   text-decoration-thickness: 1px;
-  text-underline-offset: 1px;
+  text-underline-offset: 2px;
 }
 
 .ecart {
@@ -664,52 +801,99 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 }
 
 .lien_page {
-  cursor: alias;
+  cursor: pointer;
 }
 
 
-.consigne{
-  font-family: var(--titre);
-  color: var(--bleu);
+/* ---------- Consigne d'activité : pilule bleue ---------- */
+
+.consigne {
+  display: inline-block;
+  font-family: var(--labeur);
+  font-size: 1rem;
+  color: var(--couleur_texte);
+  background: var(--fond_consigne);
+  border: 1px solid var(--trait);
+  border-radius: 16px;
+  margin: 25px 0 0 12px;
+  padding: 10px 18px;
 }
+
+/* texte normal sous un .contenu_gras */
+.sous_texte {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--labeur);
+  font-size: 0.85rem;
+  line-height: 1.35em;
+}
+
 
 /* ---------- Sources ---------- */
+
 .span_source {
   display: block;
   margin-top: 8px;
-  font-size: 7.5pt;
+  font-size: 0.75rem;
   font-family: var(--labeur);
 }
 
 .source {
-  color: var(--vert);
-  text-decoration: none;
-}
-
-.source:hover {
+  color: var(--prune);
   text-decoration: underline;
   text-decoration-thickness: 1px;
 }
 
-.source:visited {
-  color: var(--marron);
+.source:hover,
+.source:focus-visible {
+  font-family: var(--titre);
+  text-decoration-thickness: 2px;
 }
 
+.source:visited {
+  color: var(--violet);
+}
+
+
 /* ---------- Mots notion + boîte de définition à droite ---------- */
+
 .mot_notion {
+  font-family: var(--titre);
   text-decoration: underline;
   text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
   cursor: help;
 }
+
 
 .boite_notion {
   position: absolute;
   right: 4%;
   width: 27%;
   display: none;
-  border: 0.9px solid var(--trait);
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
   padding: 14px 16px;
-  font-size: 0.9em;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  z-index: 70;
+  padding-top: 22px;     /* place pour le rond rouge */
+  cursor: grab;
+  touch-action: none;
+}
+
+.boite_notion strong {
+  font-family: var(--titre);
+  text-decoration: underline;
+  display: block;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.boite_notion.deplacement {
+  cursor: grabbing;
+  user-select: none;
 }
 
 .boite_notion.visible {
@@ -717,28 +901,31 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 }
 
 
+
 /* =====================================================================
    4. COMPOSANTS
    ===================================================================== */
 
 /* ---------- Exemples ---------- */
+
 .bloc_exemple {
   display: flex;
   align-items: stretch;
   gap: 20px;
-  font-size: 0.95em;
-  color: var(--vert);
+  font-size: 0.95rem;
+  color: var(--couleur_texte);
 }
 
 .exemple {
   margin-left: 10%;
   margin-top: 35px;
   padding: 5px 0 5px 20px;
-  font-size: 0.9em;
-  min-width: 350px;
+  font-size: 0.9rem;
+  min-width: 0;
   max-width: 27vw;
   line-height: 1.35em;
-  border-left: 0.9px solid var(--vert);
+  border-left: 1px solid var(--trait);
+  min-width: 400px;
 }
 
 /* doit rester APRÈS .exemple */
@@ -758,10 +945,10 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 /* doit rester APRÈS .souligne */
 .intro_exemple {
   display: inline-block;
-  border: 0.8pt solid var(--vert);
-  background: transparent;
-  padding: 3px 8px 1px;
-  border-radius: 20px;
+  border: 1px solid var(--trait);
+  background: var(--orange);
+  padding: 3px 8px 4px;
+  border-radius: var(--arrondi_pilule);
   margin-bottom: 8px;
   text-decoration: none;
   cursor: default;
@@ -769,6 +956,7 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 
 
 /* ---------- Animations Rive ---------- */
+
 .media_exemple {
   margin-top: 30px;
   display: flex;
@@ -792,6 +980,7 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 
 
 /* ---------- Galerie de dessins ---------- */
+
 .galerie_dessins {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -810,7 +999,8 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   cursor: pointer;
 }
 
-.item_dessin img {
+.item_dessin img,
+.item_dessin > .dessin {
   width: 100%;
   max-width: 200px;
   height: auto;
@@ -819,7 +1009,7 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 
 .nom_dessin {
   margin-top: 20px;
-  font-size: 0.75em;
+  font-size: 0.8rem;
   text-align: center;
   width: 150%;
 }
@@ -829,9 +1019,10 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   bottom: 75%;
   left: 82%;
   background: var(--fond);
-  border: 0.9px solid var(--trait);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
   padding: 20px;
-  font-size: 0.85em;
+  font-size: 0.9rem;
   width: 400px;
   opacity: 0;
   pointer-events: none;
@@ -839,12 +1030,15 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   z-index: 50;
 }
 
-.item_dessin:hover .tooltip_dessin {
+/* l'infobulle s'affiche au survol ET au focus clavier */
+.item_dessin:hover .tooltip_dessin,
+.item_dessin:focus-within .tooltip_dessin {
   opacity: 1;
 }
 
 
 /* ---------- Schéma circulaire (cycle de vie, acteurs…) ---------- */
+
 .schema_cycle {
   position: relative;
   width: 100%;
@@ -875,11 +1069,13 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   transform: translate(-50%, -50%);
 }
 
-.schema_cycle .etape_cycle:hover {
+.schema_cycle .etape_cycle:hover,
+.schema_cycle .etape_cycle:focus-within {
   z-index: 5;
 }
 
-.schema_cycle .etape_cycle img {
+.schema_cycle .etape_cycle img,
+.schema_cycle .etape_cycle > .dessin {
   width: auto;
   max-width: 80px;
   max-height: 70px;
@@ -919,7 +1115,7 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 
 .tooltip_acteur h3 {
   font-family: var(--titre);
-  font-size: 1em;
+  font-size: 1rem;
   margin: 0 0 8px;
 }
 
@@ -928,42 +1124,30 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 }
 
 
-
-
-/* ---------- Consigne d'activité ---------- */
-.consigne {
-  font-family: var(--titre);
-  color: var(--bleu);
-  margin-top: 45px;
-  padding-left: 15px;
-}
-
-/* texte normal sous un .contenu_gras */
-.sous_texte {
-  display: block;
-  margin-top: 6px;
-  font-family: var(--labeur);
-  font-size: 0.8em;
-  line-height: 1.35em;
-}
-
-
 /* ---------- QCM ---------- */
+
 .qcm {
   width: 120%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 130px;
-  row-gap:  100px;
-  margin-top: 40px;
+  column-gap: 140px;
+  row-gap: 110px;
+  margin-top: 50px;
   position: relative;
   z-index: 1;
-  font-size: 0.9em;
-
+  font-size: 0.9rem;
 }
 
 .qcm_bloc {
   position: relative;
+}
+
+/* si les questions passent en <fieldset>, on retire le style par défaut */
+fieldset.qcm_bloc {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
 }
 
 .qcm_scenario {
@@ -971,15 +1155,18 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   align-items: center;
   gap: 25px;
   min-height: 130px;
-  font-size: 0.9em;
+  font-size: 0.9rem;
   line-height: 1.35em;
 }
 
-.qcm_scenario p {
+.qcm_scenario p,
+.qcm_scenario legend {
   margin: 0;
+  padding: 0;
 }
 
-.qcm_scenario img {
+.qcm_scenario img,
+.qcm_scenario .dessin {
   width: auto;
   max-height: 130px;
   flex-shrink: 0;
@@ -1000,33 +1187,34 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  font-size: 0.9em;
-  line-height: 1.25em;
+  font-size: 0.9rem;
+  line-height: 1.3em;
   cursor: pointer;
 }
 
 
 /* ---- cases à cocher ---- */
+
 .qcm_option input {
   appearance: none;
   -webkit-appearance: none;
   flex-shrink: 0;
-  width: 17px;
-  height: 17px;
+  width: 20px;
+  height: 20px;
   margin: 0;
-  border: 0.8px solid var(--trait);
-  background: transparent;
+  border: 1px solid var(--trait);
+  background: var(--fond);
   cursor: pointer;
   transition: background .2s ease;
 }
 
-/* cochée par l'élève : contour noir, intérieur bleu */
+/* cochée par l'élève : intérieur bleu */
 .qcm_option input:checked {
-  background: var(--bleu);
+  background: var(--fond_consigne);
 }
 
 .qcm_option input:focus-visible {
-  outline: 2px solid var(--bleu);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -1036,7 +1224,7 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   cursor: default;
 }
 
-.qcm.corrige .qcm_option input        { background: transparent; }
+.qcm.corrige .qcm_option input        { background: var(--fond); }
 .qcm.corrige .qcm_option.juste input  { background: var(--vert); }
 .qcm.corrige .qcm_option.erreur input { background: var(--rouge); }
 .qcm.corrige .qcm_option.oubli input  { background: var(--rose); }
@@ -1045,11 +1233,14 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 }
 
 
+
+
 /* ---- bloc fixe en bas à droite : légende + bouton ---- */
+
 .qcm_pied {
   position: fixed;
   right: 40px;
-  bottom: 35px;
+  bottom: calc(var(--hauteur_bandeau_bas) + 25px);
   z-index: 90;
   display: flex;
   flex-direction: column;
@@ -1057,16 +1248,23 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   gap: 12px;
 }
 
+.qcm_pied[hidden] {
+  display: none;
+}
+
 .qcm_legende {
   display: none;
   position: fixed;
   right: 40px;
-  bottom: 90px;            /* au-dessus du bouton */
+  bottom: calc(var(--hauteur_bandeau_bas) + 80px);   /* au-dessus du bouton */
   z-index: 0;              /* derrière le QCM (z-index: 1) */
   flex-direction: column;
   gap: 6px;
   padding: 10px 14px;
-  font-size: 0.8em;
+  font-size: 0.85rem;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
 }
 
 .qcm_legende.visible {
@@ -1080,26 +1278,7 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   height: 12px;
   margin-right: 8px;
   vertical-align: -1px;
-  border: 0.8px solid var(--trait);
-}
-
-.qcm_legende .juste::before  { background: var(--vert); }
-.qcm_legende .erreur::before { background: var(--rouge); }
-.qcm_legende .oubli::before  { background: var(--rose); }
-
-
-.qcm_legende.visible {
-  display: flex;
-}
-
-.qcm_legende span::before {
-  content: "";
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  margin-right: 6px;
-  vertical-align: -1px;
-  border: 0.8px solid var(--trait);
+  border: 1px solid var(--trait);
 }
 
 .qcm_legende .juste::before  { background: var(--vert); }
@@ -1109,24 +1288,27 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   background: repeating-linear-gradient(45deg, var(--trait) 0 1px, transparent 1px 4px);
 }
 
+
 /* ---- encadrés de correction ---- */
+
 .qcm_correction {
   display: none;
   position: absolute;
-  top: -50px;              /* par-dessus les réponses */
-  left: 8px;              /* légèrement décalé à droite */
-  width: 380px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);   /* centrée sur le bloc de la question */
+  width: min(380px, 90vw);
   background: var(--fond);
-  border: 0.9px solid var(--trait);
-  padding: 20px 20px 10px;
-  font-size: 0.85em;
-  line-height: 1.3em;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+  padding: 10px 19px 3px;
+  font-size: 0.9rem;
+  line-height: 1.35em;
   cursor: grab;
-  user-select: none;
   touch-action: none;      /* permet de le déplacer aussi au doigt */
 }
 
-.marge_en_plus{
+.marge_en_plus {
   top: 50px;
 }
 
@@ -1136,6 +1318,7 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 
 .qcm_correction.deplacement {
   cursor: grabbing;
+  user-select: none;
 }
 
 /* dessin du scénario, à gauche du texte */
@@ -1146,13 +1329,6 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   margin: 0 15px 8px 0;
 }
 
-
-/* dessins de l'activité A : même taille dans les questions et dans les corrections */
-.qcm_scenario img[src*="lessive"],    .qcm_correction_dessin[src*="lessive"]    { width: 100px; }
-.qcm_scenario img[src*="boxe"],       .qcm_correction_dessin[src*="boxe"]       { width: 80px; }
-.qcm_scenario img[src*="imprimante"], .qcm_correction_dessin[src*="imprimante"] { width: 85px; }
-.qcm_scenario img[src*="velo"],       .qcm_correction_dessin[src*="velo"]       { width: 150px; }
-.qcm_scenario img[src*="textile"],    .qcm_correction_dessin[src*="textile"]    { width: 100px; }
 .qcm_correction strong {
   display: inline;
   font-family: var(--titre);
@@ -1160,17 +1336,17 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   font-size: 1.1em;
 }
 
-/* rond rouge pour fermer, en haut à gauche */
+/* rond rouge pour fermer, en haut à droite */
 .qcm_fermer {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 17px;
-  height: 17px;
+  top: 8px;
+  right: 8px;
+  width: 15px;
+  height: 15px;
   padding: 0;
   border-radius: 50%;
   background: var(--rouge);
-  border: 0.9px solid var(--trait);
+  border: 1px solid var(--trait);
   cursor: pointer;
 }
 
@@ -1178,10 +1354,9 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   cursor: pointer;
 }
 
-
 /* semi-transparent tant que toutes les corrections ne sont pas lues */
 .qcm_verifier:disabled {
-  opacity: .35;
+  opacity: .5;
   cursor: not-allowed;
 }
 
@@ -1191,26 +1366,25 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 }
 
 
+/* ---- partie suivante de l'activité, cachée au départ ---- */
+
 @keyframes apparition {
   from { opacity: 0; transform: translateY(15px); }
   to   { opacity: 1; transform: none; }
 }
 
-/* le bouton de la partie 2 reste caché tant qu'elle n'est pas affichée */
-.qcm_pied[hidden] {
-  display: none;
-}
-
-/* ---- partie suivante de l'activité, cachée au départ ---- */
 .partie_activite {
   scroll-margin-top: 130px;
-    animation: apparition .6s ease;
+  animation: apparition .6s ease;
 }
 
 .partie_activite.cache {
   display: none;
 }
-/* ---------- Boutons produit A / B ---------- */
+
+
+/* ---------- Boutons produit A / B + bouton de correction ---------- */
+
 .choix_produit {
   display: flex;
   flex-wrap: wrap;
@@ -1218,30 +1392,40 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   margin-top: 15px;
 }
 
-.bouton_produit, .qcm_verifier {
+.bouton_produit,
+.qcm_verifier {
   font: inherit;
-  font-size: 0.9em;
+  font-size: 0.95rem;
   color: var(--couleur_texte);
   background: var(--fond);
-  border: 0.8pt solid var(--trait);
-  border-radius: 999px;
-  padding: 3px 12px;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  padding: 6px 16px;
+  min-height: 36px;
   cursor: pointer;
   box-shadow: 0 0 0 var(--trait);
   transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
 }
 
-.bouton_produit:hover, .qcm_verifier:hover {
+.bouton_produit:hover,
+.bouton_produit:focus-visible,
+.qcm_verifier:hover,
+.qcm_verifier:focus-visible {
   transform: translate(-4px, -4px);
   box-shadow: 4px 4px 0 var(--trait);
 }
 
-.bouton_produit.actif {
-  background: var(--rouge);
+/* bouton choisi : couleur + texte souligné, pas seulement la couleur */
+.bouton_produit.actif,
+.bouton_produit[aria-pressed="true"] {
+  background: var(--orange);
+  color: var(--texte_inverse);
+  text-decoration: underline;
 }
 
 
 /* ---------- Graphique en barres ---------- */
+
 .graphique {
   margin: 60px 0 0 10%;
   max-width: 620px;
@@ -1254,8 +1438,8 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   gap: 30px;
   height: 220px;
   padding: 0 30px 0 15px;
-  border-left: 0.7px solid var(--trait);
-  border-bottom: 0.7px solid var(--trait);
+  border-left: 1px solid var(--trait);
+  border-bottom: 1px solid var(--trait);
 }
 
 /* flèche en haut de l'axe vertical */
@@ -1263,7 +1447,7 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   content: "";
   position: absolute;
   top: -8px;
-  left: -4.4px;
+  left: -4.5px;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-bottom: 8px solid var(--trait);
@@ -1274,7 +1458,7 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   content: "";
   position: absolute;
   right: -8px;
-  bottom: -4.4px;
+  bottom: -4.5px;
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
   border-left: 8px solid var(--trait);
@@ -1291,8 +1475,8 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 .graph_barre {
   width: 34px;
   height: 0;
-  background: var(--rouge);
-  border: 0.8px solid var(--trait);
+  background: var(--orange);
+  border: 1px solid var(--trait);
   border-bottom: none;
   transition: height .8s ease;
 }
@@ -1306,7 +1490,7 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 .graph_noms div {
   flex: 1;
   margin-top: 8px;
-  font-size: 0.7em;
+  font-size: 0.8rem;
   text-align: center;
 }
 
@@ -1317,8 +1501,10 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 
 
 /* ---------- Classement par glisser-déposer ---------- */
-#partie_2{padding-bottom: 40vw}
 
+#partie_2 {
+  padding-bottom: 40vw;
+}
 
 .classement {
   position: relative;
@@ -1337,8 +1523,8 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  border-right: 0.8px solid var(--trait);
-  font-size: 0.7em;
+  border-right: 1px solid var(--trait);
+  font-size: 0.8rem;
 }
 
 .axe_vertical span {
@@ -1347,15 +1533,16 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   margin-right: 12px;
 }
 
-.axe_vertical::before {          /* flèche en haut */
+.axe_vertical::before {           /* flèche en haut */
   content: "";
   position: absolute;
   top: -8px;
-  right: -4.4px;
+  right: -4.5px;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-bottom: 8px solid var(--trait);
 }
+
 /* axe horizontal : difficulté du changement */
 .axe_horizontal {
   grid-column: 2;
@@ -1364,15 +1551,15 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   justify-content: space-between;
   margin-top: 12px;
   padding-top: 8px;
-  border-top: 0.8px solid var(--trait);
-  font-size: 0.7em;
+  border-top: 1px solid var(--trait);
+  font-size: 0.8rem;
 }
 
-.axe_horizontal::after {         /* flèche à droite */
+.axe_horizontal::after {          /* flèche à droite */
   content: "";
   position: absolute;
   right: -8px;
-  top: -4.4px;
+  top: -4.5px;
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
   border-left: 8px solid var(--trait);
@@ -1385,30 +1572,31 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   gap: 15px;
 }
 
-.niveau { flex: 1; }
-
-.n1 { order: 1; margin-bottom: 0; }
-.n2 { order: 2; margin-bottom: 100px; }
-.n3 { order: 3; margin-bottom: 200px; }
-.n4 { order: 4; margin-bottom: 300px; }
 .niveau {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   padding: 12px;
   text-align: center;
+  border-radius: var(--arrondi_boite);
 }
+
+.n1 { order: 1; margin-bottom: 0; }
+.n2 { order: 2; margin-bottom: 100px; }
+.n3 { order: 3; margin-bottom: 200px; }
+.n4 { order: 4; margin-bottom: 300px; }
 
 .niveau_titre {
   font-family: var(--titre);
-  font-size: 0.85em;
-  line-height: 1em;
+  font-size: 0.95rem;
+  line-height: 1.1em;
   margin-bottom: 6px;
 }
 
 .niveau p {
   margin: 0;
-  font-size: 0.72em;
+  font-size: 0.8rem;
   line-height: 1.3em;
 }
 
@@ -1431,7 +1619,7 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 .reserve {
   position: fixed;
   right: 40px;
-  bottom: 90px;                    /* juste au-dessus du bouton de correction */
+  bottom: calc(var(--hauteur_bandeau_bas) + 80px);   /* juste au-dessus du bouton de correction */
   z-index: 80;
   display: flex;
   flex-direction: column;
@@ -1452,10 +1640,9 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  width: 95px;
-  padding: 6px;
-  background: var(--fond);
-  font-size: 0.8em;
+  width: 105px;
+  padding: 8px;
+  font-size: 0.85rem;
   line-height: 1.2em;
   text-align: center;
   cursor: grab;
@@ -1464,41 +1651,50 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   transition: box-shadow .2s ease, background .2s ease;
 }
 
-.carte img {
+.carte img,
+.carte .dessin {
   height: 40px;
   width: auto;
   max-width: 80px;
-  pointer-events: none;  filter: drop-shadow(0 0 0 var(--trait));
-  transition: transform .2s ease, filter .2s ease;}
+  pointer-events: none;
+  filter: drop-shadow(0 0 0 var(--trait));
+  transition: transform .2s ease, filter .2s ease;
+}
 
-
-/* survol, carte attrapée ou choisie : le dessin se soulève, ombre noire décalée */
-.carte:hover img,
-.carte.en_main img,
-.carte.choisie img {
+/* survol, focus, carte attrapée ou choisie : le dessin se soulève */
+.carte:hover :is(img, .dessin),
+.carte:focus-visible :is(img, .dessin),
+.carte.en_main :is(img, .dessin),
+.carte.choisie :is(img, .dessin) {
   transform: translate(-4px, -4px);
   filter: drop-shadow(4px 4px 0 var(--trait));
 }
 
-/* après la correction, les dessins ne bougent plus */
-.classement.corrige .carte:hover img {
-  transform: none;
-  filter: none;
+/* carte choisie au clavier ou au clic : bordure en plus */
+.carte.choisie,
+.carte[aria-pressed="true"] {
+  border: 2px solid var(--trait);
 }
-
 
 .carte.en_main {
   z-index: 100;
   cursor: grabbing;
 }
 
+/* après la correction, les dessins ne bougent plus */
+.classement.corrige .carte {
+  cursor: default;
+}
 
+.classement.corrige .carte:hover :is(img, .dessin) {
+  transform: none;
+  filter: none;
+}
 
-/* correction */
-.classement.corrige .carte        { cursor: default; }
-/* correction : le texte de la carte passe en vert ou en rouge */
-.classement.corrige .carte.juste span  { color: var(--vert); }
+/* correction : texte en vert ou rouge + symbole */
+.classement.corrige .carte.juste span  { color: var(--vert_texte); }
 .classement.corrige .carte.erreur span { color: var(--rouge); }
+
 .carte_correction {
   font-family: var(--titre);
 }
@@ -1512,12 +1708,12 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   width: 65%;
   z-index: 60;
   background: var(--fond);
-  border: 0.9px solid var(--trait);
-  padding: 38px 20px 20px;
-  font-size: 0.85em;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+  padding: 38px 22px 20px;
+  font-size: 0.9rem;
   line-height: 1.4em;
   cursor: grab;
-  user-select: none;
   touch-action: none;
 }
 
@@ -1527,6 +1723,7 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 
 .classement_correction.deplacement {
   cursor: grabbing;
+  user-select: none;
 }
 
 .classement_correction p {
@@ -1544,6 +1741,27 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 
 
 
+/* ---------- Bandeau du bas (logos) ---------- */
+
+#bandeau_bas {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--hauteur_bandeau_bas);
+  z-index: 101;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 0 40px;
+  background: var(--fond);
+  border-top: 1px solid var(--trait);
+}
+
+#bandeau_bas img {
+  height: 32px;
+  width: auto;
+}
 
 
 
@@ -1551,6 +1769,20 @@ body[data-progression="manuelle"] #barre_progression_remplie {
    5. RÉGLAGES PROPRES À CERTAINS DESSINS
    (tailles au cas par cas : c'est ici qu'on ajoute les nouveaux)
    ===================================================================== */
+
+/* SVG insérés par dessins.js : la hauteur suit la largeur */
+svg.dessin {
+  height: auto;
+  overflow: visible;
+}
+
+/* dessins de l'activité A : même taille dans les questions et dans les corrections
+   [src*=…] vise les <img>, [data-src*=…] les SVG insérés par dessins.js */
+:is(.qcm_scenario, .qcm_correction) :is([src*="lessive"],    [data-src*="lessive"])    { width: 70px; }
+:is(.qcm_scenario, .qcm_correction) :is([src*="box"],        [data-src*="box"])        { width: 80px; }
+:is(.qcm_scenario, .qcm_correction) :is([src*="imprimante"], [data-src*="imprimante"]) { width: 85px; }
+:is(.qcm_scenario, .qcm_correction) :is([src*="velo"],       [data-src*="velo"])       { width: 150px; }
+:is(.qcm_scenario, .qcm_correction) :is([src*="textile"],    [data-src*="textile"])    { width: 100px; }
 
 /* animations Rive */
 #loupe        { height: 135px; }
@@ -1560,8 +1792,127 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 #ionisant     { width: 75px; }
 
 /* infobulles des acteurs */
-.item_dessin .tooltip_acteur .tooltip_acteur_image[src*="acheteur"]   { width: 200px; }
-.item_dessin .tooltip_acteur .tooltip_acteur_image[src*="recherche"]  { width: 100px; }
-.item_dessin .tooltip_acteur .tooltip_acteur_image[src*="logistique"] { width: 150px; }
-.item_dessin .tooltip_acteur .tooltip_acteur_image[src*="client"]     { width: 100px; }
-.item_dessin .tooltip_acteur .tooltip_acteur_image[src*="recycleur"]  { width: 100px; }
+.item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="acheteur"],   [data-src*="acheteur"])   { width: 200px; }
+.item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="recherche"],  [data-src*="recherche"])  { width: 100px; }
+.item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="logistique"], [data-src*="logistique"]) { width: 150px; }
+.item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="client"],     [data-src*="client"])     { width: 100px; }
+.item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="recycleur"],  [data-src*="recycleur"])  { width: 100px; }
+
+
+
+/* =====================================================================
+   6. ACCESSIBILITÉ : MOUVEMENT RÉDUIT, ZOOM, PETITS ÉCRANS
+   ===================================================================== */
+
+/* l'utilisateur a demandé moins d'animations dans son système */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* zoom fort ou écran étroit : tout passe sur une colonne (critère 10.11) */
+@media (max-width: 1100px) {
+
+  #contenu_chapitre {
+    flex-direction: column;
+    margin-left: 0;
+    padding: 0 16px;
+  }
+
+  #contenu_gauche,
+  #notion_droite {
+    width: 100%;
+  }
+
+  .boite_notion {
+    position: static;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .qcm,
+  .classement,
+  .galerie_dessins {
+    width: 100%;
+  }
+
+  .qcm {
+    grid-template-columns: 1fr;
+    row-gap: 60px;
+  }
+
+  .galerie_dessins {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 40px;
+  }
+
+  #titre_chapitre {
+    margin-left: 0;
+  }
+
+  .exemple {
+    max-width: none;
+    margin-left: 0;
+  }
+
+  .bloc_exemple {
+    flex-direction: column;
+  }
+
+  /* la réserve de cartes n'est plus fixée en bas à droite */
+  .reserve {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  #partie_2 {
+    padding-bottom: 60px;
+  }
+}
+
+@media (max-width: 700px) {
+
+  #droite_contenu {
+    width: 100%;
+    margin-left: 0;
+    padding-left: 40px;
+  }
+
+  #gauche_menu {
+    width: auto;
+  }
+
+  .escalier {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .n1, .n2, .n3, .n4 {
+    margin-bottom: 0;
+  }
+
+  .n4 { order: 1; }
+  .n3 { order: 2; }
+  .n2 { order: 3; }
+  .n1 { order: 4; }
+
+  .axe_vertical,
+  .axe_horizontal {
+    display: none;
+  }
+
+  .classement {
+    grid-template-columns: 1fr;
+  }
+
+  .qcm_pied,
+  .qcm_legende {
+    right: 16px;
+  }
+}

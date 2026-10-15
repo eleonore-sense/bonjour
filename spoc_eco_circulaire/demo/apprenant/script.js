@@ -253,40 +253,107 @@ function initLiensSource() {
   });
 }
 
-
-// ---------- Mots notion → boîte de définition à droite ----------
+// ---------- Mots à définir → boîte de définition à droite ----------
+// La boîte s'ouvre au survol du mot (ou quand on y arrive au clavier) et reste affichée.
+// On peut l'attraper et la déplacer. Elle se ferme avec son rond rouge,
+// avec la touche Échap, ou quand on survole un autre mot.
+// Peut être appelée plusieurs fois (ex : après le chargement Supabase) :
+// un mot ou une boîte déjà préparés ne le sont pas une deuxième fois.
 function initNotions() {
   const conteneur = document.getElementById('contenu_chapitre');
   if (!conteneur) return;
 
   document.querySelectorAll('.mot_notion[data-cible]').forEach(mot => {
+    if (mot.dataset.relie) return;
+
     const boite = document.getElementById(mot.dataset.cible);
     if (!boite) return;
 
-    function placer() {
+    mot.dataset.relie = 'oui';
+    mot.tabIndex = 0;                                   // atteignable au clavier
+    mot.setAttribute('aria-describedby', boite.id);    // le lecteur d'écran lit la définition
+
+    preparerBoite(boite);
+
+    function ouvrir() {
+      if (boite.classList.contains('visible')) return;  // déjà ouverte : on ne la déplace pas
+
+      document.querySelectorAll('.boite_notion.visible').forEach(b => b.classList.remove('visible'));
+
       const rectMot = mot.getBoundingClientRect();
       const rectConteneur = conteneur.getBoundingClientRect();
       boite.style.top = (rectMot.top - rectConteneur.top) + 'px';
+      boite.style.translate = '';                       // revient à côté du mot
+      boite.classList.add('visible');
     }
 
-    // Survol : seulement si la page n'est pas passée en mode « notions au clic »
-    mot.addEventListener('mouseenter', () => {
-      if (document.body.classList.contains('notions_au_clic')) return;
-      placer();
-      boite.classList.add('visible');
-    });
+    mot.addEventListener('mouseenter', ouvrir);
+    mot.addEventListener('focus', ouvrir);
 
-    mot.addEventListener('mouseleave', () => {
-      if (!mot.classList.contains('epingle')) boite.classList.remove('visible');
-    });
-
-    // preventDefault : un mot notion placé dans une réponse de QCM ne coche pas la case
+    // preventDefault : un mot placé dans une réponse de QCM ne coche pas la case
     mot.addEventListener('click', e => {
       e.preventDefault();
-      mot.classList.toggle('epingle');
-      placer();
-      boite.classList.toggle('visible', mot.classList.contains('epingle'));
+      ouvrir();
     });
+  });
+
+  // Échap ferme la définition ouverte (une seule écoute pour toute la page)
+  if (!document.body.dataset.echapNotions) {
+    document.body.dataset.echapNotions = 'oui';
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.boite_notion.visible').forEach(b => b.classList.remove('visible'));
+      }
+    });
+  }
+}
+
+// rond rouge pour fermer + boîte déplaçable
+function preparerBoite(boite) {
+  if (boite.dataset.prete) return;
+  boite.dataset.prete = 'oui';
+
+  const fermer = document.createElement('button');
+  fermer.type = 'button';
+  fermer.className = 'qcm_fermer';
+  fermer.setAttribute('aria-label', 'fermer la définition');
+  fermer.addEventListener('click', () => boite.classList.remove('visible'));
+  boite.prepend(fermer);
+
+  rendreDeplacable(boite);
+}
+
+
+// ---------- À remplacer aussi dans script.js ----------
+// Rend un élément déplaçable à la souris (sauf quand on clique sur un de ses boutons).
+// La position de départ est relue à chaque prise : si l'élément a été remis à sa place
+// entre-temps, il ne saute pas.
+function rendreDeplacable(el) {
+  el.addEventListener('pointerdown', e => {
+    if (e.target.closest('button')) return;
+    e.preventDefault();
+
+    const [x0 = 0, y0 = 0] = (el.style.translate || '0px 0px').split(' ').map(v => parseFloat(v) || 0);
+    const departX = e.clientX - x0;
+    const departY = e.clientY - y0;
+
+    el.setPointerCapture(e.pointerId);
+    el.classList.add('deplacement');
+
+    function bouger(ev) {
+      el.style.translate = `${ev.clientX - departX}px ${ev.clientY - departY}px`;
+    }
+
+    function lacher() {
+      el.classList.remove('deplacement');
+      el.removeEventListener('pointermove', bouger);
+      el.removeEventListener('pointerup', lacher);
+      el.removeEventListener('pointercancel', lacher);
+    }
+
+    el.addEventListener('pointermove', bouger);
+    el.addEventListener('pointerup', lacher);
+    el.addEventListener('pointercancel', lacher);
   });
 }
 
@@ -341,6 +408,15 @@ function initBarreParties() {
   }));
 
   // Survol : point rose + nom de la partie, cliquable si la partie est faite
+  let delaiSurvol = null;
+
+  function cacherSurvol() {
+    clearTimeout(delaiSurvol);
+    pointHover.classList.remove('visible');
+    pointHover.style.opacity = '0';
+    labelPartie.style.opacity = '0';
+  }
+
   conteneur.querySelectorAll('.zone_hover').forEach(zone => {
     const p = parseInt(zone.dataset.partie, 10);
     const position = ((p - 0.5) / total) * 100 + '%';
@@ -352,10 +428,9 @@ function initBarreParties() {
       const fait = partiesFaites.has(p);
       const estEtoile = zone.dataset.etoile === 'true';
 
-      pointHover.style.opacity = '0';
-      labelPartie.style.opacity = '0';
+      cacherSurvol();
 
-      setTimeout(() => {
+      delaiSurvol = setTimeout(() => {
         pointHover.classList.toggle('forme_etoile', estEtoile);
         pointHover.style.top = position;
         pointHover.classList.add('visible');
@@ -372,11 +447,7 @@ function initBarreParties() {
       }, 200);
     });
 
-    zone.addEventListener('mouseleave', () => {
-      pointHover.classList.remove('visible');
-      pointHover.style.opacity = '0';
-      labelPartie.style.opacity = '0';
-    });
+    zone.addEventListener('mouseleave', cacherSurvol);
   });
 }
 
@@ -592,12 +663,14 @@ function initGraphiques() {
 // chaque geste de scroll vers le bas fait glisser la page vers l'étape suivante.
 //   1re étape : l'élément de data-premiere-etape, calé tout en haut sous le bandeau
 //   ensuite   : dans un QCM, chaque ligne de blocs, centrée
+// Vers le haut, le défilement reste normal.
+// L'étape suivante est toujours calculée depuis la position réelle de la page :
+// pas de décalage si on a bougé avec la barre de défilement ou un clic.
 // Une fois la dernière étape atteinte (ou la correction lancée), le scroll redevient libre.
 function initRecentrage() {
   if (!zoneScroll) return;
 
   document.querySelectorAll('[data-recentrer]').forEach(cible => {
-    let index = -1;          // -1 = tout en haut de la page
     let actif = true;
     let dernierGeste = 0;
 
@@ -624,23 +697,46 @@ function initRecentrage() {
       return premiere ? [premiere, ...lignes.slice(1)] : lignes;
     }
 
-    function allerA(i) {
-      const liste = etapes();
-      if (i >= liste.length) return;
-      index = i;
-      if (i < 0) {
-        glisserA(0);
-        return;
+    // position de défilement où l'étape est bien placée (sans dépasser le bas de page)
+    function positionDe(etape) {
+      const hauteurBandeau = document.getElementById('haut')?.offsetHeight || 0;
+      const rectZone = zoneScroll.getBoundingClientRect();
+      const maximum = zoneScroll.scrollHeight - zoneScroll.clientHeight;
+      let position;
+
+      if (Array.isArray(etape)) {
+        // une ligne de blocs : centrée
+        const rect = rectDe(etape);
+        const hauteurVisible = zoneScroll.clientHeight - hauteurBandeau;
+        const marge = Math.max(20, (hauteurVisible - rect.height) / 2);
+        position = zoneScroll.scrollTop + (rect.top - rectZone.top) - hauteurBandeau - marge;
+      } else {
+        // une consigne : tout en haut, sous le bandeau
+        const rect = etape.getBoundingClientRect();
+        position = zoneScroll.scrollTop + (rect.top - rectZone.top) - hauteurBandeau - 15;
       }
 
-      const etape = liste[i];
-      const fin = () => {
-        // dernière étape atteinte : scroll libre (après l'inertie du trackpad)
-        if (index === liste.length - 1) setTimeout(() => { actif = false; }, 300);
-      };
+      return Math.min(maximum, Math.max(0, position));
+    }
 
-      if (Array.isArray(etape)) centrerSur(rectDe(etape), fin);   // une ligne de blocs : centrée
-      else calerEnHaut(etape, fin);                               // une consigne : tout en haut
+    function allerA(liste, i) {
+      glisserA(positionDe(liste[i]), () => {
+        // dernière étape atteinte : scroll libre (après l'inertie du trackpad)
+        if (i === liste.length - 1) setTimeout(() => { actif = false; }, 300);
+      });
+    }
+
+    // la première étape située plus bas que la position actuelle
+    function avancer() {
+      const liste = etapes();
+      const ici = zoneScroll.scrollTop;
+      const i = liste.findIndex(etape => positionDe(etape) > ici + 10);
+
+      if (i === -1) {
+        actif = false;   // plus rien en dessous : scroll libre
+        return;
+      }
+      allerA(liste, i);
     }
 
     function enService() {
@@ -649,37 +745,41 @@ function initRecentrage() {
       return actif;
     }
 
-    // un geste = une série d'événements molette ; on ne compte que le début de chaque geste
+    // molette / trackpad : seulement vers le bas, un geste = une étape
     zoneScroll.addEventListener('wheel', e => {
-      if (!enService()) return;
+      if (!enService() || e.deltaY <= 0) return;   // vers le haut : défilement normal
       e.preventDefault();
+
       const maintenant = performance.now();
       const nouveauGeste = maintenant - dernierGeste > 250;
       dernierGeste = maintenant;
-      if (!nouveauGeste || glissementEnCours) return;
-      if (e.deltaY > 0) allerA(index + 1);
-      else if (index >= 0) allerA(index - 1);
+
+      if (nouveauGeste && !glissementEnCours) avancer();
     }, { passive: false });
 
+    // clavier : flèche bas, page suivante, espace
     window.addEventListener('keydown', e => {
       if (!enService() || e.target.closest('input, button, textarea')) return;
+
       if (['ArrowDown', 'PageDown', ' '].includes(e.key)) {
         e.preventDefault();
-        allerA(index + 1);
-      } else if (['ArrowUp', 'PageUp'].includes(e.key) && index >= 0) {
-        e.preventDefault();
-        allerA(index - 1);
+        if (!glissementEnCours) avancer();
       }
     });
 
-    // clic dans une ligne qui n'est pas encore centrée : on la centre
-    // clic dans une ligne : on y va (un clic dans la ligne 1 garde la consigne en haut)
+    // clic dans une ligne qui n'est pas bien placée : on y va
+    // (un clic dans la ligne 1 garde la consigne en haut)
     cible.addEventListener('click', e => {
       if (!enService()) return;
+
       const bloc = e.target.closest('.qcm_bloc');
       if (!bloc) return;
+
+      const liste = etapes();
       const i = lignesBlocs().findIndex(l => l.includes(bloc));
-      if (i !== -1 && i !== index) allerA(i);
+      if (i === -1 || !liste[i]) return;
+
+      if (Math.abs(positionDe(liste[i]) - zoneScroll.scrollTop) > 10) allerA(liste, i);
     });
   });
 }

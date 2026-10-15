@@ -1,101 +1,114 @@
 <!doctype html>
 <html lang="fr">
+
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SPOC — Éditeur pilote CH03-P04</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>SPOC — Éditeur pilote CH03-P04</title>
+
   <link rel="stylesheet" href="style_editeur.css">
 </head>
 
 
 <body>
-    <div id="bandeau_haut">
-            <div class="logo_gauche">SPOC</div>
-            <span>Éditeur de contenu — pilote</span>
-    </div>
 
-<main>
-
-     <!--   PAGE ACCUEIL -->
-<section id="home" class="cadre">
-    <h1>Choisir une page à modifier</h1>
- <!--   <p class="muted">Cette première version est branchée sur le contenu réel de <strong>chap3_I-4.html</strong>.</p> -->
-    <label class="a_remplir">Chapitre<input type="text" value="CH03 — Éco-conception" disabled></label>
-    
-    <label class="a_remplir">Page<input type="text" value="CH03-P04 — Activité : les niveaux de l’éco-conception" disabled></label>
-    
-    <p>On commence par cette page pilote avant d’étendre le format aux autres pages.</p>
-    
-    <div class="actions"><button class="primary" id="open">Ouvrir pour modification →</button></div>
-</section>
+  <div id="bandeau_haut">
+    <div class="logo_gauche">SPOC</div>
+    <span>Éditeur de contenu — pilote</span>
+  </div>
 
 
+  <main>
+
+    <!-- ========== PAGE ACCUEIL ========== -->
+
+    <section id="home" class="cadre">
+
+      <h1>Choisir une page à modifier</h1>
+
+      <label class="a_remplir">Chapitre<input type="text" value="CH03 — Éco-conception" disabled></label>
+
+      <label class="a_remplir">Page<input type="text" value="CH03-P04 — Activité : les niveaux de l’éco-conception" disabled></label>
+
+      <p>On commence par cette page pilote avant d’étendre le format aux autres pages.</p>
+
+      <div class="actions">
+        <button class="primary" id="open">Ouvrir pour modification →</button>
+      </div>
+
+    </section>
 
 
+    <!-- ========== PAGE MODIFICATION ========== -->
 
-
-         <!--   PAGE MODIF -->
     <section id="edit" class="cadre hidden">
-    <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
+
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
         <button id="back">← Retour à l’accueil</button>
         <span class="muted">CH03-P04 · Base Supabase</span>
-    </div>
+      </div>
 
-    <div class="row" style="margin-top:22px">
+      <div class="row" style="margin-top:22px">
+
         <div>
 
-            <label class="a_remplir">Titre de la page<input id="title" type="text"></label>
+          <label class="a_remplir">Titre de la page<input id="title" type="text"></label>
 
-            <label class="a_remplir">Texte d’introduction<textarea id="intro"></textarea></label>
+          <!-- les champs enrichis sont créés par script_editeur.js -->
+          <div id="zone_intro"></div>
 
-            <h2>Questions du QCM</h2>
+          <h2>Questions du QCM</h2>
 
-            <div id="questions"></div>
-   
-            <h2>Activité de classement</h2>
+          <div id="questions"></div>
 
-            <label class="a_remplir">Consigne<textarea id="classIntro"></textarea></label>
+          <h2>Activité de classement</h2>
 
-             <label class="a_remplir">Instruction<textarea id="classInstruction"></textarea></label>
-            <div id="levels"></div>
-    
+          <div id="zone_classIntro"></div>
+
+          <div id="zone_classInstruction"></div>
+
+          <div id="levels"></div>
+
+          <div id="zone_classCorrection"></div>
+
         </div>
 
 
         <aside>
-            
-            <div class="cadre" style="padding:16px;background:#fafafa">
-                <h2>Images du catalogue</h2>
 
-                <p class="muted">Sélection d’une image déjà présente dans les fichiers du SPOC</p>
-                
+          <div class="cadre" style="padding:16px;background:#fafafa">
+            <h2>Images du catalogue</h2>
+            <p class="muted">Sélection d’une image déjà présente dans les fichiers du SPOC</p>
+            <div class="catalog" id="catalog"></div>
+            <p id="selectedImage" class="muted"></p>
+          </div>
 
-                <div class="catalog" id="catalog"></div>
-                
-                <p id="selectedImage" class="muted"></p>
-            </div>
-
-
+          <div class="cadre" style="padding:16px;background:#fafafa;margin-top:16px">
+            <h2>Définitions</h2>
+            <div id="definitions"></div>
+          </div>
 
         </aside>
-    </div>
+
+      </div>
 
 
-    <div class="actions">
-
+      <div class="actions">
         <button id="cancel">Annuler les changements</button>
-
         <button class="primary" id="save">Enregistrer dans Supabase</button>
+      </div>
 
-    </div>
+      <div id="notice" class="notice hidden" role="status"></div>
 
-    <div id="notice" class="notice hidden" role="status"></div>
-</section>
-</main>
+    </section>
 
-<script src="supabase-config.js"></script>
-<script src="contenu-initial.js"></script>
-<script src="script_editeur.js"></script>
+  </main>
+
+
+  <script src="supabase-config.js"></script>
+  <script src="contenu-initial.js"></script>
+  <script src="script_editeur.js"></script>
 
 </body>
-
 </html>

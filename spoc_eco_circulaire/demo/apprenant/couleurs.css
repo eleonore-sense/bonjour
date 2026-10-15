@@ -1,0 +1,93 @@
+/* =====================================================================
+   COULEURS DU COURS
+   À charger AVANT style_2.css.
+   Changer une valeur ici la change sur toutes les pages.
+   ===================================================================== */
+
+:root {
+
+  /* ---------- Palette ---------- */
+
+  --vert_citron:        #cefb5f;
+  --vert_bleu:          #dbffdd;
+  --rose:               #f7c5ff;
+  --violet:             #b096ff;
+  --bleu_clair:         #b4d5f7;
+  --bleu:               #6eadf0;
+  --prune:              #68043a;
+  --rouge:              #ec3724;
+  --orange:             #f27322;
+  --blanc:              #ffffff;
+  --noir:               #000000;
+
+
+  /* ---------- Interface ---------- */
+
+  /* fonds */
+  --fond:               #f8f8f6;
+  --fond_carte:         var(--blanc);
+  --fond_intro:         var(--rose);
+  --fond_consigne:      var(--bleu);
+  --onglet_fait:        var(--vert_citron);
+
+  /* couleurs d'état */
+  --barre_progression:  var(--rose);
+  --vert:               var(--vert_citron);
+  --vert_texte:         #2e7a33;   /* vert lisible pour du texte (contraste ≥ 4,5:1) */
+  --marron:             var(--prune);
+
+  /* contours des encadrés */
+  --violet_trait:       var(--violet);
+  --bleu_trait:         var(--bleu);
+
+  /* texte et traits */
+  --couleur_texte:      var(--noir);
+  --texte_inverse:      var(--blanc);
+  --trait:              var(--noir);
+  --trait_doux:         #8c8c8c;
+  --focus:              #1d4ed8;
+
+
+  /* ---------- Contour des dessins ---------- */
+
+  --dessin_trait:           var(--noir);
+  --dessin_epaisseur:       1.2px;
+  --dessin_epaisseur_fine:  0.7px;
+  --dessin_epaisseur_forte: 2px;
+}
+
+
+
+/* =====================================================================
+   DESSINS SVG
+   Ne concerne que les SVG insérés par dessins.js (classe .dessin).
+   Chaque forme porte le nom d'une couleur de la palette, plus un contour
+   si besoin : trait (normal), trait_fin ou trait_fort.
+   Exemple : class="rose trait_fin"
+   Un SVG qui garde son propre <style> garde son apparence d'origine.
+   ===================================================================== */
+
+/* contour : même couleur, même épaisseur, quelle que soit la taille du dessin */
+svg.dessin :is(.trait, .trait_fin, .trait_fort) {
+  stroke: var(--dessin_trait);
+  stroke-width: var(--dessin_epaisseur);
+  stroke-miterlimit: 10;
+  vector-effect: non-scaling-stroke;
+}
+
+svg.dessin .trait_fin   { stroke-width: var(--dessin_epaisseur_fine); }
+svg.dessin .trait_fort  { stroke-width: var(--dessin_epaisseur_forte); }
+
+/* remplissages */
+svg.dessin .vert_citron { fill: var(--vert_citron); }
+svg.dessin .vert_bleu   { fill: var(--vert_bleu); }
+svg.dessin .rose        { fill: var(--rose); }
+svg.dessin .violet      { fill: var(--violet); }
+svg.dessin .bleu_clair  { fill: var(--bleu_clair); }
+svg.dessin .bleu        { fill: var(--bleu); }
+svg.dessin .prune       { fill: var(--prune); }
+svg.dessin .rouge       { fill: var(--rouge); }
+svg.dessin .orange      { fill: var(--orange); }
+svg.dessin .blanc       { fill: var(--blanc); }
+svg.dessin .noir        { fill: var(--noir); }
+svg.dessin .sans_fond   { fill: none; }

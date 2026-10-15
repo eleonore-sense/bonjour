@@ -1,1 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?><svg id="a" xmlns="http://www.w3.org/2000/svg" width="317.98mm" height="259.77mm" viewBox="0 0 901.37 736.36"><defs><style>.b{fill:#cc4242;}.b,.c,.d{stroke:#000;stroke-miterlimit:10;stroke-width:2px;}.c{fill:#fff;}.d{fill:#6f83ec;}</style></defs><rect class="c" x="236.72" y="1" width="427.93" height="315.5"/><rect class="d" x="1" y="254.85" width="899.37" height="384.41" rx="12" ry="12"/><rect class="d" x="196.83" y="378.16" width="507.71" height="203.08" rx="12" ry="12"/><rect class="c" x="253.04" y="541.35" width="395.29" height="194.02"/><circle class="b" cx="845.43" cy="348.29" r="19.95"/><circle class="b" cx="845.43" cy="428.08" r="19.95"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="901.37" height="736.36" viewBox="0 0 901.37 736.36">
+
+  <!-- feuille du haut -->
+  <rect class="blanc trait_fin" x="236.72" y="1" width="427.93" height="315.5"/>
+
+  <!-- corps -->
+  <rect class="vert_bleu trait_fin" x="1" y="254.85" width="899.37" height="384.41" rx="12" ry="12"/>
+
+  <!-- façade -->
+  <rect class="vert_bleu trait_fin" x="196.83" y="378.16" width="507.71" height="203.08" rx="12" ry="12"/>
+
+  <!-- feuille imprimée -->
+  <rect class="blanc trait_fin" x="253.04" y="541.35" width="395.29" height="194.02"/>
+
+  <!-- bouton 1 -->
+  <circle class="rouge trait_fin" cx="845.43" cy="348.29" r="19.95"/>
+
+  <!-- bouton 2 -->
+  <circle class="rouge trait_fin" cx="845.43" cy="428.08" r="19.95"/>
+
+</svg>

@@ -242,3 +242,16 @@ object-fit:contain
 }
 
 
+
+
+/* Outils de mise en forme et champs de définition */
+.rich-tools { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0; }
+.rich-tools button { padding:5px 9px; cursor:pointer; }
+.rich-editor { min-height:70px; padding:10px; border:1px solid #bbb; border-radius:6px; background:#fff; white-space:pre-wrap; }
+.rich-editor:focus { outline:2px solid #9aa; }
+.definitions-panel { margin:18px 0; padding:14px; border:1px solid #ccc; border-radius:10px; }
+.definition-row { display:grid; grid-template-columns:1fr; gap:7px; padding:12px 0; border-bottom:1px solid #ddd; }
+.definition-row input, .definition-row textarea { width:100%; box-sizing:border-box; padding:8px; }
+.definition-row textarea { min-height:70px; }
+.mot_notion { cursor:help; text-decoration:underline; text-underline-offset:3px; }
+@media(min-width:850px) { .definition-row { grid-template-columns:1fr 2fr auto; align-items:start; } .definition-row strong { grid-column:1/-1; } }

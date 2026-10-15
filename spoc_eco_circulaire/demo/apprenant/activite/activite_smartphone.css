@@ -1,0 +1,686 @@
+/* =====================================================================
+   ACTIVITÉ D : CAS D'ÉTUDE D'UN SMARTPHONE
+   Styles propres à cette page, en plus de couleurs.css et style.css.
+   Tous les fonds sont gris (--fond).
+   ===================================================================== */
+
+
+/* ---------- Titres ---------- */
+
+/* les vrais titres h1 / h2 / h3 gardent l'apparence du cours */
+h1.petit_titre {
+  font-weight: normal;
+}
+
+.titre_etape {
+  display: inline-block;
+  margin: 70px 0 25px;
+  padding: 6px 16px;
+  font-family: var(--titre);
+  font-weight: normal;
+  font-size: 1rem;
+  background: var(--noir);
+  border: 1px solid var(--blanc);
+  color: var(--blanc);
+  border-radius: var(--arrondi_pilule);
+}
+
+.titre_partie_activite {
+  margin: 60px 0 0;
+  font-family: var(--titre);
+  font-weight: normal;
+  font-size: 1.05rem;
+  border-bottom: 1px solid var(--trait_doux);
+  padding-bottom: 4px;
+}
+
+/* consignes d'étape écrites comme de vrais titres */
+h3.consigne {
+  font-weight: normal;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.liste_objectifs {
+  margin: 8px 0 0;
+  padding-left: 22px;
+}
+
+.liste_objectifs li {
+  margin-bottom: 4px;
+}
+
+
+/* ---------- Quand / comment / pour quoi ---------- */
+
+.fiche_etape {
+  display: grid;
+  gap: 14px;
+  margin: 20px 0 0 12px;
+  max-width: 860px;
+}
+
+.fiche_etape dt {
+  font-family: var(--titre);
+}
+
+.fiche_etape dd {
+  margin: 2px 0 0;
+}
+
+
+/* ---------- Boutons pour avancer dans l'activité ---------- */
+
+.conteneur_bouton {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.conteneur_bouton[hidden] {
+  display: none;
+}
+
+.bouton_etape {
+  font: inherit;
+  font-family: var(--titre);
+  font-size: 1rem;
+  color: var(--couleur_texte);
+  background: var(--rose);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  padding: 8px 40px;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.bouton_etape:hover,
+.bouton_etape:focus-visible {
+  transform: translate(-4px, -4px);
+  box-shadow: 4px 4px 0 var(--trait);
+}
+
+/* une fois la partie affichée, le bouton reste visible mais plus discret */
+.bouton_etape[aria-expanded="true"] {
+  background: var(--fond);
+}
+
+/* parties qui apparaissent au clic sur le bouton */
+.partie_cachee {
+  scroll-margin-top: 140px;
+  animation: apparition .6s ease;
+}
+
+
+/* ---------- Le dossier de documents ---------- */
+
+.dossier {
+  position: relative;
+  width: 120%;
+  margin-top: 90px;                 /* place pour l'onglet du dossier */
+  padding: 30px 40px;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite) 0 var(--arrondi_boite) var(--arrondi_boite);
+}
+
+/* l'onglet du dossier, en haut à droite */
+.dossier::before {
+  content: "";
+  position: absolute;
+  right: -1px;
+  bottom: calc(100% - 1px);
+  width: 35%;
+  height: 40px;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-bottom: none;
+  border-radius: var(--arrondi_boite) var(--arrondi_boite) 0 0;
+}
+
+.miniatures {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 170px));   /* 4 feuilles par ligne */
+  justify-content: center;
+  gap: 24px 40px;
+}
+
+/* une miniature = une feuille de papier, coin replié en haut à droite.
+   La feuille est découpée en biais (clip-path) : l'ombre, posée sur le <li>,
+   suit la découpe au lieu de dessiner un carré sous le triangle. */
+.miniatures li {
+  transition: filter .2s ease;
+}
+
+.miniatures li:has(.miniature:hover),
+.miniatures li:has(.miniature:focus-visible) {
+  filter: drop-shadow(4px 4px 0 var(--trait));
+}
+
+.miniature {
+  --coin: 26px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  aspect-ratio: 0.77;               /* proportion d'une feuille */
+  padding: 16px 14px;
+  font: inherit;
+  text-align: left;
+  color: var(--couleur_texte);
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - var(--coin)) 0, 100% var(--coin), 100% 100%, 0 100%);
+  transition: transform .2s ease;
+}
+
+/* le rabat : triangle bordé, dont la diagonale suit la découpe */
+.miniature::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: var(--coin);
+  height: var(--coin);
+  background:
+    linear-gradient(to bottom left,
+      transparent 50%,
+      var(--trait) 50%,
+      var(--trait) calc(50% + 1.5px),
+      var(--fond) calc(50% + 1.5px));
+  border-left: 1px solid var(--trait);
+  border-bottom: 1px solid var(--trait);
+}
+
+.miniature:hover,
+.miniature:focus-visible {
+  transform: translate(-4px, -4px);
+}
+
+/* le contour de focus est coupé par la découpe : on le remplace par un trait épais */
+.miniature:focus-visible {
+  outline: none;
+  border: 3px solid var(--focus);
+}
+
+.miniature_titre {
+  font-family: var(--titre);
+  font-size: 0.9rem;
+  line-height: 1.2;
+  padding-right: 18px;              /* ne passe pas sous le coin replié */
+}
+
+.miniature_lignes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.7rem;
+}
+
+/* petit dessin et mini tableau, pour figurer le contenu de la feuille */
+.miniature_dessin {
+  width: 60%;
+  height: 40px;
+  border: 1px dashed var(--trait_doux);
+  border-radius: 6px;
+}
+
+.miniature_tableau {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.miniature_tableau span {
+  height: 9px;
+  border-bottom: 1px solid var(--trait_doux);
+}
+
+
+/* ---------- Documents en pop-up ---------- */
+
+.fenetre_document {
+  width: min(760px, 92vw);
+  max-height: 85vh;
+  padding: 36px 40px 30px;
+  color: var(--couleur_texte);
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+  font-family: var(--labeur);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.fenetre_document::backdrop {
+  background: transparent;
+}
+
+.fenetre_document .qcm_fermer {
+  top: 12px;
+  right: 12px;
+}
+
+.fenetre_document h4 {
+  margin: 0 0 16px;
+  font-family: var(--titre);
+  font-weight: normal;
+  font-size: 1.15rem;
+}
+
+.fenetre_document h5 {
+  margin: 18px 0 6px;
+  font-family: var(--titre);
+  font-weight: normal;
+  font-size: 0.95rem;
+}
+
+.fenetre_document ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.fenetre_document li {
+  margin-bottom: 8px;
+}
+
+.note_document {
+  margin: 10px 0 0;
+}
+
+.fiche_technique {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.fiche_technique th,
+.fiche_technique td {
+  padding: 5px 0;
+  border-bottom: 1px solid var(--trait_doux);
+  text-align: left;
+  vertical-align: top;
+}
+
+.fiche_technique th {
+  font-weight: normal;
+  font-family: var(--titre);
+  padding-right: 12px;
+}
+
+/* infographies et cartes pas encore réalisées */
+.emplacement_media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  margin: 6px 0 12px;
+  border: 1px dashed var(--trait_doux);
+  border-radius: var(--arrondi_boite);
+  color: var(--trait_doux);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 10px;
+}
+
+
+/* ---------- Question 1 : roue de l'analyse 360° ---------- */
+
+.roue {
+  --rayon: 190px;
+  position: relative;
+  width: min(1080px, 100%);
+  height: calc(var(--rayon) * 2 + 60px);
+  margin: 30px auto 90px;           /* place sous la roue pour les réponses du bas */
+}
+
+/* les éléments attendus sortent de la roue : on lui donne de l'air */
+.roue.corrigee {
+  margin-top: 210px;
+  margin-bottom: 200px;
+}
+
+/* cercle de fond */
+.roue::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--rayon) * 2);
+  height: calc(var(--rayon) * 2);
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+}
+
+.roue_centre {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 110px;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--fond_intro);
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+  font-family: var(--titre);
+  font-size: 0.85rem;
+}
+
+/* 9 rubriques posées sur le cercle.
+   --position (dans le HTML) : angle depuis le haut, dans le sens des aiguilles d'une montre.
+   Les rubriques en pointillés sont plus serrées, pour laisser de la place
+   aux réponses des autres. */
+.rubrique {
+  --angle: calc(var(--position) - 90deg);
+  position: absolute;
+  left: calc(50% + var(--rayon) * cos(var(--angle)));
+  top: calc(50% + var(--rayon) * sin(var(--angle)));
+  transform: translate(-50%, -50%);
+}
+
+.rubrique:hover,
+.rubrique:focus-within,
+.rubrique.ouverte {
+  z-index: 20;
+}
+
+.rubrique_bouton {
+  position: relative;
+  z-index: 1;
+  font: inherit;
+  font-size: 0.8rem;
+  white-space: nowrap;              /* titres sur une seule ligne */
+  padding: 5px 12px;
+  color: var(--couleur_texte);
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.rubrique_bouton:hover,
+.rubrique_bouton:focus-visible,
+.rubrique.ouverte .rubrique_bouton {
+  transform: translate(-3px, -3px);
+  box-shadow: 3px 3px 0 var(--trait);
+}
+
+/* rubrique remplie : l'élève a écrit une réponse */
+.rubrique.remplie .rubrique_bouton {
+  background: var(--orange);
+}
+
+/* rubriques traitées à l'étape suivante */
+.rubrique.prerempli .rubrique_bouton {
+  border-style: dashed;
+}
+
+/* fenêtre de saisie : au survol, au clavier, ou épinglée au clic */
+.rubrique_fenetre {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 8px);
+  z-index: 3;
+  transform: translateX(-50%);
+  width: 280px;
+  padding: 12px 14px;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+  font-size: 0.85rem;
+}
+
+/* pont invisible entre le bouton et la fenêtre : le survol ne se perd pas en descendant */
+.rubrique_fenetre::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -12px;
+  height: 12px;
+}
+
+.rubrique:hover .rubrique_fenetre,
+.rubrique_fenetre:focus-within,
+.rubrique.ouverte .rubrique_fenetre {
+  display: block;
+}
+
+.rubrique_fenetre label {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--titre);
+}
+
+.rubrique_fenetre textarea {
+  width: 100%;
+  font: inherit;
+  padding: 6px 8px;
+  background: var(--fond);
+  border: 1px solid var(--trait_doux);
+  border-radius: 8px;
+  resize: vertical;
+}
+
+.rubrique_fenetre p {
+  margin: 0;
+}
+
+
+/* ---------- Réponses de l'élève et éléments attendus ---------- */
+
+/* gris : la réponse de l'élève, de la largeur du titre,
+   posée par-dessus le bas du titre qu'elle chevauche légèrement */
+.note_eleve {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% - 4px);
+  z-index: 2;
+  min-width: 120px;
+  margin: 0;
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+  white-space: pre-line;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;           /* 4 lignes, la suite reste dans la fenêtre de saisie */
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* vert-bleu : les éléments attendus, à l'extérieur de la roue */
+.note_attendue {
+  position: absolute;
+  z-index: 2;
+  width: 210px;
+  padding: 8px 12px;
+  font-size: 0.72rem;
+  line-height: 1.3;
+  background: var(--vert_bleu);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+}
+
+.note_eleve[hidden],
+.note_attendue[hidden] {
+  display: none;
+}
+
+/* place de chaque encadré, vers l'extérieur de la roue */
+.rubrique[data-cote="haut"]        .note_attendue { left: 50%; bottom: calc(100% + 12px); transform: translateX(-50%); }
+.rubrique[data-cote="haut_droite"] .note_attendue { left: calc(100% + 16px); bottom: 0; }
+.rubrique[data-cote="droite"]      .note_attendue { left: calc(100% + 75px); bottom: -30px; }
+.rubrique[data-cote="bas_droite"]  .note_attendue { left: calc(100% + 16px); top: 0; }
+.rubrique[data-cote="bas_gauche"]  .note_attendue { right: calc(100% + 16px); top: 0; }
+.rubrique[data-cote="haut_gauche"] .note_attendue { right: calc(100% + 16px); bottom: 0; }
+
+/* étoiles à la place des puces */
+.note_attendue ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.note_attendue li {
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 3px;
+}
+
+.note_attendue li::before {
+  content: "✶";
+  content: "✶" / "";               /* décoratif : non lu par les lecteurs d'écran */
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+
+/* ---------- Question 2 : choix de l'étape suivante ---------- */
+
+.choix_etape fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.choix_etape legend {
+  padding: 10px 18px;
+  margin-bottom: 20px;
+}
+
+.choix {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  max-width: 860px;
+  margin: 0 0 14px 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--trait_doux);
+  border-radius: var(--arrondi_boite);
+  cursor: pointer;
+}
+
+.choix:has(input:checked) {
+  border-color: var(--trait);
+}
+
+.choix input {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  accent-color: var(--trait);
+}
+
+.choix strong {
+  font-family: var(--titre);
+  font-weight: normal;
+}
+
+.choix_etape .qcm_verifier {
+  margin: 10px 0 0 12px;
+}
+
+.retour_choix {
+  max-width: 860px;
+  margin: 24px 0 0 12px;
+  padding: 16px 18px;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+}
+
+.retour_choix p {
+  margin: 0 0 8px;
+}
+
+.retour_choix p:last-child {
+  margin-bottom: 0;
+}
+
+
+/* ---------- Emplacement de l'agent IA ---------- */
+
+.agent {
+  max-width: 860px;
+  margin: 24px 0 0 12px;
+  padding: 16px 18px;
+  border: 1px dashed var(--trait);
+  border-radius: var(--arrondi_boite);
+}
+
+
+/* ---------- Petits écrans et zoom fort ---------- */
+
+@media (max-width: 1100px) {
+
+  .dossier {
+    width: 100%;
+    padding: 30px 20px;
+  }
+
+  /* la roue devient une liste */
+  .roue,
+  .roue.corrigee {
+    width: auto;
+    height: auto;
+    margin: 30px 0 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .roue::before,
+  .roue_centre {
+    display: none;
+  }
+
+  .rubrique,
+  .rubrique_bouton,
+  .rubrique_fenetre,
+  .note_eleve,
+  .rubrique[data-cote] .note_attendue {
+    position: static;
+    transform: none;
+    width: auto;
+    height: auto;
+  }
+
+  .rubrique_bouton {
+    white-space: normal;
+  }
+
+  .rubrique_bouton:hover,
+  .rubrique_bouton:focus-visible,
+  .rubrique.ouverte .rubrique_bouton {
+    transform: translate(-3px, -3px);
+  }
+
+  .rubrique_fenetre,
+  .note_eleve,
+  .note_attendue {
+    margin-top: 8px;
+  }
+
+  .miniatures {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
