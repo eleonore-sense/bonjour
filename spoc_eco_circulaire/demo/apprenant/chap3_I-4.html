@@ -1,58 +1,211 @@
 <!doctype html>
 <html lang="fr">
+
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>chap 3 part 4 clone test</title>
+
   <link rel="stylesheet" href="style.css">
+
   <script src="https://unpkg.com/@rive-app/canvas@2.7.0"></script>
   <script src="cours.js" defer></script>
   <script src="script.js" defer></script>
-
-<script src="../edition/supabase-config.js"></script>
-  <style>.clone-banner{margin:12px auto;padding:12px;border:2px solid #111;background:#fff;color:#111;max-width:1100px;font:16px/1.4 sans-serif}.clone-status{font-weight:700}</style>
+  <script src="../edition/supabase-config.js"></script>
+    <script src="script_chargement_supabase.js"></script>
 </head>
 
 
 <body data-chapitre="3" data-suite="non" data-progression="manuelle">
 
-<!--<div class="clone-banner"><strong>PAGE APPRENANTE — COPIE DE TEST</strong><br>Cette copie tente de charger le QCM depuis Supabase. La page originale chap3_I-4.html n’est pas modifiée.<br><span id="clone-status" class="clone-status">Chargement du contenu…</span></div>-->
 
-<div id="droite_contenu"><div id="contenu_chapitre"><div id="contenu_gauche">
-  <div class="petit_titre" id="clone-title">4. Activité : les niveaux de l’éco-conception</div>
-  <div class="txt_labeur" id="clone-intro"><span class="souligne">Les règles de l'activité :</span><br>Les solutions d’éco-conception peuvent être classées suivant 4 différents niveaux : selon le niveau de difficulté à les mettre en place et leurs impacts positifs sur l’environnement.</div>
-  <div class="partie_activite" id="partie_1">
-    <div class="consigne" id="consigne_partie_1"><span class="souligne">Première partie :</span> Analysez les scénarios d’éco-conception suivants en répondant au QCM.</div>
-    <div class="qcm" data-recentrer data-premiere-etape="#consigne_partie_1" data-texte-correction="correction" data-texte-suite="passer à la suite" data-suite-cible="#partie_2" data-partie-actuelle="#partie_1" data-progression-fin="50">
-      <div class="qcm_bloc"><div class="qcm_scenario"><img src="dessin/chap_3/4/lessive.svg" alt=""><p>Question 1</p></div><div class="qcm_options"></div><div class="qcm_correction"></div></div>
-      <div class="qcm_bloc"><div class="qcm_scenario"><img src="dessin/chap_3/4/box.svg" alt=""><p>Question 2</p></div><div class="qcm_options"></div><div class="qcm_correction"></div></div>
-      <div class="qcm_bloc"><div class="qcm_scenario"><img src="dessin/chap_3/4/imprimante.svg" alt=""><p>Question 3</p></div><div class="qcm_options"></div><div class="qcm_correction"></div></div>
-      <div class="qcm_bloc image_droite"><div class="qcm_scenario"><img src="dessin/chap_3/4/velo.svg" alt=""><p>Question 4</p></div><div class="qcm_options"></div><div class="qcm_correction"></div></div>
-      <div class="qcm_bloc"><div class="qcm_scenario"><img src="dessin/chap_3/4/textile.svg" alt=""><p>Question 5</p></div><div class="qcm_options"></div><div class="qcm_correction"></div></div>
+
+  <div id="droite_contenu">
+    <div id="contenu_chapitre">
+
+      <div id="contenu_gauche">
+
+        <div class="petit_titre" id="clone-title">4. Activité : les niveaux de l’éco-conception</div>
+
+        <div class="txt_labeur" id="clone-intro">
+          <span class="souligne">Les règles de l'activité :</span><br>
+          Les solutions d’éco-conception peuvent être classées suivant 4 différents niveaux : selon le niveau de difficulté à les mettre en place et leurs impacts positifs sur l’environnement.
+        </div>
+
+
+        <!-- ========== Partie 1 : QCM ========== -->
+
+        <div class="partie_activite" id="partie_1">
+
+          <div class="consigne" id="consigne_partie_1">
+            <span class="souligne">Première partie :</span> Analysez les scénarios d’éco-conception suivants en répondant au QCM.
+          </div>
+
+          <div class="qcm"
+               data-recentrer
+               data-premiere-etape="#consigne_partie_1"
+               data-texte-correction="correction"
+               data-texte-suite="passer à la suite"
+               data-suite-cible="#partie_2"
+               data-partie-actuelle="#partie_1"
+               data-progression-fin="50">
+
+            <div class="qcm_bloc">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/4/lessive.svg" alt="">
+                <p>Question 1</p>
+              </div>
+              <div class="qcm_options"></div>
+              <div class="qcm_correction"></div>
+            </div>
+
+            <div class="qcm_bloc">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/4/box.svg" alt="">
+                <p>Question 2</p>
+              </div>
+              <div class="qcm_options"></div>
+              <div class="qcm_correction"></div>
+            </div>
+
+            <div class="qcm_bloc">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/4/imprimante.svg" alt="">
+                <p>Question 3</p>
+              </div>
+              <div class="qcm_options"></div>
+              <div class="qcm_correction"></div>
+            </div>
+
+            <div class="qcm_bloc image_droite">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/4/velo.svg" alt="">
+                <p>Question 4</p>
+              </div>
+              <div class="qcm_options"></div>
+              <div class="qcm_correction"></div>
+            </div>
+
+            <div class="qcm_bloc">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/4/textile.svg" alt="">
+                <p>Question 5</p>
+              </div>
+              <div class="qcm_options"></div>
+              <div class="qcm_correction"></div>
+            </div>
+
+          </div>
+        </div>
+
+
+        <!-- ========== Partie 2 : classement ========== -->
+
+        <div class="partie_activite cache" id="partie_2">
+
+          <div class="txt_labeur">
+            <span class="souligne">Deuxième partie :</span><br>
+            Le tableau répertorie les 4 grands niveaux d’éco-conception.
+          </div>
+
+          <div class="consigne ecart" id="consigne_partie_2">
+            Glissez-déposez chaque scénario d’éco-conception au bon niveau d’éco-conception.
+          </div>
+
+          <div class="classement"
+               data-recentrer
+               data-premiere-etape="#consigne_partie_2"
+               data-texte-correction="correction"
+               data-texte-suite="passer à la suite"
+               data-progression-debut="50">
+
+            <!-- Cartes à classer -->
+            <div class="depot reserve">
+
+              <div class="carte" data-niveau="2">
+                <img src="dessin/chap_3/4/lessive.svg" alt="">
+                <span>lessive 2 fois plus concentrée</span>
+              </div>
+
+              <div class="carte" data-niveau="4">
+                <img src="dessin/chap_3/4/imprimante.svg" alt="">
+                <span>location des imprimantes Xerox</span>
+              </div>
+
+              <div class="carte" data-niveau="1">
+                <img src="dessin/chap_3/4/textile.svg" alt="">
+                <span>nouvelle machine de filature</span>
+              </div>
+
+              <div class="carte" data-niveau="3">
+                <img src="dessin/chap_3/4/velo.svg" alt="">
+                <span>rétrofit des camions de livraison</span>
+              </div>
+
+              <div class="carte" data-niveau="2">
+                <img src="dessin/chap_3/4/box.svg" alt="">
+                <span>box internet avec mode veille</span>
+              </div>
+
+            </div>
+
+            <div class="axe_vertical">
+              <span>bénéfice environnemental élevé</span>
+              <span>bénéfice environnemental faible</span>
+            </div>
+
+            <!-- Niveaux -->
+            <div class="escalier">
+
+              <div class="niveau n4">
+                <div class="niveau_titre">niveau 4 : nouveau modèle économique</div>
+                <p>On change la façon de vendre et d’utiliser, pas juste le produit.</p>
+                <div class="depot" data-niveau="4"></div>
+              </div>
+
+              <div class="niveau n3">
+                <div class="niveau_titre">niveau 3 : innovation technologique</div>
+                <p>On change la technologie pour un impact radicalement différent.</p>
+                <div class="depot" data-niveau="3"></div>
+              </div>
+
+              <div class="niveau n2">
+                <div class="niveau_titre">niveau 2 : restructuration</div>
+                <p>On modifie la structure et la composition du produit.</p>
+                <div class="depot" data-niveau="2"></div>
+              </div>
+
+              <div class="niveau n1">
+                <div class="niveau_titre">niveau 1 : optimisation</div>
+                <p>On optimise l’existant.</p>
+                <div class="depot" data-niveau="1"></div>
+              </div>
+
+            </div>
+
+            <div class="axe_horizontal">
+              <span>changement localisé</span>
+              <span>changement profond</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- ========== Notion ========== -->
+
+      <div id="notion_droite">
+        <div class="boite_notion" id="modele_affaire">
+          <strong>L’évolution du modèle économique</strong>
+          transformation de la manière dont une entreprise crée de la valeur, la délivre à ses clients et en tire des revenus.
+        </div>
+      </div>
+
     </div>
   </div>
-  <div class="partie_activite cache" id="partie_2"><div class="txt_labeur"><span class="souligne">Deuxième partie :</span><br>Le tableau répertorie les 4 grands niveaux d’éco-conception.</div><div class="consigne ecart" id="consigne_partie_2">Glissez-déposez chaque scénario d’éco-conception au bon niveau d’éco-conception.</div><div class="classement" data-recentrer data-premiere-etape="#consigne_partie_2" data-texte-correction="correction" data-texte-suite="passer à la suite" data-progression-debut="50"><div class="depot reserve"><div class="carte" data-niveau="2"><img src="dessin/chap_3/4/lessive.svg" alt=""><span>lessive 2 fois plus concentrée</span></div><div class="carte" data-niveau="4"><img src="dessin/chap_3/4/imprimante.svg" alt=""><span>location des imprimantes Xerox</span></div><div class="carte" data-niveau="1"><img src="dessin/chap_3/4/textile.svg" alt=""><span>nouvelle machine de filature</span></div><div class="carte" data-niveau="3"><img src="dessin/chap_3/4/velo.svg" alt=""><span>rétrofit des camions de livraison</span></div><div class="carte" data-niveau="2"><img src="dessin/chap_3/4/box.svg" alt=""><span>box internet avec mode veille</span></div></div><div class="axe_vertical"><span>bénéfice environnemental élevé</span><span>bénéfice environnemental faible</span></div><div class="escalier"><div class="niveau n4"><div class="niveau_titre">niveau 4 : nouveau modèle économique</div><p>On change la façon de vendre et d’utiliser, pas juste le produit.</p><div class="depot" data-niveau="4"></div></div><div class="niveau n3"><div class="niveau_titre">niveau 3 : innovation technologique</div><p>On change la technologie pour un impact radicalement différent.</p><div class="depot" data-niveau="3"></div></div><div class="niveau n2"><div class="niveau_titre">niveau 2 : restructuration</div><p>On modifie la structure et la composition du produit.</p><div class="depot" data-niveau="2"></div></div><div class="niveau n1"><div class="niveau_titre">niveau 1 : optimisation</div><p>On optimise l’existant.</p><div class="depot" data-niveau="1"></div></div></div><div class="axe_horizontal"><span>changement localisé</span><span>changement profond</span></div></div></div>
-</div><div id="notion_droite"><div class="boite_notion" id="modele_affaire"><strong>L’évolution du modèle économique</strong> transformation de la manière dont une entreprise crée de la valeur, la délivre à ses clients et en tire des revenus.</div></div></div></div>
-<script>
-(async function(){
- const status=document.getElementById('clone-status');
- try {
-  if(!window.SPOC_SUPABASE_URL||!window.SPOC_SUPABASE_KEY||window.SPOC_SUPABASE_KEY.includes('COLLE_')) throw new Error('Configure la clé Publishable dans spoc-editeur-supabase/supabase-config.js.');
-  const url=window.SPOC_SUPABASE_URL+'/rest/v1/pages_cours?select=id,titre,contenu,publie&id=eq.CH03-P04&publie=eq.true';
-  const res=await fetch(url,{headers:{apikey:window.SPOC_SUPABASE_KEY,Authorization:'Bearer '+window.SPOC_SUPABASE_KEY}});
-  const data=await res.json(); if(!res.ok) throw new Error(data.message||JSON.stringify(data));
-  if(!data.length) throw new Error('Page non trouvée ou non publiée. Vérifie les règles de lecture Supabase.');
-  const c=data[0].contenu; if(!Array.isArray(c.questions)) throw new Error('Le contenu en base ne contient pas encore le QCM complet. Ouvre l’éditeur et clique sur Enregistrer dans Supabase.');
-  document.getElementById('clone-title').textContent=c.title||data[0].titre||'Activité';
-  document.getElementById('clone-intro').textContent=c.intro||'';
-  const blocks=document.querySelectorAll('.qcm_bloc');
-  c.questions.slice(0,blocks.length).forEach((q,i)=>{
-   const b=blocks[i]; b.querySelector('.qcm_scenario p').textContent=q.scenario||'';
-   const options=b.querySelector('.qcm_options'); options.replaceChildren();
-   (q.options||[]).forEach(o=>{const label=document.createElement('label');label.className='qcm_option';const input=document.createElement('input');input.type='checkbox';if(o.type==='juste')input.setAttribute('data-juste','');if(o.type==='neutre')input.setAttribute('data-neutre','');const span=document.createElement('span');span.textContent=' '+o.text;label.append(input,span);options.append(label)});
-   const corr=b.querySelector('.qcm_correction');corr.replaceChildren();(q.correction||'').split(/(?=réponse[s]?\s+[a-z](?:\s+et\s+[a-z])?\s*:)/i).filter(Boolean).forEach(t=>{const p=document.createElement('p');p.textContent=t.trim();corr.append(p)});
-  });
-  status.textContent='Contenu chargé depuis Supabase ('+new Date().toLocaleTimeString('fr-FR')+').';
- } catch(e){status.textContent='Erreur : '+e.message;status.style.color='#a00';}
-})();
-</script>
-</body></html>
+
+</body>
+</html>
