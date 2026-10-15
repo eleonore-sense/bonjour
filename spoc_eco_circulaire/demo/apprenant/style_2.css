@@ -1,0 +1,1580 @@
+/* =====================================================================
+   SOMMAIRE
+   1. Variables, polices, général
+   2. Structure commune (identique sur toutes les pages)
+      barre du haut · onglets · boutons ronds · barre des parties ·
+      zone de contenu et titres · bouton suite · pop-up des dessins
+   3. Textes du contenu
+   4. Composants (utilisables sur n'importe quelle page)
+      exemples · animations Rive · galerie · schéma cycle ·
+      boutons produit · graphique en barres
+   5. Réglages propres à certains dessins
+   ===================================================================== */
+
+
+/* =====================================================================
+   1. VARIABLES, POLICES, GÉNÉRAL
+   ===================================================================== */
+:root {
+  --fond:               #ffffbe;
+  --barre_progression:  #dd7ad6;
+  --rouge:              #bb4d49;
+  --vert:               #4ba150;
+  --rose:               #dd7ad6;
+  --marron:             #844035;
+  --bleu:               #6f83ec;
+  --couleur_texte:      #000000;
+  --trait:              #000000;
+  --apparition_boite:   .5s ease;
+
+  --titre:              Cooper;
+  --labeur:             Amiamie;
+  --etoile:             wingding;
+
+  --caractere_etoile:   "";
+}
+
+@font-face {
+  font-family: "Cooper";
+  src: url("typo/Cooper-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Amiamie";
+  src: url("typo/Amiamie-RegularRound.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "wingding";
+  src: url("typo/wingding.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+body {
+  display: flex;
+  margin: 0;
+  font-family: var(--labeur);
+  color: var(--couleur_texte);
+  background-color: var(--fond);
+}
+
+/* Étoile : puces des textes + étoiles de la barre des parties.
+   Le caractère est ajouté automatiquement si la balise est vide. */
+.etoile {
+  font-family: var(--etoile);
+  font-size: 14px;
+  color: var(--trait);
+}
+
+.etoile:empty::before {
+  content: var(--caractere_etoile);
+}
+
+
+/* =====================================================================
+   2. STRUCTURE COMMUNE
+   ===================================================================== */
+
+/* ---------- Barre de progression du haut ---------- */
+#barre_progression {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  z-index: 99;
+  background: var(--fond);
+}
+
+#barre_progression_remplie {
+  height: 100%;
+  width: 0%;
+  background: var(--barre_progression);
+  transition: width .1s linear;
+}
+
+
+/* ---------- Onglets des chapitres ---------- */
+#onglet_chapitre {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  align-items: flex-start;
+  align-self: flex-start;
+  z-index: 100;
+  position: fixed;
+}
+
+#onglet_chapitre > div {
+  position: relative;
+  width: 20px;
+  height: 10.5vh;
+  overflow: hidden;
+  border: 0.8px solid var(--trait);
+  border-left: none;
+  cursor: pointer;
+  background: var(--fond);
+  transition: width var(--apparition_boite);
+  margin-top: -1px;
+}
+
+#onglet_chapitre > div:hover {
+  width: 230px;
+  cursor: default;
+}
+
+#onglet_chapitre > div.en_cours,
+#onglet_chapitre > div.termine {
+  background: var(--rouge);
+}
+
+#onglet_chapitre > div .numero {
+  position: absolute;
+  top: 6px;
+  right: 4px;
+  font-family: var(--titre);
+  font-weight: bold;
+  font-size: 16px;
+}
+
+#onglet_chapitre > div .titre_onglet,
+#onglet_chapitre > div .lien_fiche_onglet {
+  position: absolute;
+  left: -200px;
+  width: 190px;
+  white-space: normal;
+  transition: left var(--apparition_boite);
+}
+
+#onglet_chapitre > div .titre_onglet {
+  top: 6px;
+  font-family: var(--titre);
+  text-decoration: underline;
+  line-height: 1.1em;
+  font-size: 0.8em;
+}
+
+#onglet_chapitre > div .titre_onglet a {
+  color: inherit;
+  text-decoration: inherit;
+  cursor: alias;
+}
+
+#onglet_chapitre > div .lien_fiche_onglet {
+  bottom: 10px;
+  font-size: 0.7em;
+  text-decoration: underline;
+  color: var(--couleur_texte);
+  cursor: alias;
+}
+
+#onglet_chapitre > div:hover .titre_onglet,
+#onglet_chapitre > div:hover .lien_fiche_onglet {
+  left: 10px;
+}
+
+/* chapitres pas encore accessibles : pas de lien vers les fiches */
+#onglet_chapitre > div:not(.en_cours):not(.termine) .lien_fiche_onglet {
+  display: none;
+}
+
+
+/* ---------- Menu de gauche : boutons ronds + infobulle ---------- */
+#gauche_menu {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 10%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--fond);
+  z-index: 98;
+}
+
+#bouton_rond {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  position: absolute;
+  left: 5vw;
+  top: 5vh;
+}
+
+.bouton_icone_wrap {
+  position: relative;
+  width: 46px;
+  height: 46px;
+}
+
+.bouton_icone_wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--trait);
+}
+
+.bouton_icone {
+  position: absolute;
+  inset: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--vert);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: 0.8px solid var(--trait);
+  transition: transform .2s ease;
+}
+
+.bouton_icone img {
+  width: 40px;
+  height: 40px;
+}
+
+.bouton_icone:hover {
+  cursor: pointer;
+  transform: translate(-4px, -4px);
+}
+
+#tooltip {
+  position: fixed;
+  pointer-events: none;
+  background: var(--vert);
+  border: 0.8px solid var(--trait);
+  padding: 4px 10px;
+  font-size: 0.8em;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity .15s ease;
+  z-index: 200;
+}
+
+#tooltip.visible {
+  opacity: 1;
+}
+
+
+/* ---------- Barre verticale des parties du chapitre ---------- */
+#barre_progression_chapitre {
+  position: absolute;
+  width: 20px;
+  height: 280px;
+  margin: 0 auto;
+  bottom: 35px;
+  left: 5.5vw;
+}
+
+
+/* cran plus long entre deux sections */
+#barre_progression_chapitre .trait_chapitre.trait_section {
+  width: 14px;
+}
+
+
+#barre_progression_chapitre .ligne_fine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--trait);
+  transform: translateX(-50%);
+}
+
+#barre_progression_chapitre .ligne_remplie {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 3px;
+  height: 0%;
+  background: var(--trait);
+  transform: translateX(-50%);
+  transition: height .6s ease;
+}
+
+#barre_progression_chapitre .point_actuel {
+  position: absolute;
+  left: 50%;
+  top: 0%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--trait);
+  transform: translate(-50%, -50%);
+  transition: top .6s ease;
+}
+
+#barre_progression_chapitre .etoile {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  color: var(--fond);                      /* intérieur "vide" */
+  -webkit-text-stroke: 1px var(--trait);   /* contour noir */
+  user-select: none;
+}
+
+#barre_progression_chapitre .etoile.fait {
+  color: var(--trait);                     /* pleine une fois la partie faite */
+  -webkit-text-stroke: 0.7px var(--fond);
+  font-size: 22px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+#barre_progression_chapitre .trait_chapitre {
+  position: absolute;
+  left: 50%;
+  width: 6px;
+  height: 1px;
+  background: var(--trait);
+  transform: translate(-50%, -50%);
+}
+
+#barre_progression_chapitre .mini_boule {
+  position: absolute;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--trait);
+  transform: translate(-50%, -50%);
+}
+
+#barre_progression_chapitre .zone_hover {
+  position: absolute;
+  left: 50%;
+  width: 40px;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+
+#barre_progression_chapitre .point_hover {
+  position: absolute;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rose);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 20;
+  transform: translate(-50%, -50%) scale(0.5);
+  transition: opacity .35s ease, transform .35s ease;
+}
+
+#barre_progression_chapitre .point_hover.forme_etoile {
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: none;
+  font-family: var(--etoile);
+  font-size: 16px;
+  color: var(--rose);
+}
+
+#barre_progression_chapitre .point_hover.forme_etoile::before {
+  content: var(--caractere_etoile);
+}
+
+#barre_progression_chapitre .zone_hover:hover ~ .point_hover,
+#barre_progression_chapitre .point_hover.visible {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+#barre_progression_chapitre .label_partie {
+  position: absolute;
+  left: 20px;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 0.75em;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s ease;
+  z-index: 20;
+}
+
+#barre_progression_chapitre .label_partie.fait {
+  background: var(--rose);
+  border: 0.8px solid var(--trait);
+  padding: 4px 8px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+#barre_progression_chapitre .segment_fait {
+  position: absolute;
+  left: 50%;
+  width: 3px;
+  background: var(--trait);
+  transform: translateX(-50%);
+}
+
+#barre_progression_chapitre .point_segment {
+  position: absolute;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--trait);
+  transform: translate(-50%, -50%);
+}
+
+
+/* ---------- Zone de contenu et titres ---------- */
+#droite_contenu {
+  width: 89%;
+  margin-left: 11%;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* Edge ancien */
+}
+
+#droite_contenu::-webkit-scrollbar {
+  display: none;                  /* Chrome / Safari */
+}
+
+#haut {
+  position: sticky;
+  top: 3px;
+  background: var(--fond);
+  z-index: 10;
+  font-size: 1.2em;
+}
+
+#titre_partie {
+  font-family: var(--titre);
+  text-transform: uppercase;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  border-bottom: 0.9px solid var(--trait);
+}
+
+#titre_chapitre {
+  font-family: var(--titre);
+  margin-left: 108px;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  border-bottom: 0.9px solid var(--trait);
+  display: flex;
+  justify-content: space-between;   /* titre à gauche, durée à droite */
+  align-items: center;
+}
+
+.duree_chapitre {
+  font-family: var(--labeur);
+  font-size: 0.65em;
+  border: 0.7pt solid var(--trait);
+  border-radius: 20px;
+  padding: 4px 10px 1px;
+  margin-right: 10px;
+}
+
+#contenu_chapitre {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  margin-left: 11vw;
+  margin-top: 10px;
+  position: relative;
+}
+
+#contenu_gauche {
+  width: 65%;
+  min-width: 700px;
+  margin-bottom: 98px;
+}
+
+#notion_droite {
+  width: 33.33%;
+}
+
+
+/* ---------- Bouton « passer à la suite » ---------- */
+.conteneur_suite {
+  display: flex;
+  justify-content: center;
+  margin-top: 90px;
+    transition: opacity .4s ease, visibility .4s;
+}
+
+.conteneur_suite.cache {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* en progression manuelle, la barre avance plus doucement, par étapes */
+body[data-progression="manuelle"] #barre_progression_remplie {
+  transition: width .6s ease;
+}
+
+.bouton_suite {
+  font-family: var(--labeur);
+  color: var(--couleur_texte);
+  text-decoration: none;
+  background: var(--rose);
+  border: 0.8pt solid var(--trait);
+  border-radius: 999px;
+  padding: 6px 20px;
+  cursor: alias;
+  box-shadow: 0 0 0 var(--trait);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.bouton_suite:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 4px 4px 0 var(--trait);
+}
+
+
+/* ---------- Pop-up des dessins ---------- */
+.modal_dessin {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal_dessin.visible {
+  display: flex;
+}
+
+.modal_dessin_contenu {
+  position: relative;
+  display: flex;
+  gap: 50px;
+  background: var(--fond);
+  border: 0.9px solid var(--trait);
+  padding: 20px;
+  max-width: 700px;
+  font-size: 0.95em;
+}
+
+.modal_dessin_image {
+  width: 140px;
+  height: auto;
+}
+
+.modal_dessin_titre {
+  font-size: 1em;
+  font-family: var(--titre);
+}
+
+.fermer_modal {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--rouge);
+  border: 0.9px solid var(--trait);
+  cursor: pointer;
+}
+
+/* pop-up d'un acteur : dessin à gauche, texte à droite */
+.modal_dessin.modal_acteur .modal_dessin_contenu {
+  max-width: 600px;
+  gap: 25px;
+  align-items: center;
+}
+
+.modal_dessin.modal_acteur .modal_dessin_image {
+  width: 150px;
+  flex-shrink: 0;
+}
+
+.modal_dessin.modal_acteur .modal_dessin_texte {
+  flex: 1;
+}
+
+.modal_dessin.modal_acteur .modal_dessin_titre {
+  font-size: 1.1em;
+  margin-top: 0;
+}
+
+
+/* =====================================================================
+   3. TEXTES DU CONTENU
+   ===================================================================== */
+
+.contenu_gras, {
+  padding-left: 15px;
+}
+
+.petit_titre {
+  font-size: 1.3em;
+  font-family: var(--titre);
+  padding-bottom: 3px;
+  margin-bottom: 20px;
+  margin-top: 50px;
+  border-bottom: 0.9px solid var(--trait);
+}
+
+.contenu_gras {
+  font-size: 1.2em;
+  font-family: var(--titre);
+  line-height: 1.3em;
+}
+
+.txt_labeur {
+  margin-top: 60px;
+}
+
+.petit_titre + .txt_labeur {
+  margin-top: 0;
+}
+
+.txt_labeur strong {
+  font-weight: normal;
+  font-family: var(--titre);
+  font-size: 1.1em;
+  -webkit-text-stroke: 0.4px currentColor;
+}
+
+.souligne {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 1.5px;
+}
+
+.souligne_fin {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 1px;
+}
+
+.ecart {
+  margin-top: 30px;
+}
+
+.ecart_grand {
+  margin-top: 60px;
+}
+
+.lien_page {
+  cursor: alias;
+}
+
+
+.consigne{
+  font-family: var(--titre);
+  color: var(--bleu);
+}
+
+/* ---------- Sources ---------- */
+.span_source {
+  display: block;
+  margin-top: 8px;
+  font-size: 7.5pt;
+  font-family: var(--labeur);
+}
+
+.source {
+  color: var(--vert);
+  text-decoration: none;
+}
+
+.source:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+
+.source:visited {
+  color: var(--marron);
+}
+
+/* ---------- Mots notion + boîte de définition à droite ---------- */
+.mot_notion {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  cursor: help;
+}
+
+.boite_notion {
+  position: absolute;
+  right: 4%;
+  width: 27%;
+  display: none;
+  border: 0.9px solid var(--trait);
+  padding: 14px 16px;
+  font-size: 0.9em;
+}
+
+.boite_notion.visible {
+  display: block;
+}
+
+
+/* =====================================================================
+   4. COMPOSANTS
+   ===================================================================== */
+
+/* ---------- Exemples ---------- */
+.bloc_exemple {
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+  font-size: 0.95em;
+  color: var(--vert);
+}
+
+.exemple {
+  margin-left: 10%;
+  margin-top: 35px;
+  padding: 5px 0 5px 20px;
+  font-size: 0.9em;
+  min-width: 350px;
+  max-width: 27vw;
+  line-height: 1.35em;
+  border-left: 0.9px solid var(--vert);
+}
+
+/* doit rester APRÈS .exemple */
+.exemple_large {
+  max-width: none;
+  flex: 1;
+}
+
+.exemple p {
+  margin: 0 0 7px;
+}
+
+.exemple p:last-child {
+  margin-bottom: 0;
+}
+
+/* doit rester APRÈS .souligne */
+.intro_exemple {
+  display: inline-block;
+  border: 0.8pt solid var(--vert);
+  background: transparent;
+  padding: 3px 8px 1px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+  text-decoration: none;
+  cursor: default;
+}
+
+
+/* ---------- Animations Rive ---------- */
+.media_exemple {
+  margin-top: 30px;
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+  max-height: 220px;
+}
+
+.media_exemple canvas {
+  height: 100%;
+  width: auto;
+  display: block;
+}
+
+/* 2e canvas qui chevauche le 1er */
+.anim_decalee {
+  margin-left: -62px;
+  position: relative;
+  z-index: 2;
+}
+
+
+/* ---------- Galerie de dessins ---------- */
+.galerie_dessins {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 90px;
+  width: 110%;
+  align-items: end;
+  margin-top: 70px;
+  margin-bottom: 70px;
+}
+
+.item_dessin {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.item_dessin img {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  max-height: 100px;
+}
+
+.nom_dessin {
+  margin-top: 20px;
+  font-size: 0.75em;
+  text-align: center;
+  width: 150%;
+}
+
+.tooltip_dessin {
+  position: absolute;
+  bottom: 75%;
+  left: 82%;
+  background: var(--fond);
+  border: 0.9px solid var(--trait);
+  padding: 20px;
+  font-size: 0.85em;
+  width: 400px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s ease;
+  z-index: 50;
+}
+
+.item_dessin:hover .tooltip_dessin {
+  opacity: 1;
+}
+
+
+/* ---------- Schéma circulaire (cycle de vie, acteurs…) ---------- */
+.schema_cycle {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 1;
+  margin: 50px 0 0 10%;
+}
+
+.fleches_cycle {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.fleches_cycle path:not(marker path) {
+  fill: none;
+  stroke: var(--trait);
+  stroke-width: 0.2;
+  stroke-linecap: round;
+}
+
+.schema_cycle .etape_cycle {
+  position: absolute;
+  width: 140px;
+  transform: translate(-50%, -50%);
+}
+
+.schema_cycle .etape_cycle:hover {
+  z-index: 5;
+}
+
+.schema_cycle .etape_cycle img {
+  width: auto;
+  max-width: 80px;
+  max-height: 70px;
+}
+
+.schema_cycle .nom_dessin {
+  width: auto;
+  margin-top: 10px;
+}
+
+/* étapes de droite : l'infobulle s'ouvre vers la gauche */
+.schema_cycle .a_droite .tooltip_dessin {
+  left: auto;
+  right: 82%;
+}
+
+/* infobulle d'un acteur : dessin à gauche, titre + texte à droite */
+.item_dessin .tooltip_dessin.tooltip_acteur {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 420px;
+}
+
+.item_dessin .tooltip_acteur .tooltip_acteur_image {
+  width: 80px;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  flex-shrink: 0;
+}
+
+.tooltip_acteur_texte {
+  flex: 1;
+  min-width: 0;
+}
+
+.tooltip_acteur h3 {
+  font-family: var(--titre);
+  font-size: 1em;
+  margin: 0 0 8px;
+}
+
+.tooltip_acteur p {
+  margin: 0;
+}
+
+
+
+
+/* ---------- Consigne d'activité ---------- */
+.consigne {
+  font-family: var(--titre);
+  color: var(--bleu);
+  margin-top: 45px;
+  padding-left: 15px;
+}
+
+/* texte normal sous un .contenu_gras */
+.sous_texte {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--labeur);
+  font-size: 0.8em;
+  line-height: 1.35em;
+}
+
+
+/* ---------- QCM ---------- */
+.qcm {
+  width: 120%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 130px;
+  row-gap:  100px;
+  margin-top: 40px;
+  position: relative;
+  z-index: 1;
+  font-size: 0.9em;
+
+}
+
+.qcm_bloc {
+  position: relative;
+}
+
+.qcm_scenario {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  min-height: 130px;
+  font-size: 0.9em;
+  line-height: 1.35em;
+}
+
+.qcm_scenario p {
+  margin: 0;
+}
+
+.qcm_scenario img {
+  width: auto;
+  max-height: 130px;
+  flex-shrink: 0;
+}
+
+.qcm_bloc.image_droite .qcm_scenario {
+  flex-direction: row-reverse;
+}
+
+.qcm_options {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 25px;
+}
+
+.qcm_option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.9em;
+  line-height: 1.25em;
+  cursor: pointer;
+}
+
+
+/* ---- cases à cocher ---- */
+.qcm_option input {
+  appearance: none;
+  -webkit-appearance: none;
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+  margin: 0;
+  border: 0.8px solid var(--trait);
+  background: transparent;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+
+/* cochée par l'élève : contour noir, intérieur bleu */
+.qcm_option input:checked {
+  background: var(--bleu);
+}
+
+.qcm_option input:focus-visible {
+  outline: 2px solid var(--bleu);
+  outline-offset: 2px;
+}
+
+/* après « voir la correction » */
+.qcm.corrige .qcm_option,
+.qcm.corrige .qcm_option input {
+  cursor: default;
+}
+
+.qcm.corrige .qcm_option input        { background: transparent; }
+.qcm.corrige .qcm_option.juste input  { background: var(--vert); }
+.qcm.corrige .qcm_option.erreur input { background: var(--rouge); }
+.qcm.corrige .qcm_option.oubli input  { background: var(--rose); }
+.qcm.corrige .qcm_option.neutre input {
+  background: repeating-linear-gradient(45deg, var(--trait) 0 1px, transparent 1px 4px);
+}
+
+
+/* ---- bloc fixe en bas à droite : légende + bouton ---- */
+.qcm_pied {
+  position: fixed;
+  right: 40px;
+  bottom: 35px;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.qcm_legende {
+  display: none;
+  position: fixed;
+  right: 40px;
+  bottom: 90px;            /* au-dessus du bouton */
+  z-index: 0;              /* derrière le QCM (z-index: 1) */
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 14px;
+  font-size: 0.8em;
+}
+
+.qcm_legende.visible {
+  display: flex;
+}
+
+.qcm_legende span::before {
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+  vertical-align: -1px;
+  border: 0.8px solid var(--trait);
+}
+
+.qcm_legende .juste::before  { background: var(--vert); }
+.qcm_legende .erreur::before { background: var(--rouge); }
+.qcm_legende .oubli::before  { background: var(--rose); }
+
+
+.qcm_legende.visible {
+  display: flex;
+}
+
+.qcm_legende span::before {
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  vertical-align: -1px;
+  border: 0.8px solid var(--trait);
+}
+
+.qcm_legende .juste::before  { background: var(--vert); }
+.qcm_legende .erreur::before { background: var(--rouge); }
+.qcm_legende .oubli::before  { background: var(--rose); }
+.qcm_legende .neutre::before {
+  background: repeating-linear-gradient(45deg, var(--trait) 0 1px, transparent 1px 4px);
+}
+
+/* ---- encadrés de correction ---- */
+.qcm_correction {
+  display: none;
+  position: absolute;
+  top: -50px;              /* par-dessus les réponses */
+  left: 8px;              /* légèrement décalé à droite */
+  width: 380px;
+  background: var(--fond);
+  border: 0.9px solid var(--trait);
+  padding: 20px 20px 10px;
+  font-size: 0.85em;
+  line-height: 1.3em;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;      /* permet de le déplacer aussi au doigt */
+}
+
+.marge_en_plus{
+  top: 50px;
+}
+
+.qcm_bloc.ouverte .qcm_correction {
+  display: block;
+}
+
+.qcm_correction.deplacement {
+  cursor: grabbing;
+}
+
+/* dessin du scénario, à gauche du texte */
+.qcm_correction_dessin {
+  float: left;
+  width: 100px;
+  height: 140px;
+  margin: 0 15px 8px 0;
+}
+
+
+/* dessins de l'activité A : même taille dans les questions et dans les corrections */
+.qcm_scenario img[src*="lessive"],    .qcm_correction_dessin[src*="lessive"]    { width: 100px; }
+.qcm_scenario img[src*="boxe"],       .qcm_correction_dessin[src*="boxe"]       { width: 80px; }
+.qcm_scenario img[src*="imprimante"], .qcm_correction_dessin[src*="imprimante"] { width: 85px; }
+.qcm_scenario img[src*="velo"],       .qcm_correction_dessin[src*="velo"]       { width: 150px; }
+.qcm_scenario img[src*="textile"],    .qcm_correction_dessin[src*="textile"]    { width: 100px; }
+.qcm_correction strong {
+  display: inline;
+  font-family: var(--titre);
+  font-weight: normal;
+  font-size: 1.1em;
+}
+
+/* rond rouge pour fermer, en haut à gauche */
+.qcm_fermer {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 17px;
+  height: 17px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--rouge);
+  border: 0.9px solid var(--trait);
+  cursor: pointer;
+}
+
+.qcm.corrige .qcm_bloc {
+  cursor: pointer;
+}
+
+
+/* semi-transparent tant que toutes les corrections ne sont pas lues */
+.qcm_verifier:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+.qcm_verifier:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+
+@keyframes apparition {
+  from { opacity: 0; transform: translateY(15px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* le bouton de la partie 2 reste caché tant qu'elle n'est pas affichée */
+.qcm_pied[hidden] {
+  display: none;
+}
+
+/* ---- partie suivante de l'activité, cachée au départ ---- */
+.partie_activite {
+  scroll-margin-top: 130px;
+    animation: apparition .6s ease;
+}
+
+.partie_activite.cache {
+  display: none;
+}
+/* ---------- Boutons produit A / B ---------- */
+.choix_produit {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 60px;
+  margin-top: 15px;
+}
+
+.bouton_produit, .qcm_verifier {
+  font: inherit;
+  font-size: 0.9em;
+  color: var(--couleur_texte);
+  background: var(--fond);
+  border: 0.8pt solid var(--trait);
+  border-radius: 999px;
+  padding: 3px 12px;
+  cursor: pointer;
+  box-shadow: 0 0 0 var(--trait);
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.bouton_produit:hover, .qcm_verifier:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 4px 4px 0 var(--trait);
+}
+
+.bouton_produit.actif {
+  background: var(--rouge);
+}
+
+
+/* ---------- Graphique en barres ---------- */
+.graphique {
+  margin: 60px 0 0 10%;
+  max-width: 620px;
+}
+
+.graph_zone {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 30px;
+  height: 220px;
+  padding: 0 30px 0 15px;
+  border-left: 0.7px solid var(--trait);
+  border-bottom: 0.7px solid var(--trait);
+}
+
+/* flèche en haut de l'axe vertical */
+.graph_zone::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: -4.4px;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 8px solid var(--trait);
+}
+
+/* flèche au bout de l'axe horizontal */
+.graph_zone::after {
+  content: "";
+  position: absolute;
+  right: -8px;
+  bottom: -4.4px;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 8px solid var(--trait);
+}
+
+.graph_groupe {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.graph_barre {
+  width: 34px;
+  height: 0;
+  background: var(--rouge);
+  border: 0.8px solid var(--trait);
+  border-bottom: none;
+  transition: height .8s ease;
+}
+
+.graph_noms {
+  display: flex;
+  gap: 30px;
+  padding: 0 30px 0 15px;
+}
+
+.graph_noms div {
+  flex: 1;
+  margin-top: 8px;
+  font-size: 0.7em;
+  text-align: center;
+}
+
+/* coupe les transitions pendant la remise à zéro */
+.graphique.reset * {
+  transition: none !important;
+}
+
+
+/* ---------- Classement par glisser-déposer ---------- */
+#partie_2{padding-bottom: 40vw}
+
+
+.classement {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  column-gap: 15px;
+  width: 125%;
+  margin-top: 40px;
+}
+
+/* axe vertical : bénéfice environnemental */
+.axe_vertical {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border-right: 0.8px solid var(--trait);
+  font-size: 0.7em;
+}
+
+.axe_vertical span {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);      /* se lit de bas en haut */
+  margin-right: 12px;
+}
+
+.axe_vertical::before {          /* flèche en haut */
+  content: "";
+  position: absolute;
+  top: -8px;
+  right: -4.4px;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 8px solid var(--trait);
+}
+/* axe horizontal : difficulté du changement */
+.axe_horizontal {
+  grid-column: 2;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 0.8px solid var(--trait);
+  font-size: 0.7em;
+}
+
+.axe_horizontal::after {         /* flèche à droite */
+  content: "";
+  position: absolute;
+  right: -8px;
+  top: -4.4px;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 8px solid var(--trait);
+}
+
+/* l'escalier : chaque niveau un peu plus haut que le précédent */
+.escalier {
+  display: flex;
+  align-items: flex-end;
+  gap: 15px;
+}
+
+.niveau { flex: 1; }
+
+.n1 { order: 1; margin-bottom: 0; }
+.n2 { order: 2; margin-bottom: 100px; }
+.n3 { order: 3; margin-bottom: 200px; }
+.n4 { order: 4; margin-bottom: 300px; }
+.niveau {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 12px;
+  text-align: center;
+}
+
+.niveau_titre {
+  font-family: var(--titre);
+  font-size: 0.85em;
+  line-height: 1em;
+  margin-bottom: 6px;
+}
+
+.niveau p {
+  margin: 0;
+  font-size: 0.72em;
+  line-height: 1.3em;
+}
+
+/* zones de dépôt : au-dessus de la définition, cartes centrées */
+.depot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.niveau .depot {
+  order: -1;                       /* passe avant le titre et la définition */
+  flex: 1;
+  min-height: 90px;
+  align-content: flex-end;         /* les cartes se posent juste au-dessus du texte */
+  padding-bottom: 10px;
+}
+
+.reserve {
+  position: fixed;
+  right: 40px;
+  bottom: 90px;                    /* juste au-dessus du bouton de correction */
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* niveau survolé pendant le glisser : son titre se souligne */
+.niveau.survol .niveau_titre {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+/* cartes */
+.carte {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 95px;
+  padding: 6px;
+  background: var(--fond);
+  font-size: 0.8em;
+  line-height: 1.2em;
+  text-align: center;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  transition: box-shadow .2s ease, background .2s ease;
+}
+
+.carte img {
+  height: 40px;
+  width: auto;
+  max-width: 80px;
+  pointer-events: none;  filter: drop-shadow(0 0 0 var(--trait));
+  transition: transform .2s ease, filter .2s ease;}
+
+
+/* survol, carte attrapée ou choisie : le dessin se soulève, ombre noire décalée */
+.carte:hover img,
+.carte.en_main img,
+.carte.choisie img {
+  transform: translate(-4px, -4px);
+  filter: drop-shadow(4px 4px 0 var(--trait));
+}
+
+/* après la correction, les dessins ne bougent plus */
+.classement.corrige .carte:hover img {
+  transform: none;
+  filter: none;
+}
+
+
+.carte.en_main {
+  z-index: 100;
+  cursor: grabbing;
+}
+
+
+
+/* correction */
+.classement.corrige .carte        { cursor: default; }
+/* correction : le texte de la carte passe en vert ou en rouge */
+.classement.corrige .carte.juste span  { color: var(--vert); }
+.classement.corrige .carte.erreur span { color: var(--rouge); }
+.carte_correction {
+  font-family: var(--titre);
+}
+
+.classement_correction {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);   /* centrée sur le tableau */
+  width: 65%;
+  z-index: 60;
+  background: var(--fond);
+  border: 0.9px solid var(--trait);
+  padding: 38px 20px 20px;
+  font-size: 0.85em;
+  line-height: 1.4em;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.classement_correction.ouverte {
+  display: block;
+}
+
+.classement_correction.deplacement {
+  cursor: grabbing;
+}
+
+.classement_correction p {
+  margin: 0 0 8px;
+}
+
+.classement_correction p:last-child {
+  margin-bottom: 0;
+}
+
+.classement_correction strong {
+  font-family: var(--titre);
+  font-weight: normal;
+}
+
+
+
+
+
+
+/* =====================================================================
+   5. RÉGLAGES PROPRES À CERTAINS DESSINS
+   (tailles au cas par cas : c'est ici qu'on ajoute les nouveaux)
+   ===================================================================== */
+
+/* animations Rive */
+#loupe        { height: 135px; }
+#basket_sorte { width: 280px; height: auto; }
+
+/* galerie multicritère */
+#ionisant     { width: 75px; }
+
+/* infobulles des acteurs */
+.item_dessin .tooltip_acteur .tooltip_acteur_image[src*="acheteur"]   { width: 200px; }
+.item_dessin .tooltip_acteur .tooltip_acteur_image[src*="recherche"]  { width: 100px; }
+.item_dessin .tooltip_acteur .tooltip_acteur_image[src*="logistique"] { width: 150px; }
+.item_dessin .tooltip_acteur .tooltip_acteur_image[src*="client"]     { width: 100px; }
+.item_dessin .tooltip_acteur .tooltip_acteur_image[src*="recycleur"]  { width: 100px; }
