@@ -6,8 +6,8 @@
 //   1. Andréa en pop-up         messages écrits à l'avance (<template>), sans IA
 //   2. Analyse 1                remettre les 6 étapes du cycle de vie dans l'ordre
 //                               → « vérifier » → bravo, ou Andréa corrige
-//   3. Le cycle en rond         les étapes se placent en cercle ; au survol (ou au clic,
-//                               ou au clavier), les résultats de l'ACV s'affichent à droite
+//   3. Le cycle en rond         les étapes glissent de leur case jusqu'au cercle,
+//                               puis les flèches apparaissent
 // =====================================================================
 
 (function () {
@@ -258,7 +258,7 @@
         mode = 'corrige';
         jeu.classList.add('corrige');
         cartes.forEach(c => c.classList.add('juste'));
-        andreaDit('texte_cycle_bravo', 'c’est parti !', versAnalyse);
+        andreaDit('texte_cycle_bravo', 'c’est parti !', formerCercle);
       } else {
         andreaDit('texte_cycle_correction', 'voir les corrections', corriger);
       }
@@ -266,10 +266,10 @@
     }
 
     // après les corrections : « passer à l'analyse »
-    if (mode === 'corrige') versAnalyse();
+    if (mode === 'corrige') formerCercle();
   });
 
-  // Andréa remet chaque étape à sa place ; les étapes déplacées passent en rose
+  // Andréa remet chaque étape à sa place ; les étapes déplacées passent en orange
   function corriger() {
     mode = 'corrige';
     jeu.classList.add('corrige');
@@ -298,7 +298,7 @@
       );
     });
 
-    annoncer('Andréa a remis les étapes dans le bon ordre. Les étapes en rose ont été déplacées.');
+    annoncer('Andréa a remis les étapes dans le bon ordre. Les étapes en orange ont été déplacées.');
     boutonCycle.textContent = 'passer à l’analyse';
     piedCycle.hidden = false;
     boutonCycle.focus({ preventScroll: true });
@@ -306,97 +306,54 @@
 
 
   // =====================================================================
-  // 3. LE CYCLE EN ROND ET LES RÉSULTATS DE L'ACV
+  // 3. LE CYCLE EN ROND
+  // Les étapes ne disparaissent pas : elles glissent depuis leur case jusqu'à
+  // leur place sur le cercle, puis les flèches apparaissent en fond (activite/mission2.css).
+  // Les cases ne bougent pas dans la page : c'est la même liste, dans le bon ordre,
+  // seulement présentée en rond (les lecteurs d'écran la lisent toujours de 1 à 6).
   // =====================================================================
 
-  const partieAcv   = document.getElementById('partie_acv');
-  const rond        = document.getElementById('cycle_rond');
-  const listeRond   = rond?.querySelector('.cycle_rond_etapes');
-  const detail      = document.getElementById('acv_detail');
-  const annonceAcv  = document.getElementById('annonce_acv');
-  const rappelAcv   = document.getElementById('rappel_acv');
-  const piedAcv     = document.getElementById('pied_acv');
+  const DUREE_CERCLE = 900;   // durée du glissement vers le cercle, en millisecondes
 
-  const ETAPES_ACV = ['production', 'distribution', 'utilisation', 'fin_de_vie'];
-  const ETAPES_AVANT_RAPPEL = 2;   // la mascotte rappelle de tout explorer après 2 étapes consultées
-  const consultees = new Set();
-
-  // Les étapes quittent le jeu et se placent en rond, dans le bon ordre
-  function versAnalyse() {
-    if (mode === 'rond' || !partieAcv || !listeRond) return;
+  function formerCercle() {
+    if (mode === 'rond') return;
     mode = 'rond';
     piedCycle.hidden = true;
+    choisir(null);
 
-    [...cartes]
-      .sort((a, b) => a.dataset.ordre - b.dataset.ordre)
-      .forEach((carte, i) => {
-        carte.classList.remove('juste', 'corrigee');
-        carte.removeAttribute('aria-pressed');
-        const li = document.createElement('li');
-        li.className = 'cycle_rond_etape';
-        li.style.setProperty('--i', i);
-        li.appendChild(carte);
-        listeRond.appendChild(li);
-      });
+    // 1. on note où sont les étapes maintenant
+    const avant = new Map(cartes.map(c => [c, c.getBoundingClientRect()]));
 
-    jeu.hidden = true;
-    document.getElementById('cycle_fait')?.removeAttribute('hidden');
-    partieAcv.hidden = false;
+    // 2. le jeu devient un cercle ; les couleurs de la correction s'effacent
+    cartes.forEach(c => {
+      c.classList.remove('juste', 'corrigee');
+      c.removeAttribute('aria-pressed');
+    });
+    jeu.classList.add('en_rond');
 
-    // la page glisse jusqu'à l'analyse 2 ; le focus va sur sa consigne
+    // 3. chaque étape part de son ancienne place et glisse jusqu'au cercle
+    cartes.forEach((carte, i) => {
+      const a = avant.get(carte);
+      const b = carte.getBoundingClientRect();
+      carte.animate(
+        [{ translate: `${a.left - b.left}px ${a.top - b.top}px` }, { translate: '0 0' }],
+        { duration: DUREE_CERCLE, easing: 'ease-in-out', delay: i * 60, fill: 'backwards' }
+      );
+    });
+
+    // 4. la consigne bleue change de texte (les deux textes sont dans le HTML)
+    const consigne = document.getElementById('consigne_cycle');
+    consigne?.querySelector('.consigne_jeu')?.setAttribute('hidden', '');
+    consigne?.querySelector('.consigne_rond')?.removeAttribute('hidden');
+    consigne?.classList.add('consigne_changee');     // petit fondu (activite/mission2.css)
+
+    annoncer('Le cycle de vie du Basic-phone® est reconstitué. ' + (consigne?.querySelector('.consigne_rond')?.textContent.trim() || ''));
+
+    // 5. la page glisse pour montrer la nouvelle consigne en haut, et le cercle dessous
     requestAnimationFrame(() => {
-      const consigne = document.getElementById('consigne_acv');
-      if (typeof calerEnHaut === 'function') calerEnHaut(consigne);
-      else consigne.scrollIntoView({ behavior: 'smooth' });
-      consigne.tabIndex = -1;
-      consigne.focus({ preventScroll: true });
+      if (consigne && typeof calerEnHaut === 'function') calerEnHaut(consigne);
+      else consigne?.scrollIntoView({ behavior: 'smooth' });
     });
   }
-
-  // Affiche à droite les résultats d'une étape de l'ACV
-  function montrerDetail(etape) {
-    const modele = document.getElementById('detail_' + etape);
-    if (!modele || !detail) return;
-
-    if (detail.dataset.etape !== etape) {
-      detail.replaceChildren(modele.content.cloneNode(true));
-      detail.dataset.etape = etape;
-      if (annonceAcv) annonceAcv.textContent = `Résultats de l’étape « ${modele.content.querySelector('h4')?.textContent || etape} » affichés.`;
-    }
-
-    // l'étape (ou les 3 étapes de la production) et sa ligne du graphique ressortent
-    cartes.forEach(c => c.classList.toggle('actif', c.dataset.acv === etape));
-    document.querySelectorAll('#graph_carbone tr[data-acv]').forEach(tr => {
-      tr.classList.toggle('actif', tr.dataset.acv === etape);
-    });
-    rond.dataset.actif = etape;
-
-    consultees.add(etape);
-    cartes.filter(c => c.dataset.acv === etape).forEach(c => c.classList.add('lue'));
-    verifierConsultation();
-  }
-
-  // les 4 étapes consultées : le bouton « passer aux questions » apparaît
-  function verifierConsultation() {
-    if (!piedAcv || !piedAcv.hidden || piedAcv.dataset.utilise) return;
-    const toutVu = ETAPES_ACV.every(e => consultees.has(e));
-
-    if (!toutVu) {
-      if (rappelAcv && consultees.size >= ETAPES_AVANT_RAPPEL) rappelAcv.hidden = false;
-      return;
-    }
-    if (rappelAcv) rappelAcv.hidden = true;
-    piedAcv.hidden = false;
-    piedAcv.dataset.utilise = 'oui';     // il ne réapparaît plus une fois utilisé
-    if (annonceAcv) annonceAcv.textContent = 'Tu as consulté toutes les étapes. Le bouton « passer aux questions » est disponible en bas de l’écran.';
-  }
-
-  // survol, clavier ou clic sur une étape du rond
-  cartes.forEach(carte => {
-    const montrer = () => { if (mode === 'rond') montrerDetail(carte.dataset.acv); };
-    carte.addEventListener('mouseenter', montrer);
-    carte.addEventListener('focus', montrer);
-    carte.addEventListener('click', montrer);
-  });
 
 })();

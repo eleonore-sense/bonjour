@@ -48,9 +48,9 @@ const COURS = {
         { section: "Appliquer une démarche d'éco-conception", nom: "Exemple : le cola Saclay", duree: '', lien: 'chap3_III-2.html' },
         { section: "Appliquer une démarche d'éco-conception", nom: "Témoignage: mettre en place une démarche", duree: '', lien: 'chap3_III-3.html' },
         { section: "Appliquer une démarche d'éco-conception", nom: "Activité: cas d'étude d'un smartphone", duree: '', lien: 'chap3_III-4.html', etoile: true },
+        { section: "Appliquer une démarche d'éco-conception", nom: "Activité: cas d'étude d'un smartphone", duree: '', lien: 'chap3_IV_2.html', etoile: true },
         // IV.
-        { section: "Conclusion", nom: "Conclusion", duree: '', lien: 'chap3_IV.html' },
-      ],
+        { section: "Conclusion", nom: "Conclusion", duree: '', lien: 'chap3_IV.html' },      ],
     },
     { numero: 4,  titre: 'titre du chapitre', fiches: '#', parties: [] },
     { numero: 5,  titre: 'titre du chapitre', fiches: '#', parties: [] },

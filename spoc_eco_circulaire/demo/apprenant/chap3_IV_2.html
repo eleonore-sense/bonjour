@@ -84,8 +84,12 @@
 
           <div class="partie_cachee" id="partie_cycle" hidden>
 
+            <!-- CONSIGNE : son texte change quand les étapes se placent en rond (activite/mission2.js).
+                 .consigne_jeu  = pendant le jeu de remise en ordre
+                 .consigne_rond = une fois le cycle en rond -->
             <h3 class="consigne" id="consigne_cycle">
-              Remets dans l’ordre les grandes étapes du cycle de vie du Basic-phone®, de l’extraction des matières premières à sa fin de vie. Glisse chaque étape dans une case, ou sélectionne-la puis choisis sa case.
+              <span class="consigne_jeu">Remets dans l’ordre les grandes étapes du cycle de vie du Basic-phone®, de l’extraction des matières premières à sa fin de vie. Glisse chaque étape dans une case, ou sélectionne-la puis choisis sa case.</span>
+              <span class="consigne_rond" hidden>Les experts de ton équipe ont pu réaliser une analyse environnementale du Basic-phone® tout au long de son cycle de vie. Passe ton curseur sur chaque étape du cycle pour voir ses résultats.</span>
             </h3>
 
             <!-- JEU DE REMISE EN ORDRE (comportement : activite/mission2.js)
@@ -94,6 +98,25 @@
                  data-acv   = l'étape de l'ACV dont elle fait partie (sert ensuite dans le cycle en rond)
                  Pour ajouter un dessin à une étape : <img src="dessin/chap_3/IV/…" alt=""> avant le <span>. -->
             <div class="cycle" id="cycle_jeu" role="group" aria-labelledby="consigne_cycle">
+
+              <!-- FLÈCHES DU CYCLE : cachées pendant le jeu, elles apparaissent en fond
+                   quand les étapes se placent en rond (activite/mission2.css, « .en_rond ») -->
+              <svg class="cycle_fleches" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+                <defs>
+                  <marker id="pointe_cycle" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z"></path>
+                  </marker>
+                </defs>
+                <!-- d'une étape à la suivante, dans le sens des aiguilles d'une montre -->
+                <path class="fleche" d="M 66.7 15.8 A 38 38 0 0 1 78.2 24.6" marker-end="url(#pointe_cycle)"></path>
+                <path class="fleche" d="M 85.7 37.0 A 38 38 0 0 1 86.5 60.5" marker-end="url(#pointe_cycle)"></path>
+                <path class="fleche" d="M 76.4 77.3 A 38 38 0 0 1 66.7 84.2" marker-end="url(#pointe_cycle)"></path>
+                <path class="fleche" d="M 33.3 84.2 A 38 38 0 0 1 21.8 75.4" marker-end="url(#pointe_cycle)"></path>
+                <path class="fleche" d="M 13.5 60.5 A 38 38 0 0 1 14.3 37.0" marker-end="url(#pointe_cycle)"></path>
+                <!-- fin de vie → extraction : le recyclage, en pointillés -->
+                <path class="fleche fleche_recyclage" d="M 21.8 24.6 A 38 38 0 0 1 33.3 15.8" marker-end="url(#pointe_cycle)"></path>
+                <text class="texte_recyclage" x="22" y="13" text-anchor="end">recyclage</text>
+              </svg>
 
               <ul class="cycle_reserve" aria-label="Étapes à placer">
                 <li><button type="button" class="carte_cycle" data-ordre="5" data-acv="utilisation"><span>utilisation et maintenance</span></button></li>
@@ -115,13 +138,11 @@
 
             </div>
 
-            <!-- une fois l'ordre validé, le jeu disparaît et cette phrase le remplace -->
-            <p class="txt_labeur cycle_fait" id="cycle_fait" hidden>Le cycle de vie du Basic-phone® est reconstitué&#8239;: tu le retrouves ci-dessous, pour lire les résultats de son ACV.</p>
-
             <p class="visuellement_cache" id="annonce_cycle" role="status"></p>
 
             <!-- bouton fixe en bas à droite : il apparaît quand les 6 étapes sont placées.
-                 « vérifier », puis (s'il y a eu des corrections) « passer à l'analyse » -->
+                 « vérifier », puis (s'il y a eu des corrections) « passer à l'analyse »,
+                 qui fait glisser les étapes en rond -->
             <div class="qcm_pied" id="pied_cycle" hidden>
               <button type="button" class="qcm_verifier" id="bouton_cycle">vérifier</button>
             </div>
@@ -145,29 +166,7 @@
 
             <div class="acv_explorateur">
 
-              <!-- LE CYCLE EN ROND : les 6 étapes y arrivent depuis le jeu (activite/mission2.js) -->
-              <div class="cycle_rond" id="cycle_rond">
-                <svg class="cycle_fleches" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-                  <defs>
-                    <marker id="pointe_cycle" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                      <path d="M 0 0 L 10 5 L 0 10 z"></path>
-                    </marker>
-                  </defs>
-                  <!-- flèches entre les étapes, dans le sens des aiguilles d'une montre -->
-                  <path class="fleche" d="M 66.7 15.8 A 38 38 0 0 1 78.2 24.6" marker-end="url(#pointe_cycle)"></path>
-                  <path class="fleche" d="M 85.7 37.0 A 38 38 0 0 1 86.5 60.5" marker-end="url(#pointe_cycle)"></path>
-                  <path class="fleche" d="M 76.4 77.3 A 38 38 0 0 1 66.7 84.2" marker-end="url(#pointe_cycle)"></path>
-                  <path class="fleche" d="M 33.3 84.2 A 38 38 0 0 1 21.8 75.4" marker-end="url(#pointe_cycle)"></path>
-                  <path class="fleche" d="M 13.5 60.5 A 38 38 0 0 1 14.3 37.0" marker-end="url(#pointe_cycle)"></path>
-                  <!-- fin de vie → extraction : le recyclage, en pointillés -->
-                  <path class="fleche fleche_recyclage" d="M 21.8 24.6 A 38 38 0 0 1 33.3 15.8" marker-end="url(#pointe_cycle)"></path>
-                  <text class="texte_recyclage" x="22" y="13" text-anchor="end">recyclage</text>
-                  <!-- arc intérieur : les 3 premières étapes forment la « production » de l'ACV -->
-                  <path class="arc_production" d="M 40.7 30.1 A 22 22 0 0 1 62.6 68.0"></path>
-                  <text class="texte_production" x="58" y="50" text-anchor="end">production</text>
-                </svg>
-                <ol class="cycle_rond_etapes" aria-label="Cycle de vie du Basic-phone®"></ol>
-              </div>
+              <!-- ACV : À REVOIR ENSEMBLE. Le cycle en rond est maintenant dans le jeu de l'analyse 1, plus haut. -->
 
               <!-- À DROITE : la comparaison des étapes (toujours visible) et le détail de l'étape choisie -->
               <div class="acv_panneau">
@@ -461,15 +460,16 @@
 
       <aside class="mentor" id="mentor_ia" aria-labelledby="mentor_titre" hidden>
 
-        <!-- GRANDS DESSINS DU MENTOR (pop-ups) : un par humeur, un seul visible à la fois
-             (data-humeur sur la fenêtre : neutre, content ou decu ; voir activite/mission2.css) -->
-        <img class="mentor_grand_dessin visage_neutre"  src="dessin/chap_3/IV/mentor.svg" alt="">
-        <img class="mentor_grand_dessin visage_content" src="dessin/chap_3/IV/mentor_heureux.svg" alt="">
-        <img class="mentor_grand_dessin visage_decu"    src="dessin/chap_3/IV/mentor_doute.svg" alt="">
+        <!-- GRAND DESSIN DU MENTOR (pop-ups) : un par humeur, le CSS montre le bon -->
+        <img class="mentor_grand_dessin humeur_neutre"  src="dessin/chap_3/IV/mentor.svg" alt="">
+        <img class="mentor_grand_dessin humeur_content" src="dessin/chap_3/IV/mentor_heureux.svg" alt="">
+        <img class="mentor_grand_dessin humeur_decu"    src="dessin/chap_3/IV/mentor_doute.svg" alt="">
 
         <div class="mentor_entete">
-          <!-- PETIT DESSIN DU MENTOR (fenêtre en bas à droite) -->
-          <img class="mentor_illustration" src="dessin/chap_3/IV/mentor.svg" alt="">
+          <!-- PETIT DESSIN DU MENTOR (fenêtre en bas à droite) : un par humeur -->
+          <img class="mentor_illustration humeur_neutre"  src="dessin/chap_3/IV/mentor.svg" alt="">
+          <img class="mentor_illustration humeur_content" src="dessin/chap_3/IV/mentor_heureux.svg" alt="">
+          <img class="mentor_illustration humeur_decu"    src="dessin/chap_3/IV/mentor_doute.svg" alt="">
           <h2 class="mentor_titre" id="mentor_titre">Andréa</h2>
         </div>
 
