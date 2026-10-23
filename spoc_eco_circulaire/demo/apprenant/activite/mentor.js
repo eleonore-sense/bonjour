@@ -36,7 +36,10 @@
   const panneau = document.getElementById('mentor_ia');
   if (!panneau) return;
 
-  const ADRESSE_RELAIS = 'api/mentor';        // à adapter une fois en ligne
+  // en local (lancer_test.bat) : le relais de ton ordinateur ; en ligne : Supabase
+  const ADRESSE_RELAIS = ['localhost', '127.0.0.1'].includes(location.hostname)
+    ? 'api/mentor'
+    : 'https://dhssndnqurrpidyxatwj.supabase.co/functions/v1/mentor';
   const LONGUEUR_MAX = 2000;
   const REPONSES_AVANT_CONTINUER = 2;         // la mascotte propose de passer après 2 réponses non validées
   const CLE_ENJEUX = 'athentech_enjeux';      // enjeux mis de côté pour les missions suivantes
