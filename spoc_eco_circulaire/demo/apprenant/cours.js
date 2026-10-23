@@ -11,7 +11,7 @@ const COURS = {
   // hauteurImage : optionnel, si le picto doit être plus petit
   // ---------------------------------------------------------------
   boutons: [
-    { id: 'retour',       texte: "retour à l'accueil", lien: '#', image: 'dessin/picto/maison.svg' },
+    { id: 'retour',       texte: "retour à l'accueil", lien: 'accueil.html', image: 'dessin/picto/maison.svg' },
     { id: 'fiche_notion', texte: 'fiches notions',     lien: '#', image: 'dessin/picto/notion.svg', hauteurImage: '28px' },
     { id: 'glossaire',    texte: 'glossaire',          lien: '#', image: 'dessin/picto/loupe.svg',  hauteurImage: '28px' },
   ],
