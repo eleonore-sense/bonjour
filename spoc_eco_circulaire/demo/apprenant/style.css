@@ -6,7 +6,8 @@
 
 :root {
   /* animations */
-  --apparition_boite:   .5s ease;
+  --apparition_boite:   .3s ease;
+  --duree_apparition:   .3s;      /* pop-ups, boutons, encadrés qui apparaissent / disparaissent */
 
   /* polices */
   --titre:              Instrument_bold, Arial, sans-serif;
@@ -1397,7 +1398,7 @@ fieldset.qcm_bloc {
   font: inherit;
   font-size: 0.95rem;
   color: var(--couleur_texte);
-  background: var(--fond);
+  background: var(--rose);
   border: 1px solid var(--trait);
   border-radius: var(--arrondi_pilule);
   padding: 6px 16px;
@@ -1797,6 +1798,70 @@ svg.dessin {
 .item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="logistique"], [data-src*="logistique"]) { width: 150px; }
 .item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="client"],     [data-src*="client"])     { width: 100px; }
 .item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="recycleur"],  [data-src*="recycleur"])  { width: 100px; }
+
+
+
+/* =====================================================================
+   5 bis. APPARITION ET DISPARITION EN FONDU
+   Pour ajouter un élément : l'écrire dans les trois listes ci-dessous.
+   ===================================================================== */
+
+/* 1. les éléments concernés */
+.qcm_pied,
+.qcm_legende,
+.qcm_correction,
+.classement_correction,
+.modal_dessin,
+.boite_notion,
+.fenetre_document,
+.conteneur_bouton,
+.retour_choix,
+.rappel_mascotte {
+   transition: opacity var(--duree_apparition) ease;   /* tous les navigateurs */
+  transition:                                         /* navigateurs récents : fondu aussi à la sortie */
+    opacity var(--duree_apparition) ease,
+    display var(--duree_apparition) allow-discrete,
+    overlay var(--duree_apparition) allow-discrete;
+}
+
+/* 2. leur état caché : transparent, et plus cliquable pendant qu'il s'efface */
+.qcm_pied[hidden],
+.qcm_legende:not(.visible),
+.qcm_bloc:not(.ouverte) .qcm_correction,
+.classement_correction:not(.ouverte),
+.modal_dessin:not(.visible),
+.boite_notion:not(.visible),
+.fenetre_document:not([open]),
+.conteneur_bouton[hidden],
+.retour_choix[hidden],
+.rappel_mascotte[hidden] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 3. au moment où ils apparaissent, ils partent de transparent */
+@starting-style {
+  .qcm_pied:not([hidden]),
+  .qcm_legende.visible,
+  .qcm_bloc.ouverte .qcm_correction,
+  .classement_correction.ouverte,
+  .modal_dessin.visible,
+  .boite_notion.visible,
+  .fenetre_document[open],
+  .conteneur_bouton:not([hidden]),
+  .retour_choix:not([hidden]),
+  .rappel_mascotte:not([hidden]) {
+    opacity: 0;
+  }
+}
+
+/* un document qui se ferme reste centré à l'écran pendant qu'il s'efface */
+.fenetre_document {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  height: fit-content;
+}
 
 
 

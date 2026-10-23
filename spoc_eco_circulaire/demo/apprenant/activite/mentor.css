@@ -1,0 +1,397 @@
+/* =====================================================================
+   MENTOR IA : la fenêtre de conversation
+   En plus de couleurs.css, style.css et activite_smartphone.css.
+   ===================================================================== */
+
+/* ---------- La fenêtre : en bas à droite ---------- */
+
+.mentor {
+  --largeur_mentor: 340px;
+  position: fixed;
+  right: 24px;
+  bottom: calc(var(--hauteur_bandeau_bas) + 16px);
+  z-index: 95;                       /* devant les boutons fixes (.qcm_pied) */
+  display: flex;
+  flex-direction: column;
+  width: min(var(--largeur_mentor), calc(100vw - 32px));
+  max-height: min(560px, calc(100vh - var(--hauteur_bandeau_bas) - 120px));
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+  transition:
+    transform var(--duree_apparition) ease,
+    width var(--duree_apparition) ease,
+    bottom var(--duree_apparition) ease,
+    opacity var(--duree_apparition) ease;
+  transition:
+    transform var(--duree_apparition) ease,
+    width var(--duree_apparition) ease,
+    bottom var(--duree_apparition) ease,
+    opacity var(--duree_apparition) ease,
+    display var(--duree_apparition) allow-discrete;
+}
+
+.mentor[hidden] {
+  display: none;
+  opacity: 0;
+}
+
+/* apparition en fondu (voir style.css, section 5 bis) */
+@starting-style {
+  .mentor:not([hidden]) {
+    opacity: 0;
+  }
+}
+
+/* pendant le calcul de la position de départ, pas d'animation */
+.mentor.sans_transition {
+  transition: none;
+}
+
+/* les boutons fixes (« continuer »…) passent à gauche de la fenêtre */
+body.mentor_visible .qcm_pied {
+  right: calc(min(340px, 100vw - 32px) + 48px);
+}
+
+
+/* ---------- En-tête : illustration, titre, réduire ---------- */
+
+.mentor_entete {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 7px 7px;
+}
+
+/* illustration (ou son emplacement) : petite à gauche du titre */
+.mentor_illustration {
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  transition: width .7s ease, height .7s ease, flex-basis .7s ease;
+}
+
+.mentor_illustration.emplacement_illustration {
+  font-size: 0.6rem;
+  line-height: 1.1;
+  padding: 4px;
+}
+
+.mentor_titre {
+  flex: 1;
+  margin: 0;
+  font-family: var(--titre);
+  font-weight: normal;
+  font-size: 1rem;
+}
+
+
+/* ---------- Corps : conversation et saisie ---------- */
+
+.mentor_corps {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;                     /* laisse le fil défiler */
+  padding: 7px 7px 14px;
+  font-size: 0.88em;
+}
+
+.mentor_fil {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 2px 6px 2px 2px;
+  scrollbar-width: thin;
+}
+
+.mentor_message {
+  padding: 7px 7px;
+  line-height: 1.4;
+}
+
+.mentor_message p {
+  margin: 0 0 6px;
+}
+
+.mentor_message p:last-child {
+  margin-bottom: 0;
+}
+
+/* textes écrits par le mentor ou l'élève : on garde leurs retours à la ligne */
+.mentor_texte {
+  white-space: pre-line;
+}
+
+.mentor_message strong {
+  font-family: var(--titre);
+  font-weight: normal;
+}
+
+.mentor_message_mentor {
+  align-self: flex-start;
+  background: var(--fond);
+}
+
+.mentor_message_eleve {
+  align-self: flex-end;
+  max-width: 88%;
+  background: var(--vert_bleu);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+}
+
+.mentor_message_erreur {
+  align-self: stretch;
+  border: 1px dashed var(--trait);
+  border-radius: var(--arrondi_boite);
+  font-size: 0.8rem;
+}
+
+/* « Roue · Clients » au-dessus d'une réponse venue de la roue */
+.mentor_etiquette {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 0.72rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ---------- Pop-up : grand dessin et texte de l'étape ----------
+   Masqués dans la petite fenêtre. */
+
+.mentor_grand_dessin,
+.mentor_scene {
+  display: none;
+}
+
+.mentor_scene:focus {
+  outline: none;
+}
+
+.mentor_scene:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+}
+
+.mentor_scene_texte p {
+  margin: 0 0 10px;
+}
+
+.mentor_scene_texte p:last-child {
+  margin-bottom: 0;
+}
+
+.mentor_scene_texte strong {
+  font-family: var(--titre);
+  font-weight: normal;
+}
+
+/* échange sur les 2 enjeux, sous la question */
+.mentor_scene_fil {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.mentor_scene_fil:empty {
+  display: none;
+}
+
+/* « Le mentor écrit… » */
+.mentor_etat {
+  min-height: 1.2em;
+  margin: 6px 0 0;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.mentor_saisie {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  margin-top: 4px;
+}
+
+.mentor_saisie textarea {
+  flex: 1;
+  min-height: 40px;
+  font: inherit;
+  font-size: 0.88rem;
+  padding: 7px 9px;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: 8px;
+  resize: vertical;
+}
+
+/* quand on écrit : fond bleu */
+.mentor_saisie textarea:focus,
+.mentor_saisie textarea:focus-visible {
+  outline: none;
+  background: var(--bleu_clair);
+}
+
+/* ---------- Pop-up au centre : accueil, bilan, enjeux ----------
+   Grand dessin à gauche ; à droite le nom, le texte de l'étape, les boutons. */
+
+.mentor.popup {
+  --largeur_mentor: 760px;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "dessin entete"
+    "dessin corps";
+  column-gap: 8px;
+  padding: 20px 28px 20px 0;
+}
+
+.mentor.popup .mentor_grand_dessin {
+  grid-area: dessin;
+  display: block;
+  align-self: center;                /* centré en hauteur dans le pop-up */
+  justify-self: center;              /* centré en largeur dans la colonne de gauche */
+  width: 200px;
+  height: 200px;
+  margin: 0 0 0 20px;                /* un peu d'air à gauche, contre le bord du pop-up */
+}
+.mentor.popup .mentor_grand_dessin.emplacement_illustration {
+  margin: 0 0 0 20px;
+  width: 200px;
+  height: 240px;
+}
+
+.mentor.popup .mentor_entete {
+  grid-area: entete;
+  padding: 0;
+}
+
+/* dans le pop-up, le petit dessin laisse la place au grand */
+.mentor.popup .mentor_illustration {
+  display: none;
+}
+
+/* dans le pop-up, le nom n'est pas affiché (le texte se présente déjà),
+   mais il reste lu par les lecteurs d'écran */
+.mentor.popup .mentor_titre {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.mentor.popup .mentor_corps {
+  grid-area: corps;
+  padding: 10px 0 0;
+  overflow: hidden;
+}
+
+/* dans le pop-up : le texte de l'étape, pas l'historique */
+.mentor.popup .mentor_scene {
+  display: block;
+  min-height: 0;
+  overflow-y: auto;
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
+.mentor.popup .mentor_fil {
+  display: none;
+}
+
+/* pendant l'accueil et le bilan, l'élève répond avec les boutons, pas par écrit */
+.mentor[data-etape="accueil"] .mentor_saisie,
+.mentor[data-etape="bilan"] .mentor_saisie,
+.mentor[data-etape="enjeux"].enjeux_valides .mentor_saisie,
+.mentor[data-etape="question"] .mentor_saisie {
+  display: none;
+}
+
+/* ---------- Boutons du pop-up ---------- */
+
+.mentor_choix {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 14px 0 4px;
+}
+
+.mentor_choix [hidden],
+.mentor_choix:not(:has(button:not([hidden]))) {
+  display: none;
+}
+
+/* liste des rubriques à approfondir, dans le bilan */
+.liste_a_revoir {
+  margin: 4px 0 8px;
+  padding-left: 20px;
+}
+
+
+/* ---------- Réduite : seulement l'en-tête ----------
+   Après l'accueil, jusqu'à la première rubrique validée. */
+
+.mentor.reduit .mentor_corps {
+  display: none;
+}
+
+.mentor.reduit .mentor_illustration {
+  flex-basis: 36px;
+  width: 36px;
+  height: 36px;
+}
+
+
+/* ---------- Petits écrans ---------- */
+
+@media (max-width: 700px) {
+
+  .mentor {
+    right: 16px;
+  }
+
+  /* pop-up sur une colonne : le grand dessin passe au-dessus du texte, en plus petit */
+  .mentor.popup {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "dessin"
+      "entete"
+      "corps";
+    padding: 16px;
+  }
+
+  .mentor.popup .mentor_grand_dessin,
+  .mentor.popup .mentor_grand_dessin.emplacement_illustration {
+    justify-self: center;
+    width: 120px;
+    height: 140px;
+    margin: 0 0 8px;
+  }
+
+  /* les boutons fixes passent au-dessus de la fenêtre */
+  body.mentor_visible .qcm_pied {
+    right: 16px;
+    bottom: calc(var(--hauteur_bandeau_bas) + 100px);
+  }
+}
+
+/* « continuer » sous la roue : il se place sous la fenêtre de conversation,
+   qui remonte pour lui faire de la place */
+body.mentor_visible #pied_roue {
+  right: 24px;
+  bottom: calc(var(--hauteur_bandeau_bas) + 16px);
+  width: min(340px, calc(100vw - 32px));
+  align-items: center;
+}
+
+body:has(#pied_roue:not([hidden])) .mentor:not(.popup) {
+  bottom: calc(var(--hauteur_bandeau_bas) + 16px + 60px);
+}

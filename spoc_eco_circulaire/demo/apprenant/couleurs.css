@@ -15,6 +15,7 @@
   --bleu_clair:         #b4d5f7;
   --bleu:               #6eadf0;
   --prune:              #68043a;
+  --marron2:             #794b52;
   --rouge:              #ec3724;
   --orange:             #f27322;
   --blanc:              #ffffff;
@@ -90,4 +91,5 @@ svg.dessin .rouge       { fill: var(--rouge); }
 svg.dessin .orange      { fill: var(--orange); }
 svg.dessin .blanc       { fill: var(--blanc); }
 svg.dessin .noir        { fill: var(--noir); }
+svg.dessin .marron2       { fill: var(--marron2); }
 svg.dessin .sans_fond   { fill: none; }

@@ -34,6 +34,97 @@ h1.petit_titre {
   padding-bottom: 4px;
 }
 
+/* ---------- Texte + illustration à droite ---------- */
+
+.bloc_illustre {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+/* le texte prend la place disponible */
+.bloc_illustre > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+/* l'intro suit directement le titre de l'activité */
+.petit_titre + .bloc_illustre > .txt_labeur {
+  margin-top: 0;
+}
+
+/* l'image (ou son emplacement) : largeur fixe à droite */
+.illustration {
+  flex: 0 0 220px;
+  width: 220px;
+  height: auto;
+}
+
+/* emplacement provisoire, en attendant l'image */
+.emplacement_illustration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border: 1px dashed var(--trait_doux);
+  border-radius: var(--arrondi_boite);
+  color: var(--trait_doux);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* l'emplacement de la 2e illustration s'aligne sur la fiche de l'étape */
+.etape .bloc_illustre .illustration {
+  margin-top: 20px;
+}
+
+
+/* ---------- Présentation : paragraphes et listes ---------- */
+
+.txt_labeur p {
+  margin: 0 0 14px;
+  max-width: 860px;
+}
+
+.txt_labeur p:last-child {
+  margin-bottom: 0;
+}
+
+.txt_labeur p.souligne {
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+/* bloc qui suit un autre bloc de texte ou une consigne */
+.bloc_liste {
+  margin-top: 40px;
+}
+
+/* dans une étape, le texte suit la fiche de plus près */
+.etape .txt_labeur {
+  margin-top: 30px;
+}
+
+.etape .consigne {
+  margin-top: 30px;
+}
+
+.liste_etoiles {
+  list-style: none;
+  margin: 0 0 0 12px;
+  padding: 0;
+  max-width: 860px;
+}
+
+.liste_etoiles li {
+  margin-bottom: 6px;
+}
+
+.liste_etoiles .etoile {
+  margin-right: 6px;
+}
+
+
 /* consignes d'étape écrites comme de vrais titres */
 h3.consigne {
   font-weight: normal;
@@ -112,6 +203,70 @@ h3.consigne {
 }
 
 
+/* ---------- Onglet de la mascotte : « ouvre tous les documents » ----------
+   En bas à droite, à la place du bouton « passer à l'analyse 360° »,
+   tant que tous les documents ne sont pas ouverts. */
+
+.rappel_mascotte {
+  position: fixed;
+  right: 40px;
+  bottom: calc(var(--hauteur_bandeau_bas) + 25px);
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 330px;
+  padding: 10px 16px 10px 10px;
+  background: var(--vert_bleu);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+  font-size: 0.85rem;
+  line-height: 1.35;
+}
+
+.rappel_mascotte[hidden] {
+  display: none;
+}
+
+.rappel_mascotte p {
+  margin: 0;
+}
+
+.rappel_mascotte_dessin {
+  flex: 0 0 60px;
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.rappel_mascotte_dessin.emplacement_illustration {
+  font-size: 0.6rem;
+}
+
+/* la boîte des 2 enjeux : texte puis bouton rose en dessous ;
+   elle passe devant la fenêtre du mentor */
+.rappel_avec_bouton {
+  z-index: 96;
+  align-items: flex-start;
+  max-width: 360px;
+}
+
+.rappel_mascotte_texte {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (max-width: 700px) {
+  .rappel_mascotte {
+    right: 16px;
+    left: 16px;
+    max-width: none;
+  }
+}
+
+
 /* ---------- Le dossier de documents ---------- */
 
 .dossier {
@@ -143,9 +298,9 @@ h3.consigne {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 170px));   /* 4 feuilles par ligne */
+  grid-template-columns: repeat(3, minmax(0, 170px));   /* 4 feuilles par ligne */
   justify-content: center;
-  gap: 24px 40px;
+  gap: 40px 90px;
 }
 
 /* une miniature = une feuille de papier, coin replié en haut à droite.
@@ -225,20 +380,23 @@ h3.consigne {
 
 /* petit dessin et mini tableau, pour figurer le contenu de la feuille */
 .miniature_dessin {
+  align-self: center;
   width: 60%;
-  height: 40px;
-  border: 1px dashed var(--trait_doux);
-  border-radius: 6px;
+  height: 80px;
+  object-fit: contain;
 }
 
 .miniature_tableau {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);   /* 3 colonnes */
   width: 100%;
+  border-top: 1px solid var(--trait_doux);
+  border-left: 1px solid var(--trait_doux);
 }
 
 .miniature_tableau span {
-  height: 9px;
+  height: 14px;                            /* hauteur d'une ligne */
+  border-right: 1px solid var(--trait_doux);
   border-bottom: 1px solid var(--trait_doux);
 }
 
@@ -250,21 +408,48 @@ h3.consigne {
   max-height: 85vh;
   padding: 36px 40px 30px;
   color: var(--couleur_texte);
-  background: var(--fond);
+  background:
+    linear-gradient(var(--trait), var(--trait))
+      top 0 right calc(var(--coin) - 1px) / 1px var(--coin) no-repeat,
+    linear-gradient(var(--trait), var(--trait))
+      top calc(var(--coin) - 1px) right 0 / var(--coin) 1px no-repeat,
+    linear-gradient(to bottom left,
+      transparent 50%,
+      var(--trait) 50%,
+      var(--trait) calc(50% + 1.5px),
+      var(--fond) calc(50% + 1.5px))
+      top right / var(--coin) var(--coin) no-repeat,
+    var(--fond);
+  background-origin: border-box;
   border: 1px solid var(--trait);
-  border-radius: var(--arrondi_boite);
+  --coin: 40px;
+  border-radius: 0;
+  clip-path: polygon(0 0, calc(100% - var(--coin)) 0, 100% var(--coin), 100% 100%, 0 100%);
   font-family: var(--labeur);
   font-size: 0.95rem;
   line-height: 1.45;
+  overflow-x: hidden;
 }
+
+/* la barre de défilement commence sous le coin plié */
+.fenetre_document::-webkit-scrollbar-track {
+  margin-top: 30px;
+}
+
+
+
 
 .fenetre_document::backdrop {
   background: transparent;
 }
 
+/* le rond rouge reste en haut à droite, à côté du coin plié, même quand on fait défiler */
 .fenetre_document .qcm_fermer {
-  top: 12px;
-  right: 12px;
+  position: sticky;      /* il suit le défilement… */
+  top: -24px;            /* …et se bloque en haut de la fenêtre */
+  z-index: 1;            /* devant le texte qui passe dessous */
+  float: right;          /* calé à droite, le titre passe à sa gauche */
+  margin: -24px -12px 0 0;
 }
 
 .fenetre_document h4 {
@@ -294,23 +479,60 @@ h3.consigne {
   margin: 10px 0 0;
 }
 
+/* la fiche technique : plus large, image à gauche, tableau à droite */
+.fenetre_fiche {
+  width: min(960px, 94vw);
+}
+
+.fiche_corps {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.fiche_image {
+  flex: 0 0 38%;
+  max-width: 38%;
+  height: auto;
+}
+
+/* un vrai tableau, avec des traits entre les lignes et les colonnes */
 .fiche_technique {
-  width: 100%;
+  flex: 1;
   border-collapse: collapse;
+  border: 1px solid var(--trait);
+  font-size: 0.9rem;
 }
 
 .fiche_technique th,
 .fiche_technique td {
-  padding: 5px 0;
-  border-bottom: 1px solid var(--trait_doux);
+  padding: 6px 10px;
+  border: 1px solid var(--trait);
   text-align: left;
   vertical-align: top;
 }
 
-.fiche_technique th {
-  font-weight: normal;
+.fiche_technique thead th {
+  background: var(--fond_consigne);
   font-family: var(--titre);
-  padding-right: 12px;
+  font-weight: normal;
+}
+
+.fiche_technique tbody th {
+  font-family: var(--titre);
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+/* sur petit écran, l'image passe au-dessus du tableau */
+@media (max-width: 700px) {
+  .fiche_corps {
+    flex-direction: column;
+  }
+
+  .fiche_image {
+    max-width: 100%;
+  }
 }
 
 /* infographies et cartes pas encore réalisées */
@@ -329,20 +551,23 @@ h3.consigne {
 }
 
 
+.image_document {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  max-height: 200px;
+  margin: 6px auto 12px;   /* centrée, avec un peu d'air */
+}
+
+
 /* ---------- Question 1 : roue de l'analyse 360° ---------- */
 
 .roue {
-  --rayon: 190px;
+  --rayon: 220px;
   position: relative;
   width: min(1080px, 100%);
   height: calc(var(--rayon) * 2 + 60px);
   margin: 30px auto 90px;           /* place sous la roue pour les réponses du bas */
-}
-
-/* les éléments attendus sortent de la roue : on lui donne de l'air */
-.roue.corrigee {
-  margin-top: 210px;
-  margin-bottom: 200px;
 }
 
 /* cercle de fond */
@@ -421,6 +646,14 @@ h3.consigne {
   background: var(--orange);
 }
 
+/* réponse validée avec Entrée : le focus revient sur le titre, sans surbrillance.
+   Le contour revient dès qu'on navigue à nouveau au clavier (Tab). */
+.rubrique.sans_focus .rubrique_bouton:focus-visible {
+  outline: none;
+  transform: none;
+  box-shadow: none;
+}
+
 /* rubriques traitées à l'étape suivante */
 .rubrique.prerempli .rubrique_bouton {
   border-style: dashed;
@@ -431,7 +664,7 @@ h3.consigne {
   display: none;
   position: absolute;
   left: 50%;
-  top: calc(100% + 8px);
+  top: calc(100% - 4px);            /* même place que la réponse de l'élève (.note_eleve) */
   z-index: 3;
   transform: translateX(-50%);
   width: 280px;
@@ -440,16 +673,6 @@ h3.consigne {
   border: 1px solid var(--trait);
   border-radius: var(--arrondi_boite);
   font-size: 0.85rem;
-}
-
-/* pont invisible entre le bouton et la fenêtre : le survol ne se perd pas en descendant */
-.rubrique_fenetre::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: -12px;
-  height: 12px;
 }
 
 .rubrique:hover .rubrique_fenetre,
@@ -474,22 +697,37 @@ h3.consigne {
   resize: vertical;
 }
 
+/* champ où l'on écrit : fond bleu et bord noir.
+   Les autres fenêtres ouvertes au survol restent grises. */
+.rubrique_fenetre textarea:focus,
+.rubrique_fenetre textarea:focus-visible {
+  outline: none;
+  background: var(--bleu_clair);
+  border-color: var(--trait);
+}
+
+/* fenêtre refermée avec Entrée : elle reste fermée tant que la souris ne quitte pas la rubrique */
+.rubrique.repliee .rubrique_fenetre {
+  display: none;
+}
+
 .rubrique_fenetre p {
   margin: 0;
 }
 
 
-/* ---------- Réponses de l'élève et éléments attendus ---------- */
+/* ---------- Réponses de l'élève ---------- */
 
 /* gris : la réponse de l'élève, de la largeur du titre,
    posée par-dessus le bas du titre qu'elle chevauche légèrement */
 .note_eleve {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 50%;
   top: calc(100% - 4px);
   z-index: 2;
-  min-width: 120px;
+  transform: translateX(-50%);
+  width: max-content;               /* largeur du texte… */
+  max-width: 300px;                 /* …jusqu'à 300px, puis retour à la ligne */
   margin: 0;
   padding: 6px 10px;
   font-size: 0.75rem;
@@ -498,62 +736,17 @@ h3.consigne {
   border: 1px solid var(--trait);
   border-radius: var(--arrondi_boite);
   white-space: pre-line;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;           /* 4 lignes, la suite reste dans la fenêtre de saisie */
-  overflow: hidden;
   pointer-events: none;
 }
 
-/* vert-bleu : les éléments attendus, à l'extérieur de la roue */
-.note_attendue {
-  position: absolute;
-  z-index: 2;
-  width: 210px;
-  padding: 8px 12px;
-  font-size: 0.72rem;
-  line-height: 1.3;
-  background: var(--vert_bleu);
-  border: 1px solid var(--trait);
-  border-radius: var(--arrondi_boite);
-}
-
-.note_eleve[hidden],
-.note_attendue[hidden] {
+.note_eleve[hidden] {
   display: none;
 }
 
-/* place de chaque encadré, vers l'extérieur de la roue */
-.rubrique[data-cote="haut"]        .note_attendue { left: 50%; bottom: calc(100% + 12px); transform: translateX(-50%); }
-.rubrique[data-cote="haut_droite"] .note_attendue { left: calc(100% + 16px); bottom: 0; }
-.rubrique[data-cote="droite"]      .note_attendue { left: calc(100% + 75px); bottom: -30px; }
-.rubrique[data-cote="bas_droite"]  .note_attendue { left: calc(100% + 16px); top: 0; }
-.rubrique[data-cote="bas_gauche"]  .note_attendue { right: calc(100% + 16px); top: 0; }
-.rubrique[data-cote="haut_gauche"] .note_attendue { right: calc(100% + 16px); bottom: 0; }
 
-/* étoiles à la place des puces */
-.note_attendue ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.note_attendue li {
-  position: relative;
-  padding-left: 16px;
-  margin-bottom: 3px;
-}
-
-.note_attendue li::before {
-  content: "✶";
-  content: "✶" / "";               /* décoratif : non lu par les lecteurs d'écran */
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-
-
-/* ---------- Question 2 : choix de l'étape suivante ---------- */
+/* ---------- Question « Que fais-tu maintenant ? » ----------
+   Mêmes cases carrées que les QCM des autres pages (style.css : .qcm_option),
+   sur une seule colonne : blanches, puis bleues une fois choisies. */
 
 .choix_etape fieldset {
   border: 0;
@@ -563,40 +756,28 @@ h3.consigne {
 
 .choix_etape legend {
   padding: 10px 18px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
-.choix {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
+.choix_etape .qcm_options {
   max-width: 860px;
-  margin: 0 0 14px 12px;
-  padding: 12px 16px;
-  border: 1px solid var(--trait_doux);
-  border-radius: var(--arrondi_boite);
-  cursor: pointer;
+  margin: 20px 0 0 12px;
+  font-size: 1rem;
 }
 
-.choix:has(input:checked) {
-  border-color: var(--trait);
+.choix_etape .qcm_option {
+  font-size: 1rem;
+  line-height: 1.35;
 }
 
-.choix input {
-  flex-shrink: 0;
-  width: 18px;
-  height: 18px;
-  margin: 2px 0 0;
-  accent-color: var(--trait);
-}
-
-.choix strong {
-  font-family: var(--titre);
-  font-weight: normal;
+/* une case ronde par défaut pour un choix unique : on la rend carrée comme les autres QCM */
+.choix_etape .qcm_option input[type="radio"] {
+  border-radius: 0;
+  margin-top: 1px;
 }
 
 .choix_etape .qcm_verifier {
-  margin: 10px 0 0 12px;
+  margin: 24px 0 0 12px;
 }
 
 .retour_choix {
@@ -617,20 +798,20 @@ h3.consigne {
 }
 
 
-/* ---------- Emplacement de l'agent IA ---------- */
-
-.agent {
-  max-width: 860px;
-  margin: 24px 0 0 12px;
-  padding: 16px 18px;
-  border: 1px dashed var(--trait);
-  border-radius: var(--arrondi_boite);
-}
-
-
 /* ---------- Petits écrans et zoom fort ---------- */
 
 @media (max-width: 1100px) {
+
+  /* l'illustration passe sous le texte */
+  .bloc_illustre {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .illustration {
+    flex: none;
+    width: min(220px, 100%);
+  }
 
   .dossier {
     width: 100%;
@@ -638,8 +819,7 @@ h3.consigne {
   }
 
   /* la roue devient une liste */
-  .roue,
-  .roue.corrigee {
+  .roue {
     width: auto;
     height: auto;
     margin: 30px 0 40px;
@@ -656,8 +836,7 @@ h3.consigne {
   .rubrique,
   .rubrique_bouton,
   .rubrique_fenetre,
-  .note_eleve,
-  .rubrique[data-cote] .note_attendue {
+  .note_eleve {
     position: static;
     transform: none;
     width: auto;
@@ -675,8 +854,7 @@ h3.consigne {
   }
 
   .rubrique_fenetre,
-  .note_eleve,
-  .note_attendue {
+  .note_eleve {
     margin-top: 8px;
   }
 

@@ -5,21 +5,24 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Activité : Deviens le héros de ton projet d'éco-conception!</title>
+  <title>Activité : deviens le héros de ton projet d’éco-conception !</title>
 
   <link rel="stylesheet" href="couleurs.css">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="activite/activite_smartphone.css">
+  <link rel="stylesheet" href="activite/mentor.css">
 
   <script src="cours.js" defer></script>
   <script src="script.js" defer></script>
   <script src="dessins.js" defer></script>
   <script src="activite/activite_smartphone.js" defer></script>
+  <script src="activite/mentor.js" defer></script>
 </head>
 
 
 <!-- Où est cette page dans le cours ? (le reste vient de cours.js) -->
-<body data-chapitre="3" data-partie="11" data-suite="cache">
+<!-- data-page-suivante : la page de la mission 2 (le bouton « passer à la suite » y mène) -->
+<body data-chapitre="3" data-partie="11" data-suite="cache" data-page-suivante="activite_d_mission2.html">
 
   <a class="lien_evitement" href="#contenu_gauche">Aller au contenu</a>
 
@@ -28,53 +31,64 @@
 
       <main id="contenu_gauche">
 
-        <h1 class="petit_titre">4. Activité&#8239;: Deviens le héros de ton projet d'éco-conception!</h1>
+        <h1 class="petit_titre">4. Activité&#8239;: Deviens le héros de ton projet d’éco-conception&#8239;!</h1>
 
 
         <!-- ================= PRÉSENTATION ================= -->
 
+        <div class="bloc_illustre">
         <div class="txt_labeur">
-          <span class="souligne">Bienvenue chez ATHEN’TECH&#8239;!</span>
-<br>Tu viens d’être recruté·e au sein de l’équipe Éco-conception d’ATHEN’TECH, une entreprise qui souhaite devenir un leader des smartphones à faible impact environnemental.
-<br>Son ambition est claire&#8239;: aller au-delà des exigences réglementaires et concevoir un smartphone parmi les plus performants du marché sur le plan environnemental, sans sacrifier les fonctionnalités essentielles, la qualité ni un prix compétitif.
-<br><br>Pour y parvenir, tu devras travailler comme un véritable chef de projet&#8239;: comprendre le contexte, analyser le produit, identifier les principaux impacts, proposer des solutions et justifier tes choix.
-
-<br><br>Tu ne seras pas seul·e&#8239;: un mentor IA t’accompagnera tout au long de ta mission. Il te donnera accès aux
-informations utiles, te posera des questions et t’aidera à approfondir ton raisonnement. Mais les décisions finales
-t’appartiennent&#8239;!
-
-
-          
-      <div class="consigne">
-Ta mission&#8239;: concevoir une nouvelle version éco-concue du smartphone Basic-phone® et convaincre la direction de l’intérêt de ton projet.
-      </div>
-     
-
-          <br><br><br><span class="souligne ecart">Les objectif de ta mission&#8239;:</span>
-<br><span class="etoile"></span> Comprendre les enjeux environnementaux et sociaux liés aux smartphones.
-<br><span class="etoile"></span> Identifier les principales sources d’impact sur le cycle de vie.
-<br><span class="etoile"></span> Imaginer différentes éco-solutions.
-<br><span class="etoile"></span> Comparer et hiérarchiser ces solutions.
-<br><span class="etoile"></span> Construire une recommandation argumentée et identifier comment vérifier ses bénéfices.
-      
-
-
-
-          <br><br><br><span class="souligne ecart">Tes contraintes&#8239;:</span>
-<br><span class="etoile"></span> Préserver les fonctions essentielles&#8239;: appels, messages, accès à Internet, photographie et applications du quotidien.
-<br><span class="etoile"></span> Maintenir un prix de vente compétitif.
-<br><span class="etoile"></span> Réduire les impacts environnementaux en considérant plusieurs catégories d’impact, pas seulement le carbone.
-<br><span class="etoile"></span> Respecter les exigences réglementaires applicables
-<br><span class="etoile"></span> Identifier les principales sources d’impact sur le cycle de vie.
-
-
-
-
-<br><br><span clas="ecart">Pour mener à bien cette mission, tu disposes d’une grande liberté et seras en mesure de faire évoluer : la
-conception du smartphone, le choix des composants et l’approvisionnement en matériaux, le processus
-d’assemblage, le mode de distribution, les fournisseurs et partenaires (sur l’ensemble de la chaîne de valeur),
-ainsi que le lieu de l’usine d’assemblage <strong>située en Chine</strong>.
+          <p>
+            <span class="souligne">Bienvenue chez ATHEN’TECH&#8239;!</span><br>
+            Tu viens d’être recruté·e au sein de l’équipe Éco-conception d’ATHEN’TECH, une entreprise qui souhaite devenir un leader des smartphones à faible impact environnemental.
+          </p>
+          <p>
+            Son ambition est claire&#8239;: aller au-delà des exigences réglementaires et concevoir un smartphone parmi les plus performants du marché sur le plan environnemental, sans sacrifier les fonctionnalités essentielles, la qualité ni un prix compétitif.
+          </p>
+          <p>
+            Pour y parvenir, tu devras travailler comme un véritable chef de projet&#8239;: comprendre le contexte, analyser le produit, identifier les principaux impacts, proposer des solutions et justifier tes choix.
+          </p>
+          <p>
+            Tu ne seras pas seul·e&#8239;: un mentor IA t’accompagnera tout au long de ta mission. Il te donnera accès aux informations utiles, te posera des questions et t’aidera à approfondir ton raisonnement. Mais les décisions finales t’appartiennent&#8239;!
+          </p>
         </div>
+
+               <img class="illustration" src="dessin/chap_3/IV/athentech.svg" alt="">
+
+        </div>
+
+        <div class="consigne">
+          Ta mission&#8239;: concevoir une nouvelle version éco-conçue du smartphone BasicPhone® et convaincre la direction de l’intérêt de ton projet.
+        </div>
+
+        <div class="txt_labeur bloc_liste">
+          <p class="souligne">Les objectifs de ta mission&#8239;:</p>
+          <ul class="liste_etoiles">
+            <li><span class="etoile" aria-hidden="true"></span> Comprendre les enjeux environnementaux et sociaux liés aux smartphones.</li>
+            <li><span class="etoile" aria-hidden="true"></span> Identifier les principales sources d’impact sur le cycle de vie.</li>
+            <li><span class="etoile" aria-hidden="true"></span> Imaginer différentes éco-solutions.</li>
+            <li><span class="etoile" aria-hidden="true"></span> Comparer et hiérarchiser ces solutions.</li>
+            <li><span class="etoile" aria-hidden="true"></span> Construire une recommandation argumentée et identifier comment vérifier ses bénéfices.</li>
+          </ul>
+        </div>
+
+        <div class="txt_labeur bloc_liste">
+          <p class="souligne">Tes contraintes&#8239;:</p>
+          <ul class="liste_etoiles">
+            <li><span class="etoile" aria-hidden="true"></span> Préserver les fonctions essentielles&#8239;: appels, messages, accès à Internet, photographie et applications du quotidien.</li>
+            <li><span class="etoile" aria-hidden="true"></span> Maintenir un prix de vente compétitif.</li>
+            <li><span class="etoile" aria-hidden="true"></span> Réduire les impacts environnementaux en considérant plusieurs catégories d’impact, pas seulement le carbone.</li>
+            <li><span class="etoile" aria-hidden="true"></span> Respecter les exigences réglementaires applicables.</li>
+            <li><span class="etoile" aria-hidden="true"></span> Identifier les principales sources d’impact sur le cycle de vie.</li>
+          </ul>
+        </div>
+
+        <div class="txt_labeur bloc_liste">
+          <p>
+            Pour mener à bien cette mission, tu disposes d’une grande liberté et seras en mesure de faire évoluer&#8239;: la conception du smartphone, le choix des composants et l’approvisionnement en matériaux, le processus d’assemblage, le mode de distribution, les fournisseurs et partenaires (sur l’ensemble de la chaîne de valeur), ainsi que le lieu de l’usine d’assemblage, <strong>située en Chine</strong>.
+          </p>
+        </div>
+
 
         <!-- ================= ÉTAPE A ================= -->
 
@@ -82,25 +96,34 @@ ainsi que le lieu de l’usine d’assemblage <strong>située en Chine</strong>.
 
           <h2 class="titre_etape" id="titre_etape_a">mission 1&#8239;: comprendre le contexte de l’entreprise</h2>
 
-         <dl class="fiche_etape">
+          <div class="bloc_illustre">
+          <dl class="fiche_etape">
             <div>
-              <dt>Ta première mission&#8239;: mener l'enquête&#8239;!</dt>
-              <dd>Avant de modifier le smartphone, tu dois comprendre l’environnement dans lequel évolue ATHEN’TECH.
-<br>Quels sont les enjeux du marché&#8239;? Qu’attendent les clients&#8239;? Quelles sont les pratiques des concurrents&#8239;?
-Quelles contraintes réglementaires, technologiques, environnementales et sociales peuvent influencer ton projet&#8239;?</dd>
+              <dt>Ta première mission&#8239;: mener l’enquête&#8239;!</dt>
+              <dd>
+                Avant de modifier le smartphone, tu dois comprendre l’environnement dans lequel évolue ATHEN’TECH.<br>
+                Quels sont les enjeux du marché&#8239;? Qu’attendent les clients&#8239;? Quelles sont les pratiques des concurrents&#8239;? Quelles contraintes réglementaires, technologiques, environnementales et sociales peuvent influencer ton projet&#8239;?
+              </dd>
             </div>
           </dl>
 
-          <div class="txt_labeur">Pour t’aider, tu disposes d’un dossier documentaire comprenant des informations sur &#8239;:
-<br><span class="etoile"></span> La tratégie et les impacts de l'entreprise.
-<br><span class="etoile"></span> Les attentes des clients.
-<br><span class="etoile"></span> Le concurrent Fairphone et ses pratiques d’éco-conception.
-<br><span class="etoile"></span> Les réglementations relatives à la réparabilité, à la durabilité et aux matières premières critiques.
-<br><span class="etoile"></span> Les enjeux sociaux liés à l’extraction des matières premières et à la fabrication des smartphones.
+            <!-- ILLUSTRATION 2 (à droite de « Ta première mission ») -->
+            <img class="illustration" src="dessin/chap_3/IV/enquete.svg" alt="">
+          </div>
+
+          <div class="txt_labeur">
+            <p>Pour t’aider, tu disposes d’un dossier documentaire comprenant des informations sur&#8239;:</p>
+            <ul class="liste_etoiles">
+            <li><span class="etoile" aria-hidden="true"></span> la stratégie et les impacts de l’entreprise&#8239;;</li>
+            <li><span class="etoile" aria-hidden="true"></span> les attentes des clients&#8239;;</li>
+            <li><span class="etoile" aria-hidden="true"></span> le concurrent Fairphone et ses pratiques d’éco-conception&#8239;;</li>
+            <li><span class="etoile" aria-hidden="true"></span> les réglementations relatives à la réparabilité, à la durabilité et aux matières premières critiques&#8239;;</li>
+            <li><span class="etoile" aria-hidden="true"></span> les enjeux sociaux liés à l’extraction des matières premières et à la fabrication des smartphones.</li>
+            </ul>
+          </div>
 
           <div class="consigne">
-            À toi de jouer&#8239;: à partir de l'analyse de ces documents, reconstitue l’analyse à 360° d’ATHEN’TECH et identifie les enjeux les plus importants pour ton
-projet.
+            À toi de jouer&#8239;: à partir de l’analyse de ces documents, reconstitue l’analyse à 360° d’ATHEN’TECH et identifie les enjeux les plus importants pour ton projet.
           </div>
 
 
@@ -121,8 +144,19 @@ projet.
               <ul class="miniatures">
 
                 <li>
+                  <button type="button" class="miniature" data-document="doc_fiche">
+                    <span class="miniature_titre">Fiche technique du smartphone BasicPhone®</span>
+                    <img class="miniature_dessin" src="dessin/chap_3/IV/smartphone_plante.svg" alt="">
+<span class="miniature_tableau" aria-hidden="true">
+  <span></span><span></span><span></span>
+  <span></span><span></span><span></span>
+</span>
+                  </button>
+                </li>
+
+                <li>
                   <button type="button" class="miniature" data-document="doc_brief">
-                    <span class="miniature_titre">Stratégie RSE d'ATHEN-TECH</span>
+                    <span class="miniature_titre">Stratégie RSE d’ATHEN’TECH</span>
                     <span class="miniature_lignes" aria-hidden="true">
                       <span>– devenir leader du bas carbone</span>
                       <span>– marges de manœuvre</span>
@@ -131,41 +165,35 @@ projet.
                   </button>
                 </li>
 
-                <li>
-                  <button type="button" class="miniature" data-document="doc_fiche">
-                    <span class="miniature_titre">Fiche technique du smartphone &#8239;BasicPhone®&#8239;</span>
-                    <span class="miniature_dessin" aria-hidden="true"></span>
-                    <span class="miniature_tableau" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
-                  </button>
-                </li>
+
 
                 <li>
                   <button type="button" class="miniature" data-document="doc_reglementation">
-                    <span class="miniature_titre">Les règles du jeu évoluent - cadre réglementaire</span>
+                    <span class="miniature_titre">Les règles du jeu évoluent&#8239;: cadre réglementaire</span>
                     <span class="miniature_lignes" aria-hidden="true">
-                      <span>– loi AGEC</span>
-                      <span>– ESRP</span>
-                    </span>
-                  </button>
-                </li>
-
-                <li>
-                  <button type="button" class="miniature" data-document="doc_social">
-                    <span class="miniature_titre">Fairphone, un concurrent à observer</span>
-                    <span class="miniature_lignes" aria-hidden="true">
-                      <span>– allongement de la durée de vie</span>
-                      <span>– répparabilité</span>
-                      <span>– matière recyclée</span>
+                      <span>– des exigences spécifiques aux smartphones</span>
+                      <span>– une économie plus circulaireé</span>
                     </span>
                   </button>
                 </li>
 
                 <li>
                   <button type="button" class="miniature" data-document="doc_concurrence">
+                    <span class="miniature_titre">Fairphone, un concurrent à observer</span>
+                    <span class="miniature_lignes" aria-hidden="true">
+                      <span>– allongement de la durée de vie</span>
+                      <span>– réparabilité</span>
+                      <span>– matière recyclée</span>
+                    </span>
+                  </button>
+                </li>
+
+                <li>
+                  <button type="button" class="miniature" data-document="doc_social">
                     <span class="miniature_titre">Enjeux sociaux et environnementaux</span>
                     <span class="miniature_lignes" aria-hidden="true">
                       <span>– mines de cobalt</span>
-                      <span>– etape de production</span>
+                      <span>– étapes de production</span>
                       <span>– épuisement des ressources</span>
                     </span>
                   </button>
@@ -177,8 +205,16 @@ projet.
 
             <p class="visuellement_cache" id="annonce_documents" role="status"></p>
 
+            <!-- onglet de la mascotte, en bas à droite, tant que tous les documents ne sont pas ouverts -->
+            <div class="rappel_mascotte" id="rappel_documents" hidden>
+              <!-- DESSIN DE LA MASCOTTE : remplacer ce <div> par
+                   <img class="rappel_mascotte_dessin" src="dessin/chap_3/IV/…" alt=""> -->
+              <div class="rappel_mascotte_dessin emplacement_illustration" aria-hidden="true">mascotte</div>
+              <p>Tu dois ouvrir tous les documents avant de pouvoir passer à la suite&#8239;!</p>
+            </div>
+
             <!-- bouton fixe en bas à droite, visible une fois tous les documents ouverts -->
-            <div class="qcm_pied" id="suite_documents" >
+            <div class="qcm_pied" id="suite_documents" hidden>
               <button type="button" class="qcm_verifier" data-montrer="partie_roue" aria-controls="partie_roue" aria-expanded="false">
                 passer à l’analyse 360°
               </button>
@@ -192,206 +228,225 @@ projet.
           <div class="partie_cachee" id="partie_roue" hidden>
 
             <h3 class="consigne" id="consigne_q1">
-              <span class="souligne">Étape 1&#8239;:</span> à partir de vos lectures, reconstituez l’analyse 360° de votre projet&#8239;: survolez ou sélectionnez chaque rubrique de la roue, puis notez ce que vous en retenez.
+              À partir de tes lectures, reconstitue l’analyse 360° de ton projet&#8239;: survole ou sélectionne chaque rubrique de la roue, puis note ce que tu en retiens.
             </h3>
 
             <div class="roue" role="group" aria-labelledby="consigne_q1">
 
-              <div class="roue_centre" aria-hidden="true">Smartphone<br>«&#8239;NOM XX&#8239;»</div>
+              <div class="roue_centre" aria-hidden="true">Smartphone<br>BasicPhone®</div>
 
+              
+              <!-- 1. Stratégie de l'entreprise -->
               <div class="rubrique" style="--position: 0deg" data-cote="haut">
                 <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_strategie">Stratégie de l’entreprise</button>
+
                 <div class="rubrique_fenetre" id="r_strategie">
-                  <label for="t_strategie">Stratégie de l’entreprise</label>
+                  <label for="t_strategie">Quelles ambitions ATHEN’TECH souhaite-t-elle atteindre&#8239;?</label>
                   <textarea id="t_strategie" rows="4"></textarea>
                 </div>
+
                 <div class="rubrique_notes">
                   <p class="note_eleve" hidden></p>
-                  <div class="note_attendue" hidden>
-                    <p class="visuellement_cache">Éléments attendus pour la rubrique Stratégie de l’entreprise&#8239;:</p>
-                    <ul>
-                    <li>Devenir le leader des smartphones bas carbone.</li>
-                    <li>Aller au-delà des exigences réglementaires.</li>
-                    <li>Communiquer sur les performances environnementales, ACV à l’appui.</li>
-                    <li>Conserver un prix de vente compétitif.</li>
-                    </ul>
-                  </div>
                 </div>
               </div>
 
-              <div class="rubrique" style="--position: 55deg" data-cote="haut_droite">
-                <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_marges">Marges de manœuvre</button>
-                <div class="rubrique_fenetre" id="r_marges">
-                  <label for="t_marges">Marges de manœuvre</label>
-                  <textarea id="t_marges" rows="4"></textarea>
-                </div>
-                <div class="rubrique_notes">
-                  <p class="note_eleve" hidden></p>
-                  <div class="note_attendue" hidden>
-                    <p class="visuellement_cache">Éléments attendus pour la rubrique Marges de manœuvre&#8239;:</p>
-                    <ul>
-                    <li>Revoir le design du smartphone.</li>
-                    <li>Choisir d’autres matériaux et composants.</li>
-                    <li>Sélectionner de nouveaux fournisseurs.</li>
-                    <li>Modifier les emballages et la distribution.</li>
-                    <li>Augmenter la durée de vie du produit.</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <div class="rubrique prerempli" style="--position: 92deg">
-                <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_distributeurs">Distributeurs</button>
-                <div class="rubrique_fenetre" id="r_distributeurs">
-                  <p>Cette rubrique sera traitée à l’étape suivante.</p>
-                </div>
-              </div>
-
-              <div class="rubrique" style="--position: 122deg" data-cote="droite">
+              <!-- 2. Clients -->
+              <div class="rubrique" style="--position: 51deg" data-cote="haut_droite">
                 <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_clients">Clients</button>
+
                 <div class="rubrique_fenetre" id="r_clients">
-                  <label for="t_clients">Clients</label>
+                  <label for="t_clients">Quelles sont les attentes des utilisateurs concernant le prix, les performances, la durée de vie et la réparabilité&#8239;?</label>
                   <textarea id="t_clients" rows="4"></textarea>
                 </div>
+
                 <div class="rubrique_notes">
                   <p class="note_eleve" hidden></p>
-                  <div class="note_attendue" hidden>
-                    <p class="visuellement_cache">Éléments attendus pour la rubrique Clients&#8239;:</p>
-                    <ul>
-                    <li>Sensibilité croissante à l’impact environnemental et social.</li>
-                    <li>Attente de téléphones durables et réparables.</li>
-                    <li>Importance du prix et des performances.</li>
-                    <li>Demande d’un support logiciel plus long.</li>
-                    </ul>
-                  </div>
                 </div>
               </div>
 
-              <div class="rubrique" style="--position: 152deg" data-cote="bas_droite">
+              <!-- 3. Concurrents -->
+              <div class="rubrique" style="--position: 97deg" data-cote="droite">
                 <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_concurrents">Concurrents</button>
+
                 <div class="rubrique_fenetre" id="r_concurrents">
-                  <label for="t_concurrents">Concurrents</label>
+                  <label for="t_concurrents">Quelles pratiques de Fairphone peuvent inspirer ATHEN’TECH&#8239;?</label>
                   <textarea id="t_concurrents" rows="4"></textarea>
                 </div>
+
                 <div class="rubrique_notes">
                   <p class="note_eleve" hidden></p>
-                  <div class="note_attendue" hidden>
-                    <p class="visuellement_cache">Éléments attendus pour la rubrique Concurrents&#8239;:</p>
-                    <ul>
-                    <li>Fairphone est aujourd’hui la référence en matière d’éco-conception.</li>
-                    <li>Smartphone modulaire et facilement réparable (9,3/10).</li>
-                    <li>Utilisation de matériaux recyclés et responsables.</li>
-                    <li>Communication environnementale très développée.</li>
-                    </ul>
-                  </div>
                 </div>
               </div>
 
-              <div class="rubrique" style="--position: 218deg" data-cote="bas_gauche">
+              <!-- 4. Réglementations -->
+              <div class="rubrique" style="--position: 143deg" data-cote="bas">
                 <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_reglementations">Réglementations</button>
+
                 <div class="rubrique_fenetre" id="r_reglementations">
-                  <label for="t_reglementations">Réglementations</label>
+                  <label for="t_reglementations">Quelles exigences actuelles ou évolutions réglementaires doivent être prises en compte&#8239;?</label>
                   <textarea id="t_reglementations" rows="4"></textarea>
                 </div>
+
                 <div class="rubrique_notes">
                   <p class="note_eleve" hidden></p>
-                  <div class="note_attendue" hidden>
-                    <p class="visuellement_cache">Éléments attendus pour la rubrique Réglementations&#8239;:</p>
-                    <ul>
-                    <li>Loi AGEC (indice de réparabilité, puis de durabilité).</li>
-                    <li>Règlement européen sur l’écoconception (ESPR).</li>
-                    <li>Critical Raw Materials Act (matières premières critiques).</li>
-                    <li>Obligations de reporting environnemental (CSRD, GHG Protocol).</li>
-                    </ul>
-                  </div>
                 </div>
               </div>
 
-              <div class="rubrique prerempli" style="--position: 250deg">
-                <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_veille">Veille technologique</button>
-                <div class="rubrique_fenetre" id="r_veille">
-                  <p>Cette rubrique sera traitée à l’étape suivante.</p>
+              <!-- 5. Marges de manœuvre -->
+              <div class="rubrique" style="--position: 217deg" data-cote="bas_gauche">
+                <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_marges">Marges de manœuvre</button>
+
+                <div class="rubrique_fenetre" id="r_marges">
+                  <label for="t_marges">Quels éléments du smartphone ou de sa chaîne de valeur l’entreprise peut-elle modifier&#8239;?</label>
+                  <textarea id="t_marges" rows="4"></textarea>
+                </div>
+
+                <div class="rubrique_notes">
+                  <p class="note_eleve" hidden></p>
                 </div>
               </div>
 
-              <div class="rubrique prerempli" style="--position: 280deg">
-                <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_fournisseurs">Fournisseurs</button>
-                <div class="rubrique_fenetre" id="r_fournisseurs">
-                  <p>Cette rubrique sera traitée à l’étape suivante.</p>
-                </div>
-              </div>
+              <!-- 6. Impacts sur l'environnement -->
+              <div class="rubrique" style="--position: 263deg" data-cote="gauche">
+                <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_impacts">Impacts environnementaux</button>
 
-              <div class="rubrique" style="--position: 310deg" data-cote="haut_gauche">
-                <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_impacts">Impacts sur l’environnement</button>
                 <div class="rubrique_fenetre" id="r_impacts">
-                  <label for="t_impacts">Impacts sur l’environnement</label>
+                  <label for="t_impacts">Quels enjeux environnementaux semblent importants pour les smartphones&#8239;?</label>
                   <textarea id="t_impacts" rows="4"></textarea>
                 </div>
+
                 <div class="rubrique_notes">
                   <p class="note_eleve" hidden></p>
-                  <div class="note_attendue" hidden>
-                    <p class="visuellement_cache">Éléments attendus pour la rubrique Impacts sur l’environnement&#8239;:</p>
-                    <ul>
-                    <li>Empreinte carbone principalement liée à la fabrication.</li>
-                    <li>Utilisation de métaux critiques (cobalt, lithium, terres rares…).</li>
-                    <li>Consommation importante de ressources naturelles.</li>
-                    <li>Pas encore de démarche d’éco-conception dans l’entreprise.</li>
-                    </ul>
-                  </div>
+                </div>
+              </div>
+
+              <!-- 7. Enjeux sociaux -->
+              <div class="rubrique" style="--position: 309deg" data-cote="haut_gauche">
+                <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_sociaux">Enjeux sociaux</button>
+
+                <div class="rubrique_fenetre" id="r_sociaux">
+                  <label for="t_sociaux">Quels enjeux liés aux conditions d’extraction et de fabrication faut-il considérer&#8239;?</label>
+                  <textarea id="t_sociaux" rows="4"></textarea>
+                </div>
+
+                <div class="rubrique_notes">
+                  <p class="note_eleve" hidden></p>
                 </div>
               </div>
 
             </div>
 
-            <!-- bouton fixe en bas à droite, comme « correction » sur les autres pages -->
-            <div class="qcm_pied" id="pied_roue">
-              <button type="button" class="qcm_verifier" id="bouton_attendus">voir les éléments attendus</button>
+            <!-- bouton fixe en bas à droite : il apparaît quand les 7 rubriques sont remplies.
+                 Au clic, le mentor fait le bilan de la roue (voir activite/mentor.js). -->
+            <p class="visuellement_cache" id="annonce_roue" role="status"></p>
+            <div class="qcm_pied" id="pied_roue" hidden>
+              <button type="button" class="bouton_etape" id="bouton_continuer_roue">continuer</button>
             </div>
 
           </div>
 
 
-          <!-- ---------- Étape 2 : choix de l'étape suivante ---------- -->
+          <!-- ---------- Question : que fais-tu maintenant ? (doc de la prof, p. 37) ---------- -->
 
           <div class="partie_cachee" id="partie_q2" hidden>
 
-            <h3 class="visuellement_cache">Étape 2</h3>
+            <h3 class="visuellement_cache">Et maintenant&#8239;?</h3>
 
             <form class="choix_etape" id="question_2">
               <fieldset>
-                <legend class="consigne"><span class="souligne">Étape 2&#8239;:</span> après avoir réalisé cette analyse, quelle serait l’étape suivante&#8239;?</legend>
+                <legend class="consigne">Tu as identifié plusieurs enjeux. Que fais-tu maintenant&#8239;?</legend>
 
-                <label class="choix">
-                  <input type="radio" name="q2" value="A">
-                  <span><strong>A.</strong> Je choisis le produit de référence sur lequel je vais travailler, et je définis tout de suite les objectifs précis du projet, le périmètre de l’étude et les critères d’évaluation des solutions d’éco-conception.</span>
-                </label>
+                <div class="qcm_options">
+                  <label class="qcm_option">
+                    <input type="radio" name="q2" value="A">
+                    <span>Je choisis immédiatement trois solutions d’éco-conception.</span>
+                  </label>
 
-                <label class="choix">
-                  <input type="radio" name="q2" value="B">
-                  <span><strong>B.</strong> Je mène une analyse plus poussée et technique du produit&#8239;: étapes de son cycle de vie, fonctions, impacts environnementaux et usage. Cette analyse me permettra de formuler une problématique, puis de définir le périmètre de l’étude, mes objectifs et les critères d’évaluation des solutions d’éco-conception.</span>
-                </label>
+                  <label class="qcm_option">
+                    <input type="radio" name="q2" value="B">
+                    <span>J’analyse plus précisément le produit, son cycle de vie, ses impacts et ses usages pour cadrer le projet.</span>
+                  </label>
 
-                <label class="choix">
-                  <input type="radio" name="q2" value="C">
-                  <span><strong>C.</strong> Je recherche des idées d’amélioration sans attendre.</span>
-                </label>
+                  <label class="qcm_option">
+                    <input type="radio" name="q2" value="C">
+                    <span>Je fixe déjà un objectif de réduction de 30&nbsp;% du carbone sans approfondir les données.</span>
+                  </label>
+                </div>
               </fieldset>
 
               <button type="submit" class="qcm_verifier">valider mon choix</button>
             </form>
 
-            <!-- Retour sur le choix : texte provisoire, remplacé par l'agent IA à l'étape suivante du projet -->
+            <!-- retour court sous la question ; le mentor approfondit dans sa fenêtre -->
             <div class="retour_choix" id="retour_q2" role="status" aria-live="polite" hidden></div>
-
-            <!-- Emplacement de l'agent IA (Nolej) -->
-            <section class="agent" id="agent_ia" aria-label="Échange avec l’assistant" hidden>
-              <p class="agent_attente">L’assistant arrive bientôt ici.</p>
-            </section>
 
           </div>
 
         </section>
 
+      <!-- ================= MENTOR IA ================= -->
+      <!-- Comportement : activite/mentor.js
+           Deux présentations :
+           - pop-up au centre (accueil, bilan, question des 2 enjeux) : grand dessin à gauche,
+             texte à droite ; on n'y voit pas l'historique de la conversation
+           - petite fenêtre en bas à droite : la conversation (historique)
+           Les textes écrits par toi (pas par l'IA) sont dans les <template>, en bas de la page.
+           Elle est placée dans <main> pour que dessins.js colore ses dessins SVG ;
+           à l'écran, elle reste au centre ou en bas à droite. -->
+
+      <aside class="mentor" id="mentor_ia" aria-labelledby="mentor_titre" hidden>
+
+        <!-- GRAND DESSIN DU MENTOR (pop-ups) -->
+        <img class="mentor_grand_dessin" src="dessin/chap_3/IV/mentor.svg" alt="">
+
+        <div class="mentor_entete">
+          <!-- PETIT DESSIN DU MENTOR (fenêtre en bas à droite) -->
+          <img class="mentor_illustration" src="dessin/chap_3/IV/mentor.svg" alt="">
+          <!-- NOM DU MENTOR -->
+          <h2 class="mentor_titre" id="mentor_titre">Andréa</h2>
+        </div>
+
+        <div class="mentor_corps" id="mentor_corps">
+
+          <!-- pop-up : le texte de l'étape, puis l'échange sur les 2 enjeux -->
+          <div class="mentor_scene" role="region" aria-label="Message du mentor" tabindex="-1">
+            <div class="mentor_scene_texte"></div>
+            <div class="mentor_scene_fil" role="log" aria-live="polite" aria-relevant="additions"></div>
+          </div>
+
+          <!-- petite fenêtre : l'historique de la conversation -->
+          <div class="mentor_fil" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation avec le mentor" tabindex="0"></div>
+
+          <p class="mentor_etat" role="status"></p>
+
+          <!-- boutons du pop-up : seuls ceux de l'étape en cours sont visibles -->
+          <div class="mentor_choix">
+            <button type="button" class="bouton_etape" data-choix="commencer">c’est parti&#8239;!</button>
+            <button type="button" class="bouton_etape" data-choix="reprendre">je veux reprendre</button>
+            <button type="button" class="qcm_verifier" data-choix="continuer_malgre_tout">continuer malgré tout</button>
+            <button type="button" class="bouton_etape" data-choix="vers_enjeux">continuer</button>
+            <button type="button" class="bouton_etape" data-choix="vers_question">continuer</button>
+          </div>
+
+          <form class="mentor_saisie" id="mentor_saisie">
+            <label for="mentor_message" class="visuellement_cache">Ton message au mentor</label>
+            <textarea id="mentor_message" rows="2" maxlength="2000" placeholder="Réponds au mentor…"></textarea>
+            <button type="submit" class="qcm_verifier">envoyer</button>
+          </form>
+
+        </div>
+      </aside>
+      <!-- boîte de la mascotte, en bas à droite, pendant la question des 2 enjeux :
+           elle apparaît après 2 réponses que le mentor n'a pas validées -->
+      <div class="rappel_mascotte rappel_avec_bouton" id="rappel_enjeux" role="status" hidden>
+        <!-- DESSIN DE LA MASCOTTE : remplacer ce <div> par
+             <img class="rappel_mascotte_dessin" src="dessin/chap_3/IV/…" alt=""> -->
+        <div class="rappel_mascotte_dessin emplacement_illustration" aria-hidden="true">mascotte</div>
+        <div class="rappel_mascotte_texte">
+          <p>Tes réponses ne sont pas encore celles attendues. Je te conseille de réfléchir encore avec Andrea, mais tu peux passer à l’étape suivante.</p>
+          <button type="button" class="bouton_etape" id="passer_enjeux">continuer</button>
+        </div>
+      </div>
       </main>
 
 
@@ -416,55 +471,101 @@ projet.
     </ul>
   </dialog>
 
-  <dialog class="fenetre_document" id="doc_fiche" aria-labelledby="titre_doc_fiche">
+  <dialog class="fenetre_document fenetre_fiche" id="doc_fiche" aria-labelledby="titre_doc_fiche">
     <button type="button" class="qcm_fermer" aria-label="fermer le document"></button>
-    <h4 id="titre_doc_fiche">Fiche technique du smartphone phare «&#8239;NOM XX&#8239;»</h4>
-    <div class="emplacement_media" role="img" aria-label="Dessin du smartphone NOM XX, à venir">dessin du smartphone à venir</div>
-    <table class="fiche_technique">
-      <caption class="visuellement_cache">Caractéristiques techniques du smartphone NOM XX</caption>
-      <tbody>
-        <tr><th scope="row">Masse</th><td>180&nbsp;g</td></tr>
-        <tr><th scope="row">Mémoire vive (RAM)</th><td>8&nbsp;Go</td></tr>
-        <tr><th scope="row">Stockage interne</th><td>128&nbsp;Go</td></tr>
-        <tr><th scope="row">Taille de l’écran</th><td>6,1&nbsp;pouces</td></tr>
-        <tr><th scope="row">Système d’exploitation</th><td>Android</td></tr>
-        <tr><th scope="row">Processeur</th><td>[à compléter]</td></tr>
-        <tr><th scope="row">Appareil photo</th><td>[à compléter]</td></tr>
-        <tr><th scope="row">Batterie / recharge</th><td>4&nbsp;500&nbsp;mAh / 100&nbsp;W</td></tr>
-        <tr><th scope="row">Durée de vie</th><td>3&nbsp;ans</td></tr>
-        <tr><th scope="row">Mises à jour logicielles</th><td>3&nbsp;ans</td></tr>
-      </tbody>
-    </table>
-    <p class="note_document">Composition&#8239;: [à compléter].
-      <span class="span_source"><span class="souligne_fin">source&#8239;:</span> <a class="source" href="https://www.systext.org/node/1928">SystExt, 2017</a></span>
-    </p>
+    <h4 id="titre_doc_fiche">Fiche technique du smartphone Basic-phone®</h4>
+
+    <div class="fiche_corps">
+
+      <!-- IMAGE (à gauche) : ton dessin du smartphone -->
+      <img class="fiche_image" src="dessin/chap_3/IV/basic_phone.png"
+           alt="Le Basic-phone, de face et en vue éclatée : écran, modules photo, carte mère, batterie, châssis en aluminium, coque arrière">
+
+      <!-- TABLEAU (à droite) : une ligne <tr> par caractéristique -->
+      <table class="fiche_technique">
+        <caption class="visuellement_cache">Caractéristiques techniques du Basic-phone</caption>
+        <thead>
+          <tr><th scope="col">Caractéristique</th><th scope="col">Basic-phone®</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Masse</th><td>180&nbsp;g</td></tr>
+          <tr><th scope="row">Écran</th><td>AMOLED 6,1&nbsp;pouces, 120&nbsp;Hz</td></tr>
+          <tr><th scope="row">Processeur</th><td>MediaTek Dimensity 7300, 8&nbsp;cœurs</td></tr>
+          <tr><th scope="row">Mémoire vive (RAM)</th><td>8&nbsp;Go</td></tr>
+          <tr><th scope="row">Stockage interne</th><td>128&nbsp;Go</td></tr>
+          <tr><th scope="row">Appareils photo arrière</th><td>50&nbsp;MP avec stabilisation optique + ultra grand-angle 8&nbsp;MP</td></tr>
+          <tr><th scope="row">Caméra avant</th><td>16&nbsp;MP</td></tr>
+          <tr><th scope="row">Batterie</th><td>4&nbsp;500&nbsp;mAh, lithium-ion</td></tr>
+          <tr><th scope="row">Recharge filaire</th><td>jusqu’à 100&nbsp;W</td></tr>
+          <tr><th scope="row">Système d’exploitation</th><td>Android</td></tr>
+          <tr><th scope="row">Durée de vie de référence</th><td>3&nbsp;ans</td></tr>
+          <tr><th scope="row">Support logiciel</th><td>3&nbsp;ans de mises à jour</td></tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <!-- NOTES sous l'image et le tableau -->
+    <h5 class="souligne_fin">Assemblage mixte&#8239;:</h5>
+    <p class="note_document"> écran collé, batterie remplaçable mais fixée par adhésif, vis et clips.</p>
+    <h5 class="souligne_fin">Défi d’éco-conception&#8239;:</h5>
+      <p class="note_document"> réduire les impacts sur tout le cycle de vie, pour un coût de fabrication de 250&nbsp;€ maximum par unité.</p>
   </dialog>
 
   <dialog class="fenetre_document" id="doc_reglementation" aria-labelledby="titre_doc_reglementation">
     <button type="button" class="qcm_fermer" aria-label="fermer le document"></button>
-    <h4 id="titre_doc_reglementation">Contexte réglementaire</h4>
-    <h5>Loi AGEC et smartphones</h5>
-    <div class="emplacement_media" role="img" aria-label="Infographie sur la loi AGEC et les smartphones, à venir">infographie loi AGEC à venir</div>
-    <h5>Critical Raw Materials Act et matières premières critiques</h5>
-    <div class="emplacement_media" role="img" aria-label="Infographie des matières premières critiques définies par la Commission européenne, à venir">infographie matières critiques à venir</div>
-    <p class="note_document">
-      <span class="span_source"><span class="souligne_fin">source&#8239;:</span> <a class="source" href="https://rmis.jrc.ec.europa.eu/eu-critical-raw-materials">liste des matières premières critiques de l’UE (JRC)</a></span>
-    </p>
-    <div class="emplacement_media" role="img" aria-label="Carte du monde des principaux pays producteurs de métaux, à venir">carte des principaux producteurs de métaux à venir</div>
-    <p class="note_document">
-      <span class="span_source"><span class="souligne_fin">source&#8239;:</span> ADEME, 2024</span>
+    <h4 id="titre_doc_reglementation">les règles du jeu évoluent - Cadre réglementaire</h4>
+    <h5 class="souligne_fin">Des exigences spécifiques aux smartphones</h5>
+<p>Depuis le 20 juin 2025, des exigences européennes d’écoconception s’appliquent aux smartphones et à plusieurs autres catégories de téléphones. Elles portent notamment sur la résistance, la durabilité des batteries, la disponibilité des pièces détachées, la réparation et le support logiciel.
+<br>Les smartphones concernés doivent également afficher une étiquette énergétique comportant des informations utiles aux consommateurs, notamment sur l’efficacité énergétique, la longévité de la batterie, la résistance et la réparabilité<p>
+
+    <h5 class="souligne_fin">Une économie plus circulaire</h5>
+<p>La loi française AGEC a notamment renforcé les dispositifs d’information des consommateurs et lesdémarches favorisant la réparation et la réduction des déchets.
+<br>À l’échelle européenne, le règlement sur l’écoconception des produits durables (ESPR) établit un cadre pour faire évoluer les exigences applicables à différentes catégories de produits. Les obligations précises dépendent toutefois des textes adoptés pour chaque catégorie.</p>
+      </ul>
+    <h5 class="souligne_fin">sources de références&#8239;:</h5> 
+          <p>Commission européenne, Smartphones and Tablets&#8239;:
+            <a class="source" href="https://energy-efficient-products.ec.europa.eu/product-list/smartphones-and-tablets_en">energy-efficient-products.ec.europa.eu</a>
+          </p>
+          <p>Règlement européen (UE) 2023/1670&#8239;:
+            <a class="source" href="https://eur-lex.europa.eu/eli/reg/2023/1670/oj/eng">eur-lex.europa.eu</a>
+          </p>
+          <p>Commission européenne, Digital Product Passport&#8239;:
+            <a class="source" href="https://single-market-economy.ec.europa.eu/single-market/digital-product-passport_en">single-market-economy.ec.europa.eu</a>
+          </p>
+      </span>
     </p>
   </dialog>
 
   <dialog class="fenetre_document" id="doc_social" aria-labelledby="titre_doc_social">
     <button type="button" class="qcm_fermer" aria-label="fermer le document"></button>
-    <h4 id="titre_doc_social">Contexte social</h4>
-    <ul>
-      <li>Les mines de cobalt en République démocratique du Congo&#8239;: <a class="source" href="https://www.youtube.com/watch?v=JcJ8me22NVs">vidéo «&#8239;Time to recharge&#8239;», Amnesty International</a></li>
-      <li>Les conditions de travail dans les usines d’assemblage&#8239;: <a class="source" href="https://www.lemonde.fr/economie/article/2025/11/19/a-zhengzhou-en-chine-les-saisonniers-precaires-de-l-iphone-city_6653942_3234.html">article du Monde, novembre 2025</a></li>
-      <li>L’obsolescence logicielle des téléphones&#8239;: <a class="source" href="https://www.halteobsolescence.org/obsolescence-logicielle/">dossier de Halte à l’obsolescence programmée</a></li>
-      <li>L’avis des consommateurs sur l’impact environnemental des téléphones&#8239;: [à compléter]</li>
-    </ul>
+    <h4 id="titre_doc_social">Enjeux sociaux et environnementaux</h4>
+    <p>Un smartphone mobilise de nombreuses ressources et une chaîne de valeur internationale&#8239;: extraction minière, raffinage, fabrication de composants électroniques, assemblage, transport, utilisation, réparation et traitement en fin de vie.</p>
+ 
+    <h5 clas="souligne_fin">les ressources et matières premières</h5>
+    <p>Les smartphones contiennent différents métaux et matériaux, notamment du cuivre, de l’aluminium, du lithium et du cobalt. Certains matériaux sont considérés comme critiques au regard de leur importance
+économique et des risques liés à leur approvisionnement. Leur extraction et leur transformation peuvent générer des impacts environnementaux et des risques sociaux.
+<br><span class="span_source">Liste des métaux critiques dans un smartphone&#8239;: 
+<a class="source" href="https://www.cea.fr/multimedia/Documents/infographies/244_matieres-premieres-smartphone.pdf">cea.fr</a></span>     
+    </p>
+   
+        <h5 clas="souligne_fin">Des enjeux sociaux</h5>
+    <p>Le rapport <span class="souligne">Time to Recharge</span> publié en 2017 par Amnesty international, a mis en évidence le travail illégal d’enfant dans les mines artisanales de cobalt en Républic Démocratique du Congo.
+<span class="span_source"><span class="souligne_fin">sources&#8239;:</span>
+        <a class="source" href="https://www.amnesty.org/fr/documents/afr62/7395/2017/fr/">amnesty.org</a></span>   
+     </p>
+
+         <p>Les enjeux sociaux touchent non seulement les mines mais également les étapes de production. Les conditions de travail des ouvriers des usines de fabrication de téléphones portables en Chine sont dénoncées par différent journaux comme Le Monde.
+<span class="span_source"><span class="souligne_fin">sources&#8239;:</span>
+        <a class="source" href="https://www.lemonde.fr/economie/article/2025/11/19/a-zhengzhou-en-chine-les-saisonniers-precaires-de-l-iphone-city_6653942_3234.html?srsltid=AfmBOoqCv9hBfFAeZhA019CbC56wq2cM1RrscFP9g8ik5IS11GZ87HaI">lemonde.fr</a></span>   
+     </p>
+
+        <h5 clas="souligne_fin">Empreinte environnementale</h5>
+    <p>De nombreuses études mettent en avant l’impact majeur de la production du téléphone (par rapport à son transport, son utilisation et sa fin de vie), tant sur le plan de l’empreinte carbone que sur celui de l’épuisement des ressources minérales.
+<span class="span_source"><span class="souligne_fin">sources&#8239;:</span>
+        <a class="source" href="">Base de Données BAFU 2026</a></span>   
+     </p>
+
   </dialog>
 
   <dialog class="fenetre_document" id="doc_concurrence" aria-labelledby="titre_doc_concurrence">
@@ -489,13 +590,58 @@ projet.
   <dialog class="fenetre_document" id="doc_rse" aria-labelledby="titre_doc_rse">
     <button type="button" class="qcm_fermer" aria-label="fermer le document"></button>
     <h4 id="titre_doc_rse">Rapport RSE simplifié de Saclayphone</h4>
-    <ul>
-      <li>Saclayphone publie chaque année ses émissions de gaz à effet de serre selon la méthode du GHG Protocol, conformément à ses obligations.</li>
-      <li>Émissions déclarées&#8239;: [à compléter].</li>
-      <li>L’entreprise n’a pas encore engagé de démarche d’éco-conception sur ses produits.</li>
-      <li>Elle n’a pas encore engagé de démarche sociale auprès de ses fournisseurs.</li>
-    </ul>
+    
   </dialog>
+
+
+
+  <!-- Accueil, quand la roue apparaît -->
+  <template id="texte_accueil">
+    <p><strong>Salut, je suis Andréa, ton mentor pour ce projet&#8239;!</strong></p>
+    <p>Je vais t’accompagner pour construire la nouvelle stratégie d’éco-conception d’ATHEN’TECH.</p>
+    <p>Commence par remplir l’analyse 360°&#8239;: choisis une rubrique de la roue, note ce que tu retiens des documents, puis valide avec Entrée. Je réagirai à chacune de tes réponses pour t’aider à trouver les plus justes, et surtout les mieux justifiées.</p>
+  </template>
+
+  <!-- Bilan de la roue : des rubriques sont à approfondir.
+       La liste des rubriques est ajoutée à la place de <ul class="liste_a_revoir">. -->
+  <template id="texte_bilan_a_revoir">
+    <p><strong>Je suis un peu chagriné…</strong></p>
+    <p>Tu as rempli toute la roue, mais certaines rubriques mériteraient d’être approfondies&#8239;:</p>
+    <ul class="liste_a_revoir"></ul>
+    <p>Veux-tu qu’on les reprenne ensemble&#8239;?</p>
+  </template>
+
+  <!-- Bilan de la roue : tout est satisfaisant -->
+  <template id="texte_bilan_bravo">
+    <p><strong>Bravo, ta roue est solide&#8239;!</strong></p>
+    <p>Tu as fait le tour des enjeux d’ATHEN’TECH. Passons à la suite.</p>
+  </template>
+
+  <!-- Question des 2 enjeux (doc de la prof, p. 37) -->
+  <template id="texte_enjeux">
+    <p>À partir de cette analyse 360°, quels sont les <strong>2 enjeux</strong> qui te semblent les plus intéressants à creuser&#8239;? Justifie ta réponse.</p>
+  </template>
+
+
+  <!-- Réponses d'Andréa à la question « Que fais-tu maintenant ? » (doc de la prof, p. 37).
+       Une par choix : elle s'affiche dans la fenêtre d'Andréa quand l'élève valide.
+       Pas de discussion avec l'IA à cette étape : l'élève lit, puis revoit son choix ou passe à la suite. -->
+  <template id="texte_retour_A">
+    <p>Tu as sûrement déjà de bonnes idées, comme sourcer le cobalt de manière responsable ou rendre le téléphone plus réparable. Mais sont-elles les plus pertinentes&#8239;?</p>
+    <p>Tu n’as pas encore analysé en détail le produit, les principaux contributeurs à ses impacts, ni son utilisation et sa fin de vie. Sans cadrage du projet, tu ne pourras pas comparer tes solutions entre elles.</p>
+    <p>Revois ton choix&#8239;: que faudrait-il faire d’abord&#8239;?</p>
+  </template>
+
+  <template id="texte_retour_B">
+    <p><strong>Bravo, c’est la bonne démarche&#8239;!</strong></p>
+    <p>Avant de choisir des solutions ou de fixer des objectifs, il faut analyser le produit en détail&#8239;: son cycle de vie, ses impacts et ses usages. C’est ce qui te permettra de cadrer ton projet. Ce sera ta mission 2.</p>
+  </template>
+
+  <template id="texte_retour_C">
+    <p>Pourquoi as-tu choisi cet objectif de 30&nbsp;%&#8239;? Sur quels documents t’es-tu basé·e&#8239;?</p>
+    <p>À ce stade, tu n’as pas encore assez d’informations pour fixer des objectifs ou un périmètre&#8239;: ATHEN’TECH n’a même pas encore d’analyse de cycle de vie de son smartphone.</p>
+    <p>Revois ton choix&#8239;: que faudrait-il faire d’abord&#8239;?</p>
+  </template>
 
 
   <!-- ========== Bandeau du bas (logos) ========== -->
