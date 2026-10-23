@@ -1,0 +1,481 @@
+/* =====================================================================
+   MISSION 2 : analyser le smartphone avant de le transformer
+   En plus de couleurs.css, style.css, activite_smartphone.css et mentor.css.
+   ===================================================================== */
+
+
+/* =====================================================================
+   1. ANDRÉA : UN VISAGE PAR HUMEUR
+   La fenêtre porte data-humeur="neutre|content|decu" (activite/mission2.js).
+   Les 3 grands dessins sont dans le HTML ; un seul est visible.
+   ===================================================================== */
+
+.mentor.popup .mentor_grand_dessin {
+  display: none;
+}
+
+.mentor.popup:not([data-humeur="content"]):not([data-humeur="decu"]) .visage_neutre,
+.mentor.popup[data-humeur="content"] .visage_content,
+.mentor.popup[data-humeur="decu"] .visage_decu {
+  display: block;
+}
+
+/* pop-up de message (sans IA) : pas de zone de saisie ni d'historique */
+.mentor[data-etape="message"] .mentor_saisie,
+.mentor[data-etape="message"] .mentor_fil,
+.mentor[data-etape="message"] .mentor_etat {
+  display: none;
+}
+
+
+/* =====================================================================
+   2. ANALYSE 1 : REMETTRE LE CYCLE DE VIE DANS L'ORDRE
+   À gauche les étapes, à droite les cases numérotées.
+   ===================================================================== */
+
+.cycle {
+  display: grid;
+  grid-template-columns: minmax(0, 280px) minmax(0, 360px);
+  gap: 60px;
+  align-items: start;
+  margin: 40px 0 0 12px;
+}
+
+/* une fois l'ordre validé, le jeu disparaît (display: grid ci-dessus l'emporterait sur hidden) */
+.cycle[hidden] {
+  display: none;
+}
+
+.cycle_reserve,
+.cycle_emplacements {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;                          /* l'interligne entre les étapes */
+}
+
+/* chaque place de la réserve garde sa hauteur quand on en retire l'étape */
+.cycle_reserve li {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+/* une case : le numéro, puis la zone où poser l'étape */
+.cycle_case {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cycle_numero {
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--titre);
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+}
+
+.cycle_depot {
+  flex: 1;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 3px;
+  border: 1px dashed var(--trait_doux);
+  border-radius: var(--arrondi_pilule);
+  transition: background .2s ease, border-color .2s ease;
+}
+
+/* une étape est choisie : les cases se signalent */
+.cycle.carte_choisie .cycle_depot {
+  border-color: var(--trait);
+  cursor: pointer;
+}
+
+/* case survolée pendant le glisser, ou au clavier */
+.cycle_depot.survol,
+.cycle.carte_choisie .cycle_depot:hover,
+.cycle_depot:focus-visible {
+  background: var(--bleu_clair);
+  border-color: var(--trait);
+}
+
+.cycle_depot:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* les étapes : même style que les rubriques de la roue (fond gris, contour noir) */
+.carte_cycle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1.25;
+  text-align: left;
+  padding: 8px 18px;
+  color: var(--couleur_texte);
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  cursor: grab;
+  user-select: none;
+  touch-action: none;                 /* on peut aussi la glisser au doigt */
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.carte_cycle img,
+.carte_cycle .dessin {
+  height: 26px;
+  width: auto;
+  pointer-events: none;
+}
+
+/* dans une case, l'étape prend toute la largeur */
+.cycle_depot .carte_cycle {
+  width: 100%;
+}
+
+.carte_cycle:hover,
+.carte_cycle:focus-visible,
+.carte_cycle.en_main {
+  transform: translate(-3px, -3px);
+  box-shadow: 3px 3px 0 var(--trait);
+}
+
+/* étape choisie (au clic ou au clavier) : intérieur bleu, comme une case cochée */
+.carte_cycle[aria-pressed="true"] {
+  background: var(--fond_consigne);
+}
+
+/* étape attrapée à la souris : elle passe devant tout */
+.carte_cycle.en_main {
+  z-index: 100;
+  cursor: grabbing;
+  transition: box-shadow .2s ease;    /* elle suit la souris sans retard */
+}
+
+/* après « vérifier » : vert si l'étape était bien placée, rose si Andréa l'a déplacée */
+.carte_cycle.juste    { background: var(--vert); }
+.carte_cycle.corrigee { background: var(--rose); }
+
+.cycle.corrige .carte_cycle {
+  cursor: default;
+}
+
+.cycle_fait {
+  margin: 30px 0 0 12px;
+}
+
+
+/* =====================================================================
+   3. ANALYSE 2 : LE CYCLE EN ROND ET LES RÉSULTATS DE L'ACV
+   ===================================================================== */
+
+.acv_explorateur {
+  display: grid;
+  grid-template-columns: minmax(0, 460px) minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+  width: 120%;
+  margin-top: 40px;
+}
+
+/* ---------- Le cycle en rond ---------- */
+
+.cycle_rond {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.cycle_fleches {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  animation: apparition_douce .6s ease both;
+  animation-delay: 1s;                /* les flèches arrivent après les étapes */
+}
+
+.cycle_fleches .fleche {
+  fill: none;
+  stroke: var(--trait);
+  stroke-width: .35;
+  stroke-linecap: round;
+}
+
+.cycle_fleches marker path {
+  fill: var(--trait);
+}
+
+.cycle_fleches .fleche_recyclage {
+  stroke-dasharray: 1.2 1;
+}
+
+.cycle_fleches text {
+  font-family: var(--labeur);
+  font-size: 3px;
+  fill: var(--couleur_texte);
+}
+
+/* l'arc intérieur qui regroupe les 3 étapes de la production */
+.cycle_fleches .arc_production {
+  fill: none;
+  stroke: var(--trait_doux);
+  stroke-width: .35;
+  stroke-dasharray: 1 1;
+  transition: stroke .2s ease, stroke-width .2s ease;
+}
+
+.cycle_rond[data-actif="production"] .arc_production {
+  stroke: var(--trait);
+  stroke-width: .7;
+  stroke-dasharray: none;
+}
+
+.cycle_rond[data-actif="production"] .texte_production {
+  font-family: var(--titre);
+}
+
+.cycle_rond_etapes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* les 6 étapes sur le cercle : --i (0 à 5) est donné par le script */
+.cycle_rond_etape {
+  --angle: calc(var(--i) * 60deg - 90deg);
+  position: absolute;
+  left: calc(50% + 38% * cos(var(--angle)));
+  top: calc(50% + 38% * sin(var(--angle)));
+  transform: translate(-50%, -50%);
+  animation: arrivee_cycle .5s ease both;
+  animation-delay: calc(var(--i) * .15s);   /* elles arrivent l'une après l'autre */
+}
+
+.cycle_rond_etape:hover,
+.cycle_rond_etape:focus-within {
+  z-index: 5;
+}
+
+.cycle_rond .carte_cycle {
+  width: max-content;
+  max-width: 150px;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.82rem;
+  padding: 7px 14px;
+  cursor: pointer;
+}
+
+/* étape déjà consultée : bleu ; étape affichée à droite : orange */
+.cycle_rond .carte_cycle.lue   { background: var(--fond_consigne); }
+.cycle_rond .carte_cycle.actif { background: var(--orange); }
+
+@keyframes arrivee_cycle {
+  from { opacity: 0; scale: .6; }
+  to   { opacity: 1; scale: 1; }
+}
+
+@keyframes apparition_douce {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+
+/* ---------- À droite : comparaison et détail ---------- */
+
+.acv_panneau {
+  min-width: 0;
+  font-size: 0.9rem;
+}
+
+.acv_figure {
+  margin: 0;
+}
+
+.acv_figure figcaption {
+  margin-bottom: 10px;
+  font-family: var(--titre);
+}
+
+/* tableau dessiné en barres horizontales */
+.barres {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.barres th {
+  width: 32%;
+  padding: 5px 10px 5px 0;
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+.barres td {
+  padding: 5px 0;
+  white-space: nowrap;
+}
+
+.barre {
+  display: inline-block;
+  vertical-align: middle;
+  height: 14px;
+  width: calc(var(--valeur) / var(--max) * 70%);
+  min-width: 2px;                     /* les toutes petites valeurs restent visibles */
+  background: var(--orange);
+  border: 1px solid var(--trait);
+  animation: pousse_barre .8s ease both;
+}
+
+.barre_valeur {
+  margin-left: 8px;
+  font-size: 0.8rem;
+}
+
+@keyframes pousse_barre {
+  from { width: 0; }
+}
+
+/* la ligne de l'étape affichée */
+.barres tr.actif th {
+  font-family: var(--titre);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.barres tr.actif .barre {
+  background: var(--rose);
+}
+
+.barres_petites th {
+  width: 55%;
+  font-size: 0.8rem;
+  line-height: 1.2;
+}
+
+.barres_petites .barre {
+  height: 10px;
+}
+
+/* le détail de l'étape */
+.acv_detail {
+  margin-top: 20px;
+  padding: 14px 18px;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+  min-height: 110px;
+}
+
+.acv_detail h4 {
+  margin: 0 0 8px;
+  font-family: var(--titre);
+  font-weight: normal;
+  font-size: 1rem;
+}
+
+.acv_detail h5 {
+  margin: 16px 0 6px;
+  font-family: var(--titre);
+  font-weight: normal;
+  font-size: 0.9rem;
+}
+
+.acv_detail p {
+  margin: 0 0 8px;
+}
+
+.acv_detail strong {
+  font-family: var(--titre);
+  font-weight: normal;
+}
+
+.acv_detail_vide {
+  font-style: italic;
+}
+
+.acv_avertissement {
+  font-size: 0.8rem;
+  padding-left: 8px;
+  border-left: 3px solid var(--trait);
+}
+
+/* tuiles de la vue « ressources » (pourcentages non additionnables) */
+.tuiles_titre {
+  font-size: 0.8rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.tuiles {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+  gap: 6px;
+}
+
+.tuiles li {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 4px;
+  min-height: 58px;
+  padding: 6px 8px;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: 8px;
+}
+
+.tuiles strong {
+  font-family: var(--titre);
+  font-weight: normal;
+  font-size: 1rem;
+}
+
+.tuiles_grandes li {
+  min-height: 70px;
+  background: var(--fond_consigne);
+}
+
+
+/* =====================================================================
+   4. PETITS ÉCRANS ET ZOOM FORT
+   ===================================================================== */
+
+@media (max-width: 1100px) {
+
+  .cycle {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-left: 0;
+  }
+
+  .acv_explorateur {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .cycle_rond {
+    max-width: 460px;
+    margin: 0 auto;
+  }
+}

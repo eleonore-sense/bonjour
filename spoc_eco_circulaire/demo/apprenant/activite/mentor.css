@@ -86,6 +86,13 @@ body.mentor_visible .qcm_pied {
   font-size: 1rem;
 }
 
+/* ---------- Le visage d'Andréa selon son humeur ---------- */
+.mentor:not([data-humeur="content"]) .humeur_content,
+.mentor:not([data-humeur="decu"]) .humeur_decu,
+.mentor:is([data-humeur="content"], [data-humeur="decu"]) .humeur_neutre {
+  display: none !important;
+}
+
 
 /* ---------- Corps : conversation et saisie ---------- */
 

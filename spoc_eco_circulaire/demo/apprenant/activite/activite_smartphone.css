@@ -25,6 +25,19 @@ h1.petit_titre {
   border-radius: var(--arrondi_pilule);
 }
 
+.titre_etape_premier {
+  display: inline-block;
+  margin: 30px 0 25px;
+  padding: 6px 16px;
+  font-family: var(--titre);
+  font-weight: normal;
+  font-size: 1rem;
+  background: var(--noir);
+  border: 1px solid var(--blanc);
+  color: var(--blanc);
+  border-radius: var(--arrondi_pilule);
+}
+
 .titre_partie_activite {
   margin: 60px 0 0;
   font-family: var(--titre);

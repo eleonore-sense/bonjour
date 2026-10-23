@@ -23,7 +23,7 @@
 //
 // Signaux invisibles écrits par le mentor (retirés avant affichage) :
 //   [EVAL: Clients = ok] ou [EVAL: Clients = a_approfondir]   jugement d'une rubrique
-//   [HUMEUR: neutre|content|decu]                              pour les futurs visages
+//   [HUMEUR: neutre|content|decu]                              visage d'Andréa (mentor.svg, mentor_heureux.svg, mentor_doute.svg)
 //   [ENJEUX_VALIDES]                                           les 2 enjeux sont bien justifiés
 //
 // Textes écrits par toi : dans le HTML (<template> de l'accueil, du bilan, des enjeux).
@@ -129,6 +129,14 @@
     panneau.classList.remove('sans_transition');
   }
 
+
+  // Le visage d'Andréa : neutre (mentor.svg), content (mentor_heureux.svg) ou decu (mentor_doute.svg)
+  function changerHumeur(humeur) {
+    const h = String(humeur).toLowerCase();
+    panneau.dataset.humeur = ['content', 'decu'].includes(h) ? h : 'neutre';
+  }
+
+
   // Ouvre le pop-up avec le texte d'un <template> du HTML
   function enPopup(template) {
     sceneTexte.replaceChildren(template.content.cloneNode(true));
@@ -209,7 +217,7 @@
     });
 
     texte = texte.replace(/\[\s*HUMEUR\s*:\s*([a-zéèê_]+)\s*\]/gi, (_, humeur) => {
-      panneau.dataset.humeur = humeur.toLowerCase();     // pour les futurs visages du mentor
+      changerHumeur(humeur);
       return '';
     });
 
@@ -267,6 +275,7 @@
     panneau.hidden = false;
     document.body.classList.add('mentor_visible');
     montrerBoutons('commencer');
+    changerHumeur('neutre');
     enPopup(document.getElementById('texte_accueil'));
   };
 
@@ -315,6 +324,7 @@
     const aRevoir = rubriquesARevoir();
     if (aRevoir.length) {
       montrerBoutons('reprendre', 'continuer_malgre_tout');
+      changerHumeur('decu');
       enPopup(document.getElementById('texte_bilan_a_revoir'));
       const liste = sceneTexte.querySelector('.liste_a_revoir');
       aRevoir.forEach(nom => {
@@ -324,6 +334,7 @@
       });
     } else {
       montrerBoutons('vers_enjeux');
+      changerHumeur('content');
       enPopup(document.getElementById('texte_bilan_bravo'));
     }
   };
@@ -352,6 +363,7 @@
   function lancerEnjeux() {
     passerA('enjeux');
     montrerBoutons();
+    changerHumeur('neutre');
     enPopup(document.getElementById('texte_enjeux'));
     champ.focus({ preventScroll: true });
   }
@@ -447,6 +459,7 @@
     document.body.classList.add('mentor_visible');
 
     ajouterMessage('eleve', intitule, 'Question · Que fais-tu maintenant ?');
+    changerHumeur(lettre === 'B' ? 'content' : 'decu');   // bonne réponse : heureux ; sinon : doute
     ajouterMessage('mentor', retour);
     return true;
   };

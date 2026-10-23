@@ -383,25 +383,18 @@
           </div>
 
         </section>
-
-      <!-- ================= MENTOR IA ================= -->
-      <!-- Comportement : activite/mentor.js
-           Deux présentations :
-           - pop-up au centre (accueil, bilan, question des 2 enjeux) : grand dessin à gauche,
-             texte à droite ; on n'y voit pas l'historique de la conversation
-           - petite fenêtre en bas à droite : la conversation (historique)
-           Les textes écrits par toi (pas par l'IA) sont dans les <template>, en bas de la page.
-           Elle est placée dans <main> pour que dessins.js colore ses dessins SVG ;
-           à l'écran, elle reste au centre ou en bas à droite. -->
-
       <aside class="mentor" id="mentor_ia" aria-labelledby="mentor_titre" hidden>
 
-        <!-- GRAND DESSIN DU MENTOR (pop-ups) -->
-        <img class="mentor_grand_dessin" src="dessin/chap_3/IV/mentor.svg" alt="">
+        <!-- GRAND DESSIN DU MENTOR (pop-ups) : un par humeur, le CSS montre le bon -->
+        <img class="mentor_grand_dessin humeur_neutre"  src="dessin/chap_3/IV/mentor.svg" alt="">
+        <img class="mentor_grand_dessin humeur_content" src="dessin/chap_3/IV/mentor_heureux.svg" alt="">
+        <img class="mentor_grand_dessin humeur_decu"    src="dessin/chap_3/IV/mentor_doute.svg" alt="">
 
         <div class="mentor_entete">
-          <!-- PETIT DESSIN DU MENTOR (fenêtre en bas à droite) -->
-          <img class="mentor_illustration" src="dessin/chap_3/IV/mentor.svg" alt="">
+          <!-- PETIT DESSIN DU MENTOR (fenêtre en bas à droite) : un par humeur -->
+          <img class="mentor_illustration humeur_neutre"  src="dessin/chap_3/IV/mentor.svg" alt="">
+          <img class="mentor_illustration humeur_content" src="dessin/chap_3/IV/mentor_heureux.svg" alt="">
+          <img class="mentor_illustration humeur_decu"    src="dessin/chap_3/IV/mentor_doute.svg" alt="">
           <!-- NOM DU MENTOR -->
           <h2 class="mentor_titre" id="mentor_titre">Andréa</h2>
         </div>
