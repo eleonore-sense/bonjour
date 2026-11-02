@@ -145,6 +145,8 @@
 
   zone.querySelectorAll(SELECTEUR).forEach(remplacer);
 
+  // les documents en pop-up (<dialog>), qui sont hors de la zone de contenu
+  document.querySelectorAll('dialog').forEach(d => d.querySelectorAll(SELECTEUR).forEach(remplacer));
   // images ajoutées plus tard (corrections, infobulles…)
   new MutationObserver(mutations => {
     mutations.forEach(mutation => {

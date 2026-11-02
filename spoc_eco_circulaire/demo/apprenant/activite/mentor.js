@@ -24,6 +24,8 @@
 // Signaux invisibles écrits par le mentor (retirés avant affichage) :
 //   [EVAL: Clients = ok] ou [EVAL: Clients = a_approfondir]   jugement d'une rubrique
 //   [HUMEUR: neutre|content|decu]                              visage d'Andréa (mentor.svg, mentor_heureux.svg, mentor_doute.svg)
+//   [REPONSE: Clients = …]                                     version finale de la rubrique, avec les mots de l'élève :
+//                                                              elle remplace le texte de la case dans la roue
 //   [ENJEUX_VALIDES]                                           les 2 enjeux sont bien justifiés
 //
 // Textes écrits par toi : dans le HTML (<template> de l'accueil, du bilan, des enjeux).
@@ -207,6 +209,12 @@
 
   // Retire les signaux du mentor et les applique
   function lireSignaux(texte) {
+    // à lire en premier : le texte de la réponse pourrait contenir un « = »
+    texte = texte.replace(/\[\s*REPONSE\s*:\s*([^=\]]+?)\s*=\s*([^\]]+?)\s*\]/gi, (_, nom, reponse) => {
+      mettreDansLaRoue(nom, reponse);
+      return '';
+    });
+
     texte = texte.replace(/\[\s*EVAL\s*:\s*([^=\]]+?)\s*=\s*(ok|a_approfondir)\s*\]/gi, (_, nom, avis) => {
       const rubrique = rubriqueNommee(nom);
       if (rubrique) {
@@ -227,6 +235,34 @@
     });
 
     return texte.replace(/\[\s*MISSION_TERMINEE\s*\]/gi, '').replace(/\n{3,}/g, '\n\n').trim();
+  }
+
+
+  // La réponse finale d'une rubrique, construite avec le mentor, s'écrit dans la case de la roue.
+  // On simule une saisie : activite_smartphone.js met alors à jour le résumé à côté de la rubrique.
+  function mettreDansLaRoue(nom, reponse) {
+    const rubrique = rubriqueNommee(nom);
+    const champ = rubrique?.querySelector('textarea');
+    const propre = reponse.trim();
+    if (!champ || !propre || champ.value.trim() === propre) return;
+
+    champ.value = propre;
+    rubrique.dataset.envoye = propre;              // Entrée ne la renverra pas au mentor telle quelle
+    champ.dispatchEvent(new Event('input', { bubbles: true }));
+
+    // petit signal visuel sur la rubrique, et une ligne dans la conversation
+    rubrique.classList.remove('mise_a_jour');
+    void rubrique.offsetWidth;
+    rubrique.classList.add('mise_a_jour');
+    ajoutsRoue.push(nomDe(rubrique));
+  }
+
+  // les rubriques mises à jour pendant la dernière réponse, annoncées après son texte
+  const ajoutsRoue = [];
+  function annoncerAjoutsRoue() {
+    ajoutsRoue.splice(0).forEach(nom => {
+      ajouterMessage('info', `Ta réponse « ${nom} » a été mise à jour dans la roue.`);
+    });
   }
 
 
@@ -255,6 +291,7 @@
       conversationId = donnees.conversation_id || conversationId;
       const propre = lireSignaux(donnees.reponse);
       if (propre) ajouterMessage('mentor', propre);
+      annoncerAjoutsRoue();
 
     } catch (erreur) {
       ajouterMessage('erreur', `${erreur.message} ${siErreur}`);

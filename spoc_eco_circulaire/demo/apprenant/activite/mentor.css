@@ -357,6 +357,50 @@ body.mentor_visible .qcm_pied {
 }
 
 
+
+
+/* ---------- Réponse finale écrite dans la roue ([REPONSE: …]) ---------- */
+
+/* la ligne « Ta réponse … a été mise à jour dans la roue » */
+.mentor_message_info {
+  align-self: stretch;
+  padding: 2px 7px;
+  font-size: 0.78rem;
+  font-style: italic;
+}
+
+/* la note à côté de la rubrique s'allume un instant */
+.rubrique.mise_a_jour .note_eleve {
+  animation: roue_mise_a_jour 1.6s ease;
+}
+
+@keyframes roue_mise_a_jour {
+  0%, 40% { background: var(--vert_bleu); }
+  100%    { background: transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rubrique.mise_a_jour .note_eleve {
+    animation: none;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* ---------- Petits écrans ---------- */
 
 @media (max-width: 700px) {

@@ -53,12 +53,12 @@
           </p>
         </div>
 
-               <img class="illustration" src="dessin/chap_3/IV/athentech.svg" alt="">
+          <img class="illustration" src="dessin/chap_3/IV/athentech.svg" alt="">
 
         </div>
 
         <div class="consigne">
-          Ta mission&#8239;: concevoir une nouvelle version éco-conçue du smartphone BasicPhone® et convaincre la direction de l’intérêt de ton projet.
+          Ta mission&#8239;: concevoir une nouvelle version éco-conçue du smartphone Basic-phone® et convaincre la direction de l’intérêt de ton projet.
         </div>
 
         <div class="txt_labeur bloc_liste">
@@ -79,7 +79,6 @@
             <li><span class="etoile" aria-hidden="true"></span> Maintenir un prix de vente compétitif.</li>
             <li><span class="etoile" aria-hidden="true"></span> Réduire les impacts environnementaux en considérant plusieurs catégories d’impact, pas seulement le carbone.</li>
             <li><span class="etoile" aria-hidden="true"></span> Respecter les exigences réglementaires applicables.</li>
-            <li><span class="etoile" aria-hidden="true"></span> Identifier les principales sources d’impact sur le cycle de vie.</li>
           </ul>
         </div>
 
@@ -145,12 +144,12 @@
 
                 <li>
                   <button type="button" class="miniature" data-document="doc_fiche">
-                    <span class="miniature_titre">Fiche technique du smartphone BasicPhone®</span>
+                    <span class="miniature_titre">Fiche technique du smartphone Basic-phone®</span>
                     <img class="miniature_dessin" src="dessin/chap_3/IV/smartphone_plante.svg" alt="">
-<span class="miniature_tableau" aria-hidden="true">
-  <span></span><span></span><span></span>
-  <span></span><span></span><span></span>
-</span>
+                    <span class="miniature_tableau" aria-hidden="true">
+                      <span></span><span></span><span></span>
+                      <span></span><span></span><span></span>
+                    </span>
                   </button>
                 </li>
 
@@ -158,21 +157,19 @@
                   <button type="button" class="miniature" data-document="doc_brief">
                     <span class="miniature_titre">Stratégie RSE d’ATHEN’TECH</span>
                     <span class="miniature_lignes" aria-hidden="true">
-                      <span>– devenir leader du bas carbone</span>
-                      <span>– marges de manœuvre</span>
-                      <span>– contraintes</span>
+                      <span>– empreinte carbone</span>
+                      <span>– actions 2025</span>
+                      <span>– améliorations à apporter</span>
                     </span>
                   </button>
                 </li>
-
-
 
                 <li>
                   <button type="button" class="miniature" data-document="doc_reglementation">
                     <span class="miniature_titre">Les règles du jeu évoluent&#8239;: cadre réglementaire</span>
                     <span class="miniature_lignes" aria-hidden="true">
                       <span>– des exigences spécifiques aux smartphones</span>
-                      <span>– une économie plus circulaireé</span>
+                      <span>– une économie plus circulaire</span>
                     </span>
                   </button>
                 </li>
@@ -198,7 +195,6 @@
                     </span>
                   </button>
                 </li>
-
 
               </ul>
             </div>
@@ -233,9 +229,8 @@
 
             <div class="roue" role="group" aria-labelledby="consigne_q1">
 
-              <div class="roue_centre" aria-hidden="true">Smartphone<br>BasicPhone®</div>
+              <div class="roue_centre" aria-hidden="true">Smartphone<br>Basic-phone®</div>
 
-              
               <!-- 1. Stratégie de l'entreprise -->
               <div class="rubrique" style="--position: 0deg" data-cote="haut">
                 <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_strategie">Stratégie de l’entreprise</button>
@@ -383,63 +378,71 @@
           </div>
 
         </section>
-      <aside class="mentor" id="mentor_ia" aria-labelledby="mentor_titre" hidden>
 
-        <!-- GRAND DESSIN DU MENTOR (pop-ups) : un par humeur, le CSS montre le bon -->
-        <img class="mentor_grand_dessin humeur_neutre"  src="dessin/chap_3/IV/mentor.svg" alt="">
-        <img class="mentor_grand_dessin humeur_content" src="dessin/chap_3/IV/mentor_heureux.svg" alt="">
-        <img class="mentor_grand_dessin humeur_decu"    src="dessin/chap_3/IV/mentor_doute.svg" alt="">
 
-        <div class="mentor_entete">
-          <!-- PETIT DESSIN DU MENTOR (fenêtre en bas à droite) : un par humeur -->
-          <img class="mentor_illustration humeur_neutre"  src="dessin/chap_3/IV/mentor.svg" alt="">
-          <img class="mentor_illustration humeur_content" src="dessin/chap_3/IV/mentor_heureux.svg" alt="">
-          <img class="mentor_illustration humeur_decu"    src="dessin/chap_3/IV/mentor_doute.svg" alt="">
-          <!-- NOM DU MENTOR -->
-          <h2 class="mentor_titre" id="mentor_titre">Andréa</h2>
-        </div>
+        <!-- ================= MENTOR IA (Andréa) ================= -->
+        <!-- Comportement : activite/mentor.js. Placé dans <main> pour que dessins.js colore ses dessins ;
+             à l’écran, il apparaît au centre (pop-up) ou en bas à droite (conversation). -->
 
-        <div class="mentor_corps" id="mentor_corps">
+        <aside class="mentor" id="mentor_ia" aria-labelledby="mentor_titre" hidden>
 
-          <!-- pop-up : le texte de l'étape, puis l'échange sur les 2 enjeux -->
-          <div class="mentor_scene" role="region" aria-label="Message du mentor" tabindex="-1">
-            <div class="mentor_scene_texte"></div>
-            <div class="mentor_scene_fil" role="log" aria-live="polite" aria-relevant="additions"></div>
+          <!-- GRAND DESSIN DU MENTOR (pop-ups) : un par humeur, le CSS montre le bon -->
+          <img class="mentor_grand_dessin humeur_neutre"  src="dessin/chap_3/IV/mentor.svg" alt="">
+          <img class="mentor_grand_dessin humeur_content" src="dessin/chap_3/IV/mentor_heureux.svg" alt="">
+          <img class="mentor_grand_dessin humeur_decu"    src="dessin/chap_3/IV/mentor_doute.svg" alt="">
+
+          <div class="mentor_entete">
+            <!-- PETIT DESSIN DU MENTOR (fenêtre en bas à droite) : un par humeur -->
+            <img class="mentor_illustration humeur_neutre"  src="dessin/chap_3/IV/mentor.svg" alt="">
+            <img class="mentor_illustration humeur_content" src="dessin/chap_3/IV/mentor_heureux.svg" alt="">
+            <img class="mentor_illustration humeur_decu"    src="dessin/chap_3/IV/mentor_doute.svg" alt="">
+            <!-- NOM DU MENTOR -->
+            <h2 class="mentor_titre" id="mentor_titre">Andréa</h2>
           </div>
 
-          <!-- petite fenêtre : l'historique de la conversation -->
-          <div class="mentor_fil" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation avec le mentor" tabindex="0"></div>
+          <div class="mentor_corps" id="mentor_corps">
 
-          <p class="mentor_etat" role="status"></p>
+            <!-- pop-up : le texte de l'étape, puis l'échange sur les 2 enjeux -->
+            <div class="mentor_scene" role="region" aria-label="Message du mentor" tabindex="-1">
+              <div class="mentor_scene_texte"></div>
+              <div class="mentor_scene_fil" role="log" aria-live="polite" aria-relevant="additions"></div>
+            </div>
 
-          <!-- boutons du pop-up : seuls ceux de l'étape en cours sont visibles -->
-          <div class="mentor_choix">
-            <button type="button" class="bouton_etape" data-choix="commencer">c’est parti&#8239;!</button>
-            <button type="button" class="bouton_etape" data-choix="reprendre">je veux reprendre</button>
-            <button type="button" class="qcm_verifier" data-choix="continuer_malgre_tout">continuer malgré tout</button>
-            <button type="button" class="bouton_etape" data-choix="vers_enjeux">continuer</button>
-            <button type="button" class="bouton_etape" data-choix="vers_question">continuer</button>
+            <!-- petite fenêtre : l'historique de la conversation -->
+            <div class="mentor_fil" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation avec le mentor" tabindex="0"></div>
+
+            <p class="mentor_etat" role="status"></p>
+
+            <!-- boutons du pop-up : seuls ceux de l'étape en cours sont visibles -->
+            <div class="mentor_choix">
+              <button type="button" class="bouton_etape" data-choix="commencer">c’est parti&#8239;!</button>
+              <button type="button" class="bouton_etape" data-choix="reprendre">je veux reprendre</button>
+              <button type="button" class="qcm_verifier" data-choix="continuer_malgre_tout">continuer malgré tout</button>
+              <button type="button" class="bouton_etape" data-choix="vers_enjeux">continuer</button>
+              <button type="button" class="bouton_etape" data-choix="vers_question">continuer</button>
+            </div>
+
+            <form class="mentor_saisie" id="mentor_saisie">
+              <label for="mentor_message" class="visuellement_cache">Ton message au mentor</label>
+              <textarea id="mentor_message" rows="2" maxlength="2000" placeholder="Réponds au mentor…"></textarea>
+              <button type="submit" class="qcm_verifier">envoyer</button>
+            </form>
+
           </div>
+        </aside>
 
-          <form class="mentor_saisie" id="mentor_saisie">
-            <label for="mentor_message" class="visuellement_cache">Ton message au mentor</label>
-            <textarea id="mentor_message" rows="2" maxlength="2000" placeholder="Réponds au mentor…"></textarea>
-            <button type="submit" class="qcm_verifier">envoyer</button>
-          </form>
+        <!-- boîte de la mascotte, en bas à droite, pendant la question des 2 enjeux :
+             elle apparaît après 2 réponses que le mentor n'a pas validées -->
+        <div class="rappel_mascotte rappel_avec_bouton" id="rappel_enjeux" role="status" hidden>
+          <!-- DESSIN DE LA MASCOTTE : remplacer ce <div> par
+               <img class="rappel_mascotte_dessin" src="dessin/chap_3/IV/…" alt=""> -->
+          <div class="rappel_mascotte_dessin emplacement_illustration" aria-hidden="true">mascotte</div>
+          <div class="rappel_mascotte_texte">
+            <p>Tes réponses ne sont pas encore celles attendues. Je te conseille de réfléchir encore avec Andréa, mais tu peux passer à l’étape suivante.</p>
+            <button type="button" class="bouton_etape" id="passer_enjeux">continuer</button>
+          </div>
+        </div>
 
-        </div>
-      </aside>
-      <!-- boîte de la mascotte, en bas à droite, pendant la question des 2 enjeux :
-           elle apparaît après 2 réponses que le mentor n'a pas validées -->
-      <div class="rappel_mascotte rappel_avec_bouton" id="rappel_enjeux" role="status" hidden>
-        <!-- DESSIN DE LA MASCOTTE : remplacer ce <div> par
-             <img class="rappel_mascotte_dessin" src="dessin/chap_3/IV/…" alt=""> -->
-        <div class="rappel_mascotte_dessin emplacement_illustration" aria-hidden="true">mascotte</div>
-        <div class="rappel_mascotte_texte">
-          <p>Tes réponses ne sont pas encore celles attendues. Je te conseille de réfléchir encore avec Andrea, mais tu peux passer à l’étape suivante.</p>
-          <button type="button" class="bouton_etape" id="passer_enjeux">continuer</button>
-        </div>
-      </div>
       </main>
 
 
@@ -453,14 +456,89 @@
   <!-- ================= DOCUMENTS EN POP-UP ================= -->
   <!-- un <dialog> par document, ouvert au clic sur sa miniature -->
 
-  <dialog class="fenetre_document" id="doc_brief" aria-labelledby="titre_doc_brief">
+  <dialog class="fenetre_document fenetre_rse" id="doc_brief" aria-labelledby="titre_doc_brief">
     <button type="button" class="qcm_fermer" aria-label="fermer le document"></button>
-    <h4 id="titre_doc_brief">Le brief de Saclayphone</h4>
-    <ul>
-      <li>Devenir le leader des smartphones bas carbone.</li>
-      <li>Aller au-delà de la simple conformité réglementaire et devenir le fabricant de smartphones le plus vert du marché, avec une communication et une étude environnementale à l’appui.</li>
-      <li>Marges de manœuvre&#8239;: le design du smartphone, les matières premières, les fournisseurs de composants et la distribution peuvent évoluer.</li>
-      <li>Contraintes&#8239;: être le meilleur du marché en CO<sub>2</sub> (ACV à l’appui) et rester dans une gamme de prix de [à compléter]&nbsp;€.</li>
+    <h4 id="titre_doc_brief">Rapport RSE 2025 d’ATHEN’TECH</h4>
+
+    <!-- 1. EMPREINTE CARBONE -->
+    <h5 class="rse_pilule">1. Notre empreinte carbone en 2025</h5>
+    <p>Depuis 2023, ATHEN’TECH mesure chaque année ses émissions de gaz à effet de serre, selon la méthode du GHG Protocol.</p>
+
+    <div class="rse_graphique">
+      <figure>
+        <!-- camembert : vraies proportions (0,6 % / 1,9 % / 97,5 %) -->
+        <svg viewBox="0 0 340 320" role="img" aria-label="Répartition des émissions 2025 : scope 1, 120 t CO2e ; scope 2, 380 t CO2e ; scope 3, 19 500 t CO2e">
+          <path class="part_scope3" d="M170,190 L174.5,70.1 A120,120 0 1 1 155.7,70.9 Z"/>
+          <path class="part_scope2" d="M170,190 L155.7,70.9 A120,120 0 0 1 170.0,70.0 Z"/>
+          <path class="part_scope1" d="M170,190 L170.0,70.0 A120,120 0 0 1 174.5,70.1 Z"/>
+          <line x1="171.2" y1="76.0" x2="215" y2="38"/>
+          <text x="219" y="34">120 t CO₂e</text>
+          <line x1="163.2" y1="76.2" x2="120" y2="38"/>
+          <text x="116" y="34" text-anchor="end">380 t CO₂e</text>
+          <text x="170" y="230" text-anchor="middle">19 500 t CO₂e</text>
+        </svg>
+        <figcaption>total&#8239;: 20&nbsp;000&nbsp;t CO₂e</figcaption>
+      </figure>
+
+      <ul class="rse_legende">
+        <li><span class="carre part_scope1"></span><span><span class="rse_legende_nom">émissions directes (scope&nbsp;1)</span>nos sites, nos véhicules</span></li>
+        <li><span class="carre part_scope2"></span><span><span class="rse_legende_nom">énergie achetée (scope&nbsp;2)</span>électricité, chauffage, climatisation</span></li>
+        <li><span class="carre part_scope3"></span><span><span class="rse_legende_nom">chaîne de valeur (scope&nbsp;3)</span>matières premières, fabrication, assemblage, transport, utilisation, fin de vie</span></li>
+      </ul>
+    </div>
+
+    <p><span class="emoji" aria-hidden="true">🌱</span> Le scope&nbsp;3 représente 97,5&nbsp;% de nos émissions&#8239;: l’essentiel de notre impact se joue dans notre chaîne de valeur.</p>
+
+    <!-- 2. ENVIRONNEMENT -->
+    <h5 class="rse_pilule">2. Environnement</h5>
+
+    <h6>Nos actions en 2025</h6>
+    <ul class="rse_actions">
+      <li><span class="emoji" aria-hidden="true">⚡</span>100&nbsp;% d’électricité renouvelable dans nos bureaux (depuis 2024)</li>
+      <li><span class="emoji" aria-hidden="true">♻️</span>Tri et recyclage des déchets dans nos bureaux et entrepôts</li>
+      <li><span class="emoji" aria-hidden="true">🚆</span>Plus de bateau et de train, moins d’avion</li>
+      <li><span class="emoji" aria-hidden="true">📋</span>Questionnaires environnementaux pour nos fournisseurs stratégiques</li>
+    </ul>
+
+    <h6>Les améliorations à apporter</h6>
+    <ul class="rse_etoiles">
+      <li>Une politique d’éco-conception pour nos produits</li>
+      <li>Une analyse de cycle de vie (ACV) de nos téléphones</li>
+      <li>Des objectifs chiffrés&#8239;: matières recyclées, réparabilité, circularité</li>
+      <li>Des données environnementales venant de nos fournisseurs</li>
+    </ul>
+
+    <!-- 3. SOCIAL -->
+    <h5 class="rse_pilule">3. Social</h5>
+
+    <h6>Nos actions en 2025</h6>
+    <ul class="rse_actions">
+      <li><span class="emoji" aria-hidden="true">🦺</span>Un lieu de travail sûr et inclusif, une formation annuelle pour tous</li>
+      <li><span class="emoji" aria-hidden="true">⚖️</span>L’égalité des chances dans notre code de conduite&#8239;; 40&nbsp;% de femmes</li>
+      <li><span class="emoji" aria-hidden="true">🤝</span>Des projets locaux d’éducation et d’inclusion numérique</li>
+    </ul>
+
+    <h6>Les améliorations à apporter</h6>
+    <ul class="rse_etoiles">
+      <li>Une stratégie dédiée à notre impact social</li>
+      <li>Un contrôle du respect des droits humains chez nos fournisseurs</li>
+      <li>Des indicateurs sociaux pour suivre nos fournisseurs</li>
+    </ul>
+
+    <!-- CHIFFRES CLÉS -->
+    <ul class="rse_chiffres">
+      <li><span class="emoji" aria-hidden="true">👥</span><span class="rse_chiffre">2&nbsp;500</span>salariés dans le monde</li>
+      <li><span class="emoji" aria-hidden="true">📱</span><span class="rse_chiffre">8&nbsp;millions</span>de smartphones vendus en 2025</li>
+      <li><span class="emoji" aria-hidden="true">🌍</span><span class="rse_chiffre">20&nbsp;000&nbsp;t CO₂e</span>émises en 2025</li>
+    </ul>
+
+    <!-- PRIORITÉS -->
+    <h6>Nos priorités pour les années à venir</h6>
+    <ul class="rse_etoiles">
+      <li>explorer l’éco-conception</li>
+      <li>rendre nos produits plus circulaires</li>
+      <li>mieux connaître notre chaîne de valeur</li>
+      <li>mieux évaluer nos impacts sociaux</li>
     </ul>
   </dialog>
 
@@ -468,125 +546,131 @@
     <button type="button" class="qcm_fermer" aria-label="fermer le document"></button>
     <h4 id="titre_doc_fiche">Fiche technique du smartphone Basic-phone®</h4>
 
-    <div class="fiche_corps">
+    <!-- VUE ÉCLATÉE : dessin à gauche, légende à droite -->
+    <figure class="eclate">
+      <img class="eclate_dessin" src="dessin/chap_3/IV/eclate_telephone_numero.svg"
+           alt="Vue éclatée du Basic-phone : les pièces numérotées sont décrites dans la légende.">
+      <figcaption>
+        <p class="eclate_titre">Vue éclatée du Basic-phone®</p>
+        <ol class="eclate_legende">
+          <li>écran et verre (collés)</li>
+          <li>modules photo</li>
+          <li>carte mère</li>
+          <li>batterie (remplaçable, mais fixée par adhésif)</li>
+          <li>châssis en aluminium</li>
+          <li>vis, clips et connecteurs</li>
+          <li>coque arrière en polymère</li>
+        </ol>
+      </figcaption>
+    </figure>
 
-      <!-- IMAGE (à gauche) : ton dessin du smartphone -->
-      <img class="fiche_image" src="dessin/chap_3/IV/basic_phone.png"
-           alt="Le Basic-phone, de face et en vue éclatée : écran, modules photo, carte mère, batterie, châssis en aluminium, coque arrière">
+    <!-- TABLEAU (sous l'éclaté) : une ligne <tr> par caractéristique -->
+    <table class="fiche_technique">
+      <caption class="visuellement_cache">Caractéristiques techniques du Basic-phone</caption>
+      <thead>
+        <tr><th scope="col">Caractéristique</th><th scope="col">Basic-phone®</th></tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">Masse</th><td>180&nbsp;g</td></tr>
+        <tr><th scope="row">Écran</th><td>AMOLED 6,1&nbsp;pouces, 120&nbsp;Hz</td></tr>
+        <tr><th scope="row">Processeur</th><td>MediaTek Dimensity 7300, 8&nbsp;cœurs</td></tr>
+        <tr><th scope="row">Mémoire vive (RAM)</th><td>8&nbsp;Go</td></tr>
+        <tr><th scope="row">Stockage interne</th><td>128&nbsp;Go</td></tr>
+        <tr><th scope="row">Appareils photo arrière</th><td>50&nbsp;MP avec stabilisation optique + ultra grand-angle 8&nbsp;MP</td></tr>
+        <tr><th scope="row">Caméra avant</th><td>16&nbsp;MP</td></tr>
+        <tr><th scope="row">Batterie</th><td>4&nbsp;500&nbsp;mAh, lithium-ion</td></tr>
+        <tr><th scope="row">Recharge filaire</th><td>jusqu’à 100&nbsp;W</td></tr>
+        <tr><th scope="row">Système d’exploitation</th><td>Android</td></tr>
+        <tr><th scope="row">Durée de vie de référence</th><td>3&nbsp;ans</td></tr>
+        <tr><th scope="row">Support logiciel</th><td>3&nbsp;ans de mises à jour</td></tr>
+      </tbody>
+    </table>
 
-      <!-- TABLEAU (à droite) : une ligne <tr> par caractéristique -->
-      <table class="fiche_technique">
-        <caption class="visuellement_cache">Caractéristiques techniques du Basic-phone</caption>
-        <thead>
-          <tr><th scope="col">Caractéristique</th><th scope="col">Basic-phone®</th></tr>
-        </thead>
-        <tbody>
-          <tr><th scope="row">Masse</th><td>180&nbsp;g</td></tr>
-          <tr><th scope="row">Écran</th><td>AMOLED 6,1&nbsp;pouces, 120&nbsp;Hz</td></tr>
-          <tr><th scope="row">Processeur</th><td>MediaTek Dimensity 7300, 8&nbsp;cœurs</td></tr>
-          <tr><th scope="row">Mémoire vive (RAM)</th><td>8&nbsp;Go</td></tr>
-          <tr><th scope="row">Stockage interne</th><td>128&nbsp;Go</td></tr>
-          <tr><th scope="row">Appareils photo arrière</th><td>50&nbsp;MP avec stabilisation optique + ultra grand-angle 8&nbsp;MP</td></tr>
-          <tr><th scope="row">Caméra avant</th><td>16&nbsp;MP</td></tr>
-          <tr><th scope="row">Batterie</th><td>4&nbsp;500&nbsp;mAh, lithium-ion</td></tr>
-          <tr><th scope="row">Recharge filaire</th><td>jusqu’à 100&nbsp;W</td></tr>
-          <tr><th scope="row">Système d’exploitation</th><td>Android</td></tr>
-          <tr><th scope="row">Durée de vie de référence</th><td>3&nbsp;ans</td></tr>
-          <tr><th scope="row">Support logiciel</th><td>3&nbsp;ans de mises à jour</td></tr>
-        </tbody>
-      </table>
-
-    </div>
-
-    <!-- NOTES sous l'image et le tableau -->
+    <!-- NOTES sous le tableau -->
     <h5 class="souligne_fin">Assemblage mixte&#8239;:</h5>
-    <p class="note_document"> écran collé, batterie remplaçable mais fixée par adhésif, vis et clips.</p>
+    <p class="note_document">écran collé, batterie remplaçable mais fixée par adhésif, vis et clips.</p>
     <h5 class="souligne_fin">Défi d’éco-conception&#8239;:</h5>
-      <p class="note_document"> réduire les impacts sur tout le cycle de vie, pour un coût de fabrication de 250&nbsp;€ maximum par unité.</p>
+    <p class="note_document">réduire les impacts sur tout le cycle de vie, pour un coût de fabrication de 250&nbsp;€ maximum par unité.</p>
   </dialog>
 
   <dialog class="fenetre_document" id="doc_reglementation" aria-labelledby="titre_doc_reglementation">
     <button type="button" class="qcm_fermer" aria-label="fermer le document"></button>
-    <h4 id="titre_doc_reglementation">les règles du jeu évoluent - Cadre réglementaire</h4>
+    <h4 id="titre_doc_reglementation">Les règles du jeu évoluent&#8239;: cadre réglementaire</h4>
+
     <h5 class="souligne_fin">Des exigences spécifiques aux smartphones</h5>
-<p>Depuis le 20 juin 2025, des exigences européennes d’écoconception s’appliquent aux smartphones et à plusieurs autres catégories de téléphones. Elles portent notamment sur la résistance, la durabilité des batteries, la disponibilité des pièces détachées, la réparation et le support logiciel.
-<br>Les smartphones concernés doivent également afficher une étiquette énergétique comportant des informations utiles aux consommateurs, notamment sur l’efficacité énergétique, la longévité de la batterie, la résistance et la réparabilité<p>
+    <p>Depuis le 20&nbsp;juin 2025, des exigences européennes d’éco-conception s’appliquent aux smartphones et à plusieurs autres catégories de téléphones. Elles portent notamment sur la résistance, la durabilité des batteries, la disponibilité des pièces détachées, la réparation et le support logiciel.</p>
+    <p>Les smartphones concernés doivent également afficher une étiquette énergie, avec des informations utiles aux consommateurs&#8239;: efficacité énergétique, longévité de la batterie, résistance et réparabilité.</p>
 
     <h5 class="souligne_fin">Une économie plus circulaire</h5>
-<p>La loi française AGEC a notamment renforcé les dispositifs d’information des consommateurs et lesdémarches favorisant la réparation et la réduction des déchets.
-<br>À l’échelle européenne, le règlement sur l’écoconception des produits durables (ESPR) établit un cadre pour faire évoluer les exigences applicables à différentes catégories de produits. Les obligations précises dépendent toutefois des textes adoptés pour chaque catégorie.</p>
-      </ul>
-    <h5 class="souligne_fin">sources de références&#8239;:</h5> 
-          <p>Commission européenne, Smartphones and Tablets&#8239;:
-            <a class="source" href="https://energy-efficient-products.ec.europa.eu/product-list/smartphones-and-tablets_en">energy-efficient-products.ec.europa.eu</a>
-          </p>
-          <p>Règlement européen (UE) 2023/1670&#8239;:
-            <a class="source" href="https://eur-lex.europa.eu/eli/reg/2023/1670/oj/eng">eur-lex.europa.eu</a>
-          </p>
-          <p>Commission européenne, Digital Product Passport&#8239;:
-            <a class="source" href="https://single-market-economy.ec.europa.eu/single-market/digital-product-passport_en">single-market-economy.ec.europa.eu</a>
-          </p>
-      </span>
+    <p>En France, la loi AGEC a renforcé l’information des consommateurs et les démarches qui favorisent la réparation et la réduction des déchets.</p>
+    <p>À l’échelle européenne, le règlement sur l’éco-conception des produits durables (ESPR) fixe un cadre pour faire évoluer les exigences de différentes catégories de produits. Les obligations précises dépendent toutefois des textes adoptés pour chaque catégorie.</p>
+
+    <h5 class="souligne_fin">Sources de référence&#8239;:</h5>
+    <p class="note_document">
+      Commission européenne, <span lang="en">Smartphones and Tablets</span>&#8239;:
+      <a class="source" href="https://energy-efficient-products.ec.europa.eu/product-list/smartphones-and-tablets_en">energy-efficient-products.ec.europa.eu</a><br>
+      Règlement européen (UE) 2023/1670&#8239;:
+      <a class="source" href="https://eur-lex.europa.eu/eli/reg/2023/1670/oj/eng">eur-lex.europa.eu</a><br>
+      Commission européenne, <span lang="en">Digital Product Passport</span>&#8239;:
+      <a class="source" href="https://single-market-economy.ec.europa.eu/single-market/digital-product-passport_en">single-market-economy.ec.europa.eu</a>
     </p>
   </dialog>
 
   <dialog class="fenetre_document" id="doc_social" aria-labelledby="titre_doc_social">
     <button type="button" class="qcm_fermer" aria-label="fermer le document"></button>
     <h4 id="titre_doc_social">Enjeux sociaux et environnementaux</h4>
-    <p>Un smartphone mobilise de nombreuses ressources et une chaîne de valeur internationale&#8239;: extraction minière, raffinage, fabrication de composants électroniques, assemblage, transport, utilisation, réparation et traitement en fin de vie.</p>
- 
-    <h5 clas="souligne_fin">les ressources et matières premières</h5>
-    <p>Les smartphones contiennent différents métaux et matériaux, notamment du cuivre, de l’aluminium, du lithium et du cobalt. Certains matériaux sont considérés comme critiques au regard de leur importance
-économique et des risques liés à leur approvisionnement. Leur extraction et leur transformation peuvent générer des impacts environnementaux et des risques sociaux.
-<br><span class="span_source">Liste des métaux critiques dans un smartphone&#8239;: 
-<a class="source" href="https://www.cea.fr/multimedia/Documents/infographies/244_matieres-premieres-smartphone.pdf">cea.fr</a></span>     
+    <p>Un smartphone mobilise de nombreuses ressources et une chaîne de valeur internationale&#8239;: extraction minière, raffinage, fabrication des composants électroniques, assemblage, transport, utilisation, réparation et traitement en fin de vie.</p>
+
+    <h5 class="souligne_fin">Les ressources et matières premières</h5>
+    <p>Les smartphones contiennent différents métaux et matériaux, notamment du cuivre, de l’aluminium, du lithium et du cobalt. Certains sont considérés comme critiques, en raison de leur importance économique et des risques qui pèsent sur leur approvisionnement. Leur extraction et leur transformation peuvent générer des impacts environnementaux et des risques sociaux.<br>
+      <span class="span_source"><span class="souligne_fin">source&#8239;:</span> liste des métaux critiques dans un smartphone,
+        <a class="source" href="https://www.cea.fr/multimedia/Documents/infographies/244_matieres-premieres-smartphone.pdf">cea.fr</a></span>
     </p>
-   
-        <h5 clas="souligne_fin">Des enjeux sociaux</h5>
-    <p>Le rapport <span class="t">Time to Recharge</span> publié en 2017 par Amnesty international, a mis en évidence le travail illégal d’enfant dans les mines artisanales de cobalt en Républic Démocratique du Congo.
-<span class="span_source"><span class="souligne_fin">sources&#8239;:</span>
-        <a class="source" href="https://www.amnesty.org/fr/documents/afr62/7395/2017/fr/">amnesty.org</a></span>   
-     </p>
 
-         <p>Les enjeux sociaux touchent non seulement les mines mais également les étapes de production. Les conditions de travail des ouvriers des usines de fabrication de téléphones portables en Chine sont dénoncées par différent journaux comme Le Monde.
-<span class="span_source"><span class="souligne_fin">sources&#8239;:</span>
-        <a class="source" href="https://www.lemonde.fr/economie/article/2025/11/19/a-zhengzhou-en-chine-les-saisonniers-precaires-de-l-iphone-city_6653942_3234.html?srsltid=AfmBOoqCv9hBfFAeZhA019CbC56wq2cM1RrscFP9g8ik5IS11GZ87HaI">lemonde.fr</a></span>   
-     </p>
+    <h5 class="souligne_fin">Des enjeux sociaux</h5>
+    <p>Le rapport <cite lang="en">«&#8239;Time to Recharge&#8239;»</cite>, publié en 2017 par Amnesty International, a mis en évidence le travail illégal d’enfants dans les mines artisanales de cobalt en République démocratique du Congo.<br>
+      <span class="span_source"><span class="souligne_fin">source&#8239;:</span>
+        <a class="source" href="https://www.amnesty.org/fr/documents/afr62/7395/2017/fr/">amnesty.org</a></span>
+    </p>
+    <p>Les enjeux sociaux ne touchent pas seulement les mines, mais aussi les étapes de production. Les conditions de travail des ouvriers des usines de téléphones portables en Chine sont dénoncées par plusieurs journaux, comme Le Monde.<br>
+      <span class="span_source"><span class="souligne_fin">source&#8239;:</span>
+        <a class="source" href="https://www.lemonde.fr/economie/article/2025/11/19/a-zhengzhou-en-chine-les-saisonniers-precaires-de-l-iphone-city_6653942_3234.html">lemonde.fr</a></span>
+    </p>
 
-        <h5 clas="souligne_fin">Empreinte environnementale</h5>
-    <p>De nombreuses études mettent en avant l’impact majeur de la production du téléphone (par rapport à son transport, son utilisation et sa fin de vie), tant sur le plan de l’empreinte carbone que sur celui de l’épuisement des ressources minérales.
-<span class="span_source"><span class="souligne_fin">sources&#8239;:</span>
-        <a class="source" href="">Base de Données BAFU 2026</a></span>   
-     </p>
-
+    <h5 class="souligne_fin">Empreinte environnementale</h5>
+    <p>De nombreuses études montrent que la production du téléphone pèse beaucoup plus lourd que son transport, son utilisation et sa fin de vie, tant pour l’empreinte carbone que pour l’épuisement des ressources minérales.<br>
+      <span class="span_source"><span class="souligne_fin">source&#8239;:</span> base de données BAFU 2026</span>
+    </p>
   </dialog>
 
   <dialog class="fenetre_document" id="doc_concurrence" aria-labelledby="titre_doc_concurrence">
     <button type="button" class="qcm_fermer" aria-label="fermer le document"></button>
-    <h4 id="titre_doc_concurrence">Contexte concurrentiel&#8239;: Fairphone</h4>
+    <h4 id="titre_doc_concurrence">Fairphone, un concurrent à observer</h4>
+    <p>Fairphone met en avant plusieurs leviers&#8239;: l’allongement de la durée de vie, la réparabilité, l’utilisation de matières recyclées ou issues de filières plus responsables, et l’amélioration des pratiques de sa chaîne d’approvisionnement.</p>
+
+    <h5 class="souligne_fin">Le Fairphone (Gen.&nbsp;6) en bref</h5>
     <ul>
-      <li>Empreinte carbone du groupe par scope, selon le GHG Protocol (p.&nbsp;19).</li>
-      <li>Empreinte carbone à la production du Fairphone 5 et du Fairphone Gen.&nbsp;6 (p.&nbsp;20).</li>
-      <li>Pièces fabriquées à partir de matières recyclées ou de métaux issus de mines responsables (p.&nbsp;30).</li>
-      <li>Note A en consommation d’énergie (p.&nbsp;46).</li>
-      <li>9 composants remplaçables (p.&nbsp;54).</li>
-      <li>Indice de réparabilité du Fairphone Gen.&nbsp;6&#8239;: 9,3/10.</li>
+      <li>51&nbsp;% de matériaux équitables (<span lang="en">«&#8239;fair materials&#8239;»</span>)</li>
+      <li>Support logiciel jusqu’en 2033</li>
+      <li>Score de réparabilité de 10/10, attribué par iFixit (2025)</li>
+      <li>Certifié TCO</li>
     </ul>
+
+    <h5 class="souligne_fin">Son rapport d’impact 2025</h5>
+    <p>Il présente des actions pour réduire l’empreinte carbone des produits, utiliser davantage de matières recyclées et allonger la durée de vie des téléphones.</p>
+
+    <h5 class="souligne_fin">À retenir</h5>
+    <p>Ces initiatives peuvent inspirer ATHEN’TECH, mais elles ne prouvent pas qu’elles sont adaptées à son produit. Pour transposer une solution, il faut examiner les fonctions, les matériaux, les conditions de production, les coûts, les usages et les données environnementales disponibles.</p>
+
     <p class="note_document">
-      <span class="span_source"><span class="souligne_fin">sources&#8239;:</span>
-        <a class="source" href="https://www.fairphone.com/wp-content/uploads/2026/04/Fairphone-Impact_Report-2025.pdf">rapport d’impact Fairphone 2025</a>,
-        <a class="source" href="https://www.bouyguestelecom.fr/static/rapports-idr/indice_de_reparabilite_fairphone_6_5g.pdf">fiche d’indice de réparabilité</a>
-      </span>
+      <span class="span_source"><span class="souligne_fin">source&#8239;:</span>
+        <a class="source" href="https://www.fairphone.com/wp-content/uploads/2026/04/Fairphone-Impact_Report-2025.pdf">rapport d’impact Fairphone 2025</a></span>
     </p>
   </dialog>
 
-  <dialog class="fenetre_document" id="doc_rse" aria-labelledby="titre_doc_rse">
-    <button type="button" class="qcm_fermer" aria-label="fermer le document"></button>
-    <h4 id="titre_doc_rse">Rapport RSE simplifié de Saclayphone</h4>
-    
-  </dialog>
 
 
+  <!-- ================= TEXTES D’ANDRÉA (écrits par toi, pas par l’IA) ================= -->
 
   <!-- Accueil, quand la roue apparaît -->
   <template id="texte_accueil">

@@ -497,17 +497,75 @@ h3.consigne {
   width: min(960px, 94vw);
 }
 
-.fiche_corps {
+
+/* ---------- Vue éclatée (fiche technique) ----------
+   Dessin à gauche, légende à droite ; le tableau passe en dessous. */
+
+.eclate {
   display: flex;
   align-items: flex-start;
-  gap: 32px;
+  gap: 100px;
+  margin: 0 0 40px;
 }
 
-.fiche_image {
-  flex: 0 0 38%;
-  max-width: 38%;
+.eclate_dessin {
+  flex: 0 0 45%;            /* largeur du dessin : à ajuster */
+  max-width: 45%;
   height: auto;
 }
+
+.eclate figcaption {
+  flex: 1;
+}
+
+.fenetre_document .eclate_titre {
+  margin: 0 0 10px;
+  font-family: var(--titre);
+}
+
+/* légende : les numéros dans des ronds, comme sur le dessin */
+.fenetre_document .eclate_legende {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: piece;
+}
+
+.fenetre_document .eclate_legende li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: 0 0 6px;
+  counter-increment: piece;
+}
+
+.eclate_legende li::before {
+  content: counter(piece);
+  flex: 0 0 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+  background: var(--blanc);
+  font-size: 0.8rem;
+}
+
+/* sur téléphone : la légende passe sous le dessin */
+@media (max-width: 600px) {
+  .eclate {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .eclate_dessin {
+    flex-basis: auto;
+    max-width: 80%;
+    margin: 0 auto;
+  }
+}
+
+
 
 /* un vrai tableau, avec des traits entre les lignes et les colonnes */
 .fiche_technique {
@@ -809,6 +867,221 @@ h3.consigne {
 .retour_choix p:last-child {
   margin-bottom: 0;
 }
+
+
+/* ---------- Document « Rapport RSE d'ATHEN'TECH » ---------- */
+
+/* titres des 3 parties : pilule */
+.fenetre_document .rse_pilule {
+  display: inline-block;
+  margin: 30px 0 10px;
+  padding: 6px 18px;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  font-size: 1rem;
+}
+
+/* sous-titres : soulignés */
+.fenetre_document h6 {
+  margin: 18px 0 8px;
+  font-family: var(--titre);
+  font-weight: normal;
+  font-size: 0.95rem;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+}
+
+.fenetre_rse p {
+  margin: 0 0 10px;
+}
+
+/* camembert + légende côte à côte */
+.rse_graphique {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 6px 0 4px;
+}
+
+.rse_graphique figure {
+  flex: 0 0 300px;
+  margin: 0;
+  text-align: center;
+}
+
+/* de l'air entre le camembert et la phrase du scope 3 */
+.rse_graphique + p {
+  margin-top: 24px;
+}
+.rse_graphique svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.rse_graphique path,
+.rse_graphique line {
+  stroke: var(--trait);
+  stroke-width: 1;
+}
+
+.rse_graphique text {
+  font-family: var(--labeur);
+  font-size: 14px;
+  fill: var(--couleur_texte);
+}
+
+.rse_graphique figcaption {
+  margin-top: -6px;
+  font-family: var(--titre);
+}
+
+/* couleurs des parts (camembert et carrés de la légende) */
+.part_scope1 { fill: var(--rose);      background: var(--rose); }
+.part_scope2 { fill: var(--vert_bleu); background: var(--vert_bleu); }
+.part_scope3 { fill: var(--orange);    background: var(--orange); }
+
+.fenetre_document .rse_legende {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fenetre_document .rse_legende li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.rse_legende .carre {
+  flex: 0 0 20px;
+  height: 20px;
+  border: 1px solid var(--trait);
+}
+
+.rse_legende_nom {
+  display: block;
+  font-family: var(--titre);
+  font-size: 0.95rem;
+}
+
+/* listes : emoji devant, ou étoile */
+.fenetre_document .rse_actions,
+.fenetre_document .rse_etoiles {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fenetre_document .rse_actions li {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.rse_actions .emoji {
+  flex: 0 0 24px;
+}
+
+.fenetre_document .rse_etoiles li {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.rse_etoiles li::before {
+  content: "✦";
+}
+
+/* chiffres clés, entre deux traits */
+.fenetre_document .rse_chiffres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  margin: 30px 0 0;
+  padding: 12px 0;
+  border-top: 1px solid var(--trait);
+  border-bottom: 1px solid var(--trait);
+  list-style: none;
+}
+
+.fenetre_document .rse_chiffres li {
+  flex: 1 1 140px;
+  margin: 0;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.rse_chiffres .emoji {
+  display: block;
+  font-size: 1.5rem;
+}
+
+.rse_chiffre {
+  display: block;
+  font-family: var(--titre);
+  font-size: 1.3rem;
+}
+
+/* sur téléphone : la légende passe sous le camembert */
+@media (max-width: 600px) {
+  .rse_graphique {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .rse_graphique figure {
+    flex-basis: auto;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}
+
+
+
+
+*
+/* légende : les numéros dans des ronds, comme sur le dessin ; sur 2 colonnes */
+.fenetre_document .eclate_legende {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: piece;
+}
+
+.fenetre_document .eclate_legende li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: 0 0 6px;
+  break-inside: avoid;
+  counter-increment: piece;
+}
+
+.eclate_legende li::before {
+  content: counter(piece);
+  flex: 0 0 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+  background: var(--blanc);
+  font-size: 0.8rem;
+}
+
+
+
+
+
+
+
 
 
 /* ---------- Petits écrans et zoom fort ---------- */
