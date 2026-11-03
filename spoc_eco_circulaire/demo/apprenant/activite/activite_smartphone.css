@@ -573,6 +573,10 @@ h3.consigne {
   border-collapse: collapse;
   border: 1px solid var(--trait);
   font-size: 0.9rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 60px;
+  margin-bottom: 50px;
 }
 
 .fiche_technique th,
@@ -659,8 +663,8 @@ h3.consigne {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 110px;
-  height: 110px;
+  width: 120px;
+  height: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1082,6 +1086,41 @@ h3.consigne {
 
 
 
+/* centre de la roue : dessin, puis le nom en dessous */
+.roue_centre {
+  flex-direction: column;
+  gap: 2px;
+}
+
+.roue_centre_dessin {
+  width: 45%;
+  height: 45%;
+  object-fit: contain;
+}
+
+.roue_centre_nom {
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* ---------- Petits écrans et zoom fort ---------- */
@@ -1119,6 +1158,9 @@ h3.consigne {
     display: none;
   }
 
+
+
+
   .rubrique,
   .rubrique_bouton,
   .rubrique_fenetre,
@@ -1148,3 +1190,49 @@ h3.consigne {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 }
+
+
+
+
+/* ---------- Lien bien visible au centre d'un document ---------- */
+
+.lien_central {
+  margin: 24px 0;
+  text-align: center;
+}
+
+.bouton_lien {
+  font-family: var(--titre);
+  font-size: 1.25rem;
+  color: var(--prune);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+/* petite flèche : le lien s'ouvre dans un nouvel onglet */
+.bouton_lien::after {
+  content: " ↗";
+}
+
+.bouton_lien:hover {
+  text-decoration-thickness: 3px;
+}
+
+.bouton_lien:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+
+
+/* la réponse affichée sous la rubrique se clique : elle rouvre la saisie */
+.note_eleve {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+
+
+
+

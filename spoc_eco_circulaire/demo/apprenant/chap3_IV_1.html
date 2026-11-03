@@ -11,18 +11,20 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="activite/activite_smartphone.css">
   <link rel="stylesheet" href="activite/mentor.css">
-
+  <link rel="stylesheet" href="activite/porte_documents.css">
+  
   <script src="cours.js" defer></script>
   <script src="script.js" defer></script>
   <script src="dessins.js" defer></script>
   <script src="activite/activite_smartphone.js" defer></script>
   <script src="activite/mentor.js" defer></script>
+  <script src="activite/porte_documents.js" defer></script>
 </head>
 
 
 <!-- Où est cette page dans le cours ? (le reste vient de cours.js) -->
 <!-- data-page-suivante : la page de la mission 2 (le bouton « passer à la suite » y mène) -->
-<body data-chapitre="3" data-partie="11" data-suite="cache" data-page-suivante="activite_d_mission2.html">
+<body data-chapitre="3" data-partie="11" data-suite="cache" data-page-suivante="chap3_IV_2.html">
 
   <a class="lien_evitement" href="#contenu_gauche">Aller au contenu</a>
 
@@ -229,7 +231,12 @@
 
             <div class="roue" role="group" aria-labelledby="consigne_q1">
 
-              <div class="roue_centre" aria-hidden="true">Smartphone<br>Basic-phone®</div>
+              <!-- centre de la roue : le dessin du smartphone avec la plante -->
+              <!-- centre de la roue : le dessin du smartphone avec la plante, et son nom en dessous -->
+              <div class="roue_centre" aria-hidden="true">
+                <img class="roue_centre_dessin" src="dessin/chap_3/IV/smartphone_plante.svg" alt="">
+                <span class="roue_centre_nom">Basic-phone®</span>
+              </div>
 
               <!-- 1. Stratégie de l'entreprise -->
               <div class="rubrique" style="--position: 0deg" data-cote="haut">
@@ -646,26 +653,22 @@
   <dialog class="fenetre_document" id="doc_concurrence" aria-labelledby="titre_doc_concurrence">
     <button type="button" class="qcm_fermer" aria-label="fermer le document"></button>
     <h4 id="titre_doc_concurrence">Fairphone, un concurrent à observer</h4>
-    <p>Fairphone met en avant plusieurs leviers&#8239;: l’allongement de la durée de vie, la réparabilité, l’utilisation de matières recyclées ou issues de filières plus responsables, et l’amélioration des pratiques de sa chaîne d’approvisionnement.</p>
 
-    <h5 class="souligne_fin">Le Fairphone (Gen.&nbsp;6) en bref</h5>
-    <ul>
-      <li>51&nbsp;% de matériaux équitables (<span lang="en">«&#8239;fair materials&#8239;»</span>)</li>
-      <li>Support logiciel jusqu’en 2033</li>
-      <li>Score de réparabilité de 10/10, attribué par iFixit (2025)</li>
-      <li>Certifié TCO</li>
-    </ul>
+    <p>Fairphone est un fabricant de smartphones qui met en avant plusieurs principes liés à l’éco-conception&#8239;: allongement de la durée de vie, réparabilité, utilisation de matières recyclées ou issues de filières plus responsables et amélioration des pratiques de sa chaîne d’approvisionnement.</p>
 
-    <h5 class="souligne_fin">Son rapport d’impact 2025</h5>
-    <p>Il présente des actions pour réduire l’empreinte carbone des produits, utiliser davantage de matières recyclées et allonger la durée de vie des téléphones.</p>
-
-    <h5 class="souligne_fin">À retenir</h5>
-    <p>Ces initiatives peuvent inspirer ATHEN’TECH, mais elles ne prouvent pas qu’elles sont adaptées à son produit. Pour transposer une solution, il faut examiner les fonctions, les matériaux, les conditions de production, les coûts, les usages et les données environnementales disponibles.</p>
-
-    <p class="note_document">
-      <span class="span_source"><span class="souligne_fin">source&#8239;:</span>
-        <a class="source" href="https://www.fairphone.com/wp-content/uploads/2026/04/Fairphone-Impact_Report-2025.pdf">rapport d’impact Fairphone 2025</a></span>
+    <!-- SOURCE bien visible, au centre (s'ouvre dans un nouvel onglet) -->
+    <p class="lien_central">
+      <a class="bouton_lien" href="https://www.fairphone.com/wp-content/uploads/2026/04/Fairphone-Impact_Report-2025.pdf" target="_blank" rel="noopener">
+        Fairphone, <span lang="en">Impact Report</span> 2025 <span class="visuellement_cache">(PDF, s’ouvre dans un nouvel onglet)</span>
+      </a>
     </p>
+
+    <p>Son rapport d’impact 2025 présente notamment des actions relatives à la réduction de l’empreinte carbone des produits, à l’utilisation de matières recyclées et à l’allongement de la durée de vie des appareils.</p>
+    <p>Ces initiatives peuvent inspirer ATHEN’TECH, mais elles ne constituent pas une preuve que toutes les solutions proposées sont automatiquement adaptées à son propre produit.</p>
+    <p>Pour transposer une solution, il faut examiner les fonctions du smartphone, les matériaux utilisés, les conditions de production, les coûts, les usages et les données environnementales disponibles.</p>
+
+    <h5 class="souligne_fin">À retenir&#8239;:</h5>
+    <p>un concurrent peut être une source d’inspiration, mais ses choix doivent être analysés avant d’être reproduits.</p>
   </dialog>
 
 
@@ -704,9 +707,7 @@
        Une par choix : elle s'affiche dans la fenêtre d'Andréa quand l'élève valide.
        Pas de discussion avec l'IA à cette étape : l'élève lit, puis revoit son choix ou passe à la suite. -->
   <template id="texte_retour_A">
-    <p>Tu as sûrement déjà de bonnes idées, comme sourcer le cobalt de manière responsable ou rendre le téléphone plus réparable. Mais sont-elles les plus pertinentes&#8239;?</p>
-    <p>Tu n’as pas encore analysé en détail le produit, les principaux contributeurs à ses impacts, ni son utilisation et sa fin de vie. Sans cadrage du projet, tu ne pourras pas comparer tes solutions entre elles.</p>
-    <p>Revois ton choix&#8239;: que faudrait-il faire d’abord&#8239;?</p>
+    <p>Quelles solutions d’éco-conception te semblent pertinentes, et pourquoi&#8239;?</p>
   </template>
 
   <template id="texte_retour_B">
@@ -716,8 +717,6 @@
 
   <template id="texte_retour_C">
     <p>Pourquoi as-tu choisi cet objectif de 30&nbsp;%&#8239;? Sur quels documents t’es-tu basé·e&#8239;?</p>
-    <p>À ce stade, tu n’as pas encore assez d’informations pour fixer des objectifs ou un périmètre&#8239;: ATHEN’TECH n’a même pas encore d’analyse de cycle de vie de son smartphone.</p>
-    <p>Revois ton choix&#8239;: que faudrait-il faire d’abord&#8239;?</p>
   </template>
 
 

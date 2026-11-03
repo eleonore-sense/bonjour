@@ -317,7 +317,7 @@ body.mentor_visible .qcm_pied {
 .mentor[data-etape="accueil"] .mentor_saisie,
 .mentor[data-etape="bilan"] .mentor_saisie,
 .mentor[data-etape="enjeux"].enjeux_valides .mentor_saisie,
-.mentor[data-etape="question"] .mentor_saisie {
+.mentor[data-etape="question"][data-choix="B"] .mentor_saisie {
   display: none;
 }
 
@@ -376,7 +376,6 @@ body.mentor_visible .qcm_pied {
 
 @keyframes roue_mise_a_jour {
   0%, 40% { background: var(--vert_bleu); }
-  100%    { background: transparent; }
 }
 
 @media (prefers-reduced-motion: reduce) {

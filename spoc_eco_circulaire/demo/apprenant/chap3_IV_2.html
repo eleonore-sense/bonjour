@@ -13,10 +13,13 @@
   <link rel="stylesheet" href="activite/mentor.css">
   <!-- styles propres à la mission 2 (cycle de vie, ACV, visages d'Andréa) -->
   <link rel="stylesheet" href="activite/mission2.css">
+    <link rel="stylesheet" href="activite/porte_documents.css">
 
+    
   <script src="cours.js" defer></script>
   <script src="script.js" defer></script>
   <script src="dessins.js" defer></script>
+  <script src="activite/porte_documents.js" defer></script>
   <!-- boutons data-montrer, documents en pop-up, bouton « passer à la suite » -->
   <script src="activite/activite_smartphone.js" defer></script>
   <!-- mission 2 : remise en ordre du cycle de vie, cycle en rond, ACV, pop-ups d'Andréa -->
@@ -96,7 +99,13 @@
                  À gauche, les 6 étapes mélangées ; à droite, les 6 cases numérotées.
                  data-ordre = la bonne place de l'étape (1 à 6)
                  data-acv   = l'étape de l'ACV dont elle fait partie (sert ensuite dans le cycle en rond)
-                 Pour ajouter un dessin à une étape : <img src="dessin/chap_3/IV/…" alt=""> avant le <span>. -->
+                 Pour ajouter un dessin à une étape : <img src="dessin/chap_3/IV/…" alt=""> avant le <span>.
+                 <br> = l'endroit où le nom passe à la ligne dans le cycle en rond
+                 (pendant le jeu, il est ignoré). Garde l'espace juste avant le <br>. -->
+            <!-- ZONE DU CYCLE : le jeu (qui devient le cercle) et, à sa droite, le graphique
+                   de l'empreinte carbone, qui se dessine au survol des étapes -->
+            <div class="cycle_zone" id="cycle_zone">
+
             <div class="cycle" id="cycle_jeu" role="group" aria-labelledby="consigne_cycle">
 
               <!-- FLÈCHES DU CYCLE : cachées pendant le jeu, elles apparaissent en fond
@@ -118,13 +127,20 @@
                 <text class="texte_recyclage" x="22" y="13" text-anchor="end">recyclage</text>
               </svg>
 
+              <!-- CENTRE DU CERCLE : dessin, puis le nom en dessous (comme la roue de la mission 1).
+                   Caché pendant le jeu, il apparaît avec les flèches. -->
+              <div class="roue_centre cycle_centre" aria-hidden="true">
+                <img class="roue_centre_dessin" src="dessin/chap_3/IV/smartphone_plante.svg" alt="">
+                <span class="roue_centre_nom">Basic-phone®</span>
+              </div>
+
               <ul class="cycle_reserve" aria-label="Étapes à placer">
-                <li><button type="button" class="carte_cycle" data-ordre="5" data-acv="utilisation"><span>utilisation et maintenance</span></button></li>
-                <li><button type="button" class="carte_cycle" data-ordre="2" data-acv="production"><span>fabrication des composants</span></button></li>
+                <li><button type="button" class="carte_cycle" data-ordre="5" data-acv="utilisation"><span>utilisation <br>et maintenance</span></button></li>
+                <li><button type="button" class="carte_cycle" data-ordre="2" data-acv="production"><span>fabrication <br>des composants</span></button></li>
                 <li><button type="button" class="carte_cycle" data-ordre="6" data-acv="fin_de_vie"><span>fin de vie</span></button></li>
-                <li><button type="button" class="carte_cycle" data-ordre="1" data-acv="production"><span>extraction et matières premières</span></button></li>
-                <li><button type="button" class="carte_cycle" data-ordre="4" data-acv="distribution"><span>distribution et vente</span></button></li>
-                <li><button type="button" class="carte_cycle" data-ordre="3" data-acv="production"><span>fabrication et assemblage final du smartphone</span></button></li>
+                <li><button type="button" class="carte_cycle" data-ordre="1" data-acv="production"><span>extraction <br>et matière première</span></button></li>
+                <li><button type="button" class="carte_cycle" data-ordre="4" data-acv="distribution"><span>distribution <br>et vente</span></button></li>
+                <li><button type="button" class="carte_cycle" data-ordre="3" data-acv="production"><span>fabrication et assemblage <br>final du smartphone</span></button></li>
               </ul>
 
               <ol class="cycle_emplacements" aria-label="Ordre du cycle de vie">
@@ -138,6 +154,37 @@
 
             </div>
 
+            <!-- GRAPHIQUE DE L'EMPREINTE CARBONE (doc de la prof, p. 39), en barres verticales.
+                 Caché pendant le jeu. Chaque barre apparaît quand on survole son étape du cycle :
+                 data-acv de la ligne = data-acv des étapes (les 3 étapes de production révèlent « Production »).
+                 --valeur = le chiffre, --max = le plus grand. -->
+            <figure class="graph_carbone" id="graph_carbone" hidden>
+              <figcaption>
+                <span class="acv_titre">Empreinte carbone du Basic-phone®</span>
+                <span class="acv_precision">Données simplifiées de l’ACV de référence</span>
+                <span class="acv_precision">Scénario étudié&#8239;: 3&nbsp;ans d’utilisation en France</span>
+              </figcaption>
+
+              <!-- texte de l'étape survolée (<template id="bulle_…"> en bas de la page) -->
+              <div class="graph_info" id="graph_info" aria-live="polite">
+                <p class="graph_info_vide">Passe ton curseur sur une étape du cycle.</p>
+              </div>
+
+              <table class="colonnes">
+                <caption class="visuellement_cache">Empreinte carbone par étape, en kg CO2-équivalent</caption>
+                <tbody style="--max: 25.98">
+                  <tr data-acv="production"><td><span class="colonne_valeur">25,98<small>kg CO<sub>2</sub>-éq</small></span><span class="colonne" style="--valeur: 25.98"></span></td><th scope="row"><span>Production</span></th></tr>
+                  <tr data-acv="distribution"><td><span class="colonne_valeur">2,40<small>kg CO<sub>2</sub>-éq</small></span><span class="colonne" style="--valeur: 2.40"></span></td><th scope="row"><span>Distribution</span></th></tr>
+                  <tr data-acv="utilisation"><td><span class="colonne_valeur">0,77<small>kg CO<sub>2</sub>-éq</small></span><span class="colonne" style="--valeur: 0.77"></span></td><th scope="row"><span>Utilisation</span></th></tr>
+                  <tr data-acv="fin_de_vie"><td><span class="colonne_valeur">0,14<small>kg CO<sub>2</sub>-éq</small></span><span class="colonne" style="--valeur: 0.14"></span></td><th scope="row"><span>Fin de vie</span></th></tr>
+                </tbody>
+              </table>
+
+              <p class="span_source">Source&#8239;: dossier pédagogique ATHEN’TECH / données ACV de référence. Les résultats dépendent du périmètre et des hypothèses.</p>
+            </figure>
+
+            </div>
+
             <p class="visuellement_cache" id="annonce_cycle" role="status"></p>
 
             <!-- bouton fixe en bas à droite : il apparaît quand les 6 étapes sont placées.
@@ -147,82 +194,111 @@
               <button type="button" class="qcm_verifier" id="bouton_cycle">vérifier</button>
             </div>
 
-          </div>
-
-
-          <!-- ================= INTERACTION 2 : LES RÉSULTATS DE L'ACV ================= -->
-
-          <div class="partie_cachee" id="partie_acv" hidden>
-
-            <h3 class="consigne" id="consigne_acv">
-              Analyse 2&#8239;: lis les résultats de l’analyse de cycle de vie (ACV) du Basic-phone®. Survole ou sélectionne chaque étape du cycle pour découvrir ses résultats.
-            </h3>
-
-            <div class="txt_labeur">
-              <p>
-                Les experts de ton équipe ont pu réaliser une analyse environnementale du Basic-phone® tout au long de son cycle de vie. Le téléphone est produit en Chine, acheminé par avion et camion, utilisé en France durant 3&nbsp;ans, puis il est mis au recyclage.
-              </p>
-            </div>
-
-            <div class="acv_explorateur">
-
-              <!-- ACV : À REVOIR ENSEMBLE. Le cycle en rond est maintenant dans le jeu de l'analyse 1, plus haut. -->
-
-              <!-- À DROITE : la comparaison des étapes (toujours visible) et le détail de l'étape choisie -->
-              <div class="acv_panneau">
-
-                <figure class="acv_figure" id="graph_carbone">
-                  <figcaption>Empreinte carbone du Basic-phone® (scénario&#8239;: 3&nbsp;ans d’utilisation en France)</figcaption>
-                  <!-- un vrai tableau, dessiné en barres : --valeur = le chiffre, --max = le plus grand -->
-                  <table class="barres">
-                    <caption class="visuellement_cache">Empreinte carbone par étape, en kg CO2-équivalent</caption>
-                    <tbody style="--max: 25.98">
-                      <tr data-acv="production"><th scope="row">Production</th><td><span class="barre" style="--valeur: 25.98"></span><span class="barre_valeur">25,98&nbsp;kg CO<sub>2</sub>-éq</span></td></tr>
-                      <tr data-acv="distribution"><th scope="row">Distribution</th><td><span class="barre" style="--valeur: 2.40"></span><span class="barre_valeur">2,40&nbsp;kg CO<sub>2</sub>-éq</span></td></tr>
-                      <tr data-acv="utilisation"><th scope="row">Utilisation</th><td><span class="barre" style="--valeur: 0.77"></span><span class="barre_valeur">0,77&nbsp;kg CO<sub>2</sub>-éq</span></td></tr>
-                      <tr data-acv="fin_de_vie"><th scope="row">Fin de vie</th><td><span class="barre" style="--valeur: 0.14"></span><span class="barre_valeur">0,14&nbsp;kg CO<sub>2</sub>-éq</span></td></tr>
-                    </tbody>
-                  </table>
-                  <p class="span_source">Source&#8239;: dossier pédagogique ATHEN’TECH, données ACV de référence. Les résultats dépendent du périmètre et des hypothèses.</p>
-                </figure>
-
-                <!-- le détail de l'étape survolée ou sélectionnée (textes dans les <template id="detail_…">) -->
-                <div class="acv_detail" id="acv_detail">
-                  <p class="acv_detail_vide">Survole ou sélectionne une étape du cycle pour lire ses résultats.</p>
-                </div>
-
-              </div>
-
-            </div>
-
-            <p class="visuellement_cache" id="annonce_acv" role="status"></p>
-
-            <!-- onglet de la mascotte : après 2 étapes consultées, tant que les 4 ne l'ont pas été -->
-            <div class="rappel_mascotte" id="rappel_acv" hidden>
+            <!-- onglet de la mascotte : après 2 barres révélées, tant que les 4 ne l'ont pas été -->
+            <div class="rappel_mascotte" id="rappel_bulles" hidden>
               <!-- DESSIN DE LA MASCOTTE : remplacer ce <div> par
                    <img class="rappel_mascotte_dessin" src="dessin/chap_3/IV/…" alt=""> -->
               <div class="rappel_mascotte_dessin emplacement_illustration" aria-hidden="true">mascotte</div>
-              <p>Explore toutes les étapes du cycle de vie avant de passer à la suite&#8239;!</p>
+              <p>Passe ton curseur sur toutes les étapes du cycle avant de passer à la suite&#8239;!</p>
             </div>
 
-            <!-- bouton fixe en bas à droite : il apparaît quand les 4 étapes de l'ACV ont été consultées -->
-            <div class="qcm_pied" id="pied_acv" hidden>
-              <button type="button" class="qcm_verifier" data-montrer="suite_acv" aria-controls="suite_acv" aria-expanded="false">
-                passer aux questions
+            <!-- bouton fixe en bas à droite : il apparaît quand tout le graphique est révélé -->
+            <div class="qcm_pied" id="pied_bulles" hidden>
+              <button type="button" class="qcm_verifier" data-montrer="partie_acv" aria-controls="partie_acv" aria-expanded="false">
+                voir l’analyse environnementale de la production du Basic-phone®
+              </button>
+            </div>
+
+          </div>
+
+
+          <!-- ================= INTERACTION 2 : L'ANALYSE DE LA PRODUCTION ================= -->
+          <!-- Elle apparaît au clic sur « voir l'analyse environnementale de la production… ».
+               Schéma du doc de la prof (p. 39), dessiné en HTML. -->
+
+          <div class="partie_cachee" id="partie_acv" hidden>
+
+            <h3 class="visuellement_cache" id="titre_acv">Analyse environnementale de la production</h3>
+
+            <figure class="acv_production" id="graph_production">
+              <figcaption>
+                <span class="acv_titre">Analyse environnementale de la production du Basic-phone®</span>
+                <span class="acv_sous_titre">Deux indicateurs pour comprendre les principaux contributeurs aux impacts</span>
+              </figcaption>
+
+              <!-- ---------- 1. Changement climatique : les barres, les unes sous les autres ---------- -->
+              <section class="acv_indicateur" aria-labelledby="titre_climat">
+                <h4 id="titre_climat">Production — Changement climatique</h4>
+                <p class="acv_sous_titre">Principaux contributeurs à l’impact (données VoLCA / BAFU 2026)</p>
+                <table class="barres barres_petites">
+                  <caption class="visuellement_cache">Production, changement climatique : principaux contributeurs, en pourcentage</caption>
+                  <tbody style="--max: 34">
+                    <tr><th scope="row">Wafer / circuit intégré logique, usine</th><td><span class="barre" style="--valeur: 34"></span><span class="barre_valeur">34&nbsp;%</span></td></tr>
+                    <tr><th scope="row">Carte électronique imprimée, assemblée</th><td><span class="barre" style="--valeur: 17"></span><span class="barre_valeur">17&nbsp;%</span></td></tr>
+                    <tr><th scope="row">Électricité moyenne tension</th><td><span class="barre" style="--valeur: 13"></span><span class="barre_valeur">13&nbsp;%</span></td></tr>
+                    <tr><th scope="row">Module LED</th><td><span class="barre" style="--valeur: 7.9"></span><span class="barre_valeur">7,9&nbsp;%</span></td></tr>
+                    <tr><th scope="row">Wafer / circuit intégré, autre procédé</th><td><span class="barre" style="--valeur: 7.7"></span><span class="barre_valeur">7,7&nbsp;%</span></td></tr>
+                    <tr><th scope="row">Circuit intégré logique, autre activité</th><td><span class="barre" style="--valeur: 4.6"></span><span class="barre_valeur">4,6&nbsp;%</span></td></tr>
+                    <tr><th scope="row">Composant électronique actif</th><td><span class="barre" style="--valeur: 3.3"></span><span class="barre_valeur">3,3&nbsp;%</span></td></tr>
+                    <tr><th scope="row">Chargeur</th><td><span class="barre" style="--valeur: 2.7"></span><span class="barre_valeur">2,7&nbsp;%</span></td></tr>
+                    <tr><th scope="row">Batterie Li-ion NMC111</th><td><span class="barre" style="--valeur: 1.7"></span><span class="barre_valeur">1,7&nbsp;%</span></td></tr>
+                    <tr><th scope="row">Résistance électronique</th><td><span class="barre" style="--valeur: 1.2"></span><span class="barre_valeur">1,2&nbsp;%</span></td></tr>
+                  </tbody>
+                </table>
+                <!-- Phrase du schéma de la prof, retirée pour l'instant car elle donne la réponse
+                     à la question « quels composants ressortent ? ». Pour la remettre, enlève les marques de commentaire :
+                <p class="acv_note">Les principaux postes concernent les composants électroniques et l’électricité de fabrication.</p>
+                -->
+              </section>
+
+              <!-- ---------- 2. Épuisement des ressources : des boîtes sur 2 lignes ----------
+                   La largeur de chaque boîte dépend de son pourcentage (--part).
+                   Les deux lignes ont la même échelle, pour pouvoir les comparer.
+                   Vue hiérarchique : les pourcentages ne s'additionnent pas. -->
+              <section class="acv_indicateur" aria-labelledby="titre_ressources">
+                <h4 id="titre_ressources">Production — Épuisement des ressources minérales et métalliques</h4>
+                <p class="acv_sous_titre">Activités et composants mis en évidence dans la vue en arborescence</p>
+
+                <p class="tuiles_titre">Principales activités (plus haut niveau dans la vue en arborescence)</p>
+                <ul class="tuiles tuiles_grandes">
+                  <li style="--part: 43"><span>Carte électronique imprimée assemblée</span><strong>43&nbsp;%</strong></li>
+                  <li style="--part: 36"><span>Circuit intégré logique, usine</span><strong>36&nbsp;%</strong></li>
+                  <li style="--part: 36"><span>Or primaire, raffinerie</span><strong>36&nbsp;%</strong></li>
+                </ul>
+
+                <p class="tuiles_titre">Autres composants et intrants mis en évidence</p>
+                <ul class="tuiles">
+                  <li style="--part: 15"><span>Circuit intégré logique, usine</span><strong>15&nbsp;%</strong></li>
+                  <li style="--part: 11"><span>Composant électronique actif</span><strong>11&nbsp;%</strong></li>
+                  <li style="--part: 10"><span>Chargeur</span><strong>10&nbsp;%</strong></li>
+                  <li style="--part: 9"><span>Résistance électronique</span><strong>9&nbsp;%</strong></li>
+                  <li style="--part: 8"><span>Module LED</span><strong>8&nbsp;%</strong></li>
+                  <li style="--part: 1.5"><span>Autres petites contributions</span><strong>1,5&nbsp;%</strong></li>
+                  <li style="--part: 0"><span>Émissions directes</span><strong>0&nbsp;%</strong></li>
+                </ul>
+
+                <p class="acv_note">Vue hiérarchique&#8239;: les pourcentages affichés ne doivent pas être additionnés.</p>
+              </section>
+
+              <p class="span_source">Périmètre&#8239;: production uniquement. Résultats issus du scénario de référence smartphone de VoLCA / BAFU 2026&#8239;; ils dépendent du modèle, des données et des hypothèses.</p>
+            </figure>
+
+            <div class="conteneur_bouton">
+              <button type="button" class="bouton_etape" data-montrer="suite_acv" aria-controls="suite_acv" aria-expanded="false">
+                j’ai fini d’analyser les documents
               </button>
             </div>
 
 
-            <!-- ---------- Les questions sur l'ACV ---------- -->
+            <!-- ---------- Les questions, après « j'ai fini d'analyser les documents » ---------- -->
 
             <div class="partie_cachee" id="suite_acv" hidden>
 
-              <h4 class="visuellement_cache">Questions sur les résultats de l’ACV</h4>
-
-              <!-- Question : quel enseignement principal ?
-                   Même fonctionnement que « Que fais-tu maintenant ? » de la mission 1 :
-                   pas d'IA, la réponse écrite pour chaque choix est dans les <template> en bas de page.
-                   (comportement à coder ensemble) -->
+              <!-- ---------- Question : quel enseignement principal ? ---------- -->
+              <!-- Comme « Que fais-tu maintenant ? » de la mission 1 : pas d'IA.
+                   Andréa répond en pop-up avec le texte écrit pour chaque choix
+                   (<template id="texte_retour_acv_…">, en bas de page ; comportement : activite/mission2.js).
+                   A et C : « revoir mon choix ». B : « continuer », puis la question des composants. -->
 
               <form class="choix_etape" id="question_acv">
                 <fieldset>
@@ -246,21 +322,18 @@
                   </div>
                 </fieldset>
 
-                <button type="submit" class="qcm_verifier">valider mon choix</button>
+                <div class="conteneur_bouton">
+                  <button type="submit" class="bouton_etape">valider mon choix</button>
+                </div>
               </form>
 
               <div class="retour_choix" id="retour_acv" role="status" aria-live="polite" hidden></div>
 
               <!-- Question : quels composants ressortent ?
-                   Réponse ouverte : l'apprenant en discute avec Andréa (agent IA de la mission 2).
-                   La question s'affichera dans le pop-up d'Andréa (<template id="texte_composants">). -->
+                   Réponse ouverte, discutée avec Andréa (agent IA de la mission 2), dans son pop-up.
+                   Elle s'ouvre après la bonne réponse au QCM (<template id="texte_composants">).
+                   Quand Andréa valide, « continuer » mène au parcours utilisateur. -->
 
-              <!-- PROVISOIRE : pour passer au parcours pendant la construction de la page -->
-              <div class="conteneur_bouton">
-                <button type="button" class="bouton_etape" data-montrer="partie_parcours" aria-controls="partie_parcours" aria-expanded="false">
-                  continuer
-                </button>
-              </div>
 
             </div>
 
@@ -455,7 +528,7 @@
 
       <!-- ================= MENTOR IA (mission 2) ================= -->
       <!-- Même structure que la mission 1, pour reprendre mentor.css.
-           Pas encore branché : reste caché tant que le script du mentor n'est pas chargé.
+           Comportement : activite/mission2.js (messages écrits à l'avance, et discussion avec l'IA).
            Placé dans <main> pour que dessins.js colore ses dessins SVG. -->
 
       <aside class="mentor" id="mentor_ia" aria-labelledby="mentor_titre" hidden>
@@ -545,84 +618,59 @@
   </template>
 
 
-  <!-- ========== RÉSULTATS DE L'ACV : un détail par étape du cycle ==========
-       Ils s'affichent à droite du cycle en rond, au survol ou à la sélection d'une étape.
-       Données : dossier pédagogique ATHEN'TECH et VoLCA / BAFU 2026 (doc de la prof, p. 39). -->
+  <!-- ========== TEXTES DU GRAPHIQUE, AU SURVOL DU CYCLE EN ROND ==========
+       Un texte par étape de l'ACV (data-acv des étapes, dans le jeu). Il s'affiche au-dessus du graphique.
+       Les 3 étapes de la production (extraction, composants, assemblage) partagent le même texte :
+       l'ACV ne donne qu'un seul résultat pour les trois.
+       Le titre (le nom de l'étape survolée) est ajouté par activite/mission2.js. -->
 
-  <!-- Les 3 premières étapes (extraction, composants, assemblage) = la production -->
-  <template id="detail_production">
-    <h4>Production</h4>
-    <p>Elle regroupe l’extraction des matières premières, la fabrication des composants et l’assemblage final du smartphone&#8239;: <strong>25,98&nbsp;kg CO<sub>2</sub>-éq</strong>.</p>
-
-    <h5>Changement climatique&#8239;: principaux contributeurs</h5>
-    <table class="barres barres_petites">
-      <caption class="visuellement_cache">Production, changement climatique : principaux contributeurs, en pourcentage</caption>
-      <tbody style="--max: 34">
-        <tr><th scope="row">Wafer / circuit intégré logique, usine</th><td><span class="barre" style="--valeur: 34"></span><span class="barre_valeur">34&nbsp;%</span></td></tr>
-        <tr><th scope="row">Carte électronique imprimée assemblée</th><td><span class="barre" style="--valeur: 17"></span><span class="barre_valeur">17&nbsp;%</span></td></tr>
-        <tr><th scope="row">Électricité moyenne tension</th><td><span class="barre" style="--valeur: 13"></span><span class="barre_valeur">13&nbsp;%</span></td></tr>
-        <tr><th scope="row">Module LED</th><td><span class="barre" style="--valeur: 7.9"></span><span class="barre_valeur">7,9&nbsp;%</span></td></tr>
-        <tr><th scope="row">Wafer / circuit intégré, autre procédé</th><td><span class="barre" style="--valeur: 7.7"></span><span class="barre_valeur">7,7&nbsp;%</span></td></tr>
-        <tr><th scope="row">Circuit intégré logique, autre activité</th><td><span class="barre" style="--valeur: 4.6"></span><span class="barre_valeur">4,6&nbsp;%</span></td></tr>
-        <tr><th scope="row">Composant électronique actif</th><td><span class="barre" style="--valeur: 3.3"></span><span class="barre_valeur">3,3&nbsp;%</span></td></tr>
-        <tr><th scope="row">Chargeur</th><td><span class="barre" style="--valeur: 2.7"></span><span class="barre_valeur">2,7&nbsp;%</span></td></tr>
-        <tr><th scope="row">Batterie Li-ion NMC111</th><td><span class="barre" style="--valeur: 1.7"></span><span class="barre_valeur">1,7&nbsp;%</span></td></tr>
-        <tr><th scope="row">Résistance électronique</th><td><span class="barre" style="--valeur: 1.2"></span><span class="barre_valeur">1,2&nbsp;%</span></td></tr>
-      </tbody>
-    </table>
-
-    <h5>Épuisement des ressources minérales et métalliques</h5>
-    <p class="acv_avertissement">Vue hiérarchique&#8239;: les pourcentages affichés ne doivent pas être additionnés.</p>
-    <p class="tuiles_titre">Principales activités</p>
-    <ul class="tuiles tuiles_grandes">
-      <li><span>Carte électronique imprimée assemblée</span><strong>43&nbsp;%</strong></li>
-      <li><span>Circuit intégré logique, usine</span><strong>36&nbsp;%</strong></li>
-      <li><span>Or primaire, raffinerie</span><strong>36&nbsp;%</strong></li>
-    </ul>
-    <p class="tuiles_titre">Autres composants et intrants mis en évidence</p>
-    <ul class="tuiles">
-      <li><span>Circuit intégré logique, usine</span><strong>15&nbsp;%</strong></li>
-      <li><span>Composant électronique actif</span><strong>11&nbsp;%</strong></li>
-      <li><span>Chargeur</span><strong>10&nbsp;%</strong></li>
-      <li><span>Résistance électronique</span><strong>9&nbsp;%</strong></li>
-      <li><span>Module LED</span><strong>8&nbsp;%</strong></li>
-      <li><span>Autres petites contributions</span><strong>1,5&nbsp;%</strong></li>
-      <li><span>Émissions directes</span><strong>0&nbsp;%</strong></li>
-    </ul>
-    <p class="span_source">Source&#8239;: VoLCA / BAFU 2026, scénario de référence. Périmètre&#8239;: production uniquement. Les résultats dépendent du modèle, des données et des hypothèses.</p>
+  <template id="bulle_production">
+    <p>Cette étape fait partie de la <strong>production</strong>, avec l’extraction des matières premières, la fabrication des composants et l’assemblage final.</p>
+    <p>Ensemble, ces trois étapes pèsent <strong>25,98&nbsp;kg CO<sub>2</sub>-éq</strong>.</p>
   </template>
 
-  <template id="detail_distribution">
-    <h4>Distribution et vente</h4>
-    <p>Le téléphone est produit en Chine, puis acheminé jusqu’en France par avion et camion&#8239;: <strong>2,40&nbsp;kg CO<sub>2</sub>-éq</strong>.</p>
+  <template id="bulle_distribution">
+    <p>Le téléphone est produit en Chine, puis acheminé jusqu’en France par avion et camion.</p>
+    <p><strong>2,40&nbsp;kg CO<sub>2</sub>-éq</strong></p>
   </template>
 
-  <template id="detail_utilisation">
-    <h4>Utilisation et maintenance</h4>
-    <p>Le scénario étudié est une utilisation en France pendant 3&nbsp;ans&#8239;: <strong>0,77&nbsp;kg CO<sub>2</sub>-éq</strong>.</p>
+  <template id="bulle_utilisation">
+    <p>Le Basic-phone® est utilisé en France pendant 3&nbsp;ans.</p>
+    <p><strong>0,77&nbsp;kg CO<sub>2</sub>-éq</strong></p>
   </template>
 
-  <template id="detail_fin_de_vie">
-    <h4>Fin de vie</h4>
-    <p>Dans ce scénario, le téléphone est mis au recyclage&#8239;: <strong>0,14&nbsp;kg CO<sub>2</sub>-éq</strong>.</p>
+  <template id="bulle_fin_de_vie">
+    <p>Dans ce scénario, le téléphone est mis au recyclage.</p>
+    <p><strong>0,14&nbsp;kg CO<sub>2</sub>-éq</strong></p>
   </template>
 
-  <!-- Réponses à « Quel enseignement principal tires-tu de ces résultats ? » : une par choix -->
-  <template id="texte_retour_acv_A">
-    <p>[à rédiger]</p>
+  <!-- Source des chiffres de ces textes : dossier pédagogique ATHEN'TECH, données ACV de référence (doc de la prof, p. 39). -->
+
+  <!-- Réponses d'Andréa à « Quel enseignement principal tires-tu de ces résultats ? » (bonne réponse : B, doc de la prof p. 39).
+       Une par choix ; data-humeur choisit le visage d'Andréa. Pas d'IA à cette étape. -->
+  <template id="texte_retour_acv_A" data-humeur="decu">
+    <p><strong>Pas tout à fait…</strong></p>
+    <p>Regarde le graphique&#8239;: l’utilisation, recharge comprise, ne pèse que 0,77&nbsp;kg CO<sub>2</sub>-éq, sur près de 30 au total. Réduire la consommation pendant la recharge peut être utile, mais ce n’est pas la priorité dans ce scénario.</p>
+    <p>Revois ton choix.</p>
   </template>
 
-  <template id="texte_retour_acv_B">
-    <p>[à rédiger]</p>
+  <template id="texte_retour_acv_B" data-humeur="content">
+    <p><strong>Bravo&#8239;!</strong></p>
+    <p>Dans ce scénario, la production pèse 25,98&nbsp;kg CO<sub>2</sub>-éq, bien plus que toutes les autres étapes réunies (3,31&nbsp;kg).</p>
+    <p>Attention&#8239;: c’est vrai pour le carbone. Un résultat carbone ne dit rien des autres impacts&#8239;; c’est pour ça qu’on regarde aussi l’épuisement des ressources.</p>
   </template>
 
-  <template id="texte_retour_acv_C">
-    <p>[à rédiger]</p>
+  <template id="texte_retour_acv_C" data-humeur="decu">
+    <p><strong>Pas tout à fait…</strong></p>
+    <p>La recyclabilité compte, mais d’après le graphique, la fin de vie est l’étape qui pèse le moins&#8239;: 0,14&nbsp;kg CO<sub>2</sub>-éq. Et ce graphique ne mesure que le carbone&#8239;: il ne dit pas tout de la recyclabilité.</p>
+    <p>Revois ton choix.</p>
   </template>
 
-  <!-- Question ouverte, discutée avec l'IA -->
-  <template id="texte_composants">
-    <p>Au sein de l’étape de production, quels composants ressortent particulièrement&#8239;? Regarde les deux indicateurs&#8239;: le changement climatique et l’épuisement des ressources.</p>
+  <!-- Question ouverte, discutée avec l'IA (doc de la prof, p. 40).
+       La 1re phrase est la question de la prof ; la 2e est un coup de pouce, à retirer si tu veux. -->
+  <template id="texte_composants" data-humeur="neutre">
+    <p><strong>Au sein de l’étape de production, quels composants ressortent particulièrement&#8239;?</strong></p>
+    <p>Appuie-toi sur les deux indicateurs&#8239;: le changement climatique et l’épuisement des ressources. Écris ta réponse ci-dessous, on en discute ensemble.</p>
   </template>
 
   <!-- Avant les fiches solution du parcours -->

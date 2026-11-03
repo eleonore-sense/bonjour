@@ -18,8 +18,9 @@
 //             puis « continuer » mène à la question « Que fais-tu maintenant ? »
 //   question  pendant la question « Que fais-tu maintenant ? », la fenêtre disparaît ;
 //             quand l'élève valide un choix, elle revient en bas à droite, vidée,
-//             avec la réponse prévue pour ce choix (<template id="texte_retour_A|B|C">).
-//             Pas d'IA ni de zone de texte à cette étape : l'élève lit, puis change d'avis ou passe à la suite.
+//             avec le texte prévu pour ce choix (<template id="texte_retour_A|B|C">).
+//             B : bravo, pas d'IA. A ou C : le texte est la 1re question de la prof,
+//             puis l'élève en discute avec Andréa, qui l'amène à revoir son choix.
 //
 // Signaux invisibles écrits par le mentor (retirés avant affichage) :
 //   [EVAL: Clients = ok] ou [EVAL: Clients = a_approfondir]   jugement d'une rubrique
@@ -27,6 +28,10 @@
 //   [REPONSE: Clients = …]                                     version finale de la rubrique, avec les mots de l'élève :
 //                                                              elle remplace le texte de la case dans la roue
 //   [ENJEUX_VALIDES]                                           les 2 enjeux sont bien justifiés
+//   [ENJEUX: enjeu 1 | enjeu 2]                                les 2 enjeux en mots-clés, pour le porte-documents
+//
+// Le porte-documents (activite/porte_documents.js) reçoit les enjeux par l'événement « mentor:enjeux »,
+// et ses boutons « revenir à cette étape » appellent mentorRevenirRubrique() et mentorRevenirEnjeux().
 //
 // Textes écrits par toi : dans le HTML (<template> de l'accueil, du bilan, des enjeux).
 // Comportement de l'IA : prompt de l'agent, sur le Studio Mistral.
@@ -65,6 +70,8 @@
   const evaluations = new Map();   // nom de rubrique → 'ok' | 'a_approfondir'
   const reponsesEnjeux = [];       // ce que l'élève a écrit sur les 2 enjeux
   let enjeuxValides = false;
+  let enjeuxResume = null;         // les 2 enjeux en mots-clés, écrits par Andréa ([ENJEUX: … | …])
+  let choixQuestion = null;        // question finale : { lettre, intitule, question, contexteEnvoye }
 
   // boîte de la mascotte, en bas à droite : « tu peux passer à l'étape suivante »
   const rappelEnjeux = document.getElementById('rappel_enjeux');
@@ -229,6 +236,12 @@
       return '';
     });
 
+    texte = texte.replace(/\[\s*ENJEUX\s*:\s*([^\]]+?)\s*\]/gi, (_, liste) => {
+      const enjeux = liste.split('|').map(t => t.trim()).filter(Boolean);
+      if (enjeux.length) enjeuxResume = enjeux;
+      return '';
+    });
+
     texte = texte.replace(/\[\s*ENJEUX_VALIDES\s*\]/gi, () => {
       if (etape === 'enjeux') validerEnjeux();
       return '';
@@ -250,21 +263,11 @@
     rubrique.dataset.envoye = propre;              // Entrée ne la renverra pas au mentor telle quelle
     champ.dispatchEvent(new Event('input', { bubbles: true }));
 
-    // petit signal visuel sur la rubrique, et une ligne dans la conversation
+    // petit signal visuel sur la rubrique
     rubrique.classList.remove('mise_a_jour');
     void rubrique.offsetWidth;
     rubrique.classList.add('mise_a_jour');
-    ajoutsRoue.push(nomDe(rubrique));
   }
-
-  // les rubriques mises à jour pendant la dernière réponse, annoncées après son texte
-  const ajoutsRoue = [];
-  function annoncerAjoutsRoue() {
-    ajoutsRoue.splice(0).forEach(nom => {
-      ajouterMessage('info', `Ta réponse « ${nom} » a été mise à jour dans la roue.`);
-    });
-  }
-
 
   // ---------- Échange avec le relais ----------
   // Les messages partent un par un, dans l'ordre.
@@ -289,9 +292,9 @@
       if (!reponse.ok || !donnees.reponse) throw new Error(donnees.erreur || 'Le mentor ne répond pas.');
 
       conversationId = donnees.conversation_id || conversationId;
+            console.log('Andréa (texte brut) :', donnees.reponse);   // contrôle : à retirer ensuite
       const propre = lireSignaux(donnees.reponse);
       if (propre) ajouterMessage('mentor', propre);
-      annoncerAjoutsRoue();
 
     } catch (erreur) {
       ajouterMessage('erreur', `${erreur.message} ${siErreur}`);
@@ -339,7 +342,7 @@
     if (etape === 'ferme' || etape === 'bilan' || etape === 'enjeux') return;
     if (etape === 'accueil') commencer();
     dansLeCoin();
-    ajouterMessage('eleve', texte, `Roue · ${nom}`);
+    ajouterMessage('eleve', texte, nom);
 
     let message = `Rubrique « ${nom} » (${remplies}/7 rubriques remplies) :\n${texte}`;
     message += restantes.length
@@ -391,8 +394,10 @@
     champ.focus({ preventScroll: true });
   });
 
-  boutons.continuer_malgre_tout.addEventListener('click', lancerEnjeux);
-  boutons.vers_enjeux.addEventListener('click', lancerEnjeux);
+  // enjeux déjà validés (retour depuis une autre page) : on passe directement à la question
+  const versLesEnjeux = () => (enjeuxValides ? allerALaQuestion() : lancerEnjeux());
+  boutons.continuer_malgre_tout.addEventListener('click', versLesEnjeux);
+  boutons.vers_enjeux.addEventListener('click', versLesEnjeux);
 
 
   // ---------- Étape « enjeux » : le pop-up se transforme et pose la question ----------
@@ -411,6 +416,14 @@
     panneau.classList.add('enjeux_valides');
     montrerBoutons('vers_question');
     if (rappelEnjeux) rappelEnjeux.hidden = true;
+    envoyerEnjeuxAuPorteDocuments();
+  }
+
+  // Le porte-documents reçoit les 2 enjeux : le résumé d'Andréa s'il existe, sinon la dernière réponse de l'élève
+  function envoyerEnjeuxAuPorteDocuments() {
+    const liste = enjeuxResume || reponsesEnjeux.slice(-1);
+    if (!liste.length) return;
+    document.dispatchEvent(new CustomEvent('mentor:enjeux', { detail: { liste, valides: enjeuxValides } }));
   }
 
   // Après 2 réponses non validées (une fois la réponse du mentor affichée) :
@@ -430,6 +443,7 @@
         date: new Date().toISOString(),
       }));
     } catch { /* stockage indisponible : tant pis, l'activité continue */ }
+    if (!enjeuxValides) envoyerEnjeuxAuPorteDocuments();   // enjeux non validés : « à approfondir »
     if (rappelEnjeux) rappelEnjeux.hidden = true;
     dansLeCoin();
     passerA('question');
@@ -448,6 +462,80 @@
   passerEnjeux?.addEventListener('click', allerALaQuestion);
 
 
+  // ---------- Retour depuis le porte-documents (« revenir à cette étape ») ----------
+
+  function montrerFenetre() {
+    panneau.hidden = false;
+    document.body.classList.add('mentor_visible');
+  }
+
+  // une rubrique à approfondir : retour à la roue, la case est ouverte, prête à corriger
+  window.mentorRevenirRubrique = function (nom) {
+    const rubrique = rubriqueNommee(nom);
+    if (!rubrique) return;
+    if (etape !== 'ferme' && etape !== 'accueil') {
+      passerA('roue');
+      delete panneau.dataset.choix;
+      montrerBoutons();
+      dansLeCoin();
+      montrerFenetre();
+      montrerPiedRoue([...document.querySelectorAll('.roue textarea')].every(t => t.value.trim()));
+    }
+    const bouton = rubrique.querySelector('.rubrique_bouton');
+    const ouvrirCase = () => { if (!rubrique.classList.contains('ouverte')) bouton.click(); };
+    if (typeof centrerSur === 'function') centrerSur(document.querySelector('.roue').getBoundingClientRect(), ouvrirCase);
+    else { rubrique.scrollIntoView({ behavior: 'smooth', block: 'center' }); ouvrirCase(); }
+  };
+
+  // les enjeux à approfondir : Andréa repose la question des 2 enjeux
+  window.mentorRevenirEnjeux = function () {
+    if (etape === 'ferme' || etape === 'accueil') return;
+    enjeuxValides = false;
+    panneau.classList.remove('enjeux_valides');
+    delete panneau.dataset.choix;
+    montrerFenetre();
+    lancerEnjeux();
+  };
+
+
+  // Retour depuis une autre page de l'activité (porte-documents, adresse ?reprendre=…).
+  // Les réponses sont déjà remises dans la roue ; on reprend les avis d'Andréa et les enjeux,
+  // puis on ouvre la rubrique à approfondir, ou la question des enjeux.
+  // C'est une nouvelle conversation avec Andréa : elle ne se souvient pas des échanges d'avant.
+  window.mentorReprendre = function ({ avis = {}, enjeux = null, cible = 'roue' } = {}) {
+    Object.entries(avis).forEach(([nom, a]) => {
+      const rubrique = rubriqueNommee(nom);
+      if (!rubrique) return;
+      evaluations.set(nomDe(rubrique), a);
+      rubrique.dataset.avis = a;
+    });
+    if (enjeux && enjeux.liste && enjeux.liste.length) {
+      reponsesEnjeux.push(...enjeux.liste);
+      enjeuxResume = enjeux.liste;
+      enjeuxValides = Boolean(enjeux.valides);
+    }
+
+    passerA('roue');
+    montrerBoutons();
+    dansLeCoin();
+    montrerFenetre();
+    changerHumeur('neutre');
+    montrerPiedRoue([...document.querySelectorAll('.roue textarea')].every(t => t.value.trim()));
+
+    if (cible === 'enjeux') {
+      window.mentorRevenirEnjeux();
+      return;
+    }
+    const rubrique = rubriqueNommee(cible);
+    if (rubrique) {
+      ajouterMessage('mentor', `Te revoilà\u202F! Reprenons ta rubrique « ${nomDe(rubrique)} » : complète-la dans la roue, puis valide avec Entrée.`);
+      window.mentorRevenirRubrique(cible);
+    } else {
+      ajouterMessage('mentor', 'Te revoilà\u202F! Voici ta roue : tu peux revoir tes réponses.');
+    }
+  };
+
+
   // ---------- Message écrit dans la fenêtre ----------
 
   formulaire.addEventListener('submit', e => {
@@ -456,7 +544,16 @@
     if (!texte || enCours) return;
     champ.value = '';
 
-    if (etape === 'enjeux') {
+    if (etape === 'question' && choixQuestion) {
+      // question finale, choix A ou C : la discussion part à Andréa avec le contexte
+      const { lettre, intitule, question } = choixQuestion;
+      ajouterMessage('eleve', texte);
+      const entete = choixQuestion.contexteEnvoye
+        ? `[Question « Que fais-tu maintenant ? », choix ${lettre}]`
+        : `[Question « Que fais-tu maintenant ? » : l'apprenant a choisi ${lettre} : « ${intitule} ». La page lui a demandé : « ${question} »]`;
+      choixQuestion.contexteEnvoye = true;
+      envoyer({ texte: `${entete}\n${texte}`, siErreur: 'Ton message n’est pas parti : réécris-le dans un instant.' });
+    } else if (etape === 'enjeux') {
       reponsesEnjeux.push(texte);
       ajouterMessage('eleve', texte, 'Les 2 enjeux à creuser');
       envoyer({
@@ -480,8 +577,9 @@
 
   // ---------- Étape « question » : « Que fais-tu maintenant ? » ----------
   // Appelée par activite_smartphone.js quand l'élève valide un choix.
-  // La fenêtre revient en bas à droite, sans les anciens messages,
-  // avec la réponse prévue pour ce choix. L'IA n'est pas sollicitée.
+  // La fenêtre revient en bas à droite, sans les anciens messages, avec le texte prévu pour ce choix.
+  // B : bravo, pas d'IA. A ou C : c'est la 1re question de la prof ; l'élève y répond dans la fenêtre
+  // et en discute avec Andréa, qui l'amène à revoir son choix.
 
   window.mentorQuestion = function (lettre, intitule) {
     if (etape === 'ferme') return false;
@@ -489,15 +587,23 @@
     if (!retour) return false;
 
     passerA('question');
+    panneau.dataset.choix = lettre;              // B : pas de zone de texte (mentor.css)
     montrerBoutons();
     dansLeCoin();
     fil.replaceChildren();                       // on repart d'une fenêtre vide
-    panneau.hidden = false;
-    document.body.classList.add('mentor_visible');
+    montrerFenetre();
 
-    ajouterMessage('eleve', intitule, 'Question · Que fais-tu maintenant ?');
-    changerHumeur(lettre === 'B' ? 'content' : 'decu');   // bonne réponse : heureux ; sinon : doute
+    ajouterMessage('eleve', intitule, 'Que fais-tu maintenant ?');
+    changerHumeur(lettre === 'B' ? 'content' : 'neutre');
     ajouterMessage('mentor', retour);
+
+    choixQuestion = lettre === 'B' ? null : {
+      lettre,
+      intitule,
+      question: retour.content.textContent.replace(/\s+/g, ' ').trim(),
+      contexteEnvoye: false,
+    };
+    if (choixQuestion) champ.focus({ preventScroll: true });
     return true;
   };
 

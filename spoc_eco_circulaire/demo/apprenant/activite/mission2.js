@@ -8,6 +8,15 @@
 //                               → « vérifier » → bravo, ou Andréa corrige
 //   3. Le cycle en rond         les étapes glissent de leur case jusqu'au cercle,
 //                               puis les flèches apparaissent
+//   4. Le graphique             au survol des étapes, les barres de l'empreinte carbone
+//                               se dessinent une à une, à droite du cercle
+//   5. QCM de l'ACV             « Quel enseignement principal ? » : Andréa répond en pop-up
+//                               (textes écrits à l'avance, pas d'IA)
+//   6. Les composants           question ouverte, discutée avec l'IA dans le pop-up d'Andréa
+//
+// Signaux invisibles écrits par l'IA (retirés avant affichage) :
+//   [VALIDE: composants]               la réponse sur les composants est validée
+//   [HUMEUR: neutre|content|decu]      le visage d'Andréa
 // =====================================================================
 
 (function () {
@@ -67,8 +76,10 @@
 
   if (panneau) {
     boutonSuivant?.addEventListener('click', fermerAndrea);
-    // Échap ferme le pop-up, comme le bouton
-    panneau.addEventListener('keydown', e => { if (e.key === 'Escape') fermerAndrea(); });
+    // Échap ferme un pop-up de message, comme le bouton (pas une discussion en cours)
+    panneau.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && panneau.dataset.etape === 'message') fermerAndrea();
+    });
     // le pop-up change de taille (dessin chargé, fenêtre redimensionnée) : on le recentre
     new ResizeObserver(() => { if (!panneau.hidden) placerAuCentre(); }).observe(panneau);
     window.addEventListener('resize', () => { if (!panneau.hidden) placerAuCentre(); });
@@ -313,7 +324,9 @@
   // seulement présentée en rond (les lecteurs d'écran la lisent toujours de 1 à 6).
   // =====================================================================
 
-  const DUREE_CERCLE = 900;   // durée du glissement vers le cercle, en millisecondes
+  const DUREE_CERCLE = 900;      // durée du glissement vers le cercle, en millisecondes
+  const DUREE_MISE_EN_PLACE = 1900;   // les étapes, les flèches et le dessin du centre sont en place
+  let cercleEnPlace = false;          // avant, le survol des étapes ne fait rien
 
   function formerCercle() {
     if (mode === 'rond') return;
@@ -330,6 +343,9 @@
       c.removeAttribute('aria-pressed');
     });
     jeu.classList.add('en_rond');
+    document.getElementById('cycle_zone')?.classList.add('en_rond');
+    const graph = document.getElementById('graph_carbone');
+    if (graph) graph.hidden = false;      // le graphique, encore vide, apparaît à droite du cercle
 
     // 3. chaque étape part de son ancienne place et glisse jusqu'au cercle
     cartes.forEach((carte, i) => {
@@ -340,6 +356,9 @@
         { duration: DUREE_CERCLE, easing: 'ease-in-out', delay: i * 60, fill: 'backwards' }
       );
     });
+
+    // on attend que tout le cercle soit en place avant de pouvoir choisir une étape
+    setTimeout(() => { cercleEnPlace = true; }, DUREE_MISE_EN_PLACE);
 
     // 4. la consigne bleue change de texte (les deux textes sont dans le HTML)
     const consigne = document.getElementById('consigne_cycle');
@@ -353,6 +372,289 @@
     requestAnimationFrame(() => {
       if (consigne && typeof calerEnHaut === 'function') calerEnHaut(consigne);
       else consigne?.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+
+  // =====================================================================
+  // 4. LE GRAPHIQUE SE DESSINE AU SURVOL DU CYCLE
+  // Au survol d'une étape (ou au clavier, ou au clic sur tablette) :
+  //   - son texte s'affiche au-dessus du graphique (<template id="bulle_…">) ;
+  //   - sa barre pousse, si elle n'est pas encore là
+  //     (les 3 étapes de production révèlent la même barre « Production »).
+  // Quand les 4 barres sont là, le bouton « voir l'analyse environnementale… » apparaît.
+  // =====================================================================
+
+  const info        = document.getElementById('graph_info');
+  const lignes      = [...document.querySelectorAll('#graph_carbone tr[data-acv]')];
+  const revelees    = new Set();          // barres déjà dessinées
+  const BARRES_AVANT_RAPPEL = 2;          // la mascotte rappelle de tout survoler après 2 barres
+  const rappelBulles = document.getElementById('rappel_bulles');
+  const piedBulles   = document.getElementById('pied_bulles');
+
+  function montrerEtape(carte) {
+    const acv = carte.dataset.acv;
+
+    // le texte de l'étape, au-dessus du graphique
+    const modele = document.getElementById('bulle_' + acv);
+    if (info && modele) {
+      const titre = document.createElement('p');
+      titre.className = 'graph_info_titre';
+      titre.textContent = nomDe(carte);
+      info.replaceChildren(titre, modele.content.cloneNode(true));
+    }
+
+    revelees.add(acv);
+
+    // l'étape choisie et sa barre passent en rouge ; les 3 étapes de la production
+    // passent en rouge ensemble. Les étapes dont la barre est déjà dessinée restent en orange.
+    cartes.forEach(c => {
+      c.classList.toggle('actif', c.dataset.acv === acv);
+      c.classList.toggle('revelee', revelees.has(c.dataset.acv));
+    });
+    lignes.forEach(tr => {
+      const ici = tr.dataset.acv === acv;
+      tr.classList.toggle('actif', ici);
+      if (ici) tr.classList.add('revelee');     // la barre pousse la première fois
+    });
+    verifierGraphique();
+  }
+
+  function verifierGraphique() {
+    if (!piedBulles || piedBulles.dataset.montre) return;
+    if (revelees.size < lignes.length) {
+      if (rappelBulles && revelees.size >= BARRES_AVANT_RAPPEL) rappelBulles.hidden = false;
+      return;
+    }
+    if (rappelBulles) rappelBulles.hidden = true;
+    piedBulles.hidden = false;
+    piedBulles.dataset.montre = 'oui';    // il ne réapparaît plus une fois utilisé
+    annoncer('Le graphique est complet. Le bouton « voir l’analyse environnementale de la production » est disponible en bas de l’écran.');
+  }
+
+  cartes.forEach(carte => {
+    const montrer = () => { if (mode === 'rond' && cercleEnPlace) montrerEtape(carte); };
+    carte.addEventListener('mouseenter', montrer);
+    carte.addEventListener('focus', montrer);
+    carte.addEventListener('click', montrer);
+  });
+
+
+  // =====================================================================
+  // 5. QUESTION « QUEL ENSEIGNEMENT PRINCIPAL ? »
+  // Comme « Que fais-tu maintenant ? » en mission 1 : pas d'IA.
+  // Andréa répond en pop-up avec le texte prévu pour le choix (<template id="texte_retour_acv_A|B|C">).
+  //   A ou C : « revoir mon choix » → l'élève peut choisir à nouveau
+  //   B      : « continuer » → la question des composants, avec l'IA
+  // =====================================================================
+
+  const questionAcv = document.getElementById('question_acv');
+  const retourAcv   = document.getElementById('retour_acv');
+  const choixAcv    = [];                 // les choix successifs de l'élève (A, C, B…)
+
+  questionAcv?.addEventListener('submit', e => {
+    e.preventDefault();
+    const choix = questionAcv.querySelector('input[name="q_acv"]:checked');
+
+    if (!choix) {
+      retourAcv.textContent = 'Choisis une réponse avant de valider.';
+      retourAcv.hidden = false;
+      return;
+    }
+    retourAcv.hidden = true;
+    choixAcv.push(choix.value);
+
+    if (choix.value === 'B') {
+      // bonne réponse : la question est terminée
+      questionAcv.querySelectorAll('input, button').forEach(el => { el.disabled = true; });
+      andreaDit('texte_retour_acv_B', 'continuer', lancerComposants);
+    } else {
+      andreaDit(`texte_retour_acv_${choix.value}`, 'revoir mon choix', () => choix.focus({ preventScroll: true }));
+    }
+  });
+
+
+  // =====================================================================
+  // 6. LES COMPOSANTS : DISCUSSION AVEC L'IA
+  // Le pop-up d'Andréa pose la question (<template id="texte_composants">) ;
+  // l'élève répond dans la zone de texte, l'IA (agent de la mission 2) réagit.
+  // Quand l'IA écrit [VALIDE: composants], « continuer » remplace la zone de texte.
+  // Après 3 réponses non validées, la mascotte propose de passer quand même.
+  // =====================================================================
+
+  // en local (lancer_test.bat) : le relais de ton ordinateur ; en ligne : Supabase
+  const ADRESSE_RELAIS = ['localhost', '127.0.0.1'].includes(location.hostname)
+    ? 'api/mentor'
+    : 'https://dhssndnqurrpidyxatwj.supabase.co/functions/v1/mentor';
+  const MISSION = 2;                      // le relais choisit l'agent de la mission 2
+  const LONGUEUR_MAX = 2000;
+  const REPONSES_AVANT_PASSER = 3;      // la mascotte propose de passer après 3 réponses non validées
+  const CLE_ENJEUX = 'athentech_enjeux';  // laissé par la mission 1
+  const CLE_MISSION2 = 'athentech_mission2';
+
+  const sceneFil    = panneau?.querySelector('.mentor_scene_fil');
+  const etat        = panneau?.querySelector('.mentor_etat');
+  const saisie      = panneau?.querySelector('.mentor_saisie');
+  const champ       = saisie?.querySelector('textarea');
+  const envoi       = saisie?.querySelector('button[type="submit"]');
+  const rappelPasser = document.getElementById('rappel_passer');
+  const passerEtape  = document.getElementById('passer_etape');
+
+  let conversationId = null;             // la même conversation pour toute la mission 2
+  let enCours = false;
+  let composantsValides = false;
+  const reponsesComposants = [];
+
+  function lancerComposants() {
+    if (!panneau) return versParcours();
+    const modele = document.getElementById('texte_composants');
+    sceneTexte.replaceChildren(modele.content.cloneNode(true));
+    sceneFil.replaceChildren();
+    panneau.dataset.humeur = modele.dataset.humeur || 'neutre';
+    panneau.dataset.etape = 'discussion';
+    panneau.classList.remove('valide');
+    boutonSuivant.hidden = true;
+    apresAndrea = versParcours;
+
+    panneau.hidden = false;
+    panneau.classList.add('popup');
+    placerAuCentre();
+    champ.focus({ preventScroll: true });
+  }
+
+  // une bulle dans le pop-up (l'élève, Andréa, ou un message d'erreur)
+  function ajouterMessage(qui, texte) {
+    const bulle = document.createElement('div');
+    bulle.className = `mentor_message mentor_message_${qui}`;
+
+    const auteur = document.createElement('span');
+    auteur.className = 'visuellement_cache';
+    auteur.textContent = qui === 'eleve' ? 'Toi : ' : qui === 'mentor' ? 'Andréa : ' : 'Information : ';
+
+    const p = document.createElement('p');
+    p.className = 'mentor_texte';
+    p.textContent = texte;
+
+    bulle.append(auteur, p);
+    sceneFil.appendChild(bulle);
+    sceneFil.scrollTop = sceneFil.scrollHeight;   // le dernier message reste visible
+  }
+
+  function attente(active) {
+    enCours = active;
+    envoi.disabled = active;
+    sceneFil.setAttribute('aria-busy', String(active));
+    etat.textContent = active ? 'Andréa écrit…' : '';
+  }
+
+  // Retire les signaux de l'IA et les applique
+  function lireSignaux(texte) {
+    texte = texte.replace(/\[\s*VALIDE\s*:\s*([a-zéè_ ]+?)\s*\]/gi, (_, quoi) => {
+      if (quoi.trim().toLowerCase() === 'composants') validerComposants();
+      return '';
+    });
+    texte = texte.replace(/\[\s*HUMEUR\s*:\s*([a-zéè_]+)\s*\]/gi, (_, humeur) => {
+      panneau.dataset.humeur = humeur.toLowerCase();
+      return '';
+    });
+    // tout autre signal oublié par l'IA n'est pas montré à l'élève
+    texte = texte.replace(/\[\s*(EVAL|VALIDE|HUMEUR)[^\]]*\]/gi, '');
+    return texte.replace(/\n{3,}/g, '\n\n').trim();
+  }
+
+  function validerComposants() {
+    composantsValides = true;
+    panneau.classList.add('valide');       // la zone de texte disparaît (activite/mission2.css)
+    boutonSuivant.textContent = 'continuer';
+    boutonSuivant.hidden = false;
+    if (rappelPasser) rappelPasser.hidden = true;
+  }
+
+  // le contexte, envoyé une seule fois au début de la conversation
+  function contexte() {
+    const lignes = [`[Contexte : QCM « quel enseignement principal ? » : choix successifs ${choixAcv.join(', ') || 'B'}.]`];
+    try {
+      const m1 = JSON.parse(localStorage.getItem(CLE_ENJEUX) || 'null');
+      if (m1 && Array.isArray(m1.reponses) && m1.reponses.length) {
+        lignes.push(`[Contexte : enjeux retenus en mission 1 (${m1.valides ? 'validés' : 'non validés'}) : ${m1.reponses.join(' / ')}]`);
+      }
+    } catch { /* rien de la mission 1 : tant pis */ }
+    return lignes.join('\n') + '\n';
+  }
+
+  async function envoyer(texte) {
+    attente(true);
+    try {
+      const corps = { message: texte.slice(0, LONGUEUR_MAX), conversation_id: conversationId, mission: MISSION };
+      const reponse = await fetch(ADRESSE_RELAIS, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(corps),
+      });
+      const donnees = await reponse.json().catch(() => ({}));
+      if (!reponse.ok || !donnees.reponse) throw new Error(donnees.erreur || 'Andréa ne répond pas.');
+
+      conversationId = donnees.conversation_id || conversationId;
+      const propre = lireSignaux(donnees.reponse);
+      if (propre) ajouterMessage('mentor', propre);
+
+    } catch (erreur) {
+      ajouterMessage('erreur', `${erreur.message} Ton message n’est pas parti : réécris-le dans un instant.`);
+      reponsesComposants.pop();            // cette réponse ne compte pas
+    } finally {
+      attente(false);
+      // après 3 réponses non validées, la mascotte propose de passer
+      if (!composantsValides && reponsesComposants.length >= REPONSES_AVANT_PASSER && rappelPasser) {
+        rappelPasser.hidden = false;
+      }
+      if (!composantsValides) champ.focus({ preventScroll: true });
+    }
+  }
+
+  saisie?.addEventListener('submit', e => {
+    e.preventDefault();
+    const texte = champ.value.trim();
+    if (!texte || enCours || panneau.dataset.etape !== 'discussion') return;
+    champ.value = '';
+
+    reponsesComposants.push(texte);
+    ajouterMessage('eleve', texte);
+    const debut = conversationId ? '' : contexte();
+    envoyer(`${debut}[Étape : composants de l'ACV]\n[Réponse à la question « Au sein de l'étape de production, quels composants ressortent particulièrement ? »]\n${texte}`);
+  });
+
+  // Entrée envoie ; Maj + Entrée passe à la ligne
+  champ?.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' || e.shiftKey || e.isComposing) return;
+    e.preventDefault();
+    saisie.requestSubmit();
+  });
+
+  // « continuer » (après validation) ou « continuer » de la mascotte : on passe au parcours
+  passerEtape?.addEventListener('click', () => {
+    if (rappelPasser) rappelPasser.hidden = true;
+    fermerAndrea();
+  });
+
+  // Fin de la question des composants : on garde les réponses, puis le parcours utilisateur apparaît
+  function versParcours() {
+    try {
+      localStorage.setItem(CLE_MISSION2, JSON.stringify({
+        qcm_acv: choixAcv,
+        composants: { reponses: reponsesComposants, valides: composantsValides },
+        date: new Date().toISOString(),
+      }));
+    } catch { /* stockage indisponible : l'activité continue */ }
+
+    const parcours = document.getElementById('partie_parcours');
+    if (!parcours) return;
+    parcours.hidden = false;
+    requestAnimationFrame(() => {
+      const consigne = document.getElementById('consigne_parcours');
+      if (typeof calerEnHaut === 'function') calerEnHaut(consigne);
+      else consigne.scrollIntoView({ behavior: 'smooth' });
+      consigne.tabIndex = -1;
+      consigne.focus({ preventScroll: true });
     });
   }
 

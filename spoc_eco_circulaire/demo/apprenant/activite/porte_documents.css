@@ -1,0 +1,317 @@
+/* =====================================================================
+   PORTE-DOCUMENTS : les réponses de l'étudiant, sur toutes les pages de l'activité D
+   Comportement : activite/porte_documents.js
+   ===================================================================== */
+
+/* couleur du dossier : le vert des onglets de gauche.
+   Si ce n'est pas le bon vert, remplace var(--onglet_fait) par ta variable. */
+:root {
+  --pd_couleur_dossier: var(--onglet_fait);
+}
+
+/* ---------- Le logo dossier, en haut à droite ---------- */
+
+.pd_bouton {
+  position: fixed;
+  top: 110px;
+  right: 40px;
+  z-index: 1100;                     /* devant tout le reste de la page */
+  display: flex;
+  padding: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* pendant le vol du dossier, le logo est à sa place mais invisible */
+.pd_bouton.pd_en_attente {
+  visibility: hidden;
+}
+
+.pd_bouton[hidden] {
+  display: none;
+}
+
+.pd_bouton svg {
+  width: 52px;
+  height: 52px;
+  transition: transform .2s ease;
+}
+
+/* trait fin ; dossier vert, feuille couleur de fond */
+.pd_trait {
+  stroke: var(--trait);
+  stroke-width: 1;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.pd_dossier {
+  fill: var(--pd_couleur_dossier);
+}
+
+.pd_feuille {
+  fill: var(--fond);
+}
+
+.pd_bouton:hover svg,
+.pd_bouton[aria-expanded="true"] svg {
+  transform: translateY(-3px);
+}
+
+.pd_bouton:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: var(--arrondi_boite);
+}
+
+
+/* ---------- La mascotte : pop-up vert au centre, avec le grand dessin du porte-documents ---------- */
+
+.pd_annonce {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 1200;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  width: min(520px, 92vw);
+  padding: 24px 28px;
+  background: var(--vert_bleu);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+  transition: background .3s ease, border-color .3s ease;
+}
+
+/* le rond rouge pour fermer, en haut à droite (style .qcm_fermer du site) */
+.pd_annonce .qcm_fermer {
+  top: 12px;
+  right: 12px;
+}
+
+.pd_annonce[hidden] {
+  display: none;
+}
+
+.pd_annonce .rappel_mascotte_dessin {
+  flex: 0 0 100px;
+  height: 120px;
+}
+
+.pd_annonce_texte {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.pd_annonce_texte p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.pd_annonce_dossier svg {
+  display: block;
+  width: 110px;
+  height: 110px;
+}
+
+/* au départ du dossier : tout le pop-up s'efface, seul le dossier reste (sa copie vole) */
+.pd_annonce.pd_annonce_depart {
+  background: transparent;
+  border-color: transparent;
+}
+
+.pd_annonce.pd_annonce_depart > *,
+.pd_annonce.pd_annonce_depart .pd_annonce_texte > * {
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+
+/* la copie du dossier qui vole jusqu'au logo */
+.pd_vol {
+  position: fixed;
+  z-index: 1300;
+  transform-origin: top left;
+  pointer-events: none;
+}
+
+
+/* ---------- La petite bulle de la mascotte, à gauche du logo ---------- */
+
+.pd_bulle {
+  position: fixed;
+  top: 104px;
+  right: 120px;
+  z-index: 1200;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  max-width: 330px;
+  padding: 12px 16px;
+  background: var(--vert_bleu);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.pd_bulle[hidden] {
+  display: none;
+}
+
+.pd_bulle p {
+  margin: 0;
+}
+
+.pd_bulle .rappel_mascotte_dessin {
+  flex: 0 0 60px;
+  height: 60px;
+}
+
+
+/* ---------- La fenêtre : même allure que les documents ----------
+   Déplaçable (on l'attrape partout, sauf sur le texte et les boutons),
+   et elle ne bloque pas la page. */
+
+.pd_fenetre {
+  position: fixed;
+  top: 190px;
+  right: 40px;
+  left: auto;
+  z-index: 1100;                     /* devant tout : fenêtre d'Andréa, onglets des chapitres… */
+  width: min(460px, 92vw);
+  max-height: 70vh;
+  margin: 0;
+  overflow-y: auto;
+  cursor: grab;
+  touch-action: none;
+}
+
+.pd_fenetre.pd_deplacement {
+  cursor: grabbing;
+  user-select: none;
+}
+
+/* sur le texte, les liens et les boutons : curseur normal */
+.pd_fenetre :is(h4, h5, p, .pd_nom, .pd_reponse, .pd_a_approfondir) {
+  cursor: auto;
+}
+
+.pd_fenetre :is(button, a) {
+  cursor: pointer;
+}
+
+/* le texte ne prend que sa largeur : à côté, on peut attraper la fenêtre */
+.pd_fenetre :is(h4, h5, .pd_nom, .pd_reponse) {
+  width: fit-content;
+}
+
+.fenetre_document .pd_liste {
+  margin: 0 0 6px;
+  padding: 0;
+  list-style: none;
+}
+
+.fenetre_document .pd_liste li {
+  margin: 0;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--trait_doux);
+}
+
+.pd_nom {
+  display: block;
+  font-family: var(--titre);
+  font-size: 0.9rem;
+}
+
+.pd_reponse {
+  display: block;
+  font-size: 0.85rem;
+}
+
+.pd_vide {
+  color: var(--trait_doux);
+  font-style: italic;
+}
+
+/* réponse à approfondir : pastille orange, et le bouton « revenir à cette étape » */
+.pd_a_approfondir {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  font-size: 0.75rem;
+}
+
+.pd_a_approfondir::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+  background: var(--orange);
+}
+
+.pd_revenir {
+  margin-left: 6px;
+  padding: 2px 10px;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  font: inherit;
+}
+
+.pd_revenir:hover {
+  background: var(--rose);
+}
+
+.fenetre_document .pd_lien_mission1 {
+  margin: -8px 0 4px;
+  font-size: 0.85rem;
+}
+
+
+/* ---------- Petits écrans : la fenêtre prend presque toute la largeur ---------- */
+
+@media (max-width: 700px) {
+  .pd_bouton {
+    top: 70px;
+    right: 12px;
+  }
+  .pd_annonce {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .pd_bulle {
+    top: 64px;
+    right: 70px;
+    max-width: calc(100vw - 90px);
+  }
+  .pd_fenetre {
+    top: 130px;
+    right: 4vw;
+  }
+}
+
+
+
+/* sur les autres pages, « revenir à cette étape » est un lien : même allure que le bouton */
+a.pd_revenir {
+  display: inline-block;
+  color: var(--couleur_texte);
+  text-decoration: none;
+}
+
+a.pd_revenir:hover {
+  background: var(--rose);
+}
+
+a.pd_revenir:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}

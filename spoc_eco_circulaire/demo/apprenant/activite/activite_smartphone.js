@@ -169,6 +169,12 @@
 
     if (!champ) return;
 
+    // un clic sur la réponse affichée sous la rubrique rouvre la saisie, comme un clic sur son titre
+    note?.addEventListener('click', () => {
+      if (!rubrique.classList.contains('ouverte')) bouton.click();
+      champ.focus();
+    });
+
     champ.addEventListener('input', recopier);
 
     // Entrée valide la réponse et referme la fenêtre ; Maj + Entrée passe à la ligne

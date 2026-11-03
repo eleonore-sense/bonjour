@@ -37,6 +37,14 @@
   display: block;
 }
 
+/* pop-up fermé : il disparaît vraiment (après son fondu).
+   Sans cette règle, .mentor.popup (display: grid, dans mentor.css) l'emporte sur [hidden] :
+   le pop-up reste invisible au milieu de l'écran et attrape la souris à la place du cercle. */
+.mentor.popup[hidden] {
+  display: none;
+  pointer-events: none;
+}
+
 /* pop-up de message (sans IA) : plus étroit, ajusté à un message court.
    Le texte est centré en hauteur à côté du dessin, le bouton aligné sous le texte. */
 .mentor.popup[data-etape="message"] {
@@ -63,6 +71,36 @@
 .mentor.popup[data-etape="message"] .mentor_choix {
   justify-content: flex-start;
   margin: 18px 0 0;
+}
+
+/* pop-up de discussion avec l'IA (question des composants) :
+   la zone de texte disparaît quand Andréa a validé ; « continuer » prend sa place */
+.mentor.popup[data-etape="discussion"].valide .mentor_saisie {
+  display: none;
+}
+
+/* la question reste en haut ; seuls les messages défilent en dessous */
+.mentor.popup[data-etape="discussion"] .mentor_scene {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.mentor.popup[data-etape="discussion"] .mentor_scene_texte {
+  flex: 0 0 auto;
+}
+
+.mentor.popup[data-etape="discussion"] .mentor_scene_fil {
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: thin;
+}
+
+/* un peu d'air à droite : l'ombre du bouton « envoyer » n'est pas coupée au survol */
+.mentor.popup[data-etape="discussion"] .mentor_corps {
+  padding-right: 6px;
 }
 
 /* pop-up de message (sans IA) : pas de zone de saisie ni d'historique */
@@ -244,9 +282,18 @@
 .cycle.en_rond {
   display: block;
   position: relative;
-  width: min(100%, 480px);            /* assez petit pour tenir à l'écran sous la consigne */
+  flex: 0 0 auto;
+  width: min(100%, 460px);            /* assez petit pour tenir à l'écran sous la consigne */
   aspect-ratio: 1;
-  margin: 20px auto 0;
+  margin: 20px 0 0;
+}
+
+/* le cercle à gauche, le graphique à droite */
+.cycle_zone.en_rond {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  width: 120%;
 }
 
 .cycle.en_rond .cycle_reserve,
@@ -285,20 +332,20 @@
   background: none;
 }
 
-/* les étapes gardent leur style de pilule, centrées, sur 2 lignes au plus */
+/* les étapes gardent leur style de pilule, centrées, sur 2 lignes au plus :
+   elles passent à la ligne seulement aux <br> écrits dans le HTML */
 .cycle.en_rond .carte_cycle,
 .cycle.en_rond .cycle_depot .carte_cycle {
   width: max-content;
-  max-width: 160px;
+  max-width: none;
+  white-space: nowrap;
   justify-content: center;
   text-align: center;
-  cursor: default;
 }
 
-/* plus de soulèvement au survol : on ne déplace plus les étapes */
-.cycle.en_rond .carte_cycle:hover {
-  transform: none;
-  box-shadow: none;
+/* pendant le jeu, les <br> des noms d'étapes sont ignorés */
+.cycle:not(.en_rond) .carte_cycle br {
+  display: none;
 }
 
 /* les flèches : en fond, elles apparaissent une fois les étapes arrivées */
@@ -335,6 +382,184 @@
   fill: var(--couleur_texte);
 }
 
+/* ---------- Le centre du cercle : dessin et nom (styles de .roue_centre, activite_smartphone.css) ---------- */
+
+.cycle_centre {
+  display: none;                      /* caché pendant le jeu */
+}
+
+.cycle.en_rond .cycle_centre {
+  display: flex;                      /* aussi sur petit écran (la roue de la mission 1, elle, y est cachée) */
+  flex-direction: column;
+  gap: 2px;
+  z-index: 0;
+  animation: apparition_douce .8s ease both;
+  animation-delay: 1.1s;              /* en même temps que les flèches */
+}
+
+/* au survol, l'étape se soulève, pour montrer qu'on peut la survoler ;
+   l'étape dont le graphique montre le résultat reste en orange */
+.cycle.en_rond .carte_cycle {
+  cursor: help;
+}
+
+.cycle.en_rond .carte_cycle:hover,
+.cycle.en_rond .carte_cycle:focus-visible {
+  transform: translate(-3px, -3px);
+  box-shadow: 3px 3px 0 var(--trait);
+}
+
+/* étape dont la barre est dessinée : orange ; étape choisie (et ses sœurs de la production) : rouge */
+.cycle.en_rond .carte_cycle.revelee {
+  background: var(--orange);
+}
+
+.cycle.en_rond .carte_cycle.actif {
+  background: var(--rouge);
+}
+
+
+/* ---------- Le graphique de l'empreinte carbone (à droite du cercle) ---------- */
+
+.graph_carbone {
+  flex: 1;
+  min-width: 0;
+  margin: 50px 0 0;                   /* de l'espace sous la consigne bleue */
+  font-size: 0.9rem;
+  animation: apparition_douce .8s ease both;
+  animation-delay: 1.1s;              /* avec les flèches */
+}
+
+.graph_carbone[hidden] {
+  display: none;
+}
+
+/* le texte de l'étape survolée : hauteur fixe, pour que le graphique ne saute pas */
+.graph_info {
+  min-height: 105px;
+  margin: 14px 0 6px;
+  font-size: 0.85rem;
+  line-height: 1.35;
+}
+
+.graph_info p {
+  margin: 0 0 4px;
+}
+
+/* le nom de l'étape : un sous-titre, comme « Production — Changement climatique » */
+.graph_info_titre {
+  font-family: var(--titre);
+  font-size: 0.95rem;
+}
+
+.graph_info strong {
+  font-family: var(--titre);
+  font-weight: normal;
+}
+
+.graph_info_vide {
+  font-style: italic;
+}
+
+/* les colonnes : un vrai tableau, présenté en barres verticales.
+   Chaque ligne du tableau (tr) devient une colonne : la barre au-dessus, le nom en dessous. */
+.colonnes {
+  display: block;
+  border-collapse: collapse;
+}
+
+.colonnes tbody {
+  display: flex;
+  align-items: flex-end;
+}
+
+/* l'axe vertical : seulement à hauteur des barres, pas sous les noms */
+.colonnes tr:first-child td {
+  border-left: 1px solid var(--trait);
+}
+
+.colonnes tr {
+  display: flex;
+  flex-direction: column;
+  width: 76px;
+}
+
+/* la barre et son chiffre, posés sur l'axe horizontal */
+.colonnes td {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  height: 230px;
+  padding: 0;
+  border-bottom: 1px solid var(--trait);
+}
+
+.colonne {
+  display: block;
+  width: 36px;
+  height: calc(var(--valeur) / var(--max) * 180px);
+  min-height: 2px;                    /* les toutes petites valeurs restent visibles */
+  background: var(--orange);
+  border: 1px solid var(--trait);
+  border-bottom: none;
+  transform: scaleY(0);               /* cachée : elle pousse quand on survole son étape */
+  transform-origin: bottom;
+  transition: transform .8s ease, background .2s ease;
+}
+
+.colonne_valeur {
+  margin-bottom: 4px;
+  font-family: var(--titre);
+  font-size: 0.85rem;
+  line-height: 1.1;
+  text-align: center;
+  opacity: 0;
+  transition: opacity .4s ease .5s;   /* le chiffre arrive quand la barre a poussé */
+}
+
+.colonne_valeur small {
+  display: block;
+  font-family: var(--labeur);
+  font-size: 0.7rem;
+}
+
+/* le nom, en dessous, écrit en biais pour ne pas prendre trop de largeur */
+.colonnes th {
+  position: relative;
+  height: 80px;
+  padding: 0;
+  font-weight: normal;
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+
+.colonnes th span {
+  position: absolute;
+  top: 8px;
+  right: 50%;
+  white-space: nowrap;
+  font-size: 0.8rem;
+  transform: rotate(-40deg);
+  transform-origin: top right;
+}
+
+/* barre révélée */
+.colonnes tr.revelee .colonne        { transform: scaleY(1); }
+.colonnes tr.revelee .colonne_valeur,
+.colonnes tr.revelee th              { opacity: 1; }
+
+/* la barre de l'étape survolée */
+.colonnes tr.actif .colonne { background: var(--rouge); }
+.colonnes tr.actif th span  { font-family: var(--titre); }
+
+/* tant qu'elle n'est pas révélée, la colonne n'est ni visible ni lue par les lecteurs d'écran ;
+   l'axe du bas (bordure des cases), lui, est là dès le début, sur toute la largeur */
+.colonnes tr:not(.revelee) td > *,
+.colonnes tr:not(.revelee) th > span {
+  visibility: hidden;
+}
+
 @keyframes apparition_douce {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -342,37 +567,73 @@
 
 
 /* =====================================================================
-   4. ANALYSE 2 : LES RÉSULTATS DE L'ACV (à revoir ensemble)
+   4. ANALYSE 2 : L'ANALYSE ENVIRONNEMENTALE DE LA PRODUCTION
+   Sans cadre : le changement climatique en barres, puis les ressources en boîtes.
    ===================================================================== */
 
-.acv_explorateur {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 40px;
-  align-items: start;
-  width: 120%;
-  margin-top: 40px;
+/* GRAND TITRE (« Empreinte carbone du Basic-phone® », « Analyse environnementale de la production… ») */
+.acv_titre {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--titre);
+  font-size: 1.25rem;
+  line-height: 1.2;
 }
 
-/* ---------- À droite : comparaison et détail ---------- */
+/* petites précisions sous le grand titre (« Données simplifiées… », « Scénario étudié… ») */
+.acv_precision,
+.acv_sous_titre {
+  display: block;
+  margin: 1px 0 0;
+  font-size: 0.75rem;
+}
 
-.acv_panneau {
-  min-width: 0;
+/* sources en petit */
+.graph_carbone .span_source,
+.acv_production .span_source {
+  font-size: 0.7rem;
+}
+
+.acv_production {
+  width: 120%;
+  margin: 60px 0 0;
   font-size: 0.9rem;
 }
 
-.acv_figure {
+/* plus d'espace entre les grandes parties (climat, ressources) */
+.acv_indicateur {
+  margin-top: 55px;
+}
+
+/* SOUS-TITRE (« Production — Changement climatique »…), même style que le nom d'étape du graphique */
+.acv_indicateur h4 {
   margin: 0;
-}
-
-.acv_figure figcaption {
-  margin-bottom: 10px;
   font-family: var(--titre);
+  font-weight: normal;
+  font-size: 0.95rem;
 }
 
-/* tableau dessiné en barres horizontales */
+.acv_indicateur .acv_sous_titre {
+  margin-bottom: 12px;
+}
+
+.acv_note {
+  margin: 10px 0 0;
+  font-size: 0.8rem;
+  padding-left: 8px;
+  border-left: 3px solid var(--trait);
+}
+
+/* la question, après « j'ai fini d'analyser les documents » */
+#question_acv {
+  margin-top: 30px;
+}
+
+/* ---------- Changement climatique : barres horizontales ---------- */
+
 .barres {
   width: 100%;
+  max-width: 760px;
   border-collapse: collapse;
 }
 
@@ -409,96 +670,50 @@
   from { width: 0; }
 }
 
-/* la ligne de l'étape affichée */
-.barres tr.actif th {
-  font-family: var(--titre);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.barres tr.actif .barre {
-  background: var(--rose);
-}
-
 .barres_petites th {
-  width: 55%;
-  font-size: 0.8rem;
+  width: 40%;
+  font-size: 0.85rem;
   line-height: 1.2;
 }
 
 .barres_petites .barre {
-  height: 10px;
+  height: 12px;
 }
 
-/* le détail de l'étape */
-.acv_detail {
-  margin-top: 20px;
-  padding: 14px 18px;
-  background: var(--fond);
-  border: 1px solid var(--trait);
-  border-radius: var(--arrondi_boite);
-  min-height: 110px;
-}
+/* ---------- Épuisement des ressources : boîtes sur une ligne ----------
+   Chaque ligne prend toute la largeur. Dans une ligne, chaque boîte reçoit
+   une part de la largeur proportionnelle à son pourcentage (--part),
+   avec une largeur minimale pour que les toutes petites restent lisibles.
+   Une seule couleur pour toutes les boîtes : --couleur_tuiles. */
 
-.acv_detail h4 {
-  margin: 0 0 8px;
-  font-family: var(--titre);
-  font-weight: normal;
-  font-size: 1rem;
-}
-
-.acv_detail h5 {
-  margin: 16px 0 6px;
-  font-family: var(--titre);
-  font-weight: normal;
-  font-size: 0.9rem;
-}
-
-.acv_detail p {
-  margin: 0 0 8px;
-}
-
-.acv_detail strong {
-  font-family: var(--titre);
-  font-weight: normal;
-}
-
-.acv_detail_vide {
-  font-style: italic;
-}
-
-.acv_avertissement {
-  font-size: 0.8rem;
-  padding-left: 8px;
-  border-left: 3px solid var(--trait);
-}
-
-/* tuiles de la vue « ressources » (pourcentages non additionnables) */
 .tuiles_titre {
+  margin: 18px 0 6px;
   font-size: 0.8rem;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
 .tuiles {
+  --couleur_tuiles: var(--vert_bleu);
   list-style: none;
-  margin: 0 0 12px;
+  margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+  display: flex;
   gap: 6px;
 }
 
 .tuiles li {
+  flex: var(--part) 1 0;
+  min-width: 84px;                    /* les toutes petites gardent une largeur minimale, pour rester lisibles */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 4px;
-  min-height: 58px;
-  padding: 6px 8px;
-  font-size: 0.75rem;
-  line-height: 1.2;
-  background: var(--fond);
+  min-height: 62px;
+  padding: 6px 7px;
+  font-size: 0.72rem;
+  line-height: 1.15;
+  background: var(--couleur_tuiles);
   border: 1px solid var(--trait);
   border-radius: 8px;
 }
@@ -510,8 +725,8 @@
 }
 
 .tuiles_grandes li {
-  min-height: 70px;
-  background: var(--fond_consigne);
+  min-height: 72px;
+  font-size: 0.8rem;
 }
 
 
@@ -527,8 +742,19 @@
     margin-left: 0;
   }
 
-  .acv_explorateur {
-    grid-template-columns: 1fr;
+  /* le graphique passe sous le cercle */
+  .cycle_zone.en_rond {
+    flex-direction: column;
+    align-items: stretch;
     width: 100%;
+  }
+
+  .acv_production {
+    width: 100%;
+  }
+
+  /* les boîtes passent à la ligne si besoin */
+  .tuiles {
+    flex-wrap: wrap;
   }
 }
