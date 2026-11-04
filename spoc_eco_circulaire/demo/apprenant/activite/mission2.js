@@ -15,12 +15,19 @@
 //   6. Conversation IA          commun (relais, signaux, file d'attente)
 //   7. Composants               pop-up, IA
 //   8. Parcours utilisateur     petite fenêtre, IA si pas convaincue
+//   9. Solutions du parcours    propositions (étape, problème, solution), IA à chaque envoi
+//  10. Livrable : problématique pop-up, puis petite fenêtre d'Andréa (IA)
 //
 // Signaux invisibles écrits par l'IA (retirés avant affichage) :
 //   [VALIDE: composants]               composants validés
+//   [VALIDE: problematique]            problématique validée
 //   [EVAL: Étape = ok|a_approfondir]   avis sur une étape du parcours
+//   [EVAL: Proposition N = ok|a_approfondir]   avis sur une proposition de solution
 //   [RESUME: Climat : … | Ressources : …]  ce qui a été validé, rangé dans le porte-documents
 //   [HUMEUR: neutre|content|decu]      le visage d'Andréa
+//   [DOC: recyclage]                   lien vers un PDF du site (DOCUMENTS), sous son message
+//   [TEXTE: Étape = …] / [TEXTE: problematique = …]   version finale → la case se remplit
+//   [PROPOSITION: N = problème | solution]           version finale d'une proposition
 // =====================================================================
 
 (function () {
@@ -57,6 +64,7 @@
       return;
     }
     sceneTexte.replaceChildren(modele.content.cloneNode(true));
+    sceneFil?.replaceChildren();            // pop-up : seulement le message
     panneau.dataset.humeur = modele.dataset.humeur || 'neutre';
     panneau.dataset.etape = 'message';
     boutonSuivant.textContent = texteBouton;
@@ -490,9 +498,15 @@
     : 'https://dhssndnqurrpidyxatwj.supabase.co/functions/v1/mentor';
   const MISSION = 2;
   const LONGUEUR_MAX = 2000;
+  const ESSAIS_RELAIS = 3;              // relais en erreur : 3 essais (2 s, puis 4 s d'attente)
   const REPONSES_AVANT_PASSER = 3;      // mascotte : 3 réponses non validées
   const CLE_ENJEUX = 'athentech_enjeux';
   const CLE_MISSION2 = 'athentech_mission2';
+
+  // PDF du site, ouverts dans un nouvel onglet ([DOC: recyclage])
+  const DOCUMENTS = {
+    recyclage: { titre: 'Focus : le recyclage des téléphones portables (PDF)', adresse: 'documents/recyclage_telephones_portables.pdf' },
+  };
 
   // mémoire : memoire.js, sinon navigateur seul
   const memoire = window.Memoire || {
@@ -520,7 +534,7 @@
     .replace(/[’`]/g, "'").replace(/\s+/g, ' ').trim().toLowerCase();
 
   // bulle : dans le pop-up ou dans la petite fenêtre
-  function ajouterMessage(qui, texte, etiquette) {
+  function ajouterMessage(qui, texte, etiquette, docs = []) {
     const cible = panneau.classList.contains('popup') ? sceneFil : fil;
     const bulle = document.createElement('div');
     bulle.className = `mentor_message mentor_message_${qui}`;
@@ -542,6 +556,21 @@
     p.textContent = texte;
     bulle.append(p);
 
+    // liens vers les documents
+    docs.map(d => DOCUMENTS[d]).filter(Boolean).forEach(d => {
+      const lien = document.createElement('a');
+      lien.className = 'mentor_document';
+      lien.href = d.adresse;
+      lien.target = '_blank';
+      lien.rel = 'noopener';
+      lien.textContent = d.titre;
+      const cache = document.createElement('span');
+      cache.className = 'visuellement_cache';
+      cache.textContent = ' (nouvel onglet)';
+      lien.append(cache);
+      bulle.append(lien);
+    });
+
     cible.appendChild(bulle);
     cible.scrollTop = cible.scrollHeight;
   }
@@ -562,6 +591,9 @@
     let valide = null;
     let resume = '';
     let humeur = null;
+    const docs = [];
+    const textes = [];
+    const propositionsFinales = [];
     let texte = brut;
     texte = texte.replace(/\[\s*VALIDE\s*:\s*([^\]]+?)\s*\]/gi, (_, quoi) => { valide = normaliser(quoi); return ''; });
     texte = texte.replace(/\[\s*RESUME\s*:\s*([^\]]+)\]/gi, (_, r) => { resume = r.trim(); return ''; });
@@ -570,26 +602,47 @@
       return '';
     });
     texte = texte.replace(/\[\s*HUMEUR\s*:\s*([a-zéè_]+)\s*\]/gi, (_, h) => { humeur = h.toLowerCase(); return ''; });
-    texte = texte.replace(/\[\s*(EVAL|VALIDE|HUMEUR|RESUME)[^\]]*\]/gi, '');   // signal mal écrit : caché
-    return { texte: texte.replace(/\n{3,}/g, '\n\n').trim(), evals, valide, resume, humeur };
+    texte = texte.replace(/\[\s*TEXTE\s*:\s*([^=\]]+?)\s*=\s*([^\]]+)\]/gi, (_, nom, t) => { textes.push({ nom: nom.trim(), texte: t.trim() }); return ''; });
+    texte = texte.replace(/\[\s*PROPOSITION\s*:\s*(\d+)\s*=\s*([^|\]]+)\|([^\]]+)\]/gi, (_, n, pb, so) => {
+      propositionsFinales.push({ n: Number(n), probleme: pb.trim(), solution: so.trim() });
+      return '';
+    });
+    texte = texte.replace(/\[\s*DOC\s*:\s*([a-z_]+)\s*\]/gi, (_, d) => { docs.push(d.toLowerCase()); return ''; });
+    texte = texte.replace(/\[\s*(EVAL|VALIDE|HUMEUR|RESUME|DOC|TEXTE|PROPOSITION)[^\]]*\]/gi, '');   // signal mal écrit : caché
+    texte = texte
+      .replace(/\*\*(.+?)\*\*/gs, '$1').replace(/__(.+?)__/gs, '$1')   // gras Markdown
+      .replace(/^\s*#{1,6}\s+/gm, '')                                      // titres Markdown
+      .replace(/\*\*/g, '');
+    return { texte: texte.replace(/\n{3,}/g, '\n\n').trim(), evals, valide, resume, humeur, docs, textes, propositionsFinales };
   }
 
   // envoi au relais (file d'attente) → { ok, texte, evals, valide, resume } ou { ok: false, erreur }
   function envoyer(message) {
     const tache = fileEnvois.then(async () => {
       attente(true);
+      let derniereErreur = 'Andréa ne répond pas.';
       try {
-        const reponse = await fetch(ADRESSE_RELAIS, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: message.slice(0, LONGUEUR_MAX), conversation_id: conversationId, mission: MISSION }),
-        });
-        const donnees = await reponse.json().catch(() => ({}));
-        if (!reponse.ok || !donnees.reponse) throw new Error(donnees.erreur || 'Andréa ne répond pas.');
-        conversationId = donnees.conversation_id || conversationId;
-        return { ok: true, ...lireSignaux(donnees.reponse) };
-      } catch (erreur) {
-        return { ok: false, erreur: erreur.message };
+        // Mistral occupé : nouvel essai automatique
+        for (let essai = 0; essai < ESSAIS_RELAIS; essai++) {
+          if (essai) await new Promise(ok => setTimeout(ok, 2000 * essai));
+          try {
+            const reponse = await fetch(ADRESSE_RELAIS, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ message: message.slice(0, LONGUEUR_MAX), conversation_id: conversationId, mission: MISSION }),
+            });
+            const donnees = await reponse.json().catch(() => ({}));
+            if (reponse.ok && donnees.reponse) {
+              conversationId = donnees.conversation_id || conversationId;
+              return { ok: true, ...lireSignaux(donnees.reponse) };
+            }
+            derniereErreur = donnees.erreur || derniereErreur;
+            if (reponse.status < 500) break;     // message refusé : inutile de réessayer
+          } catch (erreur) {
+            derniereErreur = erreur.message;
+          }
+        }
+        return { ok: false, erreur: derniereErreur };
       } finally {
         attente(false);
       }
@@ -609,6 +662,15 @@
   }
   const debutMessage = () => (conversationId ? '' : contexte());
 
+  // version finale d'Andréa → case remplie, petit flash
+  function remplirCase(zone, texte) {
+    if (!zone || !texte) return;
+    zone.value = texte;
+    zone.classList.remove('mise_a_jour');
+    void zone.offsetWidth;
+    zone.classList.add('mise_a_jour');
+  }
+
   // saisie dans la fenêtre : composants (pop-up) ou parcours (petite fenêtre)
   saisie?.addEventListener('submit', e => {
     e.preventDefault();
@@ -616,6 +678,8 @@
     if (!texte) return;
     if (panneau.dataset.etape === 'discussion') { champ.value = ''; repondreComposants(texte); }
     else if (panneau.dataset.etape === 'parcours') { champ.value = ''; repondreParcours(texte); }
+    else if (panneau.dataset.etape === 'solutions') { champ.value = ''; repondreSolutions(texte); }
+    else if (panneau.dataset.etape === 'problematique') { champ.value = ''; repondreProblematique(texte); }
   });
 
   // Entrée envoie ; Maj + Entrée : nouvelle ligne
@@ -729,15 +793,19 @@
   const annonceParcours = document.getElementById('annonce_parcours');
   const ETAPES_AVANT_RAPPEL = 2;
   let basDuSchemaVu = false;              // mascotte : seulement après avoir vu la dernière étape
+  let parcoursFini = false;               // « continuer » cliqué : plus de bouton ni de mascotte
 
   const nomEtape   = li => li.dataset.etape;
   const caseDe     = li => li.querySelector('textarea');
   const estRemplie = li => caseDe(li).value.trim() !== '';
   const etapeNommee = nom => etapesParcours.find(li => normaliser(nomEtape(li)) === normaliser(nom));
 
-  function ouvrirFenetre() {
-    if (!panneau) return;
-    panneau.dataset.etape = 'parcours';
+  // petite fenêtre : parcours ou solutions
+  function ouvrirFenetre(etape = 'parcours') {
+    if (!panneau) return false;
+    if (!panneau.hidden && panneau.classList.contains('popup')) return false;   // pop-up en cours
+    if (panneau.dataset.etape !== etape) { fil.replaceChildren(); panneau.hidden = true; }   // nouvelle partie : fenêtre vide
+    panneau.dataset.etape = etape;
     panneau.classList.remove('popup', 'valide', 'reduit');
     panneau.style.transform = '';
     boutonSuivant.hidden = true;
@@ -747,10 +815,11 @@
       panneau.hidden = false;
     }
     document.body.classList.add('mentor_visible');
+    return true;
   }
 
   function fermerFenetre() {
-    if (!panneau || panneau.dataset.etape !== 'parcours') return;
+    if (!panneau || !['parcours', 'solutions', 'problematique'].includes(panneau.dataset.etape)) return;
     panneau.hidden = true;
     document.body.classList.remove('mentor_visible');
   }
@@ -772,7 +841,7 @@
   }
 
   function verifierParcours() {
-    if (!piedParcours) return;
+    if (!piedParcours || parcoursFini) return;
     const remplies = etapesParcours.filter(estRemplie).length;
     const tout = remplies === etapesParcours.length;
     if (tout && piedParcours.hidden && annonceParcours) {
@@ -791,10 +860,18 @@
   }
 
   // une étape validée avec Entrée
+  // « soumettre à Andréa » : texte écrit et pas encore envoyé
+  function majSoumettre(li) {
+    const b = li.querySelector('.soumettre_andrea');
+    const texte = caseDe(li).value.trim();
+    if (b) b.hidden = !texte || texte === li.dataset.envoye;
+  }
+
   async function envoyerEtape(li) {
     const texte = caseDe(li).value.trim();
     if (!texte || texte === li.dataset.envoye) return;
     li.dataset.envoye = texte;
+    majSoumettre(li);
     sauverParcours();
 
     const nom = nomEtape(li);
@@ -807,22 +884,22 @@
     const r = await envoyer(message);
     li.classList.remove('en_lecture');
     if (!r.ok) {
-      ouvrirFenetre();
-      ajouterMessage('erreur', `${r.erreur} Valide à nouveau l’étape « ${nom} » avec Entrée dans un instant.`);
       delete li.dataset.envoye;
+      majSoumettre(li);
+      if (!parcoursFini && ouvrirFenetre()) ajouterMessage('erreur', `${r.erreur} Valide à nouveau l’étape « ${nom} » avec Entrée dans un instant.`);
       return;
     }
     appliquerAvis(r.evals);
     sauverParcours();
 
-    // convaincue : silence ; pas convaincue (ou pas d'avis) : la fenêtre s'ouvre
-    const convaincue = r.evals.length && r.evals.every(e => e.avis === 'ok');
+    // convaincue (avis « ok » sur cette étape) : silence, sauf document à montrer
+    const avis = r.evals.find(e => normaliser(e.nom) === normaliser(nom));
+    const convaincue = avis?.avis === 'ok';
     if (convaincue && annonceParcours) annonceParcours.textContent = `Étape « ${nom} » : Andréa est d’accord.`;
-    if (!convaincue && r.texte) {
-      ouvrirFenetre();
+    if ((!convaincue || r.docs.length) && r.texte && !parcoursFini && ouvrirFenetre()) {
       changerHumeur(r.humeur);
-      ajouterMessage('eleve', texte, `Parcours · ${nom}`);
-      ajouterMessage('mentor', r.texte);
+      ajouterMessage('eleve', texte, nom);
+      ajouterMessage('mentor', r.texte, null, r.docs);
     }
   }
 
@@ -835,15 +912,31 @@
       return;
     }
     appliquerAvis(r.evals);
+    r.textes.forEach(({ nom, texte: t }) => {
+      const li = etapeNommee(nom);
+      if (!li) return;
+      remplirCase(caseDe(li), t);
+      li.dataset.envoye = t;
+      majSoumettre(li);
+    });
+    verifierParcours();
     sauverParcours();
     changerHumeur(r.humeur);
-    if (r.texte) ajouterMessage('mentor', r.texte);
+    if (r.texte) ajouterMessage('mentor', r.texte, null, r.docs);
     champ.focus({ preventScroll: true });
   }
 
   etapesParcours.forEach((li, i) => {
     const zone = caseDe(li);
-    zone.addEventListener('input', verifierParcours);
+    const bouton = document.createElement('button');
+    bouton.type = 'button';
+    bouton.className = 'qcm_verifier soumettre_andrea';
+    bouton.textContent = 'soumettre à Andréa';
+    bouton.hidden = true;
+    zone.after(bouton);
+    bouton.addEventListener('click', () => envoyerEtape(li));
+
+    zone.addEventListener('input', () => { verifierParcours(); majSoumettre(li); });
 
     // Entrée : envoi + étape suivante ; Maj + Entrée : nouvelle ligne
     zone.addEventListener('keydown', e => {
@@ -855,11 +948,345 @@
     });
   });
 
-  // « continuer » : la fenêtre se ferme, les solutions apparaissent
+  // « continuer » : fenêtre fermée → Andréa (pop-up) → solutions
   piedParcours?.querySelector('button')?.addEventListener('click', () => {
     sauverParcours();
     fermerFenetre();
     if (rappelParcours) rappelParcours.hidden = true;
+    piedParcours.hidden = true;
+    parcoursFini = true;
+    andreaDit('texte_solutions', 'c’est parti !', montrerSolutions);
+  });
+
+
+  // =====================================================================
+  // 9. SOLUTIONS DU PARCOURS
+  // 2 propositions au départ, « ajouter une solution » pour d'autres.
+  // Entrée dans « solution proposée » → IA. Convaincue : silence ;
+  // pas convaincue : la petite fenêtre s'ouvre.
+  // Mascotte : 1 proposition complète → rappel ; 2 complètes → « continuer ».
+  // =====================================================================
+
+  const partieSolutions = document.getElementById('partie_solutions');
+  const zonePropositions = document.getElementById('propositions');
+  const modeleProposition = document.getElementById('modele_proposition');
+  const boutonAjouter = document.getElementById('ajouter_proposition');
+  const rappelSolutions = document.getElementById('rappel_solutions');
+  const piedSolutions = document.getElementById('pied_solutions');
+  const annonceSolutions = document.getElementById('annonce_solutions');
+  const PROPOSITIONS_MIN = 2;
+  const PROPOSITIONS_MAX = 6;
+  let solutionsFinies = false;              // « continuer » cliqué
+
+  const propositions = () => [...zonePropositions.querySelectorAll('.proposition')];
+  const champsDe = f => ({
+    etape: f.querySelector('.proposition_etape'),
+    probleme: f.querySelector('.proposition_probleme'),
+    solution: f.querySelector('.proposition_solution'),
+  });
+  const estComplete = f => Object.values(champsDe(f)).every(c => c.value.trim() !== '');
+  const numeroDe = f => propositions().indexOf(f) + 1;
+  const propositionNommee = nom => {
+    const n = parseInt(String(nom).replace(/\D+/g, ''), 10);
+    return propositions()[n - 1];
+  };
+
+  // nouvelle proposition (modèle, numéro, liens label → champ)
+  function ajouterProposition() {
+    if (!modeleProposition || propositions().length >= PROPOSITIONS_MAX) return null;
+    const f = modeleProposition.content.firstElementChild.cloneNode(true);
+    const n = propositions().length + 1;
+    f.querySelector('.proposition_numero').textContent = n;
+    const c = champsDe(f);
+    [['etape', '.proposition_label_etape'], ['probleme', '.proposition_label_probleme'], ['solution', '.proposition_label_solution']]
+      .forEach(([cle, label]) => {
+        c[cle].id = `proposition_${n}_${cle}`;
+        f.querySelector(label).htmlFor = c[cle].id;
+      });
+
+    // saisie : mascotte, boutons, mémoire
+    const soumettre = f.querySelector('.proposition_soumettre');
+    soumettre?.addEventListener('click', () => envoyerProposition(f));
+    Object.values(c).forEach(champ => {
+      champ.addEventListener('input', () => {
+        delete f.dataset.envoye;
+        verifierSolutions();
+        majSoumettreProposition(f);
+      });
+      champ.addEventListener('change', sauverSolutions);
+    });
+
+    // Entrée : problème → solution ; solution → Andréa
+    c.probleme.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' || e.shiftKey || e.isComposing) return;
+      e.preventDefault();
+      c.solution.focus();
+    });
+    c.solution.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' || e.shiftKey || e.isComposing) return;
+      e.preventDefault();
+      envoyerProposition(f);
+    });
+
+    zonePropositions.appendChild(f);
+    if (boutonAjouter) boutonAjouter.hidden = propositions().length >= PROPOSITIONS_MAX;
+    return f;
+  }
+
+  // « soumettre à Andréa » : proposition complète, pas encore envoyée
+  const cleDe = f => { const c = champsDe(f); return `${c.etape.value}|${c.probleme.value.trim()}|${c.solution.value.trim()}`; };
+  function majSoumettreProposition(f) {
+    const b = f.querySelector('.proposition_soumettre');
+    if (b) b.hidden = !estComplete(f) || f.dataset.envoye === cleDe(f);
+  }
+
+  function sauverSolutions() {
+    const solutions = propositions().map(f => {
+      const c = champsDe(f);
+      return { etape: c.etape.value, probleme: c.probleme.value.trim(), solution: c.solution.value.trim(), avis: f.dataset.avis || null };
+    }).filter(x => x.etape || x.probleme || x.solution);
+    sauverMission2({ solutions });
+  }
+
+  function verifierSolutions() {
+    if (!piedSolutions || solutionsFinies) return;
+    const completes = propositions().filter(estComplete).length;
+    const assez = completes >= PROPOSITIONS_MIN;
+    if (assez && piedSolutions.hidden && annonceSolutions) {
+      annonceSolutions.textContent = 'Deux propositions sont complètes. Le bouton « continuer » est disponible en bas de l’écran.';
+    }
+    piedSolutions.hidden = !assez;
+    if (rappelSolutions) rappelSolutions.hidden = assez || completes < 1;   // mascotte : 1 proposition complète
+  }
+
+  // après le pop-up d'Andréa
+  function montrerSolutions() {
+    if (!partieSolutions) return;
+    if (!propositions().length) for (let i = 0; i < PROPOSITIONS_MIN; i++) ajouterProposition();
+    partieSolutions.hidden = false;
+    requestAnimationFrame(() => {
+      const consigne = document.getElementById('consigne_solutions');
+      if (typeof calerEnHaut === 'function') calerEnHaut(consigne);
+      else consigne.scrollIntoView({ behavior: 'smooth' });
+      champsDe(propositions()[0]).etape.focus({ preventScroll: true });
+    });
+  }
+
+  function appliquerAvisSolutions(evals) {
+    evals.forEach(({ nom, avis }) => {
+      if (!/proposition/i.test(nom)) return;
+      const f = propositionNommee(nom);
+      if (f) f.dataset.avis = avis;
+    });
+  }
+
+  // proposition envoyée avec Entrée
+  async function envoyerProposition(f) {
+    const c = champsDe(f);
+    const manquant = Object.values(c).find(x => x.value.trim() === '');
+    if (manquant) {                          // incomplète : on va au champ vide
+      if (annonceSolutions) annonceSolutions.textContent = 'Complète d’abord l’étape, la problématique et la solution de cette proposition.';
+      manquant.focus();
+      return;
+    }
+    const n = numeroDe(f);
+    const etape = c.etape.value;
+    const probleme = c.probleme.value.trim();
+    const solution = c.solution.value.trim();
+    const cle = cleDe(f);
+    if (f.dataset.envoye === cle) return;
+    f.dataset.envoye = cle;
+    majSoumettreProposition(f);
+    sauverSolutions();
+
+    const message = `${debutMessage()}[Étape : solutions du parcours]\n[Proposition ${n} : étape du parcours « ${etape} »]\nProblématique soulevée : ${probleme}\nSolution proposée : ${solution}`;
+
+    f.classList.add('en_lecture');
+    const r = await envoyer(message);
+    f.classList.remove('en_lecture');
+    if (!r.ok) {
+      delete f.dataset.envoye;
+      majSoumettreProposition(f);
+      if (!solutionsFinies && ouvrirFenetre('solutions')) ajouterMessage('erreur', `${r.erreur} Valide à nouveau la proposition ${n} avec Entrée dans un instant.`);
+      return;
+    }
+    appliquerAvisSolutions(r.evals);
+    sauverSolutions();
+
+    // Andréa répond toujours (bien vu, ou une question)
+    if (r.texte && !solutionsFinies && ouvrirFenetre('solutions')) {
+      changerHumeur(r.humeur);
+      ajouterMessage('eleve', `${probleme}\n→ ${solution}`, etape);
+      ajouterMessage('mentor', r.texte, null, r.docs);
+    }
+  }
+
+  // réponse écrite dans la petite fenêtre
+  async function repondreSolutions(texte) {
+    ajouterMessage('eleve', texte);
+    const r = await envoyer(`${debutMessage()}[Étape : solutions du parcours]\n${texte}`);
+    if (!r.ok) {
+      ajouterMessage('erreur', `${r.erreur} Ton message n’est pas parti : réécris-le dans un instant.`);
+      return;
+    }
+    appliquerAvisSolutions(r.evals);
+    r.propositionsFinales.forEach(({ n, probleme, solution }) => {
+      const f = propositions()[n - 1];
+      if (!f) return;
+      const c = champsDe(f);
+      remplirCase(c.probleme, probleme);
+      remplirCase(c.solution, solution);
+      f.dataset.envoye = cleDe(f);
+      majSoumettreProposition(f);
+    });
+    verifierSolutions();
+    sauverSolutions();
+    changerHumeur(r.humeur);
+    if (r.texte) ajouterMessage('mentor', r.texte, null, r.docs);
+    champ.focus({ preventScroll: true });
+  }
+
+  boutonAjouter?.addEventListener('click', () => {
+    const f = ajouterProposition();
+    verifierSolutions();
+    if (f) champsDe(f).etape.focus();
+  });
+
+  // « continuer » : mémoire, fenêtre fermée → Andréa (pop-up) → livrable
+  piedSolutions?.querySelector('button')?.addEventListener('click', () => {
+    sauverSolutions();
+    solutionsFinies = true;
+    piedSolutions.hidden = true;
+    fermerFenetre();
+    if (rappelSolutions) rappelSolutions.hidden = true;
+    andreaDit('texte_livrable', 'c’est parti !', montrerLivrable);
+  });
+
+
+  // =====================================================================
+  // 10. LIVRABLE : LA PROBLÉMATIQUE
+  // Entrée ou « soumettre à Andréa » → petite fenêtre d'Andréa (IA).
+  // [VALIDE: problematique] ou 3 essais → « continuer » → texte_fin.
+  // =====================================================================
+
+  const partieLivrable = document.getElementById('partie_livrable');
+  const formProblematique = document.getElementById('formulaire_problematique');
+  const caseProblematique = document.getElementById('t_problematique');
+  const boutonExemple = document.getElementById('voir_exemple');
+  const exemple = document.getElementById('exemple_problematique');
+  const piedLivrable = document.getElementById('pied_livrable');
+  const annonceLivrable = document.getElementById('annonce_livrable');
+  const ESSAIS_AVANT_CONTINUER = 3;
+  const versionsProblematique = [];
+  let problematiqueValidee = false;
+
+  function montrerLivrable() {
+    if (!partieLivrable) return;
+    partieLivrable.hidden = false;
+    requestAnimationFrame(() => {
+      const titre = document.getElementById('consigne_livrable');
+      if (typeof calerEnHaut === 'function') calerEnHaut(titre);
+      else titre.scrollIntoView({ behavior: 'smooth' });
+      caseProblematique?.focus({ preventScroll: true });
+    });
+  }
+
+  function sauverProblematique() {
+    sauverMission2({ problematique: {
+      texte: caseProblematique.value.trim(), versions: versionsProblematique, valide: problematiqueValidee,
+    } });
+  }
+
+  function verifierLivrable() {
+    const pret = problematiqueValidee || versionsProblematique.length >= ESSAIS_AVANT_CONTINUER;
+    if (pret && piedLivrable.hidden && annonceLivrable) {
+      annonceLivrable.textContent = 'Le bouton « continuer » est disponible en bas de l’écran.';
+    }
+    piedLivrable.hidden = !pret;
+  }
+
+  // copie de l'exemple de la prof : plus de 80 % de ses mots repris
+  const motsDe = t => normaliser(t).replace(/[^a-z0-9 ]/g, ' ').split(' ').filter(m => m.length > 3);
+  const motsExemple = new Set(motsDe(exemple?.querySelectorAll('p')[1]?.textContent || ''));
+  function copieExemple(texte) {
+    const mots = motsDe(texte);
+    if (!mots.length || !motsExemple.size) return false;
+    const repris = mots.filter(m => motsExemple.has(m)).length;
+    return repris / mots.length >= 0.8 && repris / motsExemple.size >= 0.6;
+  }
+
+  function lireValidation(r) {
+    if (r.valide === 'problematique' && copieExemple(caseProblematique.value)) return;   // jamais validée
+    if (r.valide === 'problematique') {
+      problematiqueValidee = true;
+      sauverProblematique();
+      verifierLivrable();
+    }
+  }
+
+  async function envoyerProblematique() {
+    const texte = caseProblematique.value.trim();
+    if (!texte) { caseProblematique.focus(); return; }
+    if (texte === versionsProblematique[versionsProblematique.length - 1]) return;
+    versionsProblematique.push(texte);
+    sauverProblematique();
+
+    ouvrirFenetre('problematique');
+    ajouterMessage('eleve', texte, 'Ma problématique');
+    const copie = copieExemple(texte) ? '\n[Attention : cette version reprend presque mot pour mot l’exemple de l’équipe pédagogique. Ne la valide pas.]' : '';
+    const r = await envoyer(`${debutMessage()}[Étape : problématique]\n[Problématique proposée (version ${versionsProblematique.length})]\n${texte}${copie}`);
+    if (!r.ok) {
+      versionsProblematique.pop();
+      ajouterMessage('erreur', `${r.erreur} Ta problématique n’est pas partie : soumets-la à nouveau dans un instant.`);
+      return;
+    }
+    changerHumeur(r.humeur);
+    if (r.texte) ajouterMessage('mentor', r.texte, null, r.docs);
+    lireValidation(r);
+    verifierLivrable();
+  }
+
+  // réponse écrite dans la petite fenêtre
+  async function repondreProblematique(texte) {
+    ajouterMessage('eleve', texte);
+    const r = await envoyer(`${debutMessage()}[Étape : problématique]\n${texte}`);
+    if (!r.ok) {
+      ajouterMessage('erreur', `${r.erreur} Ton message n’est pas parti : réécris-le dans un instant.`);
+      return;
+    }
+    const finale = r.textes.find(t => normaliser(t.nom) === 'problematique');
+    if (finale) {
+      remplirCase(caseProblematique, finale.texte);
+      versionsProblematique.push(finale.texte);
+      sauverProblematique();
+    }
+    changerHumeur(r.humeur);
+    if (r.texte) ajouterMessage('mentor', r.texte, null, r.docs);
+    lireValidation(r);
+    verifierLivrable();
+    champ.focus({ preventScroll: true });
+  }
+
+  formProblematique?.addEventListener('submit', e => { e.preventDefault(); envoyerProblematique(); });
+  caseProblematique?.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' || e.shiftKey || e.isComposing) return;
+    e.preventDefault();
+    formProblematique.requestSubmit();
+  });
+
+  // exemple de la prof : montré, puis le bouton disparaît
+  boutonExemple?.addEventListener('click', () => {
+    exemple.hidden = false;
+    boutonExemple.hidden = true;
+    caseProblematique.focus({ preventScroll: true });
+  });
+
+  // « continuer » : fin de la mission 2
+  piedLivrable?.querySelector('button')?.addEventListener('click', () => {
+    sauverProblematique();
+    piedLivrable.hidden = true;
+    fermerFenetre();
+    andreaDit('texte_fin', 'continuer', () => { if (typeof afficherSuite === 'function') afficherSuite(); });
   });
 
 })();

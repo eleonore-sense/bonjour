@@ -56,10 +56,7 @@
                 </dd>
               </div>
             </dl>
-
-            <!-- ILLUSTRATION (à droite de « Ta deuxième mission ») : remplacer ce <div> par
-                 <img class="illustration" src="dessin/chap_3/IV/…" alt=""> -->
-            <div class="illustration emplacement_illustration" aria-hidden="true">illustration</div>
+            <img class="illustration" src="dessin/chap_3/IV/eclate_loupe.svg" alt="Le Basic-phone® démonté pièce par pièce, observé à la loupe">
           </div>
 
           <div class="txt_labeur">
@@ -360,7 +357,7 @@
             </div>
 
             <div class="conteneur_bouton">
-              <button type="button" class="bouton_etape" data-montrer="parcours_schema" aria-controls="parcours_schema" aria-expanded="false">à toi de jouer</button>
+              <button type="button" class="bouton_etape" data-montrer="parcours_schema" aria-controls="parcours_schema" aria-expanded="false">c’est parti&#8239;!</button>
             </div>
 
             <!-- schéma du parcours (doc prof p. 40) -->
@@ -376,7 +373,6 @@
                 <li class="parcours_etape" data-etape="Envie et renseignement">
                   <span class="parcours_numero" aria-hidden="true">1</span>
                   <img class="parcours_dessin" src="dessin/chap_3/IV/envie_smarphone.svg" alt="">
-
                   <label class="parcours_question" for="p_envie"><strong>Envie et renseignement</strong><span>Pourquoi et comment l’utilisateur envisage-t-il de changer de téléphone&#8239;?</span></label>
                   <textarea id="p_envie" rows="2" placeholder="Décris cette étape avec tes mots, puis Entrée…"></textarea>
                 </li>
@@ -434,9 +430,9 @@
                 <p>Remplis toutes les étapes du parcours avant de passer à la suite&#8239;!</p>
               </div>
 
-              <!-- bouton fixe : 7 étapes remplies -->
+              <!-- bouton fixe : 7 étapes remplies → pop-up Andréa → solutions -->
               <div class="qcm_pied" id="pied_parcours" hidden>
-                <button type="button" class="qcm_verifier" data-montrer="partie_solutions" aria-controls="partie_solutions" aria-expanded="false">continuer</button>
+                <button type="button" class="qcm_verifier" id="bouton_parcours">continuer</button>
               </div>
 
             </div>
@@ -444,68 +440,32 @@
           </div>
 
 
-          <!-- ================= SOLUTIONS DU PARCOURS (mise en page à faire) ================= -->
+          <!-- ================= SOLUTIONS DU PARCOURS ================= -->
 
           <div class="partie_cachee" id="partie_solutions" hidden>
 
             <div class="consigne" id="consigne_solutions">
-              À toi de jouer&#8239;: repère les moments de ce parcours sur lesquels ATHEN’TECH pourrait agir pour diminuer les impacts environnementaux du Basic-phone®, prolonger la durée de vie du smartphone, faciliter sa réparation et améliorer sa fin de vie. Propose au moins deux solutions, puis précise à quelle étape du parcours elles s’appliquent et comment elles répondent au problème identifié.
+              Propose au moins deux solutions, puis précise à quelle étape du parcours elles s’appliquent et comment elles répondent au problème identifié.
             </div>
 
-            <div class="solutions" role="group" aria-labelledby="consigne_solutions">
-
-              <fieldset class="fiche_solution">
-                <legend>Solution 1</legend>
-
-                <label for="s1_etape">À quelle étape du parcours s’applique-t-elle&#8239;?</label>
-                <select id="s1_etape">
-                  <option value="">choisis une étape</option>
-                  <option>Envie et renseignement</option>
-                  <option>Achat du téléphone</option>
-                  <option>Première utilisation</option>
-                  <option>Ancien téléphone</option>
-                  <option>Utilisation du nouveau téléphone</option>
-                  <option>Réparation</option>
-                  <option>Fin de vie</option>
-                </select>
-
-                <label for="s1_solution">Ta solution</label>
-                <textarea id="s1_solution" rows="2"></textarea>
-
-                <label for="s1_reponse">Comment répond-elle au problème identifié&#8239;?</label>
-                <textarea id="s1_reponse" rows="2"></textarea>
-              </fieldset>
-
-              <fieldset class="fiche_solution">
-                <legend>Solution 2</legend>
-
-                <label for="s2_etape">À quelle étape du parcours s’applique-t-elle&#8239;?</label>
-                <select id="s2_etape">
-                  <option value="">choisis une étape</option>
-                  <option>Envie et renseignement</option>
-                  <option>Achat du téléphone</option>
-                  <option>Première utilisation</option>
-                  <option>Ancien téléphone</option>
-                  <option>Utilisation du nouveau téléphone</option>
-                  <option>Réparation</option>
-                  <option>Fin de vie</option>
-                </select>
-
-                <label for="s2_solution">Ta solution</label>
-                <textarea id="s2_solution" rows="2"></textarea>
-
-                <label for="s2_reponse">Comment répond-elle au problème identifié&#8239;?</label>
-                <textarea id="s2_reponse" rows="2"></textarea>
-              </fieldset>
-
-            </div>
+            <!-- propositions : créées par mission2.js (modèle : template modele_proposition) -->
+            <div class="propositions" id="propositions" role="group" aria-labelledby="consigne_solutions"></div>
 
             <div class="conteneur_bouton">
-              <button type="button" class="qcm_verifier" id="ajouter_solution">ajouter une solution</button>
+              <button type="button" class="bouton_etape" id="ajouter_proposition">ajouter une solution</button>
             </div>
 
-            <div class="conteneur_bouton">
-              <button type="button" class="bouton_etape" data-montrer="partie_livrable" aria-controls="partie_livrable" aria-expanded="false">continuer</button>
+            <p class="visuellement_cache" id="annonce_solutions" role="status"></p>
+
+            <!-- mascotte : 1 proposition complète → rappel -->
+            <div class="rappel_mascotte" id="rappel_solutions" hidden>
+              <div class="rappel_mascotte_dessin emplacement_illustration" aria-hidden="true">mascotte</div>
+              <p>Tu dois remplir au moins 2&nbsp;propositions pour pouvoir continuer&#8239;!</p>
+            </div>
+
+            <!-- bouton fixe : 2 propositions complètes -->
+            <div class="qcm_pied" id="pied_solutions" hidden>
+              <button type="button" class="qcm_verifier" id="bouton_solutions">continuer</button>
             </div>
 
           </div>
@@ -515,12 +475,12 @@
 
           <div class="partie_cachee" id="partie_livrable" hidden>
 
-            <h3 class="consigne" id="consigne_livrable">
-              Livrable de la mission 2&#8239;: cadre ton projet.
-            </h3>
+            <h3 class="titre_etape titre_livrable" id="consigne_livrable">cadrer le projet</h3>
 
-            <div class="txt_labeur bloc_liste">
-              <p>À partir de tes analyses, rédige une problématique qui guidera ton projet. Tu dois préciser&#8239;:</p>
+            <div class="consigne" id="consigne_problematique">À partir de tes analyses, rédige une problématique qui guidera ton projet.</div>
+
+            <div class="txt_labeur bloc_liste livrable_liste">
+              <p>Tu dois préciser&#8239;:</p>
               <ul class="liste_etoiles">
                 <li><span class="etoile" aria-hidden="true"></span> les principaux enjeux environnementaux identifiés&#8239;;</li>
                 <li><span class="etoile" aria-hidden="true"></span> les besoins des utilisateurs à préserver&#8239;;</li>
@@ -529,20 +489,30 @@
               </ul>
             </div>
 
+            <!-- problématique : Entrée ou « soumettre à Andréa » → petite fenêtre d'Andréa (IA) -->
             <form class="livrable" id="formulaire_problematique">
-              <label for="t_problematique" class="souligne">Ta problématique</label>
-              <textarea id="t_problematique" rows="5"></textarea>
+              <label for="t_problematique" class="proposition_label">ta problématique</label>
+              <textarea id="t_problematique" rows="4" placeholder="Comment… ? puis Entrée pour la montrer à Andréa"></textarea>
 
-              <!-- EXEMPLE DE LA PROF : caché au départ, montré au clic (comportement à coder ensemble) -->
-              <button type="button" class="qcm_verifier" id="voir_exemple" aria-controls="exemple_problematique" aria-expanded="false">voir un exemple</button>
-              <div class="exemple" id="exemple_problematique" hidden>
+              <div class="livrable_boutons">
+                <!-- exemple de la prof : montré au clic, puis le bouton disparaît -->
+                <button type="button" class="qcm_verifier bouton_exemple" id="voir_exemple" aria-controls="exemple_problematique">voir un exemple</button>
+                <button type="submit" class="qcm_verifier" id="soumettre_problematique">soumettre à Andréa</button>
+              </div>
+
+              <div class="exemple exemple_large" id="exemple_problematique" hidden>
                 <p><span class="intro_exemple">exemple de formulation</span></p>
                 <p>Comment améliorer la performance environnementale du Basic-phone® en agissant en priorité sur sa production et sa durée de vie, tout en préservant ses fonctions essentielles, sa qualité et un prix compétitif&#8239;?</p>
                 <p>Cette formulation est un point de départ&#8239;: elle doit être adaptée aux résultats de ton analyse.</p>
               </div>
-
-              <button type="submit" class="qcm_verifier">envoyer ma problématique</button>
             </form>
+
+            <p class="visuellement_cache" id="annonce_livrable" role="status"></p>
+
+            <!-- bouton fixe : problématique validée (ou 3 essais) -->
+            <div class="qcm_pied" id="pied_livrable" hidden>
+              <button type="button" class="qcm_verifier" id="bouton_livrable">continuer</button>
+            </div>
 
           </div>
 
@@ -696,14 +666,47 @@
     <p>Appuie-toi sur les deux indicateurs&#8239;: le changement climatique et l’épuisement des ressources. Écris ta réponse ci-dessous, on en discute ensemble.</p>
   </template>
 
-  <!-- Avant les fiches solution du parcours -->
-  <template id="texte_solutions">
-    <p>[à rédiger]</p>
+  <!-- Andréa : avant les solutions -->
+  <template id="texte_solutions" data-humeur="neutre">
+    <p>À partir de cette analyse, on va maintenant repérer les moments de ce parcours sur lesquels ATHEN’TECH pourrait agir pour diminuer les impacts environnementaux du Basic-phone®, prolonger la durée de vie du smartphone, faciliter sa réparation et améliorer sa fin de vie.</p>
+  </template>
+
+  <!-- modèle d'une proposition (numéro et identifiants : mission2.js) -->
+  <template id="modele_proposition">
+    <fieldset class="proposition">
+      <legend class="proposition_titre">proposition <span class="proposition_numero">1</span></legend>
+
+      <label class="visuellement_cache proposition_label_etape">Étape du parcours</label>
+      <span class="proposition_choix">
+        <select class="proposition_etape" required>
+          <option value="">choisis ici l’étape du parcours</option>
+          <option>Envie et renseignement</option>
+          <option>Achat du téléphone</option>
+          <option>Première utilisation</option>
+          <option>Ancien téléphone</option>
+          <option>Utilisation du nouveau téléphone</option>
+          <option>Réparation</option>
+          <option>Fin de vie</option>
+        </select>
+      </span>
+
+      <label class="proposition_label proposition_label_probleme">problématique soulevée</label>
+      <textarea class="proposition_probleme" rows="3"></textarea>
+
+      <label class="proposition_label proposition_label_solution">solution proposée</label>
+      <textarea class="proposition_solution" rows="3" placeholder="puis Entrée pour la montrer à Andréa"></textarea>
+
+      <!-- proposition complète : bouton (ou Entrée) -->
+      <div class="proposition_pied">
+        <button type="button" class="qcm_verifier proposition_soumettre" hidden>soumettre à Andréa</button>
+      </div>
+    </fieldset>
   </template>
 
   <!-- Avant le livrable -->
-  <template id="texte_livrable">
-    <p>[à rédiger]</p>
+  <template id="texte_livrable" data-humeur="content">
+    <p><strong>C’est parti&#8239;!</strong></p>
+    <p>Tu vas pouvoir choisir une problématique pour la suite, à partir de tes analyses.</p>
   </template>
 
   <!-- Fin de la mission 2 -->

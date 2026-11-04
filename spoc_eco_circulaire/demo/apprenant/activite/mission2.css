@@ -106,6 +106,7 @@
 /* pop-up de message (sans IA) : pas de zone de saisie ni d'historique */
 .mentor[data-etape="message"] .mentor_saisie,
 .mentor[data-etape="message"] .mentor_fil,
+.mentor[data-etape="message"] .mentor_scene_fil,
 .mentor[data-etape="message"] .mentor_etat {
   display: none;
 }
@@ -811,7 +812,7 @@
   grid-template-columns: 34px 90px minmax(0, 230px) minmax(0, 1fr);
   align-items: center;
   column-gap: 20px;
-  padding: 22px 0;                   /* espace entre étapes */
+  padding: 34px 0;                   /* espace entre étapes */
 }
 
 .parcours_numero {
@@ -875,27 +876,53 @@
 }
 
 .parcours_etape[data-avis="ok"] .parcours_numero {
-  background: var(--vert_bleu);
+  background: var(--vert_citron, #cf3);
 }
 
 .parcours_etape[data-avis="a_approfondir"] .parcours_numero {
   background: var(--orange);
 }
 
+/* « soumettre à Andréa » : sous la case */
+.parcours_etape .soumettre_andrea {
+  grid-column: 4;
+  justify-self: end;
+  margin-top: 10px;
+}
+
+.soumettre_andrea[hidden],
+.proposition_soumettre[hidden] {
+  display: none;
+}
+
 @keyframes lecture {
   50% { background: var(--bleu_clair); }
 }
 
-/* fenêtre d'Andréa ouverte : la mascotte se cale sous elle, et la fenêtre remonte */
-body.mentor_visible #rappel_parcours {
+/* fenêtre d'Andréa ouverte : mascotte ou « continuer » calés sous elle, la fenêtre remonte */
+body.mentor_visible #rappel_parcours,
+body.mentor_visible #rappel_solutions,
+body.mentor_visible #pied_parcours,
+body.mentor_visible #pied_solutions,
+body.mentor_visible #pied_livrable {
   right: 24px;
   bottom: calc(var(--hauteur_bandeau_bas) + 16px);
   width: min(340px, calc(100vw - 32px));
   max-width: none;
 }
 
-body.mentor_visible:has(#rappel_parcours:not([hidden])) .mentor:not(.popup) {
+body.mentor_visible #pied_parcours,
+body.mentor_visible #pied_solutions,
+body.mentor_visible #pied_livrable {
+  align-items: center;
+}
+
+body.mentor_visible:has(#rappel_parcours:not([hidden]), #rappel_solutions:not([hidden])) .mentor:not(.popup) {
   bottom: calc(var(--hauteur_bandeau_bas) + 16px + 100px);
+}
+
+body.mentor_visible:has(#pied_parcours:not([hidden]), #pied_solutions:not([hidden]), #pied_livrable:not([hidden])) .mentor:not(.popup) {
+  bottom: calc(var(--hauteur_bandeau_bas) + 16px + 64px);
 }
 
 @media (max-width: 1100px) {
@@ -909,8 +936,13 @@ body.mentor_visible:has(#rappel_parcours:not([hidden])) .mentor:not(.popup) {
     row-gap: 10px;
   }
 
-  .parcours_etape textarea {
+  .parcours_etape textarea,
+  .parcours_etape .soumettre_andrea {
     grid-column: 2 / -1;
+  }
+
+  .parcours_etape .soumettre_andrea {
+    justify-self: end;
   }
 
   .parcours_dessin {
@@ -924,4 +956,255 @@ body.mentor_visible:has(#rappel_parcours:not([hidden])) .mentor:not(.popup) {
 h4.acv_titre {
   margin: 0 0 4px;
   font-weight: normal;
+}
+
+
+/* =====================================================================
+   7. SOLUTIONS DU PARCOURS
+   ===================================================================== */
+
+#consigne_solutions {
+  margin-top: 30px;
+}
+
+.propositions {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  max-width: 860px;
+  margin: 48px 0 40px;
+}
+
+/* sans cadre */
+.proposition {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+/* « proposition 1 » : pastille rose */
+.proposition_titre {
+  display: inline-block;
+  float: left;                       /* legend dans le flux */
+  margin-bottom: 18px;
+  padding: 6px 22px;
+  font-family: var(--titre);
+  background: var(--rose);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+}
+
+/* avis d'Andréa : petit rond dans la pastille */
+.proposition[data-avis] .proposition_titre::after,
+.proposition.en_lecture .proposition_titre::after {
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 10px;
+  vertical-align: -1px;
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+  background: var(--fond);
+}
+
+.proposition.en_lecture .proposition_titre::after {
+  animation: lecture 1s ease-in-out infinite;
+}
+
+.proposition[data-avis="ok"] .proposition_titre::after {
+  background: var(--vert_citron, #cf3);
+}
+
+.proposition[data-avis="a_approfondir"] .proposition_titre::after {
+  background: var(--orange);
+}
+
+/* menu déroulant : pastille, flèche à droite ; orange une fois choisi */
+.proposition_choix {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 22px;
+}
+
+.proposition_choix::after {
+  content: "";
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--trait);
+  border-bottom: 2px solid var(--trait);
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+
+.proposition_etape {
+  appearance: none;
+  min-width: 300px;
+  padding: 8px 48px 8px 20px;
+  font: inherit;
+  color: var(--couleur_texte);
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  cursor: pointer;
+}
+
+.proposition_etape:valid {
+  background: var(--orange);
+}
+
+.proposition_etape:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* textes : grandes cases arrondies, bleu clair à la saisie */
+.proposition_label {
+  margin: 0 0 8px 4px;
+  font-family: var(--titre);
+}
+
+.proposition textarea {
+  width: 100%;
+  min-height: 90px;
+  margin-bottom: 22px;
+  padding: 12px 16px;
+  font: inherit;
+  font-size: 0.92rem;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: 18px;
+  resize: vertical;
+}
+
+.proposition_pied {
+  align-self: stretch;
+  display: flex;
+  justify-content: flex-end;
+  min-height: 0;
+}
+
+.proposition_pied:has(button:not([hidden])) {
+  margin-top: -8px;
+}
+
+.proposition textarea:focus,
+.proposition textarea:focus-visible {
+  outline: none;
+  background: var(--bleu_clair);
+}
+
+#ajouter_proposition[hidden] {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .proposition_choix,
+  .proposition_etape {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* lien vers un document (PDF) sous un message d'Andréa */
+.mentor_document {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: var(--couleur_texte);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.mentor_document::before {
+  content: "↗ ";
+}
+
+
+/* =====================================================================
+   8. LIVRABLE : LA PROBLÉMATIQUE
+   ===================================================================== */
+
+.titre_livrable {
+  margin-top: 60px;
+}
+
+.livrable {
+  display: flex;
+  flex-direction: column;
+  max-width: 860px;
+  margin: 40px 0 30px;
+}
+
+.livrable textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 12px 16px;
+  font: inherit;
+  font-size: 0.92rem;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: 18px;
+  resize: vertical;
+}
+
+.livrable textarea:focus,
+.livrable textarea:focus-visible {
+  outline: none;
+  background: var(--bleu_clair);
+}
+
+/* « voir un exemple » collé à gauche de « soumettre à Andréa », à droite */
+.livrable_boutons {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+/* largeur du texte ; couleur du fond, rose au survol */
+.bouton_exemple {
+  width: auto;
+  padding: 8px 22px;
+  background: var(--fond);
+}
+
+.bouton_exemple:hover,
+.bouton_exemple:focus-visible {
+  background: var(--rose);
+}
+
+.bouton_exemple[hidden] {
+  display: none;
+}
+
+/* consigne bleue : sous la capsule noire, pas à côté */
+#consigne_problematique {
+  display: table;
+  margin-top: 30px;
+}
+
+.livrable_liste {
+  margin-top: 24px;
+}
+
+.livrable .exemple {
+  margin: 30px 0 0 10%;
+}
+
+/* case remplie par Andréa (version finale) : petit flash */
+.mise_a_jour {
+  animation: mise_a_jour 1.6s ease-out;
+}
+
+@keyframes mise_a_jour {
+  0%, 30% { background: var(--vert_bleu); }
 }
