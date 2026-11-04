@@ -12,10 +12,14 @@
 //                               se dessinent une à une, à droite du cercle
 //   5. QCM de l'ACV             « Quel enseignement principal ? » : Andréa répond en pop-up
 //                               (textes écrits à l'avance, pas d'IA)
-//   6. Les composants           question ouverte, discutée avec l'IA dans le pop-up d'Andréa
+//   6. Conversation IA          commun (relais, signaux, file d'attente)
+//   7. Composants               pop-up, IA
+//   8. Parcours utilisateur     petite fenêtre, IA si pas convaincue
 //
 // Signaux invisibles écrits par l'IA (retirés avant affichage) :
-//   [VALIDE: composants]               la réponse sur les composants est validée
+//   [VALIDE: composants]               composants validés
+//   [EVAL: Étape = ok|a_approfondir]   avis sur une étape du parcours
+//   [RESUME: Climat : … | Ressources : …]  ce qui a été validé, rangé dans le porte-documents
 //   [HUMEUR: neutre|content|decu]      le visage d'Andréa
 // =====================================================================
 
@@ -81,8 +85,10 @@
       if (e.key === 'Escape' && panneau.dataset.etape === 'message') fermerAndrea();
     });
     // le pop-up change de taille (dessin chargé, fenêtre redimensionnée) : on le recentre
-    new ResizeObserver(() => { if (!panneau.hidden) placerAuCentre(); }).observe(panneau);
-    window.addEventListener('resize', () => { if (!panneau.hidden) placerAuCentre(); });
+    // seulement en pop-up (la petite fenêtre reste en bas à droite)
+    const recentrer = () => { if (!panneau.hidden && panneau.classList.contains('popup')) placerAuCentre(); };
+    new ResizeObserver(recentrer).observe(panneau);
+    window.addEventListener('resize', recentrer);
   }
 
 
@@ -475,34 +481,162 @@
 
 
   // =====================================================================
-  // 6. LES COMPOSANTS : DISCUSSION AVEC L'IA
-  // Le pop-up d'Andréa pose la question (<template id="texte_composants">) ;
-  // l'élève répond dans la zone de texte, l'IA (agent de la mission 2) réagit.
-  // Quand l'IA écrit [VALIDE: composants], « continuer » remplace la zone de texte.
-  // Après 3 réponses non validées, la mascotte propose de passer quand même.
+  // 6. CONVERSATION AVEC L'IA (commun : composants, parcours)
   // =====================================================================
 
-  // en local (lancer_test.bat) : le relais de ton ordinateur ; en ligne : Supabase
+  // relais : local (lancer_test.bat) ou Supabase
   const ADRESSE_RELAIS = ['localhost', '127.0.0.1'].includes(location.hostname)
     ? 'api/mentor'
     : 'https://dhssndnqurrpidyxatwj.supabase.co/functions/v1/mentor';
-  const MISSION = 2;                      // le relais choisit l'agent de la mission 2
+  const MISSION = 2;
   const LONGUEUR_MAX = 2000;
-  const REPONSES_AVANT_PASSER = 3;      // la mascotte propose de passer après 3 réponses non validées
-  const CLE_ENJEUX = 'athentech_enjeux';  // laissé par la mission 1
+  const REPONSES_AVANT_PASSER = 3;      // mascotte : 3 réponses non validées
+  const CLE_ENJEUX = 'athentech_enjeux';
   const CLE_MISSION2 = 'athentech_mission2';
 
-  const sceneFil    = panneau?.querySelector('.mentor_scene_fil');
+  // mémoire : memoire.js, sinon navigateur seul
+  const memoire = window.Memoire || {
+    lire(cle) { try { return JSON.parse(localStorage.getItem(cle)); } catch { return null; } },
+    ecrire(cle, valeur) { try { localStorage.setItem(cle, JSON.stringify(valeur)); } catch { /* indisponible */ } },
+  };
+
+  // ajoute ou remplace une partie des réponses de la mission 2
+  function sauverMission2(partie) {
+    memoire.ecrire(CLE_MISSION2, Object.assign({}, memoire.lire(CLE_MISSION2) || {}, partie, { date: new Date().toISOString() }));
+  }
+
+  const fil         = panneau?.querySelector('.mentor_fil');          // petite fenêtre
+  const sceneFil    = panneau?.querySelector('.mentor_scene_fil');    // pop-up
   const etat        = panneau?.querySelector('.mentor_etat');
   const saisie      = panneau?.querySelector('.mentor_saisie');
   const champ       = saisie?.querySelector('textarea');
   const envoi       = saisie?.querySelector('button[type="submit"]');
+
+  let conversationId = null;            // une conversation pour toute la mission 2
+  let fileEnvois = Promise.resolve();   // messages envoyés un par un, dans l'ordre
+  let enCours = 0;
+
+  const normaliser = t => t.normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[’`]/g, "'").replace(/\s+/g, ' ').trim().toLowerCase();
+
+  // bulle : dans le pop-up ou dans la petite fenêtre
+  function ajouterMessage(qui, texte, etiquette) {
+    const cible = panneau.classList.contains('popup') ? sceneFil : fil;
+    const bulle = document.createElement('div');
+    bulle.className = `mentor_message mentor_message_${qui}`;
+
+    const auteur = document.createElement('span');
+    auteur.className = 'visuellement_cache';
+    auteur.textContent = qui === 'eleve' ? 'Toi : ' : qui === 'mentor' ? 'Andréa : ' : 'Information : ';
+    bulle.append(auteur);
+
+    if (etiquette) {
+      const e = document.createElement('span');
+      e.className = 'mentor_etiquette';
+      e.textContent = etiquette;
+      bulle.append(e);
+    }
+
+    const p = document.createElement('p');
+    p.className = 'mentor_texte';
+    p.textContent = texte;
+    bulle.append(p);
+
+    cible.appendChild(bulle);
+    cible.scrollTop = cible.scrollHeight;
+  }
+
+  function attente(active) {
+    enCours += active ? 1 : -1;
+    const occupe = enCours > 0;
+    envoi.disabled = occupe;
+    etat.textContent = occupe ? 'Andréa écrit…' : '';
+  }
+
+  // visage d'Andréa : seulement quand son message s'affiche
+  const changerHumeur = h => { if (h && panneau) panneau.dataset.humeur = h; };
+
+  // signaux de l'IA : lus et retirés du texte
+  function lireSignaux(brut) {
+    const evals = [];
+    let valide = null;
+    let resume = '';
+    let humeur = null;
+    let texte = brut;
+    texte = texte.replace(/\[\s*VALIDE\s*:\s*([^\]]+?)\s*\]/gi, (_, quoi) => { valide = normaliser(quoi); return ''; });
+    texte = texte.replace(/\[\s*RESUME\s*:\s*([^\]]+)\]/gi, (_, r) => { resume = r.trim(); return ''; });
+    texte = texte.replace(/\[\s*EVAL\s*:\s*([^=\]]+?)\s*=\s*(ok|a_approfondir)\s*\]/gi, (_, nom, avis) => {
+      evals.push({ nom: nom.trim(), avis: avis.toLowerCase() });
+      return '';
+    });
+    texte = texte.replace(/\[\s*HUMEUR\s*:\s*([a-zéè_]+)\s*\]/gi, (_, h) => { humeur = h.toLowerCase(); return ''; });
+    texte = texte.replace(/\[\s*(EVAL|VALIDE|HUMEUR|RESUME)[^\]]*\]/gi, '');   // signal mal écrit : caché
+    return { texte: texte.replace(/\n{3,}/g, '\n\n').trim(), evals, valide, resume, humeur };
+  }
+
+  // envoi au relais (file d'attente) → { ok, texte, evals, valide, resume } ou { ok: false, erreur }
+  function envoyer(message) {
+    const tache = fileEnvois.then(async () => {
+      attente(true);
+      try {
+        const reponse = await fetch(ADRESSE_RELAIS, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: message.slice(0, LONGUEUR_MAX), conversation_id: conversationId, mission: MISSION }),
+        });
+        const donnees = await reponse.json().catch(() => ({}));
+        if (!reponse.ok || !donnees.reponse) throw new Error(donnees.erreur || 'Andréa ne répond pas.');
+        conversationId = donnees.conversation_id || conversationId;
+        return { ok: true, ...lireSignaux(donnees.reponse) };
+      } catch (erreur) {
+        return { ok: false, erreur: erreur.message };
+      } finally {
+        attente(false);
+      }
+    });
+    fileEnvois = tache.catch(() => {});
+    return tache;
+  }
+
+  // contexte : 1er message seulement
+  function contexte() {
+    const lignes = [`[Contexte : QCM « quel enseignement principal ? » : choix successifs ${choixAcv.join(', ') || 'B'}.]`];
+    const m1 = memoire.lire(CLE_ENJEUX);
+    if (m1 && Array.isArray(m1.reponses) && m1.reponses.length) {
+      lignes.push(`[Contexte : enjeux retenus en mission 1 (${m1.valides ? 'validés' : 'non validés'}) : ${m1.reponses.join(' / ')}]`);
+    }
+    return lignes.join('\n') + '\n';
+  }
+  const debutMessage = () => (conversationId ? '' : contexte());
+
+  // saisie dans la fenêtre : composants (pop-up) ou parcours (petite fenêtre)
+  saisie?.addEventListener('submit', e => {
+    e.preventDefault();
+    const texte = champ.value.trim();
+    if (!texte) return;
+    if (panneau.dataset.etape === 'discussion') { champ.value = ''; repondreComposants(texte); }
+    else if (panneau.dataset.etape === 'parcours') { champ.value = ''; repondreParcours(texte); }
+  });
+
+  // Entrée envoie ; Maj + Entrée : nouvelle ligne
+  champ?.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' || e.shiftKey || e.isComposing) return;
+    e.preventDefault();
+    saisie.requestSubmit();
+  });
+
+
+  // =====================================================================
+  // 7. COMPOSANTS (pop-up, IA)
+  // [VALIDE: composants] → « continuer » ; [RESUME: …] → porte-documents
+  // 3 réponses non validées → mascotte
+  // =====================================================================
+
   const rappelPasser = document.getElementById('rappel_passer');
   const passerEtape  = document.getElementById('passer_etape');
 
-  let conversationId = null;             // la même conversation pour toute la mission 2
-  let enCours = false;
   let composantsValides = false;
+  let resumeComposants = '';
   const reponsesComposants = [];
 
   function lancerComposants() {
@@ -522,140 +656,210 @@
     champ.focus({ preventScroll: true });
   }
 
-  // une bulle dans le pop-up (l'élève, Andréa, ou un message d'erreur)
-  function ajouterMessage(qui, texte) {
-    const bulle = document.createElement('div');
-    bulle.className = `mentor_message mentor_message_${qui}`;
+  async function repondreComposants(texte) {
+    reponsesComposants.push(texte);
+    ajouterMessage('eleve', texte);
+    const r = await envoyer(`${debutMessage()}[Étape : composants de l'ACV]\n[Réponse à la question « Au sein de l'étape de production, quels composants ressortent particulièrement ? »]\n${texte}`);
 
-    const auteur = document.createElement('span');
-    auteur.className = 'visuellement_cache';
-    auteur.textContent = qui === 'eleve' ? 'Toi : ' : qui === 'mentor' ? 'Andréa : ' : 'Information : ';
-
-    const p = document.createElement('p');
-    p.className = 'mentor_texte';
-    p.textContent = texte;
-
-    bulle.append(auteur, p);
-    sceneFil.appendChild(bulle);
-    sceneFil.scrollTop = sceneFil.scrollHeight;   // le dernier message reste visible
-  }
-
-  function attente(active) {
-    enCours = active;
-    envoi.disabled = active;
-    sceneFil.setAttribute('aria-busy', String(active));
-    etat.textContent = active ? 'Andréa écrit…' : '';
-  }
-
-  // Retire les signaux de l'IA et les applique
-  function lireSignaux(texte) {
-    texte = texte.replace(/\[\s*VALIDE\s*:\s*([a-zéè_ ]+?)\s*\]/gi, (_, quoi) => {
-      if (quoi.trim().toLowerCase() === 'composants') validerComposants();
-      return '';
-    });
-    texte = texte.replace(/\[\s*HUMEUR\s*:\s*([a-zéè_]+)\s*\]/gi, (_, humeur) => {
-      panneau.dataset.humeur = humeur.toLowerCase();
-      return '';
-    });
-    // tout autre signal oublié par l'IA n'est pas montré à l'élève
-    texte = texte.replace(/\[\s*(EVAL|VALIDE|HUMEUR)[^\]]*\]/gi, '');
-    return texte.replace(/\n{3,}/g, '\n\n').trim();
+    if (!r.ok) {
+      ajouterMessage('erreur', `${r.erreur} Ton message n’est pas parti : réécris-le dans un instant.`);
+      reponsesComposants.pop();
+    } else {
+      if (r.resume) resumeComposants = r.resume;
+      changerHumeur(r.humeur);
+      if (r.texte) ajouterMessage('mentor', r.texte);
+      if (r.valide === 'composants') validerComposants();
+    }
+    if (!composantsValides && reponsesComposants.length >= REPONSES_AVANT_PASSER && rappelPasser) rappelPasser.hidden = false;
+    if (!composantsValides) champ.focus({ preventScroll: true });
   }
 
   function validerComposants() {
     composantsValides = true;
-    panneau.classList.add('valide');       // la zone de texte disparaît (activite/mission2.css)
+    panneau.classList.add('valide');       // zone de texte → « continuer »
     boutonSuivant.textContent = 'continuer';
     boutonSuivant.hidden = false;
     if (rappelPasser) rappelPasser.hidden = true;
   }
 
-  // le contexte, envoyé une seule fois au début de la conversation
-  function contexte() {
-    const lignes = [`[Contexte : QCM « quel enseignement principal ? » : choix successifs ${choixAcv.join(', ') || 'B'}.]`];
-    try {
-      const m1 = JSON.parse(localStorage.getItem(CLE_ENJEUX) || 'null');
-      if (m1 && Array.isArray(m1.reponses) && m1.reponses.length) {
-        lignes.push(`[Contexte : enjeux retenus en mission 1 (${m1.valides ? 'validés' : 'non validés'}) : ${m1.reponses.join(' / ')}]`);
-      }
-    } catch { /* rien de la mission 1 : tant pis */ }
-    return lignes.join('\n') + '\n';
-  }
-
-  async function envoyer(texte) {
-    attente(true);
-    try {
-      const corps = { message: texte.slice(0, LONGUEUR_MAX), conversation_id: conversationId, mission: MISSION };
-      const reponse = await fetch(ADRESSE_RELAIS, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(corps),
-      });
-      const donnees = await reponse.json().catch(() => ({}));
-      if (!reponse.ok || !donnees.reponse) throw new Error(donnees.erreur || 'Andréa ne répond pas.');
-
-      conversationId = donnees.conversation_id || conversationId;
-      const propre = lireSignaux(donnees.reponse);
-      if (propre) ajouterMessage('mentor', propre);
-
-    } catch (erreur) {
-      ajouterMessage('erreur', `${erreur.message} Ton message n’est pas parti : réécris-le dans un instant.`);
-      reponsesComposants.pop();            // cette réponse ne compte pas
-    } finally {
-      attente(false);
-      // après 3 réponses non validées, la mascotte propose de passer
-      if (!composantsValides && reponsesComposants.length >= REPONSES_AVANT_PASSER && rappelPasser) {
-        rappelPasser.hidden = false;
-      }
-      if (!composantsValides) champ.focus({ preventScroll: true });
-    }
-  }
-
-  saisie?.addEventListener('submit', e => {
-    e.preventDefault();
-    const texte = champ.value.trim();
-    if (!texte || enCours || panneau.dataset.etape !== 'discussion') return;
-    champ.value = '';
-
-    reponsesComposants.push(texte);
-    ajouterMessage('eleve', texte);
-    const debut = conversationId ? '' : contexte();
-    envoyer(`${debut}[Étape : composants de l'ACV]\n[Réponse à la question « Au sein de l'étape de production, quels composants ressortent particulièrement ? »]\n${texte}`);
-  });
-
-  // Entrée envoie ; Maj + Entrée passe à la ligne
-  champ?.addEventListener('keydown', e => {
-    if (e.key !== 'Enter' || e.shiftKey || e.isComposing) return;
-    e.preventDefault();
-    saisie.requestSubmit();
-  });
-
-  // « continuer » (après validation) ou « continuer » de la mascotte : on passe au parcours
   passerEtape?.addEventListener('click', () => {
     if (rappelPasser) rappelPasser.hidden = true;
     fermerAndrea();
   });
 
-  // Fin de la question des composants : on garde les réponses, puis le parcours utilisateur apparaît
+  // fin des composants : mémoire, porte-documents, parcours
   function versParcours() {
-    try {
-      localStorage.setItem(CLE_MISSION2, JSON.stringify({
-        qcm_acv: choixAcv,
-        composants: { reponses: reponsesComposants, valides: composantsValides },
-        date: new Date().toISOString(),
-      }));
-    } catch { /* stockage indisponible : l'activité continue */ }
+    sauverMission2({
+      qcm_acv: choixAcv,
+      composants: { reponses: reponsesComposants, valides: composantsValides, resume: resumeComposants },
+    });
+
+    document.dispatchEvent(new CustomEvent('mentor:composants', {
+      detail: {
+        liste: reponsesComposants,
+        valides: composantsValides,
+        resume: composantsValides ? resumeComposants : '',
+      },
+    }));
 
     const parcours = document.getElementById('partie_parcours');
     if (!parcours) return;
     parcours.hidden = false;
     requestAnimationFrame(() => {
-      const consigne = document.getElementById('consigne_parcours');
-      if (typeof calerEnHaut === 'function') calerEnHaut(consigne);
-      else consigne.scrollIntoView({ behavior: 'smooth' });
-      consigne.tabIndex = -1;
-      consigne.focus({ preventScroll: true });
+      const titre = document.getElementById('consigne_parcours');
+      if (typeof calerEnHaut === 'function') calerEnHaut(titre);
+      else titre.scrollIntoView({ behavior: 'smooth' });
+      titre.tabIndex = -1;
+      titre.focus({ preventScroll: true });
     });
   }
+
+
+  // =====================================================================
+  // 8. PARCOURS UTILISATEUR (petite fenêtre, IA)
+  // Entrée dans une étape → IA. Convaincue ([EVAL: … = ok]) : rien ne s'affiche.
+  // Pas convaincue (a_approfondir) : la petite fenêtre s'ouvre avec sa remarque ;
+  // l'élève peut répondre ou continuer.
+  // Mascotte : 2 étapes remplies → rappel ; 7 → « continuer ».
+  // =====================================================================
+
+  const etapesParcours = [...document.querySelectorAll('.parcours_etape')];
+  const rappelParcours = document.getElementById('rappel_parcours');
+  const piedParcours   = document.getElementById('pied_parcours');
+  const annonceParcours = document.getElementById('annonce_parcours');
+  const ETAPES_AVANT_RAPPEL = 2;
+  let basDuSchemaVu = false;              // mascotte : seulement après avoir vu la dernière étape
+
+  const nomEtape   = li => li.dataset.etape;
+  const caseDe     = li => li.querySelector('textarea');
+  const estRemplie = li => caseDe(li).value.trim() !== '';
+  const etapeNommee = nom => etapesParcours.find(li => normaliser(nomEtape(li)) === normaliser(nom));
+
+  function ouvrirFenetre() {
+    if (!panneau) return;
+    panneau.dataset.etape = 'parcours';
+    panneau.classList.remove('popup', 'valide', 'reduit');
+    panneau.style.transform = '';
+    boutonSuivant.hidden = true;
+    if (panneau.hidden) {
+      fil.replaceChildren();               // fenêtre vide au départ
+      panneau.dataset.humeur = 'neutre';
+      panneau.hidden = false;
+    }
+    document.body.classList.add('mentor_visible');
+  }
+
+  function fermerFenetre() {
+    if (!panneau || panneau.dataset.etape !== 'parcours') return;
+    panneau.hidden = true;
+    document.body.classList.remove('mentor_visible');
+  }
+
+  function appliquerAvis(evals) {
+    evals.forEach(({ nom, avis }) => {
+      const li = etapeNommee(nom);
+      if (li) li.dataset.avis = avis;
+    });
+  }
+
+  function sauverParcours() {
+    const parcours = {};
+    etapesParcours.forEach(li => {
+      const texte = caseDe(li).value.trim();
+      if (texte) parcours[nomEtape(li)] = { texte, avis: li.dataset.avis || null };
+    });
+    sauverMission2({ parcours });
+  }
+
+  function verifierParcours() {
+    if (!piedParcours) return;
+    const remplies = etapesParcours.filter(estRemplie).length;
+    const tout = remplies === etapesParcours.length;
+    if (tout && piedParcours.hidden && annonceParcours) {
+      annonceParcours.textContent = 'Toutes les étapes sont remplies. Le bouton « continuer » est disponible en bas de l’écran.';
+    }
+    piedParcours.hidden = !tout;
+    if (rappelParcours) rappelParcours.hidden = tout || !basDuSchemaVu || remplies < ETAPES_AVANT_RAPPEL;
+  }
+
+  // dernière étape visible à l'écran → la mascotte peut apparaître
+  const derniere = etapesParcours[etapesParcours.length - 1];
+  if (derniere) {
+    new IntersectionObserver(entrees => {
+      if (entrees.some(e => e.isIntersecting)) { basDuSchemaVu = true; verifierParcours(); }
+    }, { root: document.getElementById('droite_contenu'), threshold: 0.6 }).observe(derniere);
+  }
+
+  // une étape validée avec Entrée
+  async function envoyerEtape(li) {
+    const texte = caseDe(li).value.trim();
+    if (!texte || texte === li.dataset.envoye) return;
+    li.dataset.envoye = texte;
+    sauverParcours();
+
+    const nom = nomEtape(li);
+    const remplies = etapesParcours.filter(estRemplie).length;
+    const restantes = etapesParcours.filter(x => !estRemplie(x)).map(nomEtape);
+    let message = `${debutMessage()}[Étape : parcours utilisateur]\n[Étape du parcours « ${nom} » (${remplies}/7 remplies)]\n${texte}`;
+    message += restantes.length ? `\n[Étapes encore à remplir : ${restantes.join(', ')}.]` : '\n[Toutes les étapes du parcours sont remplies.]';
+
+    li.classList.add('en_lecture');          // Andréa lit
+    const r = await envoyer(message);
+    li.classList.remove('en_lecture');
+    if (!r.ok) {
+      ouvrirFenetre();
+      ajouterMessage('erreur', `${r.erreur} Valide à nouveau l’étape « ${nom} » avec Entrée dans un instant.`);
+      delete li.dataset.envoye;
+      return;
+    }
+    appliquerAvis(r.evals);
+    sauverParcours();
+
+    // convaincue : silence ; pas convaincue (ou pas d'avis) : la fenêtre s'ouvre
+    const convaincue = r.evals.length && r.evals.every(e => e.avis === 'ok');
+    if (convaincue && annonceParcours) annonceParcours.textContent = `Étape « ${nom} » : Andréa est d’accord.`;
+    if (!convaincue && r.texte) {
+      ouvrirFenetre();
+      changerHumeur(r.humeur);
+      ajouterMessage('eleve', texte, `Parcours · ${nom}`);
+      ajouterMessage('mentor', r.texte);
+    }
+  }
+
+  // réponse écrite dans la petite fenêtre
+  async function repondreParcours(texte) {
+    ajouterMessage('eleve', texte);
+    const r = await envoyer(`${debutMessage()}[Étape : parcours utilisateur]\n${texte}`);
+    if (!r.ok) {
+      ajouterMessage('erreur', `${r.erreur} Ton message n’est pas parti : réécris-le dans un instant.`);
+      return;
+    }
+    appliquerAvis(r.evals);
+    sauverParcours();
+    changerHumeur(r.humeur);
+    if (r.texte) ajouterMessage('mentor', r.texte);
+    champ.focus({ preventScroll: true });
+  }
+
+  etapesParcours.forEach((li, i) => {
+    const zone = caseDe(li);
+    zone.addEventListener('input', verifierParcours);
+
+    // Entrée : envoi + étape suivante ; Maj + Entrée : nouvelle ligne
+    zone.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' || e.shiftKey || e.isComposing) return;
+      e.preventDefault();
+      envoyerEtape(li);
+      const suivante = etapesParcours.slice(i + 1).find(x => !estRemplie(x));
+      if (suivante) caseDe(suivante).focus();
+    });
+  });
+
+  // « continuer » : la fenêtre se ferme, les solutions apparaissent
+  piedParcours?.querySelector('button')?.addEventListener('click', () => {
+    sauverParcours();
+    fermerFenetre();
+    if (rappelParcours) rappelParcours.hidden = true;
+  });
 
 })();

@@ -436,13 +436,9 @@
   // les deux « continuer » mènent au même endroit :
   // on met les enjeux de côté et on passe à la question suivante
   function allerALaQuestion() {
-    try {
-      localStorage.setItem(CLE_ENJEUX, JSON.stringify({
-        reponses: reponsesEnjeux,
-        valides: enjeuxValides,
-        date: new Date().toISOString(),
-      }));
-    } catch { /* stockage indisponible : tant pis, l'activité continue */ }
+   const valeur = { reponses: reponsesEnjeux, valides: enjeuxValides, date: new Date().toISOString() };
+   if (window.Memoire) window.Memoire.ecrire(CLE_ENJEUX, valeur);
+   else try { localStorage.setItem(CLE_ENJEUX, JSON.stringify(valeur)); } catch { /* indisponible */ }
     if (!enjeuxValides) envoyerEnjeuxAuPorteDocuments();   // enjeux non validés : « à approfondir »
     if (rappelEnjeux) rappelEnjeux.hidden = true;
     dansLeCoin();

@@ -11,16 +11,17 @@
   --vert_citron:        #cefb5f;
   --vert_bleu:          #dbffdd;
   --rose:               #f7c5ff;
+  --rose_pale:          #ebc8e8;
   --violet:             #b096ff;
   --bleu_clair:         #b4d5f7;
   --bleu:               #6eadf0;
   --prune:              #68043a;
-  --marron2:             #794b52;
+  --marron2:            #794b52;
   --rouge:              #ec3724;
   --orange:             #f27322;
+  --orange_pale:        #ee963c;
   --blanc:              #ffffff;
   --noir:               #000000;
-
 
   /* ---------- Interface ---------- */
 
@@ -83,13 +84,19 @@ svg.dessin .trait_fort  { stroke-width: var(--dessin_epaisseur_forte); }
 svg.dessin .vert_citron { fill: var(--vert_citron); }
 svg.dessin .vert_bleu   { fill: var(--vert_bleu); }
 svg.dessin .rose        { fill: var(--rose); }
+svg.dessin .rose_pale   { fill: var(--rose_pale); }
 svg.dessin .violet      { fill: var(--violet); }
 svg.dessin .bleu_clair  { fill: var(--bleu_clair); }
 svg.dessin .bleu        { fill: var(--bleu); }
 svg.dessin .prune       { fill: var(--prune); }
 svg.dessin .rouge       { fill: var(--rouge); }
 svg.dessin .orange      { fill: var(--orange); }
+svg.dessin .orange_pale { fill: var(--orange_pale); }
 svg.dessin .blanc       { fill: var(--blanc); }
 svg.dessin .noir        { fill: var(--noir); }
-svg.dessin .marron2       { fill: var(--marron2); }
 svg.dessin .sans_fond   { fill: none; }
+
+/* les dessins utilisent la classe « marron » ; la variable s'appelle --marron2
+   pour ne pas entrer en conflit avec --marron des couleurs d'état */
+svg.dessin .marron,
+svg.dessin .marron2     { fill: var(--marron2); }

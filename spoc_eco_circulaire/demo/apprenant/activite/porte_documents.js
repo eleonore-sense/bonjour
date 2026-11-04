@@ -11,13 +11,19 @@
 //   et le lien « revoir ma mission 1 » ramènent sur la page de la mission 1, directement
 //   à la roue (rubrique à approfondir) ou aux enjeux, avec les réponses déjà remises en place
 //   (adresse chap3_IV_1.html?reprendre=Clients, ou ?reprendre=enjeux).
+// - Mission 2 : quand la question des composants est finie (validée par Andréa, ou passée),
+//   mission2.js envoie les réponses (événement « mentor:composants ») : elles sont rangées
+//   sous « Les composants qui ressortent de l'ACV », et la petite bulle le dit.
+//   Validée : on range le résumé d'Andréa (une ligne par indicateur : « Climat : … », « Ressources : … »).
+//   Pas validée : on range les réponses de l'étudiant, avec la pastille « à approfondir ».
 // - La mascotte parle deux fois :
 //   1. au 1er clic sur « continuer » sous la roue : pop-up vert au centre, avec le dessin du porte-documents ;
 //      quand on le ferme (rond rouge, clic ailleurs ou Échap), le dossier s'envole jusqu'à sa place,
 //      en haut à droite, puis la suite (le bilan d'Andréa) s'affiche ;
 //   2. quand les enjeux y sont rangés : petite bulle verte à côté du logo, pendant 10 secondes.
 //
-// Les réponses sont gardées dans le navigateur (localStorage, clé « athentech_porte_documents »).
+// Les réponses sont gardées par memoire.js (clé « athentech_porte_documents ») :
+// dans le navigateur, et dans Moodle quand la page est ouverte par le SCORM.
 // À charger sur chaque page de l'activité, avec defer, après mentor.js s'il y en a un :
 //   <link rel="stylesheet" href="activite/porte_documents.css">
 //   <script src="activite/porte_documents.js" defer></script>
@@ -50,20 +56,21 @@
     </svg>`;
 
 
-  // ---------- Mémoire (dans le navigateur) ----------
+  // ---------- Mémoire (memoire.js : navigateur, et Moodle avec le SCORM) ----------
+  // sans memoire.js, on garde seulement dans le navigateur
 
-  function lire() {
-    try {
-      return JSON.parse(localStorage.getItem(CLE)) || {};
-    } catch {
-      return {};
-    }
-  }
+  const memoire = window.Memoire || {
+    lire(cle) { try { return JSON.parse(localStorage.getItem(cle)); } catch { return null; } },
+    ecrire(cle, valeur) { try { localStorage.setItem(cle, JSON.stringify(valeur)); } catch { /* indisponible */ } },
+  };
 
-  let donnees = Object.assign({ roue: {}, enjeux: null, visible: false, vu: false }, lire());
+  const VIDE = () => ({ roue: {}, enjeux: null, composants: null, visible: false, vu: false });
+  const lire = () => Object.assign(VIDE(), memoire.lire(CLE) || {});
+
+  let donnees = lire();
 
   function enregistrer() {
-    try { localStorage.setItem(CLE, JSON.stringify(donnees)); } catch { /* stockage indisponible */ }
+    memoire.ecrire(CLE, donnees);
   }
 
 
@@ -110,6 +117,10 @@
     <div id="pd_enjeux" hidden>
       <h5 class="souligne_fin">Mes 2 enjeux à creuser</h5>
       <div id="pd_enjeux_liste"></div>
+    </div>
+    <div id="pd_composants" hidden>
+      <h5 class="souligne_fin">Les composants qui ressortent de l’ACV</h5>
+      <div id="pd_composants_liste"></div>
     </div>`;
 
   // petite bulle de la mascotte, à côté du logo (« J'ai rempli ton porte-documents ! »)
@@ -130,6 +141,8 @@
   const listeRoue = fenetre.querySelector('#pd_roue');
   const blocEnjeux = fenetre.querySelector('#pd_enjeux');
   const zoneEnjeux = fenetre.querySelector('#pd_enjeux_liste');
+  const blocComposants = fenetre.querySelector('#pd_composants');
+  const zoneComposants = fenetre.querySelector('#pd_composants_liste');
 
   function element(balise, classe, texte) {
     const el = document.createElement(balise);
@@ -151,8 +164,10 @@
 
   // pastille « à approfondir », avec « revenir à cette étape » :
   // un bouton sur la page de la mission 1, un lien vers elle sur les autres pages
+  // sans cible : la pastille seule, sans « revenir à cette étape » (étapes de la mission 2)
   function marqueAApprofondir(cible) {
     const marque = element('span', 'pd_a_approfondir', 'à approfondir');
+    if (!cible) return marque;
     let lien;
     if (surMission1) {
       lien = element('button', 'pd_revenir', 'revenir à cette étape');
@@ -177,21 +192,29 @@
       listeRoue.append(li);
     });
 
-    // « Mes 2 enjeux à creuser » n'apparaît qu'une fois les enjeux rangés
-    zoneEnjeux.replaceChildren();
-    const e = donnees.enjeux;
-    blocEnjeux.hidden = !(e && e.liste && e.liste.length);
     const lienMission1 = fenetre.querySelector('.pd_lien_mission1 a');
     if (lienMission1) lienMission1.href = adresseReprise(cibleMission1());
-    if (blocEnjeux.hidden) return;
+
+    // « Mes 2 enjeux à creuser » n'apparaît qu'une fois les enjeux rangés
+    afficherListe(donnees.enjeux, blocEnjeux, zoneEnjeux, 'enjeux');
+
+    // mission 2 : les composants, une fois la question finie
+    afficherListe(donnees.composants, blocComposants, zoneComposants, null);
+  }
+
+  // une liste de réponses ({ liste, valides }) dans son bloc ; pastille si Andréa ne l'a pas validée
+  function afficherListe(memo, bloc, zone, cible) {
+    zone.replaceChildren();
+    bloc.hidden = !(memo && memo.liste && memo.liste.length);
+    if (bloc.hidden) return;
     const liste = element('ul', 'pd_liste');
-    e.liste.forEach(texte => {
+    memo.liste.forEach(texte => {
       const li = element('li');
       li.append(element('span', 'pd_reponse', texte));
       liste.append(li);
     });
-    zoneEnjeux.append(liste);
-    if (!e.valides) zoneEnjeux.append(marqueAApprofondir('enjeux'));
+    zone.append(liste);
+    if (!memo.valides) zone.append(marqueAApprofondir(cible));
   }
 
 
@@ -350,6 +373,14 @@
   // déjà apparu (sur cette page ou une autre) : il est là dès l'ouverture de la page
   if (donnees.visible) bouton.hidden = false;
 
+  // dans Moodle, les réponses gardées arrivent juste après l'ouverture de la page :
+  // on les reprend (autre ordinateur, navigateur vidé…)
+  document.addEventListener('memoire:prete', () => {
+    donnees = lire();
+    if (donnees.visible && !annonceOuverte) bouton.hidden = false;
+    if (fenetre.open) afficher();
+  });
+
 
   // ---------- Page de la mission 1 : on suit la roue et Andréa ----------
 
@@ -398,6 +429,27 @@
       direBulle(TEXTES.enjeux);
     });
   }
+
+  // ---------- Page de la mission 2 : les composants ----------
+  // envoyés par mission2.js à la fin de la question (validée par Andréa, ou passée avec la mascotte)
+
+  document.addEventListener('mentor:composants', e => {
+    const { liste, valides, resume } = e.detail || {};
+    if (!liste || !liste.length) return;
+    // le résumé d'Andréa : « Climat : … | Ressources : … » → une ligne par indicateur
+    const lignesResume = (resume || '').split('|').map(l => l.trim()).filter(Boolean);
+    donnees.composants = {
+      liste: valides && lignesResume.length ? lignesResume : liste,
+      reponses: liste,                         // les réponses de l'étudiant, gardées dans tous les cas
+      valides: Boolean(valides),
+    };
+    if (!donnees.visible) donnees.visible = true;
+    enregistrer();
+    if (fenetre.open) afficher();
+    if (!annonceOuverte) bouton.hidden = false;
+    direBulle(TEXTES.enjeux);                  // « J'ai rempli ton porte-documents ! »
+  });
+
 
   // ---------- Retour depuis une autre page : ?reprendre=… ----------
   // On saute la lecture des documents, on remet les réponses dans la roue et les avis d'Andréa,

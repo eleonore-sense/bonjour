@@ -13,17 +13,19 @@
   <link rel="stylesheet" href="activite/mentor.css">
   <!-- styles propres à la mission 2 (cycle de vie, ACV, visages d'Andréa) -->
   <link rel="stylesheet" href="activite/mission2.css">
-    <link rel="stylesheet" href="activite/porte_documents.css">
+  <link rel="stylesheet" href="activite/porte_documents.css">
 
-    
   <script src="cours.js" defer></script>
   <script src="script.js" defer></script>
+  <!-- les réponses de l'étudiant : navigateur, et Moodle avec le SCORM (avant les scripts de l'activité) -->
+  <script src="memoire.js" defer></script>
   <script src="dessins.js" defer></script>
-  <script src="activite/porte_documents.js" defer></script>
   <!-- boutons data-montrer, documents en pop-up, bouton « passer à la suite » -->
   <script src="activite/activite_smartphone.js" defer></script>
   <!-- mission 2 : remise en ordre du cycle de vie, cycle en rond, ACV, pop-ups d'Andréa -->
   <script src="activite/mission2.js" defer></script>
+  <!-- porte-documents : les réponses de l'étudiant, sur toutes les pages de l'activité -->
+  <script src="activite/porte_documents.js" defer></script>
 </head>
 
 
@@ -341,91 +343,114 @@
 
 
 
-          <!-- ================= INTERACTION 3 : LE PARCOURS UTILISATEUR ================= -->
+          <!-- ================= ANALYSE 3 : PARCOURS UTILISATEUR ================= -->
 
           <div class="partie_cachee" id="partie_parcours" hidden>
 
-            <h3 class="consigne" id="consigne_parcours">
-              Analyse 3&#8239;: observe le parcours de l’utilisateur.
-            </h3>
+            <h3 class="titre_etape titre_parcours" id="consigne_parcours">comprendre les usages&#8239;: observe le parcours de l’utilisateur</h3>
 
             <div class="txt_labeur">
               <p>Un smartphone n’existe pas uniquement dans une usine. Son impact dépend aussi de la manière dont il est acheté, utilisé, entretenu et éliminé.</p>
+            </div>
+
+            <!-- Andréa parle : petit dessin à gauche, texte à droite -->
+            <div class="andrea_parle">
+              <img class="andrea_parle_dessin" src="dessin/chap_3/IV/mentor_doute.svg" alt="">
               <p>Imagine le parcours d’une personne qui souhaite changer de téléphone. Elle compare les prix et les performances, achète un nouvel appareil, le configure, l’utilise, le recharge, puis peut-être le fait réparer ou le remplace. À la fin de sa première utilisation, son ancien téléphone peut être revendu, conservé dans un tiroir ou déposé dans un point de collecte.</p>
             </div>
 
-            <!-- ESPACE DU PARCOURS : une étape = un <li>.
-                 Pour le dessin : remplacer le <div class="parcours_dessin …"> par
-                 <img class="parcours_dessin" src="dessin/chap_3/IV/…" alt=""> -->
-            <div class="consigne">Pour chaque étape, décris ce que fait l’utilisateur et repère les points importants pour l’éco-conception.</div>
+            <div class="conteneur_bouton">
+              <button type="button" class="bouton_etape" data-montrer="parcours_schema" aria-controls="parcours_schema" aria-expanded="false">à toi de jouer</button>
+            </div>
 
-            <ol class="parcours">
+            <!-- schéma du parcours (doc prof p. 40) -->
+            <div class="partie_cachee" id="parcours_schema" hidden>
 
-              <li class="parcours_etape">
-                <div class="parcours_dessin emplacement_illustration" aria-hidden="true">dessin</div>
-                <div class="parcours_texte">
-                  <label for="p_envie"><strong>Envie et renseignement</strong><br>Pourquoi et comment l’utilisateur envisage-t-il de changer de téléphone&#8239;?</label>
-                  <textarea id="p_envie" rows="2" placeholder="Décris cette étape avec tes mots…"></textarea>
-                </div>
-              </li>
+              <div class="consigne" id="consigne_schema">Pour chaque étape, décris ce que fait l’utilisateur et identifie les points importants à prendre en compte pour l’éco-conception.</div>
 
-              <li class="parcours_etape">
-                <div class="parcours_dessin emplacement_illustration" aria-hidden="true">dessin</div>
-                <div class="parcours_texte">
-                  <label for="p_achat"><strong>Achat du téléphone</strong><br>Comment l’utilisateur achète-t-il son téléphone&#8239;?</label>
-                  <textarea id="p_achat" rows="2" placeholder="Décris cette étape avec tes mots…"></textarea>
-                </div>
-              </li>
+              <section class="parcours_bloc" aria-labelledby="titre_parcours_schema">
+                <h4 class="acv_titre" id="titre_parcours_schema">Le parcours d’un·e utilisateur·rice de smartphone</h4>
 
-              <li class="parcours_etape">
-                <div class="parcours_dessin emplacement_illustration" aria-hidden="true">dessin</div>
-                <div class="parcours_texte">
-                  <label for="p_premiere"><strong>Première utilisation</strong><br>Que fait l’utilisateur lorsqu’il reçoit son nouveau téléphone&#8239;?</label>
-                  <textarea id="p_premiere" rows="2" placeholder="Décris cette étape avec tes mots…"></textarea>
-                </div>
-              </li>
+                <!-- data-etape = nom de l'étape, repris par Andréa (signal EVAL) -->
+                <ol class="parcours">
+                <li class="parcours_etape" data-etape="Envie et renseignement">
+                  <span class="parcours_numero" aria-hidden="true">1</span>
+                  <img class="parcours_dessin" src="dessin/chap_3/IV/envie_smarphone.svg" alt="">
 
-              <li class="parcours_etape">
-                <div class="parcours_dessin emplacement_illustration" aria-hidden="true">dessin</div>
-                <div class="parcours_texte">
-                  <label for="p_ancien"><strong>Ancien téléphone</strong><br>Que devient l’ancien téléphone&#8239;?</label>
-                  <textarea id="p_ancien" rows="2" placeholder="Décris cette étape avec tes mots…"></textarea>
-                </div>
-              </li>
+                  <label class="parcours_question" for="p_envie"><strong>Envie et renseignement</strong><span>Pourquoi et comment l’utilisateur envisage-t-il de changer de téléphone&#8239;?</span></label>
+                  <textarea id="p_envie" rows="2" placeholder="Décris cette étape avec tes mots, puis Entrée…"></textarea>
+                </li>
 
-              <li class="parcours_etape">
-                <div class="parcours_dessin emplacement_illustration" aria-hidden="true">dessin</div>
-                <div class="parcours_texte">
-                  <label for="p_utilisation"><strong>Utilisation du nouveau téléphone</strong><br>Comment l’utilisateur utilise-t-il son téléphone au quotidien&#8239;?</label>
-                  <textarea id="p_utilisation" rows="2" placeholder="Décris cette étape avec tes mots…"></textarea>
-                </div>
-              </li>
+                <li class="parcours_etape" data-etape="Achat du téléphone">
+                  <span class="parcours_numero" aria-hidden="true">2</span>
+                  <img class="parcours_dessin" src="dessin/chap_3/IV/vente_smartphone.svg" alt="">
+                  <label class="parcours_question" for="p_achat"><strong>Achat du téléphone</strong><span>Comment l’utilisateur achète-t-il son téléphone&#8239;?</span></label>
+                  <textarea id="p_achat" rows="2" placeholder="Décris cette étape avec tes mots, puis Entrée…"></textarea>
+                </li>
 
-              <li class="parcours_etape">
-                <div class="parcours_dessin emplacement_illustration" aria-hidden="true">dessin</div>
-                <div class="parcours_texte">
-                  <label for="p_reparation"><strong>Réparation</strong><br>Que se passe-t-il en cas de panne ou de casse&#8239;? Comment l’utilisateur fait-il réparer son téléphone&#8239;?</label>
-                  <textarea id="p_reparation" rows="2" placeholder="Décris cette étape avec tes mots…"></textarea>
-                </div>
-              </li>
+                <li class="parcours_etape" data-etape="Première utilisation">
+                  <span class="parcours_numero" aria-hidden="true">3</span>
+                  <img class="parcours_dessin" src="dessin/chap_3/IV/premiere_utilisation.svg" alt="">
+                  <label class="parcours_question" for="p_premiere"><strong>Première utilisation</strong><span>Que fait l’utilisateur lorsqu’il reçoit son nouveau téléphone&#8239;?</span></label>
+                  <textarea id="p_premiere" rows="2" placeholder="Décris cette étape avec tes mots, puis Entrée…"></textarea>
+                </li>
 
-              <li class="parcours_etape">
-                <div class="parcours_dessin emplacement_illustration" aria-hidden="true">dessin</div>
-                <div class="parcours_texte">
-                  <label for="p_fin"><strong>Fin de vie</strong><br>Que fait l’utilisateur lorsque son téléphone n’est plus utilisé&#8239;?</label>
-                  <textarea id="p_fin" rows="2" placeholder="Décris cette étape avec tes mots…"></textarea>
-                </div>
-              </li>
+                <li class="parcours_etape" data-etape="Ancien téléphone">
+                  <span class="parcours_numero" aria-hidden="true">4</span>
+                  <img class="parcours_dessin" src="dessin/chap_3/IV/changer_tel.svg" alt="">
+                  <label class="parcours_question" for="p_ancien"><strong>Ancien téléphone</strong><span>Que devient l’ancien téléphone&#8239;?</span></label>
+                  <textarea id="p_ancien" rows="2" placeholder="Décris cette étape avec tes mots, puis Entrée…"></textarea>
+                </li>
 
-            </ol>
+                <li class="parcours_etape" data-etape="Utilisation du nouveau téléphone">
+                  <span class="parcours_numero" aria-hidden="true">5</span>
+                  <img class="parcours_dessin" src="dessin/chap_3/IV/utilisation_tel.svg" alt="">
+                  <label class="parcours_question" for="p_utilisation"><strong>Utilisation du nouveau téléphone</strong><span>Comment l’utilisateur utilise-t-il son téléphone au quotidien&#8239;?</span></label>
+                  <textarea id="p_utilisation" rows="2" placeholder="Décris cette étape avec tes mots, puis Entrée…"></textarea>
+                </li>
+
+                <li class="parcours_etape" data-etape="Réparation">
+                  <span class="parcours_numero" aria-hidden="true">6</span>
+                  <img class="parcours_dessin" src="dessin/chap_3/1/cycle_de_vie/reparation.svg" alt="">
+                  <label class="parcours_question" for="p_reparation"><strong>Réparation</strong><span>Que se passe-t-il en cas de panne ou de casse&#8239;? Comment l’utilisateur fait-il réparer son téléphone&#8239;?</span></label>
+                  <textarea id="p_reparation" rows="2" placeholder="Décris cette étape avec tes mots, puis Entrée…"></textarea>
+                </li>
+
+                <li class="parcours_etape" data-etape="Fin de vie">
+                  <span class="parcours_numero" aria-hidden="true">7</span>
+                  <img class="parcours_dessin" src="dessin/chap_3/IV/jeter_telephone.svg" alt="">
+                  <label class="parcours_question" for="p_fin"><strong>Fin de vie</strong><span>Que fait l’utilisateur lorsque son téléphone n’est plus utilisé&#8239;?</span></label>
+                  <textarea id="p_fin" rows="2" placeholder="Décris cette étape avec tes mots, puis Entrée…"></textarea>
+                </li>
+
+                </ol>
+              </section>
+
+              <p class="visuellement_cache" id="annonce_parcours" role="status"></p>
+
+              <!-- mascotte : 2 étapes remplies → rappel -->
+              <div class="rappel_mascotte" id="rappel_parcours" hidden>
+                <div class="rappel_mascotte_dessin emplacement_illustration" aria-hidden="true">mascotte</div>
+                <p>Remplis toutes les étapes du parcours avant de passer à la suite&#8239;!</p>
+              </div>
+
+              <!-- bouton fixe : 7 étapes remplies -->
+              <div class="qcm_pied" id="pied_parcours" hidden>
+                <button type="button" class="qcm_verifier" data-montrer="partie_solutions" aria-controls="partie_solutions" aria-expanded="false">continuer</button>
+              </div>
+
+            </div>
+
+          </div>
 
 
-            <!-- ---------- Où ATHEN'TECH peut-elle agir ? ---------- -->
-            <!-- Au moins 2 fiches solution. Le bouton « ajouter une solution » sera codé ensemble. -->
+          <!-- ================= SOLUTIONS DU PARCOURS (mise en page à faire) ================= -->
 
-            <h4 class="consigne" id="consigne_solutions">
-              À toi de jouer&#8239;: repère les moments de ce parcours où ATHEN’TECH pourrait agir pour diminuer les impacts environnementaux du Basic-phone®, prolonger sa durée de vie, faciliter sa réparation et améliorer sa fin de vie. Propose au moins deux solutions.
-            </h4>
+          <div class="partie_cachee" id="partie_solutions" hidden>
+
+            <div class="consigne" id="consigne_solutions">
+              À toi de jouer&#8239;: repère les moments de ce parcours sur lesquels ATHEN’TECH pourrait agir pour diminuer les impacts environnementaux du Basic-phone®, prolonger la durée de vie du smartphone, faciliter sa réparation et améliorer sa fin de vie. Propose au moins deux solutions, puis précise à quelle étape du parcours elles s’appliquent et comment elles répondent au problème identifié.
+            </div>
 
             <div class="solutions" role="group" aria-labelledby="consigne_solutions">
 
@@ -480,9 +505,7 @@
             </div>
 
             <div class="conteneur_bouton">
-              <button type="button" class="bouton_etape" data-montrer="partie_livrable" aria-controls="partie_livrable" aria-expanded="false">
-                continuer
-              </button>
+              <button type="button" class="bouton_etape" data-montrer="partie_livrable" aria-controls="partie_livrable" aria-expanded="false">continuer</button>
             </div>
 
           </div>
@@ -572,7 +595,7 @@
       </aside>
 
       <!-- boîte de la mascotte, en bas à droite : elle proposera de passer
-           après 2 réponses que le mentor n'a pas validées -->
+           après 3 réponses que le mentor n'a pas validées -->
       <div class="rappel_mascotte rappel_avec_bouton" id="rappel_passer" role="status" hidden>
         <!-- DESSIN DE LA MASCOTTE : remplacer ce <div> par
              <img class="rappel_mascotte_dessin" src="dessin/chap_3/IV/…" alt=""> -->

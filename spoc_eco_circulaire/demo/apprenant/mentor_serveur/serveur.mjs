@@ -6,7 +6,12 @@
 //    à ton agent Mistral, avec ta clé API qui reste ici, cachée.
 //
 // Le prompt, le modèle et la température se règlent dans le Studio Mistral,
-// sur l'agent : rien à changer ici quand tu modifies le prompt.
+// sur chaque agent : rien à changer ici quand tu modifies un prompt.
+//
+// Un agent par mission (identifiants dans cles.env) :
+//   MISTRAL_AGENT_ID      l'agent de la mission 1
+//   MISTRAL_AGENT_ID_M2   l'agent de la mission 2
+// La page envoie le numéro de sa mission (« mission »: 2) ; sans numéro, c'est la mission 1.
 //
 // Lancement : double-clic sur lancer_test.bat
 // =====================================================================
@@ -20,17 +25,30 @@ const DOSSIER_SERVEUR = path.dirname(fileURLToPath(import.meta.url));
 const RACINE_SITE = path.resolve(DOSSIER_SERVEUR, '..');   // le dossier de ton site
 const PORT = Number(process.env.PORT) || 8000;
 const CLE = (process.env.MISTRAL_API_KEY || '').trim();
-const AGENT = (process.env.MISTRAL_AGENT_ID || '').trim();
+// Un agent par mission. Pour ajouter la mission 3 : une ligne '3': secret('MISTRAL_AGENT_ID_M3'),
+const secret = nom => {
+  const valeur = (process.env[nom] || '').trim();
+  return valeur.startsWith('colle') ? '' : valeur;     // « colle ici… » = pas encore rempli
+};
+const AGENTS = {
+  '1': secret('MISTRAL_AGENT_ID'),
+  '2': secret('MISTRAL_AGENT_ID_M2'),
+};
 const API = process.env.MISTRAL_API_URL || 'https://api.mistral.ai/v1/conversations';
 const LONGUEUR_MAX = 2000;   // nombre de caractères maximum par message d'élève
 
 
 // ---------- Vérification des réglages ----------
 
-if (!CLE || CLE.startsWith('colle') || !AGENT || AGENT.startsWith('colle')) {
+if (!CLE || CLE.startsWith('colle') || !AGENTS['1']) {
   console.error('\n  Il manque ta clé API ou l\'identifiant de ton agent.');
   console.error('  Ouvre le fichier cles.env avec le Bloc-notes et colle-les après les signes =.\n');
   process.exit(1);
+}
+
+// les autres missions : un simple avertissement, la mission 1 marche quand même
+for (const [mission, agent] of Object.entries(AGENTS)) {
+  if (!agent) console.warn(`\n  Attention : pas d'agent pour la mission ${mission} (ajoute MISTRAL_AGENT_ID_M${mission}=… dans cles.env).`);
 }
 
 
@@ -90,7 +108,7 @@ function texteDeSortie(donnees) {
 
 
 // ---------- /api/mentor : le relais vers l'agent ----------
-// La page envoie { message, conversation_id }.
+// La page envoie { message, conversation_id, mission }.
 // 1er message : on démarre une conversation avec l'agent.
 // Messages suivants : on continue la conversation (Mistral garde l'historique).
 
@@ -111,10 +129,19 @@ async function routeMentor(req, res) {
     return envoyerJSON(res, 400, { erreur: 'Conversation inconnue.' });
   }
 
+  // quelle mission ? (rien = mission 1, pour que la page de la mission 1 marche sans changement)
+  const mission = corps.mission === undefined || corps.mission === null ? '1' : String(corps.mission);
+  if (!(mission in AGENTS)) return envoyerJSON(res, 400, { erreur: 'Mission inconnue.' });
+  const agent = AGENTS[mission];
+  if (!conversation && !agent) {
+    console.error(`  Il manque l'identifiant de l'agent de la mission ${mission} dans cles.env.`);
+    return envoyerJSON(res, 500, { erreur: 'Le mentor n’est pas configuré.' });
+  }
+
   const adresse = conversation ? `${API}/${conversation}` : API;
   const demande = conversation
     ? { inputs: message, stream: false }
-    : { agent_id: AGENT, inputs: message, stream: false };
+    : { agent_id: agent, inputs: message, stream: false };
 
   let reponse;
   try {
