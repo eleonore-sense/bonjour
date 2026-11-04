@@ -1,0 +1,682 @@
+/* =====================================================================
+   SCÈNE DU VÉLO CARGO (avec scene_velo.js)
+   À charger APRÈS style.css. Les couleurs viennent de couleurs.css.
+   ===================================================================== */
+
+
+/* ---------- Introduction : texte à gauche, illustration à droite ---------- */
+
+.intro_illustree {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.intro_illustree .txt_labeur {
+  flex: 1;
+  max-width: 640px;
+  margin-top: 0;
+}
+
+.intro_illustree .txt_labeur p {
+  margin: 0 0 12px;
+}
+
+.intro_illustration {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+/* emplacement tant que l'illustration n'est pas là (à supprimer ensuite) */
+.emplacement_illustration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 3;
+  font-size: 0.8rem;
+  color: var(--trait_doux);
+  border: 1px dashed var(--trait_doux);
+  border-radius: var(--arrondi_boite);
+}
+
+
+/* ---------- Bouton « c'est parti » ---------- */
+
+.conteneur_depart {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.conteneur_depart[hidden] {
+  display: none;
+}
+
+.bouton_depart {
+  font: inherit;
+  font-size: 1rem;
+  color: var(--couleur_texte);
+  background: var(--rose);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  padding: 8px 22px;
+  cursor: pointer;
+  box-shadow: 0 0 0 var(--trait);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.bouton_depart:hover,
+.bouton_depart:focus-visible {
+  transform: translate(-4px, -4px);
+  box-shadow: 4px 4px 0 var(--trait);
+}
+
+
+/* ---------- La partie qui apparaît ---------- */
+
+.scene_partie {
+  scroll-margin-top: 130px;
+}
+
+.scene_partie[hidden] {
+  display: none;
+}
+
+.scene_partie > .consigne {
+  margin-top: 0;
+}
+
+
+/* =====================================================================
+   L'IMAGE
+   Toutes les positions sont en px, mesurées sur le dessin de fond
+   (fond_velo.svg). --ref_l / --ref_h = la taille de ce dessin.
+   Sur chaque élément : --x, --y (coin haut gauche), --l (largeur), --h (hauteur).
+   Le navigateur les convertit en % : tout reste aligné quand l'écran change de taille.
+   ===================================================================== */
+
+.scene_image {
+  --ref_l: 1200;
+  --ref_h: 675;
+
+  position: relative;
+  width: 110%;
+  aspect-ratio: var(--ref_l) / var(--ref_h);
+  margin-top: 30px;
+}
+
+.scene_image > .place {
+  position: absolute;
+  left:  calc(var(--x, 0) / var(--ref_l) * 100%);
+  top:   calc(var(--y, 0) / var(--ref_h) * 100%);
+  width: calc(var(--l, 100) / var(--ref_l) * 100%);
+}
+
+
+/* ---- fond : apparaît en fondu ---- */
+
+.scene_fond {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .8s ease;
+}
+
+.scene.visible .scene_fond {
+  opacity: 1;
+}
+
+
+/* ---- vélo animé (Rive) ---- */
+
+.velo_riv {
+  display: block;
+  height: auto;
+  aspect-ratio: 666 / 415;   /* taille de l'artboard Rive */
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scene.velo_parti .velo_riv {
+  opacity: 1;
+}
+
+
+/* ---- zones cliquables ---- */
+
+.scene_element {
+  display: block;
+  height: calc(var(--h, 100) / var(--ref_h) * 100%);
+  padding: 0;
+  margin: 0;
+  border: 1px dashed transparent;
+  border-radius: 10px;
+  background: none;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease, opacity .4s ease;
+}
+
+/* zone avec un dessin dedans : le dessin donne la hauteur */
+.scene_element:has(> :is(img, .dessin)) {
+  height: auto;
+  border: 0;
+}
+
+.scene_element > :is(img, .dessin) {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 0 0 var(--trait));
+  transition: transform .2s ease, filter .2s ease;
+}
+
+/* survol ou clavier : contour pointillé, ou dessin qui se soulève */
+.scene_element:not(:disabled):hover,
+.scene_element:not(:disabled):focus-visible {
+  border-color: var(--trait);
+  background: color-mix(in srgb, var(--rose) 25%, transparent);
+  z-index: 4;
+}
+
+.scene_element:has(> :is(img, .dessin)):not(:disabled):hover,
+.scene_element:has(> :is(img, .dessin)):not(:disabled):focus-visible {
+  background: none;
+}
+
+.scene_element:not(:disabled):hover > :is(img, .dessin),
+.scene_element:not(:disabled):focus-visible > :is(img, .dessin) {
+  transform: translate(-4px, -4px);
+  filter: drop-shadow(4px 4px 0 var(--trait));
+}
+
+.scene_element:disabled {
+  cursor: default;
+}
+
+.scene_element:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* tant que le vélo n'est pas arrivé, rien n'est cliquable */
+.scene:not(.arrive) .scene_element {
+  visibility: hidden;
+  opacity: 0;
+}
+
+
+/* ---- pastille : rose qui pulse = à découvrir, verte = déjà vu ----
+   sa place sur la zone : --pastille_x / --pastille_y (en %) */
+
+.scene_element::after {
+  content: "";
+  position: absolute;
+  left: var(--pastille_x, 50%);
+  top: var(--pastille_y, 50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--rose);
+  border: 1px solid var(--trait);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.6);
+  transition: opacity .3s ease, transform .3s ease, background .3s ease;
+  pointer-events: none;
+}
+
+.scene_element:not(:disabled)::after {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  animation: pastille 1.6s ease-in-out infinite;
+}
+
+.scene_element.vu:not(:disabled)::after {
+  background: var(--vert);
+  animation: none;
+}
+
+@keyframes pastille {
+  0%, 100% { box-shadow: 0 0 0 0 var(--rose); }
+  50%      { box-shadow: 0 0 0 7px transparent; }
+}
+
+
+/* ---- nom de la zone au survol ---- */
+
+.scene_nom {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  translate: -50% -8px;
+  white-space: nowrap;
+  font-family: var(--labeur);
+  font-size: 0.8rem;
+  color: var(--couleur_texte);
+  background: var(--rose);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  padding: 3px 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s ease;
+  z-index: 5;
+}
+
+.scene_element:not(:disabled):hover .scene_nom,
+.scene_element:not(:disabled):focus-visible .scene_nom {
+  opacity: 1;
+}
+
+
+/* =====================================================================
+   FRISE DU CYCLE DE VIE : ligne + boule à faire glisser sur 4 crans
+   ===================================================================== */
+
+.frise {
+  --boule: 22px;
+
+  width: 110%;
+  margin-top: 30px;
+  transition: opacity .5s ease;
+}
+
+.scene:not(.arrive) .frise {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.frise_texte {
+  margin: 0 0 18px 12px;
+  font-family: var(--titre);
+}
+
+/* la ligne va du centre de la 1re étape au centre de la dernière */
+.frise_piste {
+  position: relative;
+  margin: 0 12.5%;
+  height: var(--boule);
+}
+
+.frise_piste::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--trait);
+}
+
+/* petits traits verticaux à chaque cran (ajoutés par scene_velo.js) */
+.frise_cran {
+  position: absolute;
+  top: 50%;
+  width: 1px;
+  height: 12px;
+  background: var(--trait);
+  transform: translate(-50%, -50%);
+}
+
+/* le curseur : la piste est invisible, on ne voit que la boule.
+   Il déborde d'une demi-boule de chaque côté pour que le centre
+   de la boule tombe pile sur le 1er et le dernier cran. */
+.frise_curseur {
+  position: absolute;
+  left: calc(var(--boule) / -2);
+  right: calc(var(--boule) / -2);
+  top: 0;
+  width: calc(100% + var(--boule));
+  height: var(--boule);
+  margin: 0;
+  background: none;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.frise_curseur::-webkit-slider-runnable-track {
+  height: var(--boule);
+  background: none;
+}
+
+.frise_curseur::-moz-range-track {
+  height: var(--boule);
+  background: none;
+}
+
+.frise_curseur::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: var(--boule);
+  height: var(--boule);
+  border-radius: 50%;
+  background: var(--rose);
+  border: 1px solid var(--trait);
+  box-shadow: 0 0 0 var(--trait);
+  cursor: grab;
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+
+.frise_curseur::-moz-range-thumb {
+  width: var(--boule);
+  height: var(--boule);
+  border-radius: 50%;
+  background: var(--rose);
+  border: 1px solid var(--trait);
+  cursor: grab;
+}
+
+.frise_curseur:hover::-webkit-slider-thumb,
+.frise_curseur:focus-visible::-webkit-slider-thumb {
+  box-shadow: 3px 3px 0 var(--trait);
+  transform: translate(-3px, -3px);
+}
+
+.frise_curseur:active::-webkit-slider-thumb { cursor: grabbing; }
+.frise_curseur:active::-moz-range-thumb     { cursor: grabbing; }
+
+.frise_curseur:focus-visible {
+  outline: none;
+}
+
+.frise_curseur:focus-visible::-webkit-slider-thumb {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.frise_curseur:focus-visible::-moz-range-thumb {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+
+/* ---- noms des étapes sous la ligne (cliquables aussi) ---- */
+
+.frise_etapes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.frise_etape {
+  display: block;
+  margin: 0 auto;
+  padding: 4px 10px;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--couleur_texte);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--arrondi_pilule);
+  cursor: pointer;
+  text-align: center;
+}
+
+.frise_etape:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* étape choisie : pilule noire, comme les petits titres */
+.frise_etape[aria-pressed="true"] {
+  background: var(--trait);
+  color: var(--texte_inverse);
+}
+
+.frise_numero {
+  font-family: var(--titre);
+  margin-right: 5px;
+}
+
+.scene_compteur {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 0 7px;
+  font-size: 0.72rem;
+  border: 1px solid currentColor;
+  border-radius: var(--arrondi_pilule);
+}
+
+/* étape entièrement explorée : compteur vert */
+.frise_etape.complet .scene_compteur {
+  background: var(--vert);
+  color: var(--couleur_texte);
+  border-color: var(--trait);
+}
+
+
+/* ---------- « À retenir » de l'étape ---------- */
+
+.scene_retenir {
+  margin-top: 40px;
+}
+
+.scene_retenir .souligne {
+  font-family: var(--titre);
+}
+
+
+/* =====================================================================
+   FENÊTRES (pop-up)
+   La classe fenetre_document donne le fondu et le centrage (style.css).
+   ===================================================================== */
+
+.fenetre_scene {
+  width: min(660px, 92vw);
+  max-height: 86vh;
+  overflow-y: auto;
+  padding: 26px 30px 24px;
+  background: var(--fond);
+  color: var(--couleur_texte);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+  font-family: var(--labeur);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  scrollbar-width: thin;
+}
+
+.fenetre_scene::backdrop {
+  background: rgba(0, 0, 0, .15);
+}
+
+.fenetre_scene .qcm_fermer {
+  width: 18px;
+  height: 18px;
+  top: 12px;
+  right: 12px;
+}
+
+.fenetre_scene h4 {
+  margin: 0 30px 14px 0;
+  font-family: var(--titre);
+  font-weight: normal;
+  font-size: 1.1rem;
+  line-height: 1.25;
+}
+
+.fenetre_scene p {
+  margin: 0 0 10px;
+}
+
+.fenetre_scene .exemple {
+  margin: 15px 0 0;
+  max-width: none;
+  min-width: 0;
+}
+
+.etape_fenetre {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+}
+
+.acteurs {
+  margin-top: 16px;
+  padding-top: 10px;
+  border-top: 1px solid var(--trait_doux);
+  font-size: 0.85rem;
+}
+
+.acteurs strong {
+  font-family: var(--titre);
+  font-weight: normal;
+}
+
+
+/* ---- tableaux de données ---- */
+
+.tableau_donnees {
+  width: 100%;
+  margin: 12px 0 6px;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.tableau_donnees th,
+.tableau_donnees td {
+  padding: 5px 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--trait_doux);
+}
+
+.tableau_donnees thead th {
+  font-family: var(--titre);
+  font-weight: normal;
+  border-bottom: 1px solid var(--trait);
+}
+
+.tableau_donnees tbody th {
+  font-weight: normal;
+}
+
+.tableau_donnees td.nombre {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.a_completer {
+  color: var(--trait_doux);
+  font-style: italic;
+}
+
+
+/* ---- « Pour aller plus loin » ---- */
+
+.plus_loin {
+  margin-top: 16px;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+  background: var(--vert_bleu);
+}
+
+.plus_loin summary {
+  padding: 8px 14px;
+  font-family: var(--titre);
+  cursor: pointer;
+  list-style-position: inside;
+}
+
+.plus_loin[open] summary {
+  border-bottom: 1px solid var(--trait);
+}
+
+.plus_loin_contenu {
+  padding: 12px 14px 6px;
+}
+
+
+/* ---- bulle de la mascotte ---- */
+
+.bulle_mascotte {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+  padding: 10px 14px;
+  background: var(--fond_intro);
+  border: 1px solid var(--violet_trait);
+  border-radius: var(--arrondi_boite);
+}
+
+.bulle_mascotte p {
+  margin: 0;
+}
+
+.bulle_mascotte_dessin {
+  width: 50px;
+  flex-shrink: 0;
+}
+
+
+/* ---- définitions dans une fenêtre ---- */
+
+.definitions_fenetre {
+  margin: 12px 0 0;
+}
+
+.definitions_fenetre dt {
+  font-family: var(--titre);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.definitions_fenetre dd {
+  margin: 2px 0 10px;
+}
+
+
+/* ---- photo ou dessin d'exemple ---- */
+
+.photo_fenetre {
+  margin: 14px 0 6px;
+}
+
+.photo_fenetre img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--trait);
+  border-radius: 8px;
+}
+
+
+/* =====================================================================
+   PETITS ÉCRANS / ZOOM FORT
+   ===================================================================== */
+
+@media (max-width: 1100px) {
+  .scene_image,
+  .frise {
+    width: 100%;
+  }
+
+  .intro_illustree {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 700px) {
+  .scene_nom {
+    display: none;
+  }
+
+  .frise_etape {
+    font-size: 0.75rem;
+    padding: 4px 4px;
+  }
+
+  .scene_compteur {
+    display: none;
+  }
+}

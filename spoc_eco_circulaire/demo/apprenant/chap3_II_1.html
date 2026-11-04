@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>cours</title>
+
+  <link rel="stylesheet" href="couleurs.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="activite/CHAP_3/scene_velo.css">
+
+  <script src="https://unpkg.com/@rive-app/canvas@2.7.0"></script>
+  <script src="cours.js" defer></script>
+  <script src="script.js" defer></script>
+  <script src="dessins.js" defer></script>
+  <script src="activite/CHAP_3/scene_velo.js" defer></script>
+</head>
+
+<!-- Où est cette page dans le cours ? (le reste vient de cours.js)
+     data-suite="cache" : « passer à la suite » apparaît quand toutes les fenêtres ont été ouvertes. -->
+<body data-chapitre="3" data-partie="4" data-suite="cache">
+
+<a class="lien_evitement" href="#contenu_gauche">Aller au contenu</a>
+
+<div id="droite_contenu">
+<div id="contenu_chapitre">
+
+<main id="contenu_gauche">
+
+  <h1 class="petit_titre">1. Des éco-solutions à chaque étape du cycle de vie</h1>
+
+
+  <!-- ================= INTRODUCTION ================= -->
+
+  <div class="intro_illustree">
+    <div class="txt_labeur">
+      <p>Imaginons une entreprise qui fabrique des vélos cargo. Elle souhaite réduire les impacts environnementaux de ses produits tout en répondant aux besoins de ses clients.</p>
+      <p>Par où commencer&#8239;? Faut-il choisir d’autres matériaux, modifier la fabrication, optimiser le transport, faciliter les réparations ou améliorer le recyclage&#8239;?</p>
+      <p>En réalité, les possibilités d’action existent à toutes les étapes du cycle de vie&#8239;! Explorons les principales éco-solutions à travers quatre étapes&#8239;: la production, la distribution, l’utilisation et la fin de vie du vélo cargo.</p>
+    </div>
+
+    <!-- ILLUSTRATION (plus tard) : remplacer ce <div> par
+         <img class="intro_illustration" src="dessin/chap_3/2/…svg" alt=""> -->
+    <div class="intro_illustration emplacement_illustration" aria-hidden="true">illustration</div>
+  </div>
+
+  <div class="conteneur_depart" data-scene-depart>
+    <button type="button" class="bouton_depart" aria-controls="partie_scene">c’est parti&#8239;!</button>
+  </div>
+
+
+  <!-- ================= LA SCÈNE (apparaît au clic sur « c'est parti ») ================= -->
+
+  <section class="scene_partie" id="partie_scene" aria-labelledby="consigne_scene" hidden>
+
+    <h2 class="consigne" id="consigne_scene">
+      Clique sur les différentes parties du vélo et découvre comment les choix de conception peuvent contribuer à réduire ses impacts environnementaux.
+    </h2>
+
+    <div class="scene" id="scene_velo">
+
+      <p class="visuellement_cache scene_annonce" role="status"></p>
+
+      <!-- ---------------------------------------------------------------
+           L'IMAGE
+           --ref_l / --ref_h : taille (en px) du dessin fond_velo.svg → À METTRE À JOUR.
+           Toutes les positions (--x, --y, --l, --h) sont en px mesurés sur ce dessin
+           (ex : dans Illustrator, la position X / Y et la largeur d'un objet).
+           --------------------------------------------------------------- -->
+      <div class="scene_image" style="--ref_l: 1200; --ref_h: 675;">
+
+        <!-- le paysage de fond -->
+        <img class="scene_fond" src="dessin/chap_3/2/fond_velo.svg" alt="">
+
+        <!-- le vélo qui arrive de la droite : il s'arrête en --x / --y, sur --l px de large -->
+        <canvas class="velo_riv place" width="666" height="415"
+                data-riv="dessin/chap_3/2/velo_roule.riv" data-animation="roule" data-duree="2800"
+                style="--x: 300; --y: 340; --l: 520;"
+                role="img" aria-label="Un vélo cargo arrive et s’arrête devant l’usine."></canvas>
+
+
+        <!-- ----- zones cliquables (apparaissent quand le vélo est arrivé) -----
+             --x, --y : coin haut gauche · --l, --h : largeur, hauteur
+             --pastille_x / --pastille_y : place de la pastille rose dans la zone (en %, 50% par défaut) -->
+
+        <!-- usine : production -->
+        <button type="button" class="scene_element place" data-documents="production:pop_fabrication"
+                style="--x: 620; --y: 90; --l: 400; --h: 320; --pastille_y: 25%;">
+          <span class="scene_nom">l’usine</span>
+        </button>
+
+        <!-- cadre du vélo : production (matériaux) + fin de vie (recyclage) -->
+        <button type="button" class="scene_element place" data-documents="production:pop_materiaux fin_de_vie:pop_recyclage"
+                style="--x: 480; --y: 400; --l: 200; --h: 120;">
+          <span class="scene_nom">le cadre du vélo</span>
+        </button>
+
+        <!-- fixations : production -->
+        <button type="button" class="scene_element place" data-documents="production:pop_fixations"
+                style="--x: 650; --y: 380; --l: 60; --h: 60;">
+          <span class="scene_nom">les fixations</span>
+        </button>
+
+        <!-- caisse avant / emballage : distribution -->
+        <button type="button" class="scene_element place" data-documents="distribution:pop_emballage"
+                style="--x: 310; --y: 420; --l: 170; --h: 120;">
+          <span class="scene_nom">l’emballage</span>
+        </button>
+
+        <!-- transport : distribution -->
+        <button type="button" class="scene_element place" data-documents="distribution:pop_transport"
+                style="--x: 1040; --y: 380; --l: 140; --h: 140;">
+          <span class="scene_nom">le transport</span>
+        </button>
+
+        <!-- batterie : utilisation (consommation) + fin de vie (filière) -->
+        <button type="button" class="scene_element place" data-documents="utilisation:pop_batterie_usage fin_de_vie:pop_batterie_fin"
+                style="--x: 560; --y: 520; --l: 60; --h: 50;">
+          <span class="scene_nom">la batterie</span>
+        </button>
+
+        <!-- roue : utilisation (durée de vie) -->
+        <button type="button" class="scene_element place" data-documents="utilisation:pop_duree_vie"
+                style="--x: 680; --y: 480; --l: 140; --h: 140;">
+          <span class="scene_nom">la roue</span>
+        </button>
+
+        <!-- pot de peinture / notice : utilisation -->
+        <button type="button" class="scene_element place" data-documents="utilisation:pop_notice"
+                style="--x: 860; --y: 480; --l: 90; --h: 110;">
+          <span class="scene_nom">l’entretien</span>
+        </button>
+
+        <!-- partage : fin de vie -->
+        <button type="button" class="scene_element place" data-documents="fin_de_vie:pop_partage"
+                style="--x: 40; --y: 300; --l: 180; --h: 260;">
+          <span class="scene_nom">partager le vélo</span>
+        </button>
+      </div>
+
+
+      <!-- ---------------------------------------------------------------
+           LA FRISE : la boule glisse sur 4 crans (1 = production)
+           --------------------------------------------------------------- -->
+      <div class="frise">
+        <p class="frise_texte" id="frise_texte">Tu peux faire évoluer le vélo tout au long de sa vie&#8239;:</p>
+
+        <div class="frise_piste">
+          <input type="range" class="frise_curseur" min="1" max="4" step="1" value="1"
+                 aria-labelledby="frise_texte">
+        </div>
+
+        <ul class="frise_etapes">
+          <li><button type="button" class="frise_etape" data-etape="production">
+            <span class="frise_numero">1</span><span class="frise_titre">production</span><span class="scene_compteur"></span>
+          </button></li>
+          <li><button type="button" class="frise_etape" data-etape="distribution">
+            <span class="frise_numero">2</span><span class="frise_titre">distribution</span><span class="scene_compteur"></span>
+          </button></li>
+          <li><button type="button" class="frise_etape" data-etape="utilisation">
+            <span class="frise_numero">3</span><span class="frise_titre">utilisation</span><span class="scene_compteur"></span>
+          </button></li>
+          <li><button type="button" class="frise_etape" data-etape="fin_de_vie">
+            <span class="frise_numero">4</span><span class="frise_titre">fin de vie</span><span class="scene_compteur"></span>
+          </button></li>
+        </ul>
+      </div>
+    </div>
+
+
+    <!-- ================= À RETENIR (un par étape, visible avec son étape) ================= -->
+
+    <div class="contenu_gras scene_retenir" data-etape="production" hidden>
+      <span class="souligne">À retenir&#8239;:</span> dès la production, chaque choix compte&#8239;: les matériaux, la façon d’assembler les pièces, et l’énergie de l’usine, qui dépend aussi du pays où elle se trouve.
+    </div>
+
+    <div class="contenu_gras scene_retenir" data-etape="distribution" hidden>
+      <span class="souligne">À retenir&#8239;:</span> réduire le volume transporté et mieux organiser la logistique peut être aussi important que choisir un autre matériau d’emballage.
+    </div>
+
+    <div class="contenu_gras scene_retenir" data-etape="utilisation" hidden>
+      <span class="souligne">À retenir&#8239;:</span> un produit bien conçu ne suffit pas toujours&#8239;: sa maintenance, sa réparabilité et les pratiques d’utilisation influencent aussi ses impacts réels.
+    </div>
+
+    <div class="contenu_gras scene_retenir" data-etape="fin_de_vie" hidden>
+      <span class="souligne">À retenir&#8239;:</span> le recyclage n’est pas la seule solution. Préserver la fonction du produit, le réparer et le réemployer sont également des leviers à étudier.
+    </div>
+
+
+    <!-- ================= CONCLUSION ================= -->
+
+    <div class="txt_labeur">
+      <p><strong>Conclusion&#8239;:</strong> l’exemple du vélo cargo montre que l’éco-conception ne se limite pas à la production (choix des matières, lieu et type d’énergie pour produire et assembler). Elle s’applique à toutes les étapes du cycle de vie&#8239;: l’usage, la maintenance et la fin de vie.</p>
+      <p>Elle mobilise aussi un ensemble de parties prenantes et d’acteurs clés, qui permettent de déployer des éco-solutions pertinentes au regard des enjeux de la filière&#8239;!</p>
+    </div>
+
+  </section>
+
+  <!-- le bouton « passer à la suite » est ajouté automatiquement ici -->
+</main>
+
+
+<!-- Boîtes de définition des mots notion de la page -->
+<div id="notion_droite"></div>
+
+</div>
+</div>
+
+
+
+<!-- =====================================================================
+     FENÊTRES (une par élément et par étape)
+     ===================================================================== -->
+
+
+<!-- ---------- 1. PRODUCTION ---------- -->
+
+<dialog class="fenetre_document fenetre_scene" id="pop_materiaux" aria-labelledby="titre_pop_materiaux">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <span class="etape_fenetre">étape 1&#8239;: production</span>
+  <h4 id="titre_pop_materiaux">Le cadre du vélo&#8239;: choisir les matériaux avec soin</h4>
+
+  <p>Tous les matériaux n’ont pas les mêmes impacts. Leur production peut mobiliser des quantités différentes d’énergie et de ressources, émettre des gaz à effet de serre ou exercer d’autres pressions sur l’environnement.</p>
+  <p>L’éco-conception consiste à comparer les matériaux en tenant compte de leurs propriétés, de leur masse, de leur origine et de leur transformation, mais aussi des performances attendues du vélo.</p>
+
+  <table class="tableau_donnees">
+    <caption class="visuellement_cache">Comparaison de matériaux pour le cadre</caption>
+    <thead>
+      <tr><th scope="col">Matériau</th><th scope="col">kg CO₂ éq / kg</th><th scope="col">Résistance mécanique</th><th scope="col">Coût €/kg</th></tr>
+    </thead>
+    <tbody>
+      <!-- colonnes résistance et coût : à compléter avec l'équipe pédagogique -->
+      <tr><th scope="row">Acier (produit en UE)</th>         <td class="nombre">2,6</td>  <td class="a_completer">à compléter</td><td class="a_completer">à compléter</td></tr>
+      <tr><th scope="row">Aluminium (produit en UE)</th>     <td class="nombre">8,9</td>  <td class="a_completer">à compléter</td><td class="a_completer">à compléter</td></tr>
+      <tr><th scope="row">Aluminium (produit en Chine)</th>  <td class="nombre">20,7</td> <td class="a_completer">à compléter</td><td class="a_completer">à compléter</td></tr>
+      <tr><th scope="row">Polyéthylène PE (UE)</th>          <td class="nombre">2,27</td> <td class="a_completer">à compléter</td><td class="a_completer">à compléter</td></tr>
+    </tbody>
+  </table>
+  <span class="span_source"><span class="souligne_fin">source&#8239;:</span> BAFU, 2025,
+    <a class="source" href="https://esu-services.ch/fr/banque-de-donnees/database/" target="_blank" rel="noopener">esu-services.ch</a></span>
+
+  <div class="bulle_mascotte">
+    <!-- DESSIN DE LA MASCOTTE : <img class="bulle_mascotte_dessin" src="dessin/…" alt=""> -->
+    <p>On parle beaucoup de CO₂ ici… mais n’oublie pas&#8239;: l’éco-conception, c’est aussi l’eau, la toxicité, l’utilisation des ressources minérales et fossiles… Ne mets pas tous tes œufs dans le même panier carbone&#8239;!</p>
+  </div>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> bureau d’études, fournisseurs de matières premières.</p>
+</dialog>
+
+
+<dialog class="fenetre_document fenetre_scene" id="pop_fixations" aria-labelledby="titre_pop_fixations">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <span class="etape_fenetre">étape 1&#8239;: production</span>
+  <h4 id="titre_pop_fixations">Les fixations&#8239;: faciliter l’assemblage et le démontage</h4>
+
+  <p>Vis, jonctions, soudures&#8239;: le choix des fixations influence la facilité avec laquelle un vélo peut être assemblé, entretenu, réparé ou démonté. Des assemblages démontables, des pièces standardisées et un accès facile aux composants simplifient ces opérations.</p>
+
+  <div class="exemple">
+    <span class="intro_exemple">exemple</span>
+    <p>Une fixation réversible (vis, clips) se défait&#8239;; un collage est définitif. L’assemblage traditionnel japonais <span lang="ja-Latn">kigumi</span> (木組み) emboîte les pièces de bois sans clou ni colle&#8239;: on peut le démonter et le réparer.</p>
+    <figure class="photo_fenetre">
+      <img src="dessin/chap_3/2/kigumi.jpg" alt="Assemblage en bois kigumi : des pièces taillées qui s’emboîtent sans clou ni colle.">
+    </figure>
+  </div>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> designers produits, ingénieurs mécaniques.</p>
+</dialog>
+
+
+<dialog class="fenetre_document fenetre_scene" id="pop_fabrication" aria-labelledby="titre_pop_fabrication">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <span class="etape_fenetre">étape 1&#8239;: production</span>
+  <h4 id="titre_pop_fabrication">L’usine&#8239;: réduire les impacts de la fabrication</h4>
+
+  <p>La fabrication consomme de l’énergie et des matières premières. Elle peut aussi générer des rebuts et des émissions dans l’air, l’eau ou les sols.</p>
+  <p>Plusieurs leviers sont possibles&#8239;: améliorer le rendement des procédés, limiter les pertes de matière, réduire les consommations d’énergie et prévenir les pollutions.</p>
+
+  <details class="plus_loin">
+    <summary>Pour aller plus loin&#8239;: l’énergie de l’usine</summary>
+    <div class="plus_loin_contenu">
+      <p>Souder le cadre, mouler les pièces plastiques, faire tourner les machines&#8239;: tout cela consomme de l’énergie, d’origine thermique (comme le gaz) ou électrique. Or un kWh d’électricité n’a pas le même impact selon sa source&#8239;: produit à partir de charbon, il émet environ 75 fois plus de gaz à effet de serre qu’un kWh éolien.</p>
+
+      <table class="tableau_donnees">
+        <caption class="visuellement_cache">Émissions de gaz à effet de serre selon la source d’électricité</caption>
+        <thead><tr><th scope="col">Source d’énergie</th><th scope="col">g CO₂ éq / kWh</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Charbon</th>               <td class="nombre">~820</td></tr>
+          <tr><th scope="row">Fioul</th>                 <td class="nombre">~730</td></tr>
+          <tr><th scope="row">Gaz naturel</th>           <td class="nombre">~490</td></tr>
+          <tr><th scope="row">Solaire photovoltaïque</th><td class="nombre">~45 à 48</td></tr>
+          <tr><th scope="row">Hydraulique</th>           <td class="nombre">~24</td></tr>
+          <tr><th scope="row">Nucléaire</th>             <td class="nombre">~12</td></tr>
+          <tr><th scope="row">Éolien (terrestre / en mer)</th><td class="nombre">~11 à 12</td></tr>
+        </tbody>
+      </table>
+      <span class="span_source"><span class="souligne_fin">source&#8239;:</span> GIEC (AR5), valeurs médianes en ACV,
+        <a class="source" href="https://orki.green/article/quel-bilan-carbone-pour-la-production-d-electricite" target="_blank" rel="noopener">orki.green</a></span>
+
+      <p class="ecart">Le pays où se trouve l’atelier compte aussi&#8239;: chaque pays a son propre mix électrique (ce qu’il produit, importe et exporte chaque année). Produire son vélo ou ses matériaux en France ou en Pologne n’aura pas du tout la même empreinte environnementale&#8239;!</p>
+
+      <table class="tableau_donnees">
+        <caption class="visuellement_cache">Impacts d’un kWh d’électricité selon le pays</caption>
+        <thead>
+          <tr><th scope="col">Pays</th><th scope="col">g CO₂ éq / kWh</th><th scope="col">Acidification (mol H+ éq)</th><th scope="col">Rayonnements ionisants (kBq U235 éq)</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Chine</th>      <td class="nombre">717</td><td class="nombre">6,24 × 10⁻⁴</td><td class="nombre">6,98 × 10⁻²</td></tr>
+          <tr><th scope="row">France</th>     <td class="nombre">73,1</td><td class="nombre">2,22 × 10⁻⁴</td><td class="nombre">1,12</td></tr>
+          <tr><th scope="row">Inde</th>       <td class="nombre">968</td><td class="nombre">6,62 × 10⁻³</td><td class="nombre">5,60 × 10⁻²</td></tr>
+          <tr><th scope="row">Pologne</th>    <td class="nombre">728</td><td class="nombre">1,41 × 10⁻³</td><td class="nombre">3,34 × 10⁻²</td></tr>
+          <tr><th scope="row">États-Unis</th> <td class="nombre">422</td><td class="nombre">1,03 × 10⁻³</td><td class="nombre">2,82 × 10⁻¹</td></tr>
+        </tbody>
+      </table>
+      <span class="span_source"><span class="souligne_fin">source&#8239;:</span> BAFU, 2025,
+        <a class="source" href="https://esu-services.ch/fr/banque-de-donnees/database/" target="_blank" rel="noopener">esu-services.ch</a></span>
+
+      <p class="ecart">Regarde la France&#8239;: très peu de CO₂, mais plus de rayonnements ionisants, à cause du nucléaire. C’est l’intérêt d’une approche multicritère&#8239;!</p>
+    </div>
+  </details>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> responsable production de l’usine, fournisseur d’énergie.</p>
+</dialog>
+
+
+<!-- ---------- 2. DISTRIBUTION ---------- -->
+
+<dialog class="fenetre_document fenetre_scene" id="pop_emballage" aria-labelledby="titre_pop_emballage">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <span class="etape_fenetre">étape 2&#8239;: distribution</span>
+  <h4 id="titre_pop_emballage">L’emballage&#8239;: concevoir des emballages adaptés</h4>
+
+  <p>Un emballage doit protéger le vélo, mais il peut aussi être conçu pour utiliser moins de matière, être réutilisé et prendre moins de place pendant le transport.</p>
+  <p>Optimiser la forme des emballages permet en plus de mieux remplir les camions et les conteneurs, et donc de réduire le nombre de trajets.</p>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> responsable logistique / supply chain, fournisseur d’emballages, acheteur.</p>
+</dialog>
+
+
+<dialog class="fenetre_document fenetre_scene" id="pop_transport" aria-labelledby="titre_pop_transport">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <span class="etape_fenetre">étape 2&#8239;: distribution</span>
+  <h4 id="titre_pop_transport">Le camion&#8239;: optimiser le transport</h4>
+
+  <p>Les impacts du transport dépendent du mode utilisé, de la distance parcourue, du taux de chargement et des caractéristiques des véhicules.</p>
+  <p>Regrouper les livraisons, éviter les trajets à vide et choisir un mode de transport moins impactant quand c’est possible&#8239;: autant de leviers à étudier.</p>
+
+  <details class="plus_loin">
+    <summary>Pour aller plus loin&#8239;: comparer les modes de transport</summary>
+    <div class="plus_loin_contenu">
+      <p>Le <strong>g CO₂ éq / t.km</strong> correspond aux émissions de gaz à effet de serre pour transporter une tonne de marchandise sur un kilomètre&#8239;: plus il est élevé, plus le mode de transport est carboné.</p>
+
+      <table class="tableau_donnees">
+        <caption class="visuellement_cache">Émissions par mode de transport</caption>
+        <thead><tr><th scope="col">Mode de transport</th><th scope="col">Région</th><th scope="col">g CO₂ éq / t.km</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Route (camion 32 t)</th><td>Europe</td><td class="nombre">~90</td></tr>
+          <tr><th scope="row">Voie fluviale</th>      <td>Monde</td> <td class="nombre">~20</td></tr>
+          <tr><th scope="row">Maritime</th>           <td>Monde</td> <td class="nombre">~25</td></tr>
+          <tr><th scope="row">Aérien</th>             <td>Monde</td> <td class="nombre">~516 à 608</td></tr>
+          <tr><th scope="row">Train</th>              <td>Europe</td><td class="nombre">~20</td></tr>
+        </tbody>
+      </table>
+      <span class="span_source"><span class="souligne_fin">source&#8239;:</span> GLEC Framework 2025, Global Logistics Emissions Council</span>
+    </div>
+  </details>
+
+  <div class="bulle_mascotte">
+    <!-- DESSIN DE LA MASCOTTE : <img class="bulle_mascotte_dessin" src="dessin/…" alt=""> -->
+    <p>Le train et le fluvial sont moins carbonés, mais pas toujours possibles partout&#8239;!</p>
+  </div>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> responsable logistique / supply chain, transporteur, affréteur.</p>
+</dialog>
+
+
+<!-- ---------- 3. UTILISATION ---------- -->
+
+<dialog class="fenetre_document fenetre_scene" id="pop_batterie_usage" aria-labelledby="titre_pop_batterie_usage">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <span class="etape_fenetre">étape 3&#8239;: utilisation</span>
+  <h4 id="titre_pop_batterie_usage">La batterie&#8239;: réduire les consommations à l’usage</h4>
+
+  <p>Pour un vélo à assistance électrique, la batterie et l’électricité consommée pendant les recharges contribuent aux impacts de la phase d’utilisation.</p>
+  <p>Une meilleure efficacité énergétique peut réduire la quantité d’électricité nécessaire pour un même service rendu.</p>
+
+  <details class="plus_loin">
+    <summary>Pour aller plus loin&#8239;: plus efficace ne veut pas dire plus sobre</summary>
+    <div class="plus_loin_contenu">
+      <p>L’efficacité énergétique des voitures a énormément progressé en 80&nbsp;ans&#8239;: elles consomment beaucoup moins de carburant par cm³ de cylindrée, par km/h de vitesse maximale ou par cheval de puissance.</p>
+      <p>Et pourtant, leur consommation réelle (en litres aux 100&nbsp;km) a augmenté, car leur taille, leur puissance et leur confort ont fortement augmenté aussi. Le gain d’efficacité n’a pas servi à économiser de l’énergie&#8239;: il a été transféré vers plus de performance.</p>
+
+      <div class="exemple">
+        <span class="intro_exemple">exemple</span>
+        <p>La 2CV (1959, 375&nbsp;cm³) consommait environ 4&nbsp;L/100&nbsp;km. La C3 (2008, 1&nbsp;400&nbsp;cm³) consomme 5 à 6&nbsp;L/100&nbsp;km, malgré des décennies de progrès technique.</p>
+        <!-- IMAGE 2CV / C3 : remplacer le chemin -->
+        <figure class="photo_fenetre">
+          <img src="dessin/chap_3/2/2cv_c3.jpg" alt="Comparaison entre la 2CV de 1959 et la C3 de 2008 : la C3 est bien plus grosse et puissante, et consomme plus.">
+        </figure>
+        <span class="span_source"><span class="souligne_fin">source&#8239;:</span> J.-M. Jancovici, cours aux Mines, 2019,
+          <a class="source" href="https://www.youtube.com/watch?v=PEY6LmscKc4" target="_blank" rel="noopener">youtube.com</a></span>
+      </div>
+    </div>
+  </details>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> ingénieur motorisation, designer produit, fabricant de batterie (sous-traitant technique).</p>
+</dialog>
+
+
+<dialog class="fenetre_document fenetre_scene" id="pop_duree_vie" aria-labelledby="titre_pop_duree_vie">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <span class="etape_fenetre">étape 3&#8239;: utilisation</span>
+  <h4 id="titre_pop_duree_vie">La roue&#8239;: allonger la durée de vie</h4>
+
+  <p>Augmenter la durée de vie du produit passe par la réparation, la maintenance, la réutilisation, le reconditionnement et le remanufacturing, tout en prévenant l’obsolescence technique et esthétique.</p>
+  <p>On va donc concevoir le vélo pour qu’il soit réparable avec des outils standards du commerce&#8239;: limiter les jointures difficiles à défaire (soudures, colle), favoriser les vis, faciliter le nettoyage…</p>
+
+  <dl class="definitions_fenetre">
+    <dt>Réutilisation</dt>
+    <dd>prolonger la durée de vie du produit en le cédant à un autre utilisateur (seconde main, don, consigne), sans transformation majeure.</dd>
+    <dt>Reconditionnement</dt>
+    <dd>remettre à neuf un produit usagé pour lui donner une seconde vie, avec des performances proches du neuf (nettoyage, remplacement de pièces, mises à jour).</dd>
+    <dt>Remanufacturing</dt>
+    <dd>démonter un produit en fin de vie pour réutiliser ses composants dans un nouveau produit de même fonction, par des procédés industriels&#8239;: les performances sont identiques à celles de composants neufs.</dd>
+  </dl>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> designer produit, réparateur, réseau de reconditionnement.</p>
+</dialog>
+
+
+<dialog class="fenetre_document fenetre_scene" id="pop_notice" aria-labelledby="titre_pop_notice">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <span class="etape_fenetre">étape 3&#8239;: utilisation</span>
+  <h4 id="titre_pop_notice">La notice&#8239;: aider à entretenir et réparer</h4>
+
+  <p>Une notice claire et accessible, pour l’entretien du vélo comme pour la gestion de la batterie, permet à l’utilisateur de réparer et d’entretenir facilement son vélo, et prolonge ainsi sa durée de vie.</p>
+
+  <div class="exemple">
+    <span class="intro_exemple">exemple</span>
+    <p>Une page de la notice de réparation de notre vélo cargo&#8239;: un schéma et des étapes numérotées.</p>
+    <!-- PAGE DE NOTICE STYLISÉE : remplacer le chemin (un .svg sera colorié par couleurs.css) -->
+    <figure class="photo_fenetre">
+      <img src="dessin/chap_3/2/page_notice.svg" alt="Page de notice : schéma de la roue avant et étapes numérotées pour changer la chambre à air.">
+    </figure>
+    <span class="span_source"><span class="souligne_fin">sources d’inspiration&#8239;:</span> Bosch eBike Systems, Help Center&#8239;; notices d’entretien de vélos cargo du commerce</span>
+  </div>
+</dialog>
+
+
+<!-- ---------- 4. FIN DE VIE ---------- -->
+
+<dialog class="fenetre_document fenetre_scene" id="pop_recyclage" aria-labelledby="titre_pop_recyclage">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <span class="etape_fenetre">étape 4&#8239;: fin de vie</span>
+  <h4 id="titre_pop_recyclage">Le cadre du vélo&#8239;: faciliter le démontage et le recyclage</h4>
+
+  <p>La fin de vie se prépare dès la conception. Limiter les assemblages difficiles à séparer et faciliter l’identification des matériaux simplifie le tri et leur orientation vers les filières adaptées.</p>
+
+  <div class="bulle_mascotte">
+    <!-- DESSIN DE LA MASCOTTE : <img class="bulle_mascotte_dessin" src="dessin/…" alt=""> -->
+    <p>Attention&#8239;: tous les plastiques n’ont pas de filière de recyclage. En France, seuls les thermoplastiques comme le PE, le PP et le PET sont concernés.</p>
+  </div>
+  <span class="span_source"><span class="souligne_fin">source&#8239;:</span> ADEME, Bilan national du recyclage 2024,
+    <a class="source" href="https://infos.ademe.fr/economie-circulaire-dechets/2024/bilan-national-du-recyclage-suivant-les-filieres/" target="_blank" rel="noopener">infos.ademe.fr</a></span>
+
+  <details class="plus_loin">
+    <summary>Pour aller plus loin&#8239;: réemployer avant de recycler</summary>
+    <div class="plus_loin_contenu">
+      <p>En France, le réemploi et le reconditionnement sont <strong>prioritaires</strong> sur le recyclage&#8239;: le réseau associatif Heureux Cyclage a réemployé 71&nbsp;% des vélos collectés en 2018, et 158&nbsp;000 vélos d’occasion ont été vendus par des professionnels en 2024.</p>
+      <p>Le recyclage n’intervient qu’en dernier recours. Il est encadré par la filière REP Articles de sport et de loisirs (loi AGEC), pilotée par l’éco-organisme Ecologic&#8239;: en 2024, 6&nbsp;000&nbsp;tonnes de vélos ont été collectées et recyclées (acier, aluminium, caoutchouc, plastiques), sur un gisement estimé à 46&nbsp;000&nbsp;tonnes.</p>
+      <span class="span_source"><span class="souligne_fin">sources&#8239;:</span> ADEME, Impact socio-économique des usages du vélo en France&#8239;; ADEME, Étude préalable filière REP Articles de sport et de loisirs (2020)&#8239;; ministère de la Transition écologique, Rapport d’activité filière REP 2024</span>
+    </div>
+  </details>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> designer produit (choix des matériaux et de l’assemblage), bureau d’études, éco-organisme Ecologic, réseau associatif Heureux Cyclage.</p>
+</dialog>
+
+
+<dialog class="fenetre_document fenetre_scene" id="pop_batterie_fin" aria-labelledby="titre_pop_batterie_fin">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <span class="etape_fenetre">étape 4&#8239;: fin de vie</span>
+  <h4 id="titre_pop_batterie_fin">La batterie&#8239;: prévoir son devenir</h4>
+
+  <p>La filière REP encadre spécifiquement la collecte, le tri et le recyclage des batteries. En France, les éco-organismes agréés pour les batteries sont <strong>Corepile</strong> et <strong>Batribox</strong>, agréés pour toutes les catégories de batteries depuis 2025.</p>
+
+  <dl class="definitions_fenetre">
+    <dt>REP (Responsabilité Élargie du Producteur)</dt>
+    <dd>dispositif réglementaire qui impose aux producteurs, importateurs ou distributeurs d’un produit de prendre en charge sa fin de vie&#8239;: collecte, tri, recyclage ou élimination des déchets, et financement de ces opérations.</dd>
+    <dt>Éco-organisme</dt>
+    <dd>structure privée à but non lucratif, agréée par les pouvoirs publics pour organiser et financer la gestion de la fin de vie des produits dans le cadre d’une filière REP.</dd>
+  </dl>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> éco-organismes (Corepile, Batribox), distributeurs et réparateurs, sociétés de transport spécialisées, centres de tri, industriels du recyclage.</p>
+</dialog>
+
+
+<dialog class="fenetre_document fenetre_scene" id="pop_partage" aria-labelledby="titre_pop_partage">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <span class="etape_fenetre">étape 4&#8239;: fin de vie</span>
+  <h4 id="titre_pop_partage">Partager le vélo&#8239;: favoriser le réemploi et le partage</h4>
+
+  <p>Une autre approche pour réduire l’impact en fin de vie consiste à intensifier l’usage du vélo par plusieurs personnes&#8239;: la mutualisation, le partage, ou la location plutôt que l’achat.</p>
+
+  <details class="plus_loin">
+    <summary>Pour aller plus loin&#8239;: des exemples</summary>
+    <div class="plus_loin_contenu">
+      <dl class="definitions_fenetre">
+        <dt>Grätzlrad (Vienne, Autriche)</dt>
+        <dd>des vélos cargo mis gratuitement à disposition d’un quartier via une plateforme de réservation&#8239;: un même vélo remplace les besoins occasionnels de plusieurs dizaines de foyers.</dd>
+        <dt>LastenVelo (Fribourg, Allemagne)</dt>
+        <dd>une flotte de vélos cargo partagés, qui réduit le nombre de vélos en circulation.</dd>
+        <dt>Véligo Location (France)</dt>
+        <dd>la location avec maintenance et assistance plutôt que l’achat, qui allonge la durée de vie grâce à une maintenance centralisée.</dd>
+        <dt>Cargoroo</dt>
+        <dd>des vélos cargo en libre-service via une application, pour optimiser leur taux d’utilisation.</dd>
+      </dl>
+      <span class="span_source"><span class="souligne_fin">sources&#8239;:</span> ADEME, Impact socio-économique des usages du vélo en France (2026)&#8239;; ADEME, Étude préalable filière REP Articles de sport et de loisirs (2020)</span>
+    </div>
+  </details>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> collectivités locales, plateformes de mobilité partagée, opérateurs de location, professionnels du reconditionnement (Upway, Décathlon, Loewi, Alltricks).</p>
+</dialog>
+
+
+<!-- ========== Bandeau du bas (logos) ========== -->
+<footer id="bandeau_bas"></footer>
+
+</body>
+</html>
