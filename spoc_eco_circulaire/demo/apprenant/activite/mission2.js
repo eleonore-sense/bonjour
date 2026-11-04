@@ -14,7 +14,7 @@
 //                               (textes écrits à l'avance, pas d'IA)
 //   6. Conversation IA          commun (relais, signaux, file d'attente)
 //   7. Composants               pop-up, IA
-//   8. Parcours utilisateur     petite fenêtre, IA si pas convaincue
+//   8. Parcours utilisateur     petite fenêtre, IA à chaque étape
 //   9. Solutions du parcours    propositions (étape, problème, solution), IA à chaque envoi
 //  10. Livrable : problématique pop-up, puis petite fenêtre d'Andréa (IA)
 //
@@ -498,7 +498,8 @@
     : 'https://dhssndnqurrpidyxatwj.supabase.co/functions/v1/mentor';
   const MISSION = 2;
   const LONGUEUR_MAX = 2000;
-  const ESSAIS_RELAIS = 3;              // relais en erreur : 3 essais (2 s, puis 4 s d'attente)
+  const ESSAIS_RELAIS = 3;              // relais en erreur : 3 essais (5 s, puis 10 s d'attente)
+  const ECART_MIN = 2500;               // Mistral gratuit : au moins 2,5 s entre deux messages
   const REPONSES_AVANT_PASSER = 3;      // mascotte : 3 réponses non validées
   const CLE_ENJEUX = 'athentech_enjeux';
   const CLE_MISSION2 = 'athentech_mission2';
@@ -529,6 +530,7 @@
   let conversationId = null;            // une conversation pour toute la mission 2
   let fileEnvois = Promise.resolve();   // messages envoyés un par un, dans l'ordre
   let enCours = 0;
+  let dernierEnvoi = 0;
 
   const normaliser = t => t.normalize('NFD').replace(/[̀-ͯ]/g, '')
     .replace(/[’`]/g, "'").replace(/\s+/g, ' ').trim().toLowerCase();
@@ -624,7 +626,10 @@
       try {
         // Mistral occupé : nouvel essai automatique
         for (let essai = 0; essai < ESSAIS_RELAIS; essai++) {
-          if (essai) await new Promise(ok => setTimeout(ok, 2000 * essai));
+          if (essai) await new Promise(ok => setTimeout(ok, 5000 * essai));
+          const attendre = dernierEnvoi + ECART_MIN - Date.now();   // messages espacés
+          if (attendre > 0) await new Promise(ok => setTimeout(ok, attendre));
+          dernierEnvoi = Date.now();
           try {
             const reponse = await fetch(ADRESSE_RELAIS, {
               method: 'POST',
@@ -781,9 +786,9 @@
 
   // =====================================================================
   // 8. PARCOURS UTILISATEUR (petite fenêtre, IA)
-  // Entrée dans une étape → IA. Convaincue ([EVAL: … = ok]) : rien ne s'affiche.
-  // Pas convaincue (a_approfondir) : la petite fenêtre s'ouvre avec sa remarque ;
-  // l'élève peut répondre ou continuer.
+  // Entrée ou « soumettre à Andréa » → IA → petite fenêtre :
+  // ok : encouragement (numéro vert citron) ; a_approfondir : une question (orange).
+  // L'élève peut répondre ou continuer.
   // Mascotte : 2 étapes remplies → rappel ; 7 → « continuer ».
   // =====================================================================
 
@@ -892,11 +897,8 @@
     appliquerAvis(r.evals);
     sauverParcours();
 
-    // convaincue (avis « ok » sur cette étape) : silence, sauf document à montrer
-    const avis = r.evals.find(e => normaliser(e.nom) === normaliser(nom));
-    const convaincue = avis?.avis === 'ok';
-    if (convaincue && annonceParcours) annonceParcours.textContent = `Étape « ${nom} » : Andréa est d’accord.`;
-    if ((!convaincue || r.docs.length) && r.texte && !parcoursFini && ouvrirFenetre()) {
+    // Andréa répond toujours : encouragement, ou une question
+    if (r.texte && !parcoursFini && ouvrirFenetre()) {
       changerHumeur(r.humeur);
       ajouterMessage('eleve', texte, nom);
       ajouterMessage('mentor', r.texte, null, r.docs);
@@ -962,8 +964,7 @@
   // =====================================================================
   // 9. SOLUTIONS DU PARCOURS
   // 2 propositions au départ, « ajouter une solution » pour d'autres.
-  // Entrée dans « solution proposée » → IA. Convaincue : silence ;
-  // pas convaincue : la petite fenêtre s'ouvre.
+  // Entrée ou « soumettre à Andréa » → IA → petite fenêtre (bien vu, ou une question).
   // Mascotte : 1 proposition complète → rappel ; 2 complètes → « continuer ».
   // =====================================================================
 
