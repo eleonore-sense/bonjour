@@ -1,0 +1,12 @@
+Lecteur Rive pour le web (@rive-app/canvas), version 2.45.0
+Source : https://github.com/rive-app/rive-wasm
+Licence : MIT (Copyright Rive), libre d'utilisation et de redistribution.
+
+Fichiers :
+  rive.js             le lecteur
+  rive.wasm           son moteur (chargé par rive.js)
+  rive_fallback.wasm  moteur de secours pour les navigateurs qui ne gèrent pas le premier
+
+Les trois fichiers vont ensemble : pour changer de version, remplacer les trois.
+Les animations exportées depuis une version récente de l'éditeur Rive peuvent
+demander une version plus récente du lecteur.

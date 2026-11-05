@@ -472,12 +472,73 @@ function calculerSegments(ensemble) {
 }
 
 
+
+
+// ---------- Couleurs de couleurs.css dans les animations Rive ----------
+// Dans l'éditeur Rive, une propriété de couleur du View Model qui porte le nom
+// d'une couleur de la palette (bleu, rose, vert_citron…) prend la valeur
+// de la variable CSS du même nom (--bleu, --rose, --vert_citron…).
+// Les propriétés de nombre epaisseur, epaisseur_fine et epaisseur_forte prennent
+// --dessin_epaisseur, --dessin_epaisseur_fine et --dessin_epaisseur_forte,
+// multipliées par data-echelle-trait sur le <canvas> (1 si absent).
+function appliquerPaletteRive(r, canvas) {
+  const vmi = r.viewModelInstance;
+  if (!vmi) return;
+
+  const styles  = getComputedStyle(document.documentElement);
+  const echelle = parseFloat(canvas.dataset.echelleTrait) || 1;
+  const EPAISSEURS = {
+    epaisseur:       '--dessin_epaisseur',
+    epaisseur_fine:  '--dessin_epaisseur_fine',
+    epaisseur_forte: '--dessin_epaisseur_forte',
+  };
+
+  vmi.properties.forEach(({ name, type }) => {
+    if (type === 'color') {
+      const rgb = couleurEnRgb(styles.getPropertyValue('--' + name));
+      if (rgb) vmi.color(name).rgb(...rgb);
+      else console.warn('Rive : pas de couleur --' + name + ' dans couleurs.css');
+    } else if (type === 'number' && EPAISSEURS[name]) {
+      const valeur = parseFloat(styles.getPropertyValue(EPAISSEURS[name]));
+      if (!isNaN(valeur)) vmi.number(name).value = valeur * echelle;
+    }
+  });
+}
+
+// "#6eadf0" ou "#abc" → [110, 173, 240]
+function couleurEnRgb(texte) {
+  let hex = texte.trim().replace('#', '');
+  if (hex.length === 3) hex = [...hex].map(c => c + c).join('');
+  if (!/^[0-9a-f]{6}$/i.test(hex)) return null;
+  return [0, 2, 4].map(i => parseInt(hex.slice(i, i + 2), 16));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ---------- Animations Rive ----------
 // Tout <canvas class="anim_riv"> placé dans un .media_exemple est pris en charge.
 // La 1re animation de la page se joue au chargement et au retour en haut,
 // les suivantes à chaque passage de la ligne des 60 %.
 function initAnimationsRive() {
   if (typeof rive === 'undefined') return;
+    // le moteur de Rive est dans le dossier rive/, pas sur internet
+  rive.RuntimeLoader.setWasmUrl('rive/rive.wasm');
+  rive.RuntimeLoader.wasmFallbackURL = 'rive/rive_fallback.wasm';
 
   const groupes = [];
 
@@ -497,10 +558,16 @@ function initAnimationsRive() {
         src: canvas.dataset.riv,
         canvas: canvas,
         autoplay: false,
-        stateMachines: canvas.dataset.machine,
-        onLoad: () => r.resizeDrawingSurfaceToCanvas(),
+        stateMachine: canvas.dataset.machine,
+        autoBind: true,                     // relie le View Model de l'animation
+        onLoad: () => {
+          r.resizeDrawingSurfaceToCanvas();
+          appliquerPaletteRive(r, canvas);  // couleurs et traits de couleurs.css
+        },
         onLoadError: e => console.error('Rive :', canvas.dataset.riv, e),
       });
+
+      
 
       r.on(rive.EventType.Loop, () => r.pause());
       instances.push(r);
