@@ -124,7 +124,7 @@
                     style="left: 219px; top: 228px;">
               <canvas class="velo_riv" width="488" height="415"
                       data-riv="dessin/chap_3/II/1/velo_usine.riv" data-animation="roule"
-                      data-avance="2000"></canvas>
+                      data-avance="1000"></canvas>
               <span class="scene_nom"></span>
             </button>
           </div>
@@ -135,7 +135,7 @@
 
             <!-- la ligne du sol (top, left, width en px) -->
             <div class="scene_ligne" style="top: 356px; left: 48px; width: 700px;"></div>
-
+            <img class="scene_decor" src="dessin/chap_3/II/1/arbre.svg" alt="" style="left: 97px; top: 123px;">
             <!-- le camion : arrive de la gauche et passe derrière le carton, repart par la droite.
                  2 dessins : fermé (le 1er) et ouvert (class « dessin_ouvert »), montré pendant le chargement -->
             <button type="button" class="scene_element mobile" id="camion_transport"
@@ -165,20 +165,38 @@
 
 
           <!-- ============ SCÈNE 3 : L'USAGE ============
-               Pour l'instant : seulement le vélo (velo_dame.riv), qui arrive et repart
-               comme celui de la fabrication. Le décor viendra plus tard.
-               Les fenêtres pop_duree_vie et pop_notice attendent leurs dessins. -->
+               La boutique (durée de vie, réparation), la pompe (entretien) et le vélo
+               (velo_dame.riv, consommation), qui arrive et repart comme celui de la fabrication. -->
           <div class="scene_groupe" data-etapes="utilisation" data-delai="2000">
+            <img class="scene_decor" src="dessin/chap_3/II/1/palmier.svg" alt="" style="left: 632px; top: -8px; width: 156px;">
+            <!-- la ligne du sol (top, left, width en px) -->
+            <div class="scene_ligne" style="top: 370px; left: -14px; width: 830px;"></div>
+
+            <!-- la boutique, en fond (avant le vélo dans le HTML : le vélo passe devant) -->
+            <button type="button" class="scene_element"
+                    data-documents="utilisation:pop_duree_vie"
+                    style="left: 0px; top: 74px; width: 523px;">
+              <img src="dessin/chap_3/II/1/boutique_velo.svg" alt="">
+              <span class="scene_nom"></span>
+            </button>
+
+            <!-- la pompe à vélo -->
+            <button type="button" class="scene_element"
+                    data-documents="utilisation:pop_notice"
+                    style="left: 36px; top:335px;">
+              <img src="dessin/chap_3/II/1/pompe_velo.svg" alt="">
+              <span class="scene_nom"></span>
+            </button>
 
             <button type="button" class="scene_element element_velo mobile"
                     data-documents="utilisation:pop_batterie_usage"
                     data-arrivee="droite" data-sortie="gauche" data-duree="3000" data-duree-sortie="2000"
-                    style="left: 219px; top: 228px;">
+                    style="left: 114px; top: 148px;">
               <!-- pas de width / height : le canvas prend la taille de l'artboard de velo_dame.riv.
                    Pour la changer : width: …px dans le style du bouton ci-dessus. -->
               <canvas class="velo_riv"
                       data-riv="dessin/chap_3/II/1/velo_dame.riv" data-animation="roule"
-                      data-avance="2000"></canvas>
+                      data-avance="1000"></canvas>
               <span class="scene_nom"></span>
             </button>
           </div>

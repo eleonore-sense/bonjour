@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+	<title>↗🩰↘🚨↗🩰↘🚨↗🩰↘🚨</title>
+  <link rel="icon" type="image/png" href="../../img_4.png" />
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="../script_projet.js"></script>
+	<link rel="stylesheet" type="text/css" href="../style_projet.css"> 
+<script src="../../precharge.js"></script>
+
+
+
+</head>
+
+<body id="body">
+
+
+
+<div id="entete">
+  <div id="accueil">
+
+    <p><span class="emoji"></span> 
+      <a href="../index.html" class="lien"> retour à la liste</a>
+    </p>
+    <p><span class="emoji"></span> 
+      <a href="../madcow/index.html" class="lien"> voir un autre projet</a>
+    </p>
+      <p><span class="emoji"></span> 
+      <a href="../../index.html" class="lien"> retour au bureau</a>
+    </p>
+  </div>
+
+
+  <div id="contact">
+    <p><a href="https://docs.google.com/spreadsheets/d/12UdJACSnNIuI5MsdhvDRUM02DI4OiWgJJHoQ_n4WByk/edit?hl=fr#gid=0" target="_blank" class="lien"> éléonore sense</a>
+    </p>
+  </div>
+
+</div>
+
+
+<div id="contenu_projet">
+<div id="txt_pres">
+    <div class="bloc_titre">
+      <p id="titre">>_ hystérie collective</p>
+      <p id="sous_titre">organisation et scénographie d’un évenement festif autour de l’invention du therme "hystérie" avec <a href="https://www.instagram.com/collectifcollective/" target="_blank" class="lien">le collectif collective</a> au <a href="https://shakirail.curry-vavart.com" target="_blank" class="lien">Shakirail</a>_ 2024</p>
+    </div>
+<br><br>
+Un programme pioche aléatoirement des fragments de phrase récoltés dans des textes de Proust, de pièces de théâtre ou des tweets. Il constitue une phrase lisible, mais sans réel fond.
+Nous prenons en référence une technique utilisée par l’ENA pour perdre leur auditoire. et onutilise ce principe du cadavre exquis pour fabriquer nos propres discours politiques.
+<br><br>
+Visible au·à la spectateur·rice, une simple imprimante sur un socle, qui crache toute les 30 secondes un nouveau discours. Par cette installation, nous mettons en parallèle un élément familier du·de la spectateu·rice qui est le discours politique: entendu quotidiennement à travers différents médias, et le confronter à la création par une machine. Souvent dérangé·e, nous laissons le·a spectateur·rice forger sa propre opinion.</div>
+</div>
+
+
+
+
+
+<div id="visuel">
+<div id="photo" style="background-image: url('img/1.jpg');">
+  <div id="gauche" onclick="prev_img()">
+    <p id="precedent">←</p>
+  </div>
+  <div id="droite" onclick="next_img()">
+    <p id="suivant">→</p>
+  </div>
+</div>
+</div>
+
+
+
+
+
+</div>
+
+
+<div id="gif" style="background-image: url('img/0.gif'); left:500px; bottom: 80px;"></div>
+
+
+
+</body>
+
+
+<script>
+  var image = ['1.jpg', '2.jpg', '3.webp', '4.jpg', '5.jpg', '6.jpg','7.jpg','8.webp', '9.jpg'];
+
+  var x = 0;
+var long = image.length-1;
+
+   function next_img(){
+    if (x < long){
+  x=x+1;  
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+
+}else{
+    x=0;  
+
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+}
+};
+
+
+
+   function prev_img(){
+  if (x >= 1){
+  x=x-1;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+  console.log(x);
+}else{
+x=9;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+    console.log(x);
+}
+};
+</script>
+	</html>

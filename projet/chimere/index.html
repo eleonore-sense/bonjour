@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+
+  
+	<title>↗🐉↘😶‍🌫️↗🐉↘😶‍🌫️↗🐉↘😶‍🌫️</title>
+  <link rel="icon" type="image/png" href="../../img_4.png" />
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="../script_projet.js"></script>
+	<link rel="stylesheet" type="text/css" href="../style_projet.css">  <script src="../../precharge.js"></script>
+
+
+
+</head>
+
+<body id="body">
+
+
+
+<div id="entete">
+  <div id="accueil">
+
+    <p><span class="emoji"></span> 
+      <a href="../index.html" class="lien"> retour à la liste</a>
+    </p>
+    <p><span class="emoji"></span> 
+      <a href="../dans_les_brumes/index.html" class="lien"> voir un autre projet</a>
+    </p>
+      <p><span class="emoji"></span> 
+      <a href="../../index.html" class="lien"> retour au bureau</a>
+    </p>
+  </div>
+
+
+  <div id="contact">
+    <p><a href="https://docs.google.com/spreadsheets/d/12UdJACSnNIuI5MsdhvDRUM02DI4OiWgJJHoQ_n4WByk/edit?hl=fr#gid=0" target="_blank" class="lien"> éléonore sense</a>
+    </p>
+  </div>
+
+</div>
+
+
+<div id="contenu_projet">
+<div id="txt_pres">
+    <div class="bloc_titre">
+      <p id="titre">>_ Do our chimeras most resemble us?</p>
+      <p id="sous_titre">graphisme et programmation web d’une exposition en ligne du <a href="https://www.centrepompidou.fr/fr/" target="_blank"class="lien_pote">Centre Pompidou</a> et de <a href="https://kadist.org/paris/" target="_blank"class="lien_pote">Kadist</a>_ 2026</p>
+    </div>
+    <div id="txt">
+Gxrls need modems est un jeu vidéo qui reprend l’esthétique graphique des premiers temps d’internet (dessins uniquement en ASCII) pour créer une narration autour des fxmmes et minorités de genre qui ont été invisibilisé·es dans le domaine du numérique.
+<br><br>Sous forme de quête absurde le·a protagoniste part à la rencontre de multiples êtres chimériques qui font référence à des personnes importantes au développement du domaine, proposant ainsi une contre-histoire du numérique. 
+<br>Il reprend les codes de l’heroic fantasy en les détournant, dans l’objectif de créer de nouvelles mythologies à s’imaginer et se raconter
+<br>Découvrir une <a href="https://vimeo.com/891391301?share=copy" target="_blank"class="lien_pote">maquette vidéo du jeu</a>.
+    </div>
+</div>
+
+
+
+
+
+<div id="visuel">
+<div id="photo" style="background-image: url('img/1.jpg');">
+  <div id="gauche" onclick="prev_img()">
+    <p id="precedent">←</p>
+  </div>
+  <div id="droite" onclick="next_img()">
+    <p id="suivant">→</p>
+  </div>
+</div>
+</div>
+
+
+
+</div>
+
+
+
+
+
+</body>
+
+
+<script>
+  var image = ['1.jpg', '2.jpg', '3.webp', '4.jpg', '5.jpg', '6.jpg','7.webp', '8.jpg', '9.jpg'];
+
+  var x = 0;
+var long = image.length-1;
+
+   function next_img(){
+    if (x < long){
+  x=x+1;  
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+
+}else{
+    x=0;  
+
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+}
+};
+
+
+
+   function prev_img(){
+  if (x >= 1){
+  x=x-1;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+}else{
+x=8;
+  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
+    console.log(x);
+}
+};
+</script>
+	</html>

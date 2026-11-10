@@ -135,3 +135,6 @@ $("#photo").css("background-image", "url(bureau/livre.png)");
 function quitter_livre(){
 $("#photo").css("background-image", "none");
     };
+
+
+

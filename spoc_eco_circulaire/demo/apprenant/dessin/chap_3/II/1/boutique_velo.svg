@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="563.85" height="321.34" viewBox="0 0 563.85 321.34" stroke-linecap="round" stroke-linejoin="round">
+  <rect class="violet trait_fin" x="25.49" y="71.38" width="24.55" height="248.06"/>
+  <rect class="blanc trait_fin" x="181.52" y="56.7" width="134.61" height="264.15"/>
+  <rect class="blanc trait_fin" x="315.29" y="56.7" width="234.51" height="264.15"/>
+  <rect class="prune trait_fin" x=".5" y="39.77" width="314.94" height="38.94"/>
+  <rect class="prune trait_fin" x="315.72" y="39.77" width="247.64" height="38.94"/>
+  <rect class="bleu_clair trait_fin" x="333.07" y="99.03" width="199.8" height="198.11"/>
+  <rect class="bleu_clair trait_fin" x="181.52" y="99.03" width="115.99" height="198.11"/>
+  <line class="sans_fond trait_fin" fill="none" x1="231.47" y1="99.88" x2="231.47" y2="297.98"/>
+  <line class="sans_fond trait_fin" fill="none" x1="471.91" y1="99.88" x2="471.91" y2="297.98"/>
+  <line class="sans_fond trait_fin" fill="none" x1="394.02" y1="99.88" x2="394.02" y2="297.98"/>
+  <polygon class="vert_bleu trait_fin" points="510.37 47.7 366.97 47.7 395.05 .5 538.45 .5 510.37 47.7"/>
+  <text class="noir" font-family="Kristen ITC, KristenITC-Regular, Comic Sans MS, cursive" font-size="19" transform="translate(398.64 28.52)"><tspan x="0" y="0">ça déraille !</tspan></text>
+</svg>

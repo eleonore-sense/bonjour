@@ -69,7 +69,7 @@ $('#legende').text('')
 
 function game_gxrls(){
 $('.game_gxrls').css('textShadow',effet_txt);
-$("#photo").css("background-image", "url(game_gxrls/img/3.gif)");
+$("#photo").css("background-image", "url(game_gxrls/img/3.webp)");
 $('#legende').text('outils de prise en main et de découverte des interactions numériques avec les enseignants Tim Knapen et Guillaume Jacquemin à l’ENSCI-les-ateliers_ 2020')
 $( "#gif_game" ).css('display','block');    };
 
@@ -83,7 +83,7 @@ $( "#gif_game" ).css('display','none');    };
 
 function gxrls_need_modems(){
 $( ".gxrls_need_modems" ).css('textShadow',effet_txt);
-$("#photo").css("background-image", "url(gxrls_need_modems/img/3.gif)");
+$("#photo").css("background-image", "url(gxrls_need_modems/img/3.webp)");
 $('#legende').text('jeu vidéo réalisé en ASCII qui met en lumière des fxmmes et minorités de genre qui ont joué un rôle important dans le domaine du numérique, avec l’artiste et designer Reem Saleh_ 2024')
     };
 
@@ -152,7 +152,7 @@ $( "#gif_messagerie" ).css('display','none');
 
 function requin_internet(){
 $( ".requin_internet" ).css('textShadow',effet_txt);
-$("#photo").css("background-image", "url(requin_internet/img/1.gif)");
+$("#photo").css("background-image", "url(requin_internet/img/1.webp)");
 $('#legende').text('recherche autour des enjeux politiques et sociaux des câbles sous-marins du réseaux internet et la production d’ondes électromagnétiques dans le cadre d’une résidence à la Labomédia, Orléans_ 2024');
 $( "#gif_requin" ).css('display','block');
     };
@@ -181,12 +181,14 @@ $('#legende').text('')
 $( ".diploramax" ).css('textShadow',effet_txt);
 $("#photo").css("background-image", "url(diploramax/img/1.jpg)");
 $('#legende').text('scénographie d’une partie de l’exposition 100% à la Villette réalisée avec les artistes et designers Amira Louadah, Rafaël Têtedoie et Lucas Lorigeon_ 2022');
+$( "#gif_diploramax" ).css('display','block');
     };
 
 function quitter_diploramax(){
 $('.diploramax').css('textShadow','none');
 $("#photo").css("background-image", "none");
 $('#legende').text('')
+$( "#gif_diploramax" ).css('display','none');
     };
 
 
@@ -235,7 +237,7 @@ $( "#gif_etre_machine" ).css('display','none');
 
 function dans_les_brumes(){
 $( ".dans_les_brumes" ).css('textShadow',effet_txt);
-$("#photo").css("background-image", "url(dans_les_brumes/img/1.gif)");
+$("#photo").css("background-image", "url(dans_les_brumes/img/1.webp)");
 $('#legende').text('site web qui présente la recherche de l’artiste-designer Camille Peyrachon autour des savoir-faires tisserand au village de Saint Julien Molin Molette_ 2022')
     };
 
@@ -247,7 +249,7 @@ $('#legende').text('')
 
 function diploramax_site(){
 $( ".diploramax_site" ).css('textShadow',effet_txt);
-$("#photo").css("background-image", "url(diploramax_site/img/1.gif)");
+$("#photo").css("background-image", "url(diploramax_site/img/1.webp)");
 $('#legende').text('site web d’une partie de l’exposition 100% à la Villette_ 2022')
     };
 
@@ -303,9 +305,147 @@ $('#legende').text('')
 
 
 
+function ordinateur_geant(){
+$( ".ordinateur_geant" ).css('textShadow',effet_txt);
+$("#photo").css("background-image", "url(ordinateur_geant/img/3.jpg)");
+$('#legende').text('installation d’un ordinateur géant interactif dans le cadre d’évenements festifs aux Ateliers Médicis avec le collectif collective_ 2026');
+$( "#gif_ordinateur_geant" ).css('display','block');
+
+
+    };
+
+function quitter_ordinateur_geant(){
+$('.ordinateur_geant').css('textShadow','none');
+$("#photo").css("background-image", "none");
+$('#legende').text('')
+$( "#gif_ordinateur_geant" ).css('display','none');
+    };
+
+
+function nuit_blanche(){
+$( ".nuit_blanche" ).css('textShadow',effet_txt);
+$("#photo").css("background-image", "url(nuit_blanche/img/3.jpg)");
+$('#legende').text('installation de 6 dispositifs scénographiques pour la Nuit Blanche, avec le collectif collective aux Ateliers Médicis_ 2026');
+$( "#gif_nuit_blanche" ).css('display','block');
+
+
+    };
+
+function quitter_nuit_blanche(){
+$('.nuit_blanche').css('textShadow','none');
+$("#photo").css("background-image", "none");
+$('#legende').text('')
+$( "#gif_nuit_blanche" ).css('display','none');
+    };
 
 
 
 
 
+function hysterie_collective(){
+$( ".hysterie_collective" ).css('textShadow',effet_txt);
+$("#photo").css("background-image", "url(hysterie_collective/img/3.jpg)");
+$('#legende').text('organisation et scénographie d’un évenement festif autour de l’invention du therme "hystérie" avec le collectif collective au Shakirail_ 2024');
+$( "#gif_hysterie_collective" ).css('display','block');
 
+
+    };
+
+function quitter_hysterie_collective(){
+$('.hysterie_collective').css('textShadow','none');
+$("#photo").css("background-image", "none");
+$('#legende').text('')
+$( "#gif_hysterie_collective" ).css('display','none');
+    };
+
+
+
+function fabrique_a_film(){
+$( ".fabrique_a_roulette" ).css('textShadow',effet_txt);
+$("#photo").css("background-image", "url(fabrique_a_roulette/img/3.jpg)");
+$('#legende').text('co-écriture, tournage et montage de deux courts-métrages de fiction absurde, imaginés avec les habitant·es autour de leur territoire avec le collectif collective au 9.9bis_ 2025-2026');
+
+
+    };
+
+function quitter_fabrique_a_film(){
+$('.fabrique_a_roulette').css('textShadow','none');
+$("#photo").css("background-image", "none");
+$('#legende').text('')
+    };
+
+
+
+function cire(){
+$( ".cire" ).css('textShadow',effet_txt);
+$("#photo").css("background-image", "url(cire/img/1.jpg)");
+$('#legende').text('construction d’un moment festif suite à à des ateliers de mise en forme de la cire avec le collectif collective et F93_ 2025/2026');
+$( "#gif_cire" ).css('display','block');
+
+
+    };
+
+function quitter_cire(){
+$('.cire').css('textShadow','none');
+$("#photo").css("background-image", "none");
+$('#legende').text('')
+$( "#gif_cire" ).css('display','none');
+    };
+
+
+
+
+
+function shark(){
+$( ".shark" ).css('textShadow',effet_txt);
+$("#photo").css("background-image", "url(cire/img/3.jpg)");
+$('#legende').text('recherche et conception d’outils de médiation autour de la captation d’ondes électromagnétiques et leur impact sur le vivant à la Villette Makerz_ 2025');
+
+
+
+    };
+
+function quitter_shark(){
+$('.shark').css('textShadow','none');
+$("#photo").css("background-image", "none");
+$('#legende').text('');
+    };
+
+
+
+function chimere(){
+$( ".chimere" ).css('textShadow',effet_txt);
+$("#photo").css("background-image", "url(cire/img/3.jpg)");
+$('#legende').text('graphisme et programmation web d’une exposition en ligne du Centre Pompidou et de Kadist_ 2026');
+$( "#gif_chimere" ).css('display','block');
+
+
+    };
+
+function quitter_chimere(){
+$('.chimere').css('textShadow','none');
+$("#photo").css("background-image", "none");
+$('#legende').text('')
+$( "#gif_chimere" ).css('display','none');
+    };
+
+
+
+
+
+  function montrer_clippy() {
+    $('#clippy').removeClass('cache');
+  $('#contact .lien').css('textShadow', effet_txt)
+  setTimeout(fermer_clippy, 8000)
+  }
+
+  function fermer_clippy() {
+    $('#clippy').addClass('cache');
+  $('#contact .lien').css('textShadow', 'none');
+  }
+
+
+  $(function () {
+    $('#clippy_fermer').on('click', fermer_clippy);
+    setTimeout(montrer_clippy, 3000);               
+  });

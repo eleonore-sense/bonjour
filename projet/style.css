@@ -114,3 +114,70 @@ display: none;
 #tel{
 	display: none;
 }
+
+
+
+body {
+  overflow-x: hidden; 
+}
+
+#gif_cire {
+  animation:
+    traversee 24s steps(56) infinite,
+    vague 6s steps(14) infinite alternate;
+}
+
+
+@keyframes traversee {
+  0%     { left: -87px; scale: 1 1; }    
+  40%    { left: 100%;  scale: 1 1; }    
+  40.1%  { left: 100%;  scale: -1 1; }  
+  50%    { left: 100%;  scale: -1 1; }   
+  90%    { left: -87px; scale: -1 1; }  
+  90.1%  { left: -87px; scale: 1 1; }   
+  100%   { left: -87px; scale: 1 1; }    
+}
+
+
+@keyframes vague {
+  from { translate: 0 -30px; }
+  to   { translate: 0 30px; }
+}
+
+
+#clippy {
+  position: fixed;     
+  top: 10px;           
+  right: 140px;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  z-index: 1000;       
+  transition: opacity 0.4s;
+}
+
+#clippy img {
+  width: 80px;
+}
+
+#clippy .bulle {
+  margin: 0;
+  padding: 8px 12px;
+  background: #ffffe1; 
+  border: 1px solid black;
+  border-radius: 8px;
+  max-width: 160px;
+}
+
+#clippy_fermer {
+  background: white;
+  border: 1px solid black;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#clippy.cache {
+  opacity: 0;
+  pointer-events: none; 
+}
