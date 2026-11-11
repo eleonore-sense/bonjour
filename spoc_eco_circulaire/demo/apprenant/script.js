@@ -186,6 +186,7 @@ initBarreParties();
 initAnimationsRive();
 initDessins();
 initGraphiques();
+initChoixVue();
 initRecentrage();
 initQCM();
 initClassement();
@@ -559,6 +560,7 @@ function initAnimationsRive() {
         canvas: canvas,
         autoplay: false,
         stateMachine: canvas.dataset.machine,
+animations: canvas.dataset.anim,
         autoBind: true,                     // relie le View Model de l'animation
         onLoad: () => {
           r.resizeDrawingSurfaceToCanvas();
@@ -567,9 +569,18 @@ function initAnimationsRive() {
         onLoadError: e => console.error('Rive :', canvas.dataset.riv, e),
       });
 
-      
 
-      r.on(rive.EventType.Loop, () => r.pause());
+      // fin de l'animation : pause
+      // (avec data-depart, on fait un tour complet et on s'arrête au point de départ)
+      r.on(rive.EventType.Loop, () => {
+        const depart = parseFloat(canvas.dataset.depart) || 0;
+        if (depart > 0 && !r.tourFini) {
+          r.tourFini = true;
+          setTimeout(() => r.pause(), depart * 1000);
+        } else if (depart === 0) {
+          r.pause();
+        }
+      });
       instances.push(r);
     });
 
@@ -580,13 +591,28 @@ function initAnimationsRive() {
 
   function jouer(instances) {
     instances.forEach(r => {
-      r.reset();
-      r.play();
+      const c = r.canvas;
+      r.reset({
+        autoBind: true,
+        animations: c.dataset.anim,
+        stateMachines: c.dataset.machine,
+      });
+      appliquerPaletteRive(r, c);               // remet les couleurs de couleurs.css
+      r.tourFini = false;
+      // data-depart="1.133" : l'animation commence à 1,133 s au lieu du début
+      const depart = parseFloat(c.dataset.depart);
+      if (c.dataset.anim && depart > 0) r.scrub(c.dataset.anim, depart);
+      // data-decalage="400" : départ retardé de 400 ms
+      const decalage = parseFloat(c.dataset.decalage) || 0;
+      setTimeout(() => r.play(), decalage);
     });
   }
 
-  // 1re animation : au chargement + à chaque retour tout en haut
-  setTimeout(() => jouer(groupes[0].instances), 1000);
+  // 1re animation : une fois la page chargée, puis à chaque retour tout en haut
+  const lancerPremiere = () => setTimeout(() => jouer(groupes[0].instances), 400);
+  if (document.readyState === 'complete') lancerPremiere();
+  else window.addEventListener('load', lancerPremiere);
+
   let dejaEnHaut = true;
   zoneScroll.addEventListener('scroll', () => {
     if (zoneScroll.scrollTop === 0) {
@@ -601,22 +627,22 @@ function initAnimationsRive() {
   groupes.slice(1).forEach(groupe => surPassage(groupe.media, () => jouer(groupe.instances)));
 }
 
-
 // ---------- Dessins (galerie + schémas) : infobulle et pop-up ----------
 function initDessins() {
   const modal = document.getElementById('modal_dessin');
   const items = document.querySelectorAll('.item_dessin');
   if (!modal || !items.length) return;
 
-  const modalImage = modal.querySelector('.modal_dessin_image');
   const modalTitre = modal.querySelector('.modal_dessin_titre');
   const modalDef = modal.querySelector('.modal_dessin_def');
 
   items.forEach(item => {
     const nom = item.dataset.nom;
     const def = item.dataset.def;
-    const img = item.querySelector('img');
-    const imageActeur = item.dataset.imageModal;
+    // l'<img> a peut-être déjà été remplacée par le SVG : on gère les deux cas
+    const dessin = item.querySelector('img, svg.dessin');
+    const srcDessin = dessin?.getAttribute('src') || dessin?.dataset.src;
+        const imageActeur = item.dataset.imageModal;
 
     // Infobulle : texte seul, ou dessin + titre + texte pour les acteurs
     const tooltip = document.createElement('div');
@@ -643,10 +669,15 @@ function initDessins() {
       tooltip.textContent = def;
     }
     item.appendChild(tooltip);
-
     // Pop-up au clic
     item.addEventListener('click', () => {
-      modalImage.src = imageActeur || img.src;
+      const nouvelle = document.createElement('img');
+      nouvelle.className = 'modal_dessin_image';
+      nouvelle.alt = '';
+      nouvelle.src = imageActeur || srcDessin;
+      modal.querySelector('.modal_dessin_image').replaceWith(nouvelle);
+      window.insererDessin?.(nouvelle);
+
       modalTitre.textContent = nom;
       modalDef.textContent = def;
       modal.classList.toggle('modal_acteur', !!imageActeur);
@@ -661,22 +692,33 @@ function initDessins() {
   modal.addEventListener('click', e => {
     if (e.target === modal) modal.classList.remove('visible');
   });
-}
 
+
+  modal.addEventListener('click', e => {
+    if (e.target === modal) modal.classList.remove('visible');
+  });
+
+  // Échap ferme la pop-up
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') modal.classList.remove('visible');
+  });
+
+}
 
 // ---------- Graphiques en barres + boutons produit A / B ----------
 function initGraphiques() {
   document.querySelectorAll('.graphique').forEach(graph => {
     const max = parseFloat(graph.dataset.max) || 10;
     const barres = [];
+    const noms = [];
     let produitActif = 'a';
 
     const zone = document.createElement('div');
     zone.className = 'graph_zone';
-    const noms = document.createElement('div');
-    noms.className = 'graph_noms';
+    const ligneNoms = document.createElement('div');
+    ligneNoms.className = 'graph_noms';
 
-    graph.querySelectorAll('.graph_donnee').forEach((donnee, i) => {
+    graph.querySelectorAll('.graph_donnee').forEach(donnee => {
       const groupe = document.createElement('div');
       groupe.className = 'graph_groupe';
 
@@ -684,35 +726,59 @@ function initGraphiques() {
       barre.className = 'graph_barre';
       barre.dataset.a = (parseFloat(donnee.dataset.a) / max) * 100 + '%';
       barre.dataset.b = (parseFloat(donnee.dataset.b) / max) * 100 + '%';
-      barre.style.transitionDelay = i * 0.12 + 's';
       groupe.appendChild(barre);
-      barres.push(barre);
       zone.appendChild(groupe);
+      barres.push(barre);
 
       const nom = document.createElement('div');
       nom.textContent = donnee.dataset.nom;
-      noms.appendChild(nom);
+      ligneNoms.appendChild(nom);
+      noms.push(nom);
 
       donnee.remove();
     });
 
-    graph.append(zone, noms);
+    graph.append(zone, ligneNoms);
+
+    const cache = () => graph.classList.contains('vue_cachee');
+
+    // décalage entre deux barres (et deux légendes), en secondes
+    function decaler(pas) {
+      barres.forEach((b, i) => b.style.transitionDelay = i * pas + 's');
+      noms.forEach((n, i) => n.style.transitionDelay = i * pas + 's');
+    }
 
     function afficherProduit(produit) {
       produitActif = produit;
+      if (cache()) return;
       barres.forEach(b => b.style.height = b.dataset[produit]);
     }
 
-    // Remise à zéro puis montée des barres
+    function monter() {
+      graph.classList.remove('descente', 'noms_caches');
+      decaler(0.12);
+      requestAnimationFrame(() => afficherProduit(produitActif));
+    }
+
+    function descendre() {
+      graph.classList.add('descente', 'noms_caches');
+      decaler(0.05);
+      barres.forEach(b => b.style.height = '0');
+    }
+
+    // remise à zéro puis montée des barres
     function jouer() {
+      if (cache()) return;
       graph.classList.add('reset');
       barres.forEach(b => b.style.height = '0');
       void graph.offsetHeight;
       graph.classList.remove('reset');
-      requestAnimationFrame(() => afficherProduit(produitActif));
+      monter();
     }
 
-    const boutons = document.querySelectorAll(`.choix_produit[data-graph="${graph.id}"] .bouton_produit`);
+    decaler(0.12);
+
+    const boutons = document.querySelectorAll(`.choix_produit[data-graph~="${graph.id}"] .bouton_produit`);
     boutons.forEach(bouton => {
       bouton.addEventListener('click', () => {
         boutons.forEach(b => b.classList.toggle('actif', b === bouton));
@@ -720,10 +786,45 @@ function initGraphiques() {
       });
     });
 
+    graph.addEventListener('affichee', monter);
+    graph.addEventListener('masquee', descendre);
     surPassage(graph, jouer);
   });
 }
 
+
+// ---------- Changement de vue d'un graphique ----------
+function initChoixVue() {
+  document.querySelectorAll('.choix_vue').forEach(groupe => {
+    const boutons = [...groupe.querySelectorAll('.bouton_vue')];
+    let enCours = false;
+
+    boutons.forEach(bouton => {
+      bouton.addEventListener('click', () => {
+        const ancienBouton = boutons.find(b => b.classList.contains('actif'));
+        if (enCours || bouton === ancienBouton) return;
+        enCours = true;
+
+        boutons.forEach(b => {
+          b.classList.toggle('actif', b === bouton);
+          b.setAttribute('aria-pressed', b === bouton);
+        });
+
+        const ancien = document.getElementById(ancienBouton.dataset.vue);
+        const nouveau = document.getElementById(bouton.dataset.vue);
+
+        // l'ancien descend, puis le nouveau monte
+        ancien.dispatchEvent(new Event('masquee'));
+        setTimeout(() => {
+          ancien.classList.add('vue_cachee');
+          nouveau.classList.remove('vue_cachee');
+          nouveau.dispatchEvent(new Event('affichee'));
+          enCours = false;
+        }, 700);
+      });
+    });
+  });
+}
 
 // ---------- Défilement par étapes ----------
 // <div data-recentrer data-premiere-etape="#id"> :

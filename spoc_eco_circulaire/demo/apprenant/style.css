@@ -2,31 +2,37 @@
    1. VARIABLES, POLICES, GÉNÉRAL
    ===================================================================== */
 
-/* Les couleurs sont dans couleurs.css, à charger AVANT ce fichier. */
+/* couleurs : couleurs.css, à charger avant ce fichier */
 
 :root {
-  /* animations */
-  --apparition_boite:   .3s ease;
-  --duree_apparition:   .3s;      /* pop-ups, boutons, encadrés qui apparaissent / disparaissent */
+  --apparition_boite:    .3s ease;
+  --duree_apparition:    .3s;
 
-  /* polices */
-  --titre:              Instrument_bold, Arial, sans-serif;
-  --labeur:             Instrument_medium, Arial, sans-serif;
-  --etoile:             wingding;
+  --extra_bold:          Instrument_bold, Arial, sans-serif;
+  --titre:               Instrument_semibold, Arial, sans-serif;
+  --labeur:              Instrument_medium, Arial, sans-serif;
+  --italic:              Instrument_italic, Arial, sans-serif;
+  --etoile:              wingding;
 
-  --caractere_etoile:   "";
+  --caractere_etoile:    "";
 
-  /* arrondis */
-  --arrondi_pilule:     999px;
-  --arrondi_boite:      14px;
+  --arrondi_pilule:      999px;
+  --arrondi_boite:       14px;
 
-  /* bandeau du bas (logos) */
   --hauteur_bandeau_bas: 26px;
 }
 
 @font-face {
-  font-family: "Instrument_bold";
+  font-family: "Instrument_semibold";
   src: url("typo/InstrumentSans-SemiBold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Instrument_bold";
+  src: url("typo/InstrumentSans-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -37,6 +43,14 @@
   src: url("typo/InstrumentSans-Medium.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Instrument_italic";
+  src: url("typo/InstrumentSans-MediumItalic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
   font-display: swap;
 }
 
@@ -60,7 +74,7 @@
 }
 
 html {
-  font-size: 100%;   /* respecte la taille de police choisie dans le navigateur */
+  font-size: 100%;
 }
 
 body {
@@ -72,12 +86,17 @@ body {
   background-color: var(--fond);
 }
 
-/* Étoile : puces des textes + étoiles de la barre des parties.
-   Le caractère est ajouté automatiquement si la balise est vide. */
 .etoile {
   font-family: var(--etoile);
-  font-size: 0.875rem;
+  font-size: 1rem;
+    -webkit-text-stroke: 0.3px currentColor;
   color: var(--trait);
+}
+
+
+.descendre_etoile{
+  position: relative;
+  top: 0.15em;
 }
 
 .etoile:empty::before {
@@ -85,9 +104,8 @@ body {
 }
 
 
-/* ---------- Accessibilité : outils communs ---------- */
+/* ---------- Accessibilité ---------- */
 
-/* texte lu par les lecteurs d'écran mais invisible à l'écran */
 .visuellement_cache {
   position: absolute !important;
   width: 1px;
@@ -100,7 +118,6 @@ body {
   border: 0;
 }
 
-/* lien d'évitement « Aller au contenu » : visible seulement au clavier */
 .lien_evitement {
   position: absolute;
   top: -100px;
@@ -116,7 +133,6 @@ body {
   top: 12px;
 }
 
-/* focus visible sur tout ce qui est interactif */
 :focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 3px;
@@ -163,9 +179,15 @@ body {
   background: var(--barre_progression);
   transition: width .1s linear;
 }
+
+body[data-progression="manuelle"] #barre_progression_remplie {
+  transition: width .6s ease;
+}
+
 .fenetre_document::backdrop {
   background: transparent;
 }
+
 
 /* ---------- Onglets des chapitres ---------- */
 
@@ -193,7 +215,6 @@ body {
   margin-top: -1px;
 }
 
-/* l'onglet s'ouvre au survol ET quand on y arrive au clavier */
 #onglet_chapitre > div:hover,
 #onglet_chapitre > div:focus-within {
   width: 230px;
@@ -204,7 +225,6 @@ body {
   background: var(--onglet_fait);
 }
 
-/* le chiffre reste collé au bord droit : il suit l'ouverture de l'onglet */
 #onglet_chapitre > div .numero {
   position: absolute;
   top: 6px;
@@ -249,13 +269,12 @@ body {
   left: 10px;
 }
 
-/* chapitres pas encore accessibles : pas de lien vers les fiches */
 #onglet_chapitre > div:not(.en_cours):not(.termine) .lien_fiche_onglet {
   display: none;
 }
 
 
-/* ---------- Menu de gauche : boutons ronds + infobulle ---------- */
+/* ---------- Menu de gauche ---------- */
 
 #gauche_menu {
   position: fixed;
@@ -305,20 +324,21 @@ body {
   justify-content: center;
   text-decoration: none;
   border: 1px solid var(--trait);
-  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;}
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
 
 .bouton_icone img {
   width: 30px;
   height: 30px;
-  filter: brightness(0) invert(1);   /* picto en blanc */
+  filter: brightness(0) invert(1);
 }
 
 .bouton_icone:hover,
 .bouton_icone:focus-visible {
   cursor: pointer;
   transform: translate(-4px, -4px);
-  border-color: var(--fond);            /* contour visible seulement au survol */
-  box-shadow: 4px 4px 0 var(--trait);   /* ombre noire */
+  border-color: var(--fond);
+  box-shadow: 4px 4px 0 var(--trait);
 }
 
 #tooltip {
@@ -340,7 +360,7 @@ body {
 }
 
 
-/* ---------- Barre verticale des parties du chapitre ---------- */
+/* ---------- Barre verticale des parties ---------- */
 
 #barre_progression_chapitre {
   position: absolute;
@@ -349,11 +369,6 @@ body {
   margin: 0 auto;
   bottom: 35px;
   left: 5.5vw;
-}
-
-/* cran plus long entre deux sections */
-#barre_progression_chapitre .trait_chapitre.trait_section {
-  width: 14px;
 }
 
 #barre_progression_chapitre .ligne_fine {
@@ -394,13 +409,13 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 18px;
-  color: var(--fond);                      /* intérieur "vide" */
-  -webkit-text-stroke: 1px var(--trait);   /* contour noir */
+  color: var(--fond);
+  -webkit-text-stroke: 1px var(--trait);
   user-select: none;
 }
 
 #barre_progression_chapitre .etoile.fait {
-  color: var(--trait);                     /* pleine une fois la partie faite */
+  color: var(--trait);
   -webkit-text-stroke: 0.7px var(--fond);
   font-size: 22px;
   z-index: 10;
@@ -414,6 +429,10 @@ body {
   height: 1px;
   background: var(--trait);
   transform: translate(-50%, -50%);
+}
+
+#barre_progression_chapitre .trait_chapitre.trait_section {
+  width: 14px;
 }
 
 #barre_progression_chapitre .mini_boule {
@@ -489,7 +508,6 @@ body {
   pointer-events: auto;
 }
 
-/* durée affichée à côté de la barre (« 5 min ») */
 #barre_progression_chapitre .duree_barre {
   position: absolute;
   left: 24px;
@@ -526,7 +544,7 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior-x: none;
-  scrollbar-width: thin;   /* barre fine mais visible */
+  scrollbar-width: thin;
 }
 
 #haut {
@@ -555,7 +573,7 @@ body {
   padding-bottom: 8px;
   border-bottom: 1px solid var(--trait_doux);
   display: flex;
-  justify-content: space-between;   /* titre à gauche, durée à droite */
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -602,11 +620,6 @@ body {
   pointer-events: none;
 }
 
-/* en progression manuelle, la barre avance plus doucement, par étapes */
-body[data-progression="manuelle"] #barre_progression_remplie {
-  transition: width .6s ease;
-}
-
 .bouton_suite {
   font-family: var(--labeur);
   font-size: 1rem;
@@ -637,7 +650,7 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   z-index: 500;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, .25);
+  background: rgba(0, 0, 0, 0);
 }
 
 .modal_dessin.visible {
@@ -659,6 +672,7 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 .modal_dessin_image {
   width: 140px;
   height: auto;
+  max-height: 140px;
 }
 
 .modal_dessin_titre {
@@ -666,20 +680,18 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   font-family: var(--titre);
 }
 
-/* bouton de fermeture : zone cliquable de 24px minimum */
 .fermer_modal {
   position: absolute;
   top: 8px;
   right: 10px;
-  width: 24px;
-  height: 24px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background: var(--rouge);
   border: 1px solid var(--trait);
   cursor: pointer;
 }
 
-/* pop-up d'un acteur : dessin à gauche, texte à droite */
 .modal_dessin.modal_acteur .modal_dessin_contenu {
   max-width: min(600px, 92vw);
   gap: 25px;
@@ -706,7 +718,34 @@ body[data-progression="manuelle"] #barre_progression_remplie {
    3. TEXTES DU CONTENU
    ===================================================================== */
 
-/* titre d'activité : pilule noire */
+/* ---------- Gras, italique, soulignés ---------- */
+
+strong {
+  font-family: var(--extra_bold);
+  font-weight: normal;
+  -webkit-text-stroke: 0.3px currentColor;
+  letter-spacing: 0.03em;
+}
+
+.italic {
+  font-family: var(--italic);
+}
+
+.souligne {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+}
+
+.souligne_fin {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+
+/* ---------- Titres et paragraphes ---------- */
+
 .petit_titre {
   display: inline-block;
   font-size: 1.1rem;
@@ -717,6 +756,49 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   padding: 8px 15px;
   margin: 0 0 30px;
 }
+
+.txt_labeur {
+  margin-top: 60px;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.petit_titre + .txt_labeur {
+  margin-top: 0;
+}
+
+.sous_texte {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--labeur);
+  font-size: 0.85rem;
+  line-height: 1.35em;
+}
+
+.ecart {
+  margin-top: 30px;
+}
+
+/* =====================================================================
+   8. ESPACEMENTS
+   ===================================================================== */
+
+.ecart_avant_petit  { margin-top: 15px !important; }
+.ecart_avant        { margin-top: 30px !important; }
+.ecart_avant_grand  { margin-top: 60px !important; }
+
+.ecart_apres_petit  { margin-bottom: 15px !important; }
+.ecart_apres        { margin-bottom: 30px !important; }
+.ecart_apres_grand  { margin-bottom: 60px !important; }
+
+
+
+.lien_page {
+  cursor: pointer;
+}
+
+
+/* ---------- Encadrés ---------- */
 
 .contenu_gras {
   max-width: 860px;
@@ -731,6 +813,9 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   position: relative;
 }
 
+.definition{
+  background-color: var(--rose) !important;
+}
 
 .contenu_gras > .span_source {
   position: absolute;
@@ -740,30 +825,10 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   font-family: var(--labeur);
 }
 
-/* place sous l'encadré pour la source */
 .contenu_gras:has(> .span_source) {
   margin-bottom: 55px;
 }
 
-
-.txt_labeur {
-  margin-top: 60px;
-  font-size: 1rem;
-  line-height: 1.45;
-}
-
-.petit_titre + .txt_labeur {
-  margin-top: 0;
-}
-
-.txt_labeur strong {
-  font-weight: normal;
-  font-family: var(--titre);
-  font-size: 1.1em;
-  -webkit-text-stroke: 0.4px currentColor;
-}
-
-/* encadré d'introduction violet */
 .chapeau {
   max-width: 860px;
   margin: 0 0 30px 12px;
@@ -781,33 +846,6 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   max-width: 800px;
 }
 
-.souligne {
-  text-decoration: underline;
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 2px;
-}
-
-.souligne_fin {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-}
-
-.ecart {
-  margin-top: 30px;
-}
-
-.ecart_grand {
-  margin-top: 60px;
-}
-
-.lien_page {
-  cursor: pointer;
-}
-
-
-/* ---------- Consigne d'activité : pilule bleue ---------- */
-
 .consigne {
   display: inline-block;
   font-family: var(--labeur);
@@ -818,15 +856,6 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   border-radius: 16px;
   margin: 25px 0 0 12px;
   padding: 10px 18px;
-}
-
-/* texte normal sous un .contenu_gras */
-.sous_texte {
-  display: block;
-  margin-top: 6px;
-  font-family: var(--labeur);
-  font-size: 0.85rem;
-  line-height: 1.35em;
 }
 
 
@@ -856,7 +885,7 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 }
 
 
-/* ---------- Mots notion + boîte de définition à droite ---------- */
+/* ---------- Mots notion et boîte de définition ---------- */
 
 .mot_notion {
   font-family: var(--titre);
@@ -866,7 +895,6 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   cursor: help;
 }
 
-
 .boite_notion {
   position: absolute;
   right: 4%;
@@ -875,19 +903,18 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   background: var(--fond);
   border: 1px solid var(--trait);
   border-radius: var(--arrondi_boite);
-  padding: 14px 16px;
+  padding: 22px 16px 14px;
   font-size: 0.85rem;
   line-height: 1.35;
   z-index: 70;
-  padding-top: 22px;     /* place pour le rond rouge */
   cursor: grab;
   touch-action: none;
 }
 
 .boite_notion strong {
+  display: block;
   font-family: var(--titre);
   text-decoration: underline;
-  display: block;
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
 }
@@ -910,26 +937,46 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 /* ---------- Exemples ---------- */
 
 .bloc_exemple {
-  display: flex;
-  align-items: stretch;
-  gap: 20px;
-  font-size: 0.95rem;
+  margin: 35px 0 0 10%;
+  padding: 5px 0 5px 20px;
+  border-left: 1px solid var(--trait);
+  font-size: 0.9rem;
+  line-height: 1.35em;
   color: var(--couleur_texte);
 }
 
-.exemple {
-  margin-left: 10%;
-  margin-top: 35px;
-  padding: 5px 0 5px 20px;
-  font-size: 0.9rem;
-  min-width: 0;
-  max-width: 27vw;
-  line-height: 1.35em;
-  border-left: 1px solid var(--trait);
-  min-width: 400px;
+.intro_exemple {
+  display: inline-block;
+  border: 1px solid var(--trait);
+  background: var(--orange);
+  padding: 3px 8px 4px;
+  border-radius: var(--arrondi_pilule);
+  margin-bottom: 8px;
+  text-decoration: none;
+  cursor: default;
 }
 
-/* doit rester APRÈS .exemple */
+.ligne_exemple {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 25px;
+}
+
+.ligne_exemple:last-child {
+  margin-bottom: 0;
+}
+
+.ligne_inverse {
+  flex-direction: row-reverse;
+}
+
+.exemple {
+  flex: 1;
+  min-width: 0;
+  max-width: 27vw;
+}
+
 .exemple_large {
   max-width: none;
   flex: 1;
@@ -943,23 +990,10 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   margin-bottom: 0;
 }
 
-/* doit rester APRÈS .souligne */
-.intro_exemple {
-  display: inline-block;
-  border: 1px solid var(--trait);
-  background: var(--orange);
-  padding: 3px 8px 4px;
-  border-radius: var(--arrondi_pilule);
-  margin-bottom: 8px;
-  text-decoration: none;
-  cursor: default;
-}
-
 
 /* ---------- Animations Rive ---------- */
 
 .media_exemple {
-  margin-top: 30px;
   display: flex;
   gap: 10px;
   flex-shrink: 0;
@@ -967,12 +1001,11 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 }
 
 .media_exemple canvas {
-  height: 100%;
+  height: 220px;
   width: auto;
   display: block;
 }
 
-/* 2e canvas qui chevauche le 1er */
 .anim_decalee {
   margin-left: -62px;
   position: relative;
@@ -984,9 +1017,9 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 
 .galerie_dessins {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 90px;
-  width: 110%;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 70px;
+  width: 100%;
   align-items: end;
   margin-top: 70px;
   margin-bottom: 70px;
@@ -1003,7 +1036,7 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 .item_dessin img,
 .item_dessin > .dessin {
   width: 100%;
-  max-width: 200px;
+  max-width: 140px;
   height: auto;
   max-height: 100px;
 }
@@ -1031,14 +1064,43 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   z-index: 50;
 }
 
-/* l'infobulle s'affiche au survol ET au focus clavier */
 .item_dessin:hover .tooltip_dessin,
 .item_dessin:focus-within .tooltip_dessin {
   opacity: 1;
 }
 
+.item_dessin .tooltip_dessin.tooltip_acteur {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 420px;
+}
 
-/* ---------- Schéma circulaire (cycle de vie, acteurs…) ---------- */
+.item_dessin .tooltip_acteur .tooltip_acteur_image {
+  width: 80px;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  flex-shrink: 0;
+}
+
+.tooltip_acteur_texte {
+  flex: 1;
+  min-width: 0;
+}
+
+.tooltip_acteur h3 {
+  font-family: var(--titre);
+  font-size: 1rem;
+  margin: 0 0 8px;
+}
+
+.tooltip_acteur p {
+  margin: 0;
+}
+
+
+/* ---------- Schéma circulaire ---------- */
 
 .schema_cycle {
   position: relative;
@@ -1087,43 +1149,24 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   margin-top: 10px;
 }
 
-/* étapes de droite : l'infobulle s'ouvre vers la gauche */
 .schema_cycle .a_droite .tooltip_dessin {
   left: auto;
   right: 82%;
 }
 
-/* infobulle d'un acteur : dessin à gauche, titre + texte à droite */
-.item_dessin .tooltip_dessin.tooltip_acteur {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  width: 420px;
+
+.schema_cycle.schema_centre {
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.item_dessin .tooltip_acteur .tooltip_acteur_image {
-  width: 80px;
-  height: auto;
-  max-width: none;
-  max-height: none;
-  flex-shrink: 0;
+.schema_cycle .en_haut .tooltip_dessin {
+  bottom: auto;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 10px;
 }
-
-.tooltip_acteur_texte {
-  flex: 1;
-  min-width: 0;
-}
-
-.tooltip_acteur h3 {
-  font-family: var(--titre);
-  font-size: 1rem;
-  margin: 0 0 8px;
-}
-
-.tooltip_acteur p {
-  margin: 0;
-}
-
 
 /* ---------- QCM ---------- */
 
@@ -1143,7 +1186,6 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   position: relative;
 }
 
-/* si les questions passent en <fieldset>, on retire le style par défaut */
 fieldset.qcm_bloc {
   margin: 0;
   padding: 0;
@@ -1193,9 +1235,6 @@ fieldset.qcm_bloc {
   cursor: pointer;
 }
 
-
-/* ---- cases à cocher ---- */
-
 .qcm_option input {
   appearance: none;
   -webkit-appearance: none;
@@ -1209,7 +1248,6 @@ fieldset.qcm_bloc {
   transition: background .2s ease;
 }
 
-/* cochée par l'élève : intérieur bleu */
 .qcm_option input:checked {
   background: var(--fond_consigne);
 }
@@ -1219,7 +1257,6 @@ fieldset.qcm_bloc {
   outline-offset: 2px;
 }
 
-/* après « voir la correction » */
 .qcm.corrige .qcm_option,
 .qcm.corrige .qcm_option input {
   cursor: default;
@@ -1233,10 +1270,12 @@ fieldset.qcm_bloc {
   background: repeating-linear-gradient(45deg, var(--trait) 0 1px, transparent 1px 4px);
 }
 
+.qcm.corrige .qcm_bloc {
+  cursor: pointer;
+}
 
 
-
-/* ---- bloc fixe en bas à droite : légende + bouton ---- */
+/* ---------- QCM : légende et bouton ---------- */
 
 .qcm_pied {
   position: fixed;
@@ -1257,8 +1296,8 @@ fieldset.qcm_bloc {
   display: none;
   position: fixed;
   right: 40px;
-  bottom: calc(var(--hauteur_bandeau_bas) + 80px);   /* au-dessus du bouton */
-  z-index: 0;              /* derrière le QCM (z-index: 1) */
+  bottom: calc(var(--hauteur_bandeau_bas) + 80px);
+  z-index: 0;
   flex-direction: column;
   gap: 6px;
   padding: 10px 14px;
@@ -1290,14 +1329,14 @@ fieldset.qcm_bloc {
 }
 
 
-/* ---- encadrés de correction ---- */
+/* ---------- QCM : corrections ---------- */
 
 .qcm_correction {
   display: none;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);   /* centrée sur le bloc de la question */
+  transform: translate(-50%, -50%);
   width: min(380px, 90vw);
   background: var(--fond);
   border: 1px solid var(--trait);
@@ -1306,7 +1345,7 @@ fieldset.qcm_bloc {
   font-size: 0.9rem;
   line-height: 1.35em;
   cursor: grab;
-  touch-action: none;      /* permet de le déplacer aussi au doigt */
+  touch-action: none;
 }
 
 .marge_en_plus {
@@ -1322,7 +1361,6 @@ fieldset.qcm_bloc {
   user-select: none;
 }
 
-/* dessin du scénario, à gauche du texte */
 .qcm_correction_dessin {
   float: left;
   width: 100px;
@@ -1330,14 +1368,6 @@ fieldset.qcm_bloc {
   margin: 0 15px 8px 0;
 }
 
-.qcm_correction strong {
-  display: inline;
-  font-family: var(--titre);
-  font-weight: normal;
-  font-size: 1.1em;
-}
-
-/* rond rouge pour fermer, en haut à droite */
 .qcm_fermer {
   position: absolute;
   top: 8px;
@@ -1351,11 +1381,6 @@ fieldset.qcm_bloc {
   cursor: pointer;
 }
 
-.qcm.corrige .qcm_bloc {
-  cursor: pointer;
-}
-
-/* semi-transparent tant que toutes les corrections ne sont pas lues */
 .qcm_verifier:disabled {
   opacity: .5;
   cursor: not-allowed;
@@ -1367,7 +1392,7 @@ fieldset.qcm_bloc {
 }
 
 
-/* ---- partie suivante de l'activité, cachée au départ ---- */
+/* ---------- Parties d'activité qui apparaissent ---------- */
 
 @keyframes apparition {
   from { opacity: 0; transform: translateY(15px); }
@@ -1384,7 +1409,7 @@ fieldset.qcm_bloc {
 }
 
 
-/* ---------- Boutons produit A / B + bouton de correction ---------- */
+/* ---------- Boutons produit et correction ---------- */
 
 .choix_produit {
   display: flex;
@@ -1416,7 +1441,6 @@ fieldset.qcm_bloc {
   box-shadow: 4px 4px 0 var(--trait);
 }
 
-/* bouton choisi : couleur + texte souligné, pas seulement la couleur */
 .bouton_produit.actif,
 .bouton_produit[aria-pressed="true"] {
   background: var(--orange);
@@ -1432,18 +1456,33 @@ fieldset.qcm_bloc {
   max-width: 620px;
 }
 
+.graphiques_vues {
+  display: grid;
+  width: 105%;
+  margin: 30px 0 0 10%;
+}
+
+.graphiques_vues > .graphique {
+  grid-area: 1 / 1;
+  margin: 0;
+  max-width: none;
+}
+
+.graphique.vue_cachee {
+  visibility: hidden;
+}
+
 .graph_zone {
   position: relative;
   display: flex;
   align-items: flex-end;
-  gap: 30px;
+  gap: 20px;
   height: 220px;
   padding: 0 30px 0 15px;
   border-left: 1px solid var(--trait);
   border-bottom: 1px solid var(--trait);
 }
 
-/* flèche en haut de l'axe vertical */
 .graph_zone::before {
   content: "";
   position: absolute;
@@ -1454,7 +1493,6 @@ fieldset.qcm_bloc {
   border-bottom: 8px solid var(--trait);
 }
 
-/* flèche au bout de l'axe horizontal */
 .graph_zone::after {
   content: "";
   position: absolute;
@@ -1482,25 +1520,57 @@ fieldset.qcm_bloc {
   transition: height .8s ease;
 }
 
+.graphique.descente .graph_barre {
+  transition-duration: .4s;
+}
+
 .graph_noms {
   display: flex;
-  gap: 30px;
+  gap: 20px;
   padding: 0 30px 0 15px;
 }
 
 .graph_noms div {
   flex: 1;
   margin-top: 8px;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   text-align: center;
+  transition: opacity .4s ease;
 }
 
-/* coupe les transitions pendant la remise à zéro */
+.graphique.noms_caches .graph_noms div {
+  opacity: 0;
+}
+
 .graphique.reset * {
   transition: none !important;
 }
 
 
+/* ---------- Graphique : boutons ---------- */
+
+.choix_produit .bouton_produit {
+  background: var(--fond);
+}
+
+.choix_produit .bouton_produit.actif {
+  background: var(--orange);
+  color: var(--texte_inverse);
+}
+
+.choix_vue {
+  margin: 50px 0 0 10%;
+  gap: 15px;
+}
+
+.choix_vue .bouton_produit {
+  font-size: 0.85rem;
+}
+
+.choix_vue .bouton_produit.actif {
+  background: var(--trait);
+  color: var(--texte_inverse);
+}
 /* ---------- Classement par glisser-déposer ---------- */
 
 #partie_2 {
@@ -1517,7 +1587,6 @@ fieldset.qcm_bloc {
   margin-top: 40px;
 }
 
-/* axe vertical : bénéfice environnemental */
 .axe_vertical {
   position: relative;
   display: flex;
@@ -1530,11 +1599,11 @@ fieldset.qcm_bloc {
 
 .axe_vertical span {
   writing-mode: vertical-rl;
-  transform: rotate(180deg);      /* se lit de bas en haut */
+  transform: rotate(180deg);
   margin-right: 12px;
 }
 
-.axe_vertical::before {           /* flèche en haut */
+.axe_vertical::before {
   content: "";
   position: absolute;
   top: -8px;
@@ -1544,7 +1613,6 @@ fieldset.qcm_bloc {
   border-bottom: 8px solid var(--trait);
 }
 
-/* axe horizontal : difficulté du changement */
 .axe_horizontal {
   grid-column: 2;
   position: relative;
@@ -1556,7 +1624,7 @@ fieldset.qcm_bloc {
   font-size: 0.8rem;
 }
 
-.axe_horizontal::after {          /* flèche à droite */
+.axe_horizontal::after {
   content: "";
   position: absolute;
   right: -8px;
@@ -1566,7 +1634,6 @@ fieldset.qcm_bloc {
   border-left: 8px solid var(--trait);
 }
 
-/* l'escalier : chaque niveau un peu plus haut que le précédent */
 .escalier {
   display: flex;
   align-items: flex-end;
@@ -1601,7 +1668,12 @@ fieldset.qcm_bloc {
   line-height: 1.3em;
 }
 
-/* zones de dépôt : au-dessus de la définition, cartes centrées */
+.niveau.survol .niveau_titre {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
 .depot {
   display: flex;
   flex-wrap: wrap;
@@ -1610,31 +1682,26 @@ fieldset.qcm_bloc {
 }
 
 .niveau .depot {
-  order: -1;                       /* passe avant le titre et la définition */
+  order: -1;
   flex: 1;
   min-height: 90px;
-  align-content: flex-end;         /* les cartes se posent juste au-dessus du texte */
+  align-content: flex-end;
   padding-bottom: 10px;
 }
 
 .reserve {
   position: fixed;
   right: 40px;
-  bottom: calc(var(--hauteur_bandeau_bas) + 80px);   /* juste au-dessus du bouton de correction */
+  bottom: calc(var(--hauteur_bandeau_bas) + 80px);
   z-index: 80;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-/* niveau survolé pendant le glisser : son titre se souligne */
-.niveau.survol .niveau_titre {
-  text-decoration: underline;
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 3px;
-}
 
-/* cartes */
+/* ---------- Classement : cartes ---------- */
+
 .carte {
   position: relative;
   display: flex;
@@ -1662,7 +1729,6 @@ fieldset.qcm_bloc {
   transition: transform .2s ease, filter .2s ease;
 }
 
-/* survol, focus, carte attrapée ou choisie : le dessin se soulève */
 .carte:hover :is(img, .dessin),
 .carte:focus-visible :is(img, .dessin),
 .carte.en_main :is(img, .dessin),
@@ -1671,7 +1737,6 @@ fieldset.qcm_bloc {
   filter: drop-shadow(4px 4px 0 var(--trait));
 }
 
-/* carte choisie au clavier ou au clic : bordure en plus */
 .carte.choisie,
 .carte[aria-pressed="true"] {
   border: 2px solid var(--trait);
@@ -1682,7 +1747,9 @@ fieldset.qcm_bloc {
   cursor: grabbing;
 }
 
-/* après la correction, les dessins ne bougent plus */
+
+/* ---------- Classement : correction ---------- */
+
 .classement.corrige .carte {
   cursor: default;
 }
@@ -1692,7 +1759,6 @@ fieldset.qcm_bloc {
   filter: none;
 }
 
-/* correction : texte en vert ou rouge + symbole */
 .classement.corrige .carte.juste span  { color: var(--vert_texte); }
 .classement.corrige .carte.erreur span { color: var(--rouge); }
 
@@ -1705,7 +1771,7 @@ fieldset.qcm_bloc {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);   /* centrée sur le tableau */
+  transform: translate(-50%, -50%);
   width: 65%;
   z-index: 60;
   background: var(--fond);
@@ -1735,14 +1801,8 @@ fieldset.qcm_bloc {
   margin-bottom: 0;
 }
 
-.classement_correction strong {
-  font-family: var(--titre);
-  font-weight: normal;
-}
 
-
-
-/* ---------- Bandeau du bas (logos) ---------- */
+/* ---------- Bandeau du bas ---------- */
 
 #bandeau_bas {
   position: fixed;
@@ -1768,31 +1828,32 @@ fieldset.qcm_bloc {
 
 /* =====================================================================
    5. RÉGLAGES PROPRES À CERTAINS DESSINS
-   (tailles au cas par cas : c'est ici qu'on ajoute les nouveaux)
    ===================================================================== */
 
-/* SVG insérés par dessins.js : la hauteur suit la largeur */
 svg.dessin {
   height: auto;
   overflow: visible;
 }
 
-/* dessins de l'activité A : même taille dans les questions et dans les corrections
-   [src*=…] vise les <img>, [data-src*=…] les SVG insérés par dessins.js */
+/* ---------- Activité A ---------- */
+
 :is(.qcm_scenario, .qcm_correction) :is([src*="lessive"],    [data-src*="lessive"])    { width: 70px; }
 :is(.qcm_scenario, .qcm_correction) :is([src*="box"],        [data-src*="box"])        { width: 80px; }
 :is(.qcm_scenario, .qcm_correction) :is([src*="imprimante"], [data-src*="imprimante"]) { width: 85px; }
 :is(.qcm_scenario, .qcm_correction) :is([src*="velo"],       [data-src*="velo"])       { width: 150px; }
 :is(.qcm_scenario, .qcm_correction) :is([src*="textile"],    [data-src*="textile"])    { width: 100px; }
 
-/* animations Rive */
+/* ---------- Animations Rive ---------- */
+
 #loupe        { height: 135px; }
 #basket_sorte { width: 280px; height: auto; }
 
-/* galerie multicritère */
+/* ---------- Galerie multicritère ---------- */
+
 #ionisant     { width: 75px; }
 
-/* infobulles des acteurs */
+/* ---------- Infobulles des acteurs ---------- */
+
 .item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="acheteur"],   [data-src*="acheteur"])   { width: 200px; }
 .item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="recherche"],  [data-src*="recherche"])  { width: 100px; }
 .item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="logistique"], [data-src*="logistique"]) { width: 150px; }
@@ -1802,11 +1863,9 @@ svg.dessin {
 
 
 /* =====================================================================
-   5 bis. APPARITION ET DISPARITION EN FONDU
-   Pour ajouter un élément : l'écrire dans les trois listes ci-dessous.
+   6. APPARITION ET DISPARITION EN FONDU
    ===================================================================== */
 
-/* 1. les éléments concernés */
 .qcm_pied,
 .qcm_legende,
 .qcm_correction,
@@ -1817,14 +1876,13 @@ svg.dessin {
 .conteneur_bouton,
 .retour_choix,
 .rappel_mascotte {
-   transition: opacity var(--duree_apparition) ease;   /* tous les navigateurs */
-  transition:                                         /* navigateurs récents : fondu aussi à la sortie */
+  transition: opacity var(--duree_apparition) ease;
+  transition:
     opacity var(--duree_apparition) ease,
     display var(--duree_apparition) allow-discrete,
     overlay var(--duree_apparition) allow-discrete;
 }
 
-/* 2. leur état caché : transparent, et plus cliquable pendant qu'il s'efface */
 .qcm_pied[hidden],
 .qcm_legende:not(.visible),
 .qcm_bloc:not(.ouverte) .qcm_correction,
@@ -1839,7 +1897,6 @@ svg.dessin {
   pointer-events: none;
 }
 
-/* 3. au moment où ils apparaissent, ils partent de transparent */
 @starting-style {
   .qcm_pied:not([hidden]),
   .qcm_legende.visible,
@@ -1855,7 +1912,6 @@ svg.dessin {
   }
 }
 
-/* un document qui se ferme reste centré à l'écran pendant qu'il s'efface */
 .fenetre_document {
   position: fixed;
   inset: 0;
@@ -1866,10 +1922,9 @@ svg.dessin {
 
 
 /* =====================================================================
-   6. ACCESSIBILITÉ : MOUVEMENT RÉDUIT, ZOOM, PETITS ÉCRANS
+   7. ACCESSIBILITÉ : MOUVEMENT RÉDUIT, ZOOM, PETITS ÉCRANS
    ===================================================================== */
 
-/* l'utilisateur a demandé moins d'animations dans son système */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -1879,7 +1934,8 @@ svg.dessin {
   }
 }
 
-/* zoom fort ou écran étroit : tout passe sur une colonne (critère 10.11) */
+/* ---------- Écran moyen ou zoom fort ---------- */
+
 @media (max-width: 1100px) {
 
   #contenu_chapitre {
@@ -1891,6 +1947,10 @@ svg.dessin {
   #contenu_gauche,
   #notion_droite {
     width: 100%;
+  }
+
+  #titre_chapitre {
+    margin-left: 0;
   }
 
   .boite_notion {
@@ -1915,20 +1975,20 @@ svg.dessin {
     gap: 40px;
   }
 
-  #titre_chapitre {
+  .bloc_exemple {
     margin-left: 0;
+  }
+
+  .ligne_exemple,
+  .ligne_inverse {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .exemple {
     max-width: none;
-    margin-left: 0;
   }
 
-  .bloc_exemple {
-    flex-direction: column;
-  }
-
-  /* la réserve de cartes n'est plus fixée en bas à droite */
   .reserve {
     position: static;
     flex-direction: row;
@@ -1940,6 +2000,8 @@ svg.dessin {
     padding-bottom: 60px;
   }
 }
+
+/* ---------- Petit écran ---------- */
 
 @media (max-width: 700px) {
 

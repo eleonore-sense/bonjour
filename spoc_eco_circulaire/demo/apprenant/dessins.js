@@ -140,6 +140,8 @@
 
   // ---------- Lancement ----------
 
+  window.insererDessin = remplacer;
+
   const zone = document.querySelector(ZONE);
   if (!zone) return;
 
