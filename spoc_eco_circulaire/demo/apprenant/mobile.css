@@ -1,0 +1,152 @@
+/* =====================================================================
+   PETITS ÉCRANS ET ZOOM FORT
+   À charger APRÈS style.css et les CSS des activités.
+   ===================================================================== */
+
+
+/* =====================================================================
+   1. ÉCRAN MOYEN OU ZOOM FORT (moins de 1100px)
+   ===================================================================== */
+
+@media (max-width: 1100px) {
+
+  /* ---------- Structure ---------- */
+
+  #contenu_chapitre {
+    flex-direction: column;
+    margin-left: 0;
+    padding: 0 16px;
+  }
+
+  #contenu_gauche,
+  #notion_droite {
+    width: 100%;
+  }
+
+  #titre_chapitre {
+    margin-left: 0;
+  }
+
+  /* ---------- Textes ---------- */
+
+  .boite_notion {
+    position: static;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  /* ---------- Exemples ---------- */
+
+  .bloc_exemple {
+    margin-left: 0;
+  }
+
+  .bloc_exemple.bloc_deborde {
+    width: auto;
+  }
+
+  .ligne_exemple,
+  .ligne_inverse {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .exemple {
+    max-width: none;
+  }
+
+  /* ---------- Galerie, QCM, classement, graphique ---------- */
+
+  .qcm,
+  .classement,
+  .galerie_dessins {
+    width: 100%;
+  }
+
+  .qcm {
+    grid-template-columns: 1fr;
+    row-gap: 60px;
+  }
+
+  .galerie_dessins {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 40px;
+  }
+
+  .graphiques_vues {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .reserve {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  #partie_2 {
+    padding-bottom: 60px;
+  }
+}
+
+
+
+/* =====================================================================
+   2. PETIT ÉCRAN (moins de 700px)
+   ===================================================================== */
+
+@media (max-width: 700px) {
+
+  /* ---------- Structure ---------- */
+
+  #droite_contenu {
+    width: 100%;
+    margin-left: 0;
+    padding-left: 40px;
+  }
+
+  #gauche_menu {
+    width: auto;
+  }
+
+  /* ---------- Classement ---------- */
+
+  .escalier {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .n1, .n2, .n3, .n4 {
+    margin-bottom: 0;
+  }
+
+  .n4 { order: 1; }
+  .n3 { order: 2; }
+  .n2 { order: 3; }
+  .n1 { order: 4; }
+
+  .axe_vertical,
+  .axe_horizontal {
+    display: none;
+  }
+
+  .classement {
+    grid-template-columns: 1fr;
+  }
+
+  /* ---------- Éléments fixés en bas à droite ---------- */
+
+  .qcm_pied,
+  .qcm_legende,
+  .rappel_fin {
+    right: 16px;
+  }
+
+  /* ---------- Pop-up mascotte ---------- */
+
+  .pop_mascotte[open] {
+    flex-direction: column;
+    text-align: center;
+  }
+}

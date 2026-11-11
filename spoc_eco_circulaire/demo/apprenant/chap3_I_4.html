@@ -5,39 +5,29 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title></title>
-<link rel="stylesheet" href="couleurs.css">
-  <link rel="stylesheet" href="style.css">
+  <title>Activité : les niveaux de l’éco-conception</title>
 
-<script src="rive/rive.js"></script>
+  <link rel="stylesheet" href="couleurs.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="mobile.css" media="(max-width: 1100px)">
+
   <script src="cours.js" defer></script>
   <script src="script.js" defer></script>
-<script src="dessins.js" defer></script>
-
-  <script src="../edition/supabase-config.js"></script>
-    <script src="script_chargement_supabase.js"></script>
-    <style>
-      
-    .clone-banner {
-      margin: 12px auto;
-      padding: 12px;
-      border: 2px solid #111;
-      background: #fff;
-      color: #111;
-      max-width: 1100px;
-      font: 16px/1.4 sans-serif;
-    }
- 
-    .clone-status {
-      font-weight: 700;
-    }
-  
-    </style>
+  <script src="dessins.js" defer></script>
 </head>
 
 
+<!-- Où est cette page dans le cours ? (le reste vient de cours.js) -->
 <body data-chapitre="3" data-partie="3" data-suite="non" data-progression="manuelle">
 
+  <!-- ========== Pop-up mascotte d'accueil ========== -->
+  <!-- DESSIN DE LA MASCOTTE : remplacer le chemin -->
+  <!-- data-declencheur : la pop-up s'ouvre la première fois que cet élément est entièrement visible en scrollant -->
+  <dialog class="pop_mascotte" id="pop_mascotte" aria-labelledby="pop_mascotte_texte" data-declencheur="#depart">
+    <button type="button" class="fermer_modal" aria-label="fermer"></button>
+    <img class="pop_mascotte_image" src="dessin/mascotte/mascotte.svg" alt="">
+    <p class="pop_mascotte_texte" id="pop_mascotte_texte">Pour éco-concevoir, on peut faire mieux… ou carrément faire autrement&#8239;! C’est parti pour la mise en pratique&#8239;!</p>
+  </dialog>
 
 
   <div id="droite_contenu">
@@ -45,20 +35,48 @@
 
       <div id="contenu_gauche">
 
-        <div class="petit_titre" id="clone-title">4. Activité : les niveaux de l’éco-conception</div>
+        <div class="petit_titre">4. Activité&#8239;: les niveaux de l’éco-conception</div>
 
-        <div class="txt_labeur" id="clone-intro">
-          <span class="souligne">Les règles de l'activité:</span><br>
-          Les solutions d’éco-conception peuvent être classées suivant 4 différents niveaux : selon le niveau de difficulté à les mettre en place et leurs impacts positifs sur l’environnement.
+
+        <!-- ========== Introduction : les 4 niveaux ========== -->
+
+        <div class="txt_labeur">
+          <p>Une entreprise peut réduire les impacts environnementaux d’un produit de différentes manières. On distingue quatre niveaux d’éco-conception, selon l’ampleur des transformations envisagées&#8239;:</p>
+          <p><span class="etoile"></span> <strong>Niveau 1&#8239;: optimiser l’existant</strong> <br>On améliore un produit ou un procédé sans en modifier profondément la conception&#8239;: on réduit la consommation d’énergie, on limite les pertes de matières, on diminue les déchets…</p>
+          <p><span class="etoile"></span> <strong>Niveau 2&#8239;: repenser la conception</strong> <br>On modifie la composition, la structure ou certains éléments du produit.</p>
+          <p><span class="etoile"></span> <strong>Niveau 3&#8239;: changer de technologie</strong> <br>On adopte une technologie ou un procédé différent, qui peut transformer profondément le fonctionnement ou la fabrication du produit.</p>
+          <p><span class="etoile"></span> <strong>Niveau 4&#8239;: changer de modèle économique</strong> <br>On repense la manière dont l’entreprise crée de la valeur et fournit son produit ou son service. Par exemple, on peut passer de la vente d’un équipement à sa location, en conservant la responsabilité de sa maintenance et de sa durée de vie.</p>
+        </div>
+
+        <div class="contenu_gras ecart_avant ecart_apres">
+          <strong>Le niveau de classement n’est pas une mesure du gain environnemental</strong>. Une solution de niveau&nbsp;1 peut parfois être très efficace&#8239;; une solution de niveau&nbsp;4 n’est pas automatiquement meilleure.
+        </div>
+
+        <!-- data-recentrer : au 1er geste de scroll, les règles se placent au centre de l'écran -->
+        <div class="txt_labeur" id="regles_activite" data-recentrer>
+          <span class="souligne">Les règles de l’activité&#8239;:</span><br>
+          Dans un premier temps, analyse chaque situation en répondant au QCM. Puis associe chaque situation au niveau d’éco-conception correspondant, du niveau&nbsp;1 au niveau&nbsp;4.
+        </div>
+
+        <!-- data-afficher : affiche la partie, se cache, et cale sa consigne en haut de l'écran -->
+        <div class="conteneur_depart" id="depart">
+          <button type="button" class="bouton_suite" data-afficher="#partie_1">c’est parti&#8239;!</button>
         </div>
 
 
         <!-- ========== Partie 1 : QCM ========== -->
+        <!-- data-tirage="4" : 4 questions tirées au hasard, au moins une par niveau (data-niveau).
+             data-scenario relie chaque question à sa carte du classement.
+             data-rappel : encadré mascotte affiché après data-rappel-apres corrections lues, tant que tout n’est pas lu.
+             data-notion : texte relié à la boîte data-notion-cible, dans la 1re question qui le contient. -->
+        <!-- Options : <input type="checkbox" data-juste>  = bonne réponse
+                       <input type="checkbox" data-neutre> = ni vraie ni fausse
+                       <input type="checkbox">             = mauvaise réponse -->
 
-        <div class="partie_activite" id="partie_1">
+        <div class="partie_activite cache" id="partie_1">
 
           <div class="consigne" id="consigne_partie_1">
-            <span class="souligne">Première partie :</span>  Analysez les scénarios d’éco-conception suivants en répondant au QCM.
+            <span class="souligne">Première partie&#8239;:</span> analyse les scénarios d’éco-conception suivants en répondant au QCM (plusieurs réponses sont possibles).
           </div>
 
           <div class="qcm"
@@ -68,54 +86,157 @@
                data-texte-suite="passer à la suite"
                data-suite-cible="#partie_2"
                data-partie-actuelle="#partie_1"
+               data-tirage="4"
+               data-rappel="#rappel_corrections"
+               data-rappel-apres="2"
+               data-notion="un changement de modèle d’affaire"
+               data-notion-cible="modele_affaire"
+               data-progression-reponses="20"
                data-progression-fin="50">
 
-            <div class="qcm_bloc">
+            <!-- Question 1 : lessive -->
+            <div class="qcm_bloc" data-niveau="2" data-scenario="lessive">
               <div class="qcm_scenario">
                 <img src="dessin/chap_3/I/4/lessive.svg" alt="">
-                <p>Question 1</p>
+                <p>Passer d’une bouteille de lessive liquide de 1&nbsp;L à une bouteille de lessive 2&nbsp;fois plus concentrée entraîne&#8239;:</p>
               </div>
-              <div class="qcm_options"></div>
-              <div class="qcm_correction"></div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>un changement de composition de la lessive</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>une réduction de la quantité de packaging pour un même nombre de lessives réalisées</span></label>
+                <label class="qcm_option"><input type="checkbox" data-neutre> <span>une innovation technologique particulière</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>un changement de modèle d’affaire</span></label>
+              </div>
+              <div class="qcm_correction">
+                <div class="plus_loin">
+                  <p>Passer d’une bouteille de lessive d’1&nbsp;L à une bouteille de lessive 2&nbsp;fois plus concentrée demande d’adapter la composition de la lessive pour augmenter sa concentration, tout en conservant des propriétés physiques qui lui permettent de s’écouler facilement. On pourra ainsi diminuer la quantité de packaging pour un même nombre de lessives réalisées&#8239;: en théorie, 1&nbsp;L de lessive permettra de faire 2&nbsp;fois plus de lessives, tout en gardant une bouteille d’1&nbsp;L.</p>
+                  <p>Le modèle d’affaire reste le même&#8239;: vendre de la lessive en bouteille. Une innovation technologique pourrait être nécessaire (par exemple, l’ajout d’un additif pour faciliter l’écoulement de la lessive concentrée), mais sans information supplémentaire, la réponse «&#8239;une innovation technologique particulière&#8239;» n’est ni vraie ni fausse.</p>
+                </div>
+              </div>
             </div>
 
-            <div class="qcm_bloc">
+            <!-- Question 2 : box internet -->
+            <div class="qcm_bloc" data-niveau="2" data-scenario="box">
               <div class="qcm_scenario">
                 <img src="dessin/chap_3/I/4/box.svg" alt="">
-                <p>Question 2</p>
+                <p>La société WIF’EX a décidé d’éco-concevoir sa box internet, dont 80&nbsp;% des impacts viennent de la phase d’utilisation, en ajoutant un mode veille et un bouton on/off en cas d’absence prolongée. Ces solutions entraînent&#8239;:</p>
               </div>
-              <div class="qcm_options"></div>
-              <div class="qcm_correction"></div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>une diminution de la consommation d’énergie à l’usage</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>une modification de la structure de la box</span></label>
+                <label class="qcm_option"><input type="checkbox" data-neutre> <span>l’ajout d’une nouvelle technologie de composants électroniques</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>un changement de modèle d’affaire</span></label>
+              </div>
+              <div class="qcm_correction">
+                <div class="plus_loin">
+                  <p>L’ajout d’un mode veille et d’un bouton on/off a pour objectif de diminuer la consommation d’énergie lors de l’utilisation de la box. Pour accueillir ces évolutions, la structure de la box devra être adaptée.</p>
+                  <p>On pourrait aussi intégrer de nouvelles technologies de composants électroniques pour consommer encore moins, mais en l’absence d’information supplémentaire, la réponse «&#8239;l’ajout d’une nouvelle technologie de composants électroniques&#8239;» n’est ni vraie ni fausse.</p>
+                </div>
+              </div>
             </div>
 
-            <div class="qcm_bloc">
+            <!-- Question 3 : imprimante -->
+            <div class="qcm_bloc" data-niveau="4" data-scenario="imprimante">
               <div class="qcm_scenario">
                 <img src="dessin/chap_3/I/4/imprimante.svg" alt="">
-                <p>Question 3</p>
+                <p>La société TIROX ne vend plus d’imprimantes directement, mais les loue à ses clients et en assure la maintenance. Cette éco-conception entraîne&#8239;:</p>
               </div>
-              <div class="qcm_options"></div>
-              <div class="qcm_correction"></div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox"> <span>une modification du design de l’imprimante (composition et conception)</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>la mise en place d’une nouvelle technologie d’imprimante</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>un changement de modèle d’affaire, qui permet de limiter la production et d’augmenter la durée de vie de l’imprimante</span></label>
+              </div>
+              <div class="qcm_correction">
+                <div class="plus_loin">
+                  <p>Il s’agit bien ici d’un changement de modèle d’affaire, puisque la société TIROX reste propriétaire de ses imprimantes et en garde la responsabilité&#8239;: maintenance, réparation, fin de vie.</p>
+                </div>
+              </div>
             </div>
 
-            <div class="qcm_bloc image_droite">
+            <!-- Question 4 : rétrofit des camions -->
+            <div class="qcm_bloc" data-niveau="3" data-scenario="camion">
               <div class="qcm_scenario">
                 <img src="dessin/chap_3/I/4/velo.svg" alt="">
-                <p>Question 4</p>
+                <p>Une société de livraison a décidé de convertir la motorisation diesel de ses vieux camions en motorisation électrique à batterie (on parle de rétrofit). Cette éco-conception entraîne&#8239;:</p>
               </div>
-              <div class="qcm_options"></div>
-              <div class="qcm_correction"></div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>une modification de la camionnette</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>l’adoption d’une nouvelle technologie de motorisation</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>un changement de modèle d’affaire</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>une optimisation de la consommation de diesel</span></label>
+              </div>
+              <div class="qcm_correction">
+                <div class="plus_loin">
+                  <p>Il faudra modifier en profondeur le camion, en retirant sa chaîne de traction thermique pour la remplacer par une chaîne électrique et en ajoutant une batterie, tout en conservant le châssis et la cabine.</p>
+                  <p>Il ne s’agit pas d’un changement de modèle d’affaire, car la société continue à livrer en camionnette.</p>
+                </div>
+              </div>
             </div>
 
-            <div class="qcm_bloc">
+            <!-- Question 5 : textile -->
+            <div class="qcm_bloc" data-niveau="1" data-scenario="textile">
               <div class="qcm_scenario">
                 <img src="dessin/chap_3/I/4/textile.svg" alt="">
-                <p>Question 5</p>
+                <p>Un producteur de fibre textile a investi dans une nouvelle machine de filature électrique, plus efficace énergétiquement, qui permet de limiter les rebuts de production. Cette éco-conception entraîne&#8239;:</p>
               </div>
-              <div class="qcm_options"></div>
-              <div class="qcm_correction"></div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>l’achat d’une machine plus moderne</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>un changement de composition de la fibre</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>un changement de modèle d’affaire</span></label>
+              </div>
+              <div class="qcm_correction">
+                <div class="plus_loin">
+                  <p>Le producteur a acheté une nouvelle machine de filature, qui lui permet d’optimiser sa production, de réduire sa consommation d’énergie et ses déchets. La composition de sa fibre et son modèle d’affaire restent identiques.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 6 : chaudière -->
+            <!-- DESSIN À CRÉER : chaudiere.svg -->
+            <div class="qcm_bloc" data-niveau="3" data-scenario="chaudiere">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/I/4/chaudiere.svg" alt="">
+                <p>Une entreprise remplace ses chaudières au gaz par des pompes à chaleur électriques, tout en conservant son activité et sa manière de vendre. Quel changement décrit le mieux cette solution&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox"> <span>une optimisation de l’existant</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>une nouvelle conception de la chaudière au gaz</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>un changement de technologie</span></label>
+              </div>
+              <div class="qcm_correction">
+                <div class="plus_loin">
+                  <p>L’entreprise adopte une autre technologie pour produire de la chaleur, sans changer son modèle économique. Le gain environnemental dépend notamment de l’efficacité des équipements et de l’origine de l’électricité.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 7 : location de vélos -->
+            <!-- DESSIN À CRÉER : velo_location.svg -->
+            <div class="qcm_bloc" data-niveau="4" data-scenario="velo">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/I/4/velo_location.svg" alt="">
+                <p>Une entreprise ne vend plus ses vélos, mais propose un service de location avec entretien et réparation inclus. Quelle proposition est la plus juste&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox"> <span>Il s’agit uniquement d’une amélioration de la fabrication.</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Il s’agit d’un changement de modèle économique, qui peut favoriser la durée de vie des vélos.</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Cette solution réduit nécessairement les impacts, quel que soit le taux d’utilisation des vélos.</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Il s’agit nécessairement d’une nouvelle technologie.</span></label>
+              </div>
+              <div class="qcm_correction">
+                <div class="plus_loin">
+                  <p>L’entreprise vend un service d’usage plutôt qu’un vélo. Ce modèle peut encourager la maintenance et l’utilisation prolongée des équipements, mais ses bénéfices doivent être évalués&#8239;: taux d’utilisation, déplacements liés à la maintenance, renouvellement du parc et durée de vie sont notamment à considérer.</p>
+                </div>
+              </div>
             </div>
 
           </div>
+
+          <!-- encadré mascotte pendant la correction du QCM -->
+          <!-- DESSIN DE LA MASCOTTE : remplacer le chemin -->
+          <aside class="rappel_fin rappel_corrections" id="rappel_corrections" hidden>
+            <img class="rappel_fin_dessin" src="dessin/mascotte/mascotte.svg" alt="">
+            <p>regarde toutes les corrections pour passer à la suite&#8239;!</p>
+          </aside>
         </div>
 
 
@@ -123,48 +244,55 @@
 
         <div class="partie_activite cache" id="partie_2">
 
-          <div class="txt_labeur">
-            <span class="souligne">Deuxième partie :</span><br>
-            Le tableau répertorie les 4 grands niveaux d’éco-conception.
-          </div>
-
-          <div class="consigne ecart" id="consigne_partie_2">
-            Glissez-déposez chaque scénario d’éco-conception au bon niveau d’éco-conception.
+          <div class="consigne" id="consigne_partie_2">
+            <span class="souligne">Deuxième partie&#8239;:</span> glisse-dépose chaque scénario d’éco-conception au bon niveau d’éco-conception.
           </div>
 
           <div class="classement"
                data-recentrer
                data-premiere-etape="#consigne_partie_2"
                data-texte-correction="correction"
-               data-texte-suite="passer à la suite"
-               data-progression-debut="50">
+               data-texte-suite="c’est compris"
+               data-suite-cible="#a_retenir"
+               data-progression-debut="50"
+               data-progression-placement="90">
 
-            <!-- Cartes à classer -->
+            <!-- Cartes à classer (data-niveau = bon niveau) -->
             <div class="depot reserve">
 
-              <div class="carte" data-niveau="2">
+              <div class="carte" data-niveau="2" data-scenario="lessive">
                 <img src="dessin/chap_3/I/4/lessive.svg" alt="">
-                <span>lessive 2 fois plus concentrée</span>
+                <span>lessive 2&nbsp;fois plus concentrée</span>
               </div>
 
-              <div class="carte" data-niveau="4">
+              <div class="carte" data-niveau="4" data-scenario="imprimante">
                 <img src="dessin/chap_3/I/4/imprimante.svg" alt="">
-                <span>location des imprimantes Xerox</span>
+                <span>location des imprimantes TIROX</span>
               </div>
 
-              <div class="carte" data-niveau="1">
+              <div class="carte" data-niveau="1" data-scenario="textile">
                 <img src="dessin/chap_3/I/4/textile.svg" alt="">
                 <span>nouvelle machine de filature</span>
               </div>
 
-              <div class="carte" data-niveau="3">
+              <div class="carte" data-niveau="3" data-scenario="camion">
                 <img src="dessin/chap_3/I/4/velo.svg" alt="">
                 <span>rétrofit des camions de livraison</span>
               </div>
 
-              <div class="carte" data-niveau="2">
+              <div class="carte" data-niveau="2" data-scenario="box">
                 <img src="dessin/chap_3/I/4/box.svg" alt="">
                 <span>box internet avec mode veille</span>
+              </div>
+
+              <div class="carte" data-niveau="3" data-scenario="chaudiere">
+                <img src="dessin/chap_3/I/4/chaudiere.svg" alt="">
+                <span>pompes à chaleur à la place des chaudières</span>
+              </div>
+
+              <div class="carte" data-niveau="4" data-scenario="velo">
+                <img src="dessin/chap_3/I/4/velo_location.svg" alt="">
+                <span>location de vélos avec entretien</span>
               </div>
 
             </div>
@@ -178,42 +306,72 @@
             <div class="escalier">
 
               <div class="niveau n4">
-                <div class="niveau_titre">niveau 4 : nouveau modèle économique</div>
-                <p>On change la façon de vendre et d’utiliser, pas juste le produit.</p>
                 <div class="depot" data-niveau="4"></div>
+                <div class="niveau_colonne">
+                  <div class="niveau_titre">niveau 4<br>changer de modèle économique</div>
+                  <p>On repense la manière de créer de la valeur et de fournir le produit ou le service.</p>
+                </div>
               </div>
 
               <div class="niveau n3">
-                <div class="niveau_titre">niveau 3 : innovation technologique</div>
-                <p>On change la technologie pour un impact radicalement différent.</p>
                 <div class="depot" data-niveau="3"></div>
+                <div class="niveau_colonne">
+                  <div class="niveau_titre">niveau 3<br>changer de technologie</div>
+                  <p>On adopte une technologie ou un procédé différent.</p>
+                </div>
               </div>
 
               <div class="niveau n2">
-                <div class="niveau_titre">niveau 2 : restructuration</div>
-                <p>On modifie la structure et la composition du produit.</p>
                 <div class="depot" data-niveau="2"></div>
+                <div class="niveau_colonne">
+                  <div class="niveau_titre">niveau 2<br>repenser la conception</div>
+                  <p>On modifie la composition, la structure ou certains éléments du produit.</p>
+                </div>
               </div>
 
               <div class="niveau n1">
-                <div class="niveau_titre">niveau 1 : optimisation</div>
-                <p>On optimise l’existant.</p>
                 <div class="depot" data-niveau="1"></div>
+                <div class="niveau_colonne">
+                  <div class="niveau_titre">niveau 1<br>optimiser</div>
+                  <p>On améliore l’existant sans en modifier profondément la conception.</p>
+                </div>
               </div>
 
             </div>
-
-
 
             <div class="axe_horizontal">
               <span>changement localisé</span>
               <span>changement profond</span>
             </div>
 
-            <div class="classement_correction"></div>
+            <!-- un paragraphe par scénario : seuls ceux tirés au QCM restent -->
+            <div class="classement_correction">
+              <p data-scenario="textile">La production de fibre textile optimisée, avec l’achat d’une nouvelle machine de filature plus performante, plus économe en énergie et en rebuts, est un <strong>niveau&nbsp;1</strong>&#8239;: on optimise l’existant.</p>
+              <p data-scenario="lessive">La lessive concentrée nécessite un changement de composition&#8239;: il s’agit d’un <strong>niveau&nbsp;2</strong>.</p>
+              <p data-scenario="box">La box internet nécessite un changement de structure&#8239;: il s’agit d’un <strong>niveau&nbsp;2</strong>.</p>
+              <p data-scenario="camion">Le rétrofit permet de passer d’une technologie thermique à une technologie électrique&#8239;: c’est un <strong>niveau&nbsp;3</strong>, un changement de technologie.</p>
+              <p data-scenario="chaudiere">Le remplacement des chaudières au gaz par des pompes à chaleur est un <strong>niveau&nbsp;3</strong>, un changement de technologie.</p>
+              <p data-scenario="imprimante">Le passage d’un modèle où l’imprimante est vendue au client à un modèle où le fabricant reste propriétaire et loue ses imprimantes correspond à un <strong>niveau&nbsp;4</strong>.</p>
+              <p data-scenario="velo">La location de vélos avec entretien inclus correspond aussi à un <strong>niveau&nbsp;4</strong>&#8239;: on change de modèle économique.</p>
+            </div>
 
           </div>
 
+          <!-- ========== À retenir (après « c’est compris ») ========== -->
+          <div class="partie_activite cache" id="a_retenir">
+            <div class="a_retenir_boite">
+              <p>De l’optimisation d’un produit existant à la transformation de son modèle économique, il existe plusieurs façons d’éco-concevoir.</p>
+
+              <!-- DESSIN DE LA MASCOTTE : remplacer le chemin -->
+              <div class="a_retenir_mascotte">
+                <img class="pop_mascotte_image" src="dessin/mascotte/mascotte.svg" alt="">
+                <p class="pop_mascotte_texte">Mais concrètement, quels leviers peut-on actionner à chaque étape du cycle de vie, et quels outils utiliser pour guider ses choix&#8239;? C’est ce que nous allons découvrir dans la suite&#8239;!</p>
+              </div>
+            </div>
+
+            <div class="conteneur_suite">
+              <button type="button" class="bouton_suite" data-fin-activite>passer à la suite</button>
+            </div>
           </div>
         </div>
 
@@ -231,6 +389,7 @@
 
     </div>
   </div>
+
 
   <!-- ========== Bandeau du bas (logos) ========== -->
 

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="42.83" height="372.95" viewBox="0 0 42.83 372.95" stroke-linecap="round" stroke-linejoin="round">
+  <rect class="prune trait_fin" x="17.43" y="73.55" width="7.77" height="169.69"/>
+  <path class="prune trait_fin" d="M23.69,233.98h-4.22c-4.62,0-8.4,3.69-8.5,8.31l-2.95,130.16h27.34l-3.16-130.18c-.11-4.61-3.89-8.3-8.5-8.3Z"/>
+  <path class="blanc trait_fin" d="M40.73,31.33l-4.03,41.13c-.43,4.35-4.09,7.67-8.46,7.67H15.09c-4.42,0-8.11-3.39-8.47-7.8L3.09,29.94l37.64,1.39Z"/>
+  <line class="sans_fond trait_fin" fill="none" x1="30.57" y1="26.34" x2="28.24" y2="80.13"/>
+  <line class="sans_fond trait_fin" fill="none" x1="12.24" y1="26.34" x2="14.57" y2="80.13"/>
+  <rect class="prune trait_fin" x=".5" y="23.95" width="41.83" height="10.16"/>
+  <rect class="prune trait_fin" x="8.46" y="14.74" width="27.04" height="8.81"/>
+  <circle class="prune trait_fin" cx="22.51" cy="7.3" r="6.8"/>
+</svg>

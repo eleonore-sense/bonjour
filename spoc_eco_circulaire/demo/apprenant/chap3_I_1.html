@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>cours</title>
   <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="mobile.css" media="(max-width: 1100px)">
   <link rel="stylesheet" href="couleurs.css">
     <script src="dessins.js" defer></script>
 <script src="rive/rive.js"></script>
@@ -15,6 +16,14 @@
 
 <!-- Où est cette page dans le cours ? (le reste vient de cours.js) -->
 <body data-chapitre="3" data-partie="1">
+
+
+<dialog class="pop_mascotte" id="pop_mascotte" aria-labelledby="pop_mascotte_texte">
+  <button type="button" class="fermer_modal" aria-label="fermer"></button>
+  <img class="pop_mascotte_image" src="dessin/mascotte/mascotte.svg" alt="">
+  <p class="pop_mascotte_texte" id="pop_mascotte_texte">On parle beaucoup d’éco-conception… mais au fait, c’est quoi&nbsp;?</p>
+</dialog>
+
 
 <div id="droite_contenu">
 <div id="contenu_chapitre">

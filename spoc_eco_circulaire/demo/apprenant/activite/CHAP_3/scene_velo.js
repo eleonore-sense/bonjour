@@ -12,9 +12,9 @@
 //    puis la nouvelle ENTRE. Pendant ce temps, rien ne réagit.
 // 5. Seuls les dessins qui ont une fenêtre pour la période réagissent.
 //    Au survol : le titre de la fenêtre. Au clic : la fenêtre, à côté du dessin, déplaçable.
-// 6. « À retenir » d'une période apparaît (en bas à droite) quand toutes ses fenêtres
-//    ont été ouvertes.
-// 7. Les 4 périodes vues : « continuer » en bas à droite (#pied_scene), avec la mascotte
+// 6. « À retenir » d'une période (dialog.fenetre_retenir) s'ouvre quand on la quitte
+//    après avoir ouvert toutes ses fenêtres ; son bouton lance la suite.
+// 7. Au moins une fenêtre ouverte dans chaque période : « continuer » en bas à droite (#pied_scene), avec la mascotte
 //    au-dessus s'il reste des fenêtres pas ouvertes (#rappel_scene). « continuer » montre
 //    la conclusion (#conclusion_scene) et « passer à la suite » (<body data-suite="cache">).
 //
@@ -27,6 +27,10 @@
 //   data-arrivee : « droite » / « gauche » = côté de l'écran d'où il arrive (ralentit en arrivant)
 //   data-sortie  : « droite » / « gauche » = côté par où il part (démarre doucement, accélère)
 //   data-duree, data-duree-sortie : durées en ms
+//   data-arrets  : moments où il s'arrête pendant son trajet, en ms : « 1250-2140 3480-4160 »
+//                  (pour l'arrivée ET la sortie ; il avance à petits coups entre les arrêts)
+//   data-courbe  : avec data-arrets, la courbe de chaque poussée
+//                  (par défaut très lent → rapide → très lent, très marqué)
 //
 // ---------- LE CHARGEMENT : class « chargement » (le carton) ----------
 // Quand on quitte la scène : le dessin de data-dans s'ouvre (son 2e dessin, .dessin_ouvert),
@@ -41,6 +45,8 @@
 // ---------- LES VÉLOS (Rive) : autant qu'on veut, un par scène ----------
 // Sur chaque <canvas class="velo_riv"> :
 //   data-riv, data-animation : le fichier et l'animation des roues
+//   data-boucle : durée de l'animation Rive, en ms. Avec lui, les roues suivent exactement
+//                 le temps du déplacement (et ses data-arrets), en boucle.
 //   data-avance : depuis combien de ms les roues tournent déjà quand le vélo entre dans l'écran
 //                 (pendant tout le trajet, l'animation repart si elle se termine avant l'arrivée)
 //   Ses proportions sont celles de son fichier Rive ; sa largeur = width du canvas.
@@ -71,7 +77,7 @@
   const boutons    = [...scene.querySelectorAll('.frise_etape')];
   const piste      = scene.querySelector('.frise_piste');
   const boule      = scene.querySelector('.frise_boule');
-  const retenirs   = [...document.querySelectorAll('.scene_retenir')];
+  const retenirs   = [...document.querySelectorAll('dialog.fenetre_retenir')];
   const annonce    = scene.querySelector('.scene_annonce');
   const fenetres   = [...document.querySelectorAll('dialog.fenetre_scene')];
   const pied       = document.getElementById('pied_scene');
@@ -99,6 +105,8 @@
   let echelle = 1;
   let enTransition = false;
   let etapeDemandee = null;
+  let rappelDepart = false;   // on quitte une période pas finie (jusqu'à l'arrivée de la nouvelle scène)
+  let rappelRetour = false;   // on est revenu sur une période pas finie
 
   const attendre = ms => new Promise(r => setTimeout(r, moinsDeMouvement ? 0 : ms));
   const groupeDe = nom => groupes.find(g => (g.dataset.etapes || '').split(/\s+/).includes(nom)) || null;
@@ -297,13 +305,85 @@
       : (window.innerWidth - r.left + 40) / echelle;
   }
 
-  function animer(el, images, options) {
+  const COURBE_POUSSEE = 'cubic-bezier(.85, 0, .15, 1)';   // très lent → rapide → très lent
+
+  // les images d'un trajet de « de » à « a » (en px), avec des arrêts (data-arrets).
+  // Le trajet est réparti entre les moments où il avance ; chaque poussée démarre et finit
+  // doucement (data-courbe). Sans arrêts : un seul mouvement, avec la courbe « courbe ».
+  function trajet(el, de, a, duree, courbe) {
+    const arrets = (el.dataset.arrets || '').trim().split(/\s+/).filter(Boolean)
+      .map(t => t.split('-').map(Number))
+      .filter(([d, f]) => f > d && d >= 0 && f <= duree)
+      .sort((x, y) => x[0] - y[0]);
+    if (!arrets.length) {
+      return { images: [{ transform: `translateX(${de}px)` }, { transform: `translateX(${a}px)` }], easing: courbe };
+    }
+
+    // les moments où il avance : [début, fin] en ms
+    const avances = [];
+    let t = 0;
+    arrets.forEach(([d, f]) => { if (d > t) avances.push([t, d]); t = Math.max(t, f); });
+    if (t < duree) avances.push([t, duree]);
+    const tempsAvance = avances.reduce((somme, [d, f]) => somme + f - d, 0);
+
+    const images = [];
+    let x = de;
+    let fait = 0;
+    const poussee = el.dataset.courbe || COURBE_POUSSEE;
+    avances.forEach(([d, f]) => {
+      images.push({ offset: d / duree, transform: `translateX(${x}px)`, easing: poussee });
+      fait += f - d;
+      x = de + (a - de) * fait / tempsAvance;
+      // fin de la poussée : il reste là jusqu'à la suivante
+      images.push({ offset: f / duree, transform: `translateX(${x}px)` });
+    });
+    if (images[0].offset > 0) images.unshift({ offset: 0, transform: `translateX(${de}px)` });
+    if (images.at(-1).offset < 1) images.push({ offset: 1, transform: `translateX(${a}px)` });
+    return { images, easing: 'linear' };
+  }
+
+  // quandLance(animation) : appelé dès que le mouvement démarre
+  function animer(el, images, options, quandLance) {
     return new Promise(resolve => {
       if (moinsDeMouvement || !el.animate) { resolve(); return; }
       const a = el.animate(images, options);
       a.onfinish = resolve;
       a.oncancel = resolve;
+      quandLance?.(a);
     });
+  }
+
+  // ---------- roues calées sur le déplacement (data-boucle sur le canvas) ----------
+  // L'animation Rive ne joue plus seule : à chaque image, elle est mise au même temps
+  // que le déplacement (modulo data-boucle = durée de l'animation Rive, en ms).
+  // Les arrêts du vélo (data-arrets) tombent donc toujours pile avec ceux des roues.
+
+  function caler(c, mouvement) {
+    const boucle = parseFloat(c.dataset.boucle);
+    c._cale = mouvement;
+    quandCharge(c, r => {
+      if (!c._anim) return;
+      r.resizeDrawingSurfaceToCanvas();
+      try { r.play(c._anim); r.pause(c._anim); } catch { /* rien */ }   // prépare l'animation
+      const image = () => {
+        if (c._cale !== mouvement) return;
+        const t = Math.max(0, mouvement.currentTime || 0);
+        try { r.scrub(c._anim, (t % boucle) / 1000); } catch { /* ancienne version de Rive */ }
+        r.drawFrame?.();
+        if (mouvement.playState === 'running') requestAnimationFrame(image);
+      };
+      image();
+    });
+  }
+  const decaler = c => { c._cale = null; };
+
+  // les roues d'un dessin pendant son mouvement : calées (data-boucle) ou libres
+  function rouesPendant(el, depuis) {
+    const c = riveDe(el);
+    if (!c) return { c: null, quandLance: null };
+    if (c.dataset.boucle) return { c, quandLance: a => caler(c, a) };
+    rouler(c, depuis);
+    return { c, quandLance: null };
   }
 
   // arrive d'un côté de l'écran et ralentit jusqu'à sa place
@@ -314,13 +394,12 @@
 
     el.classList.add('en_scene');
     const c = riveDe(el);
-    if (c) rouler(c, parseFloat(c.dataset.avance) || 0);
+    const roues = rouesPendant(el, parseFloat(c?.dataset.avance) || 0);
 
-    await animer(el,
-      [{ transform: `translateX(${distance}px)` }, { transform: 'translateX(0)' }],
-      { duration: duree, easing: 'cubic-bezier(.25, .6, .3, 1)', fill: 'backwards' });
+    const t = trajet(el, distance, 0, duree, 'cubic-bezier(.25, .6, .3, 1)');
+    await animer(el, t.images, { duration: duree, easing: t.easing, fill: 'backwards' }, roues.quandLance);
 
-    if (c) arreter(c);
+    if (c) { decaler(c); arreter(c); }
   }
 
   // part doucement, accélère, et quitte l'écran
@@ -330,13 +409,12 @@
     const duree = parseFloat(el.dataset.dureeSortie || el.dataset.duree) || 1500;
 
     const c = riveDe(el);
-    if (c) rouler(c, 0);   // l'animation des roues repart du début
+    const roues = rouesPendant(el, 0);   // l'animation des roues repart du début
 
-    await animer(el,
-      [{ transform: 'translateX(0)' }, { transform: `translateX(${distance}px)` }],
-      { duration: duree, easing: 'cubic-bezier(.55, 0, .9, .4)', fill: 'forwards' });
+    const t = trajet(el, 0, distance, duree, 'cubic-bezier(.55, 0, .9, .4)');
+    await animer(el, t.images, { duration: duree, easing: t.easing, fill: 'forwards' }, roues.quandLance);
 
-    if (c) arreter(c);
+    if (c) { decaler(c); arreter(c); }
     el.classList.remove('en_scene');
   }
 
@@ -438,23 +516,27 @@
   }
 
   // passe à la scène d'une période (si ce n'est pas déjà la même)
-  async function changerScene(nom) {
+  async function changerScene(nom, revenue) {
     const nouveau = groupeDe(nom);
-    if (nouveau === groupeActif) return;
+    if (nouveau === groupeActif) { rappelDepart = false; rappelRetour = revenue; majRappel(); return; }
 
     enTransition = true;
     scene.classList.remove('interactif');
     fermerFenetres();
 
     await sortir(groupeActif);
+    rappelDepart = false;          // la nouvelle scène apparaît : la mascotte s'en va
+    majRappel();
     groupeActif = nouveau;
     await entrer(nouveau);
 
     enTransition = false;
+    rappelRetour = Boolean(revenue);   // retour sur une période pas finie : elle revient
+    majRappel();
     if (partie.classList.contains('consigne_visible')) scene.classList.add('interactif');
 
     // une autre période a été demandée pendant la transition
-    if (etapeDemandee && groupeDe(etapeDemandee) !== groupeActif) changerScene(etapeDemandee);
+    if (etapeDemandee && groupeDe(etapeDemandee) !== groupeActif) changerScene(etapeDemandee, rappelRetour);
   }
 
 
@@ -482,7 +564,7 @@
   }
 
   // fait défiler pour que le DESSIN soit en haut, juste sous le bandeau :
-  // la consigne bleue passe au-dessus, on la voit en remontant
+  // la consigne bleue passe au-dessus, hors de l'écran (on la voit en remontant)
   function calerDessin(surFin) {
     const cible = cadre || scene;
     if (!zoneScroll) { cible.scrollIntoView({ behavior: 'smooth' }); setTimeout(() => surFin?.(), 700); return; }
@@ -549,6 +631,10 @@
     }
     if (!changement) return;
 
+    // déjà vue avant : la mascotte reviendra s'il y reste des fenêtres à ouvrir
+    const revenue = etapesVues.has(nom);
+    rappelRetour = false;
+
     let nombre = 0;
     elements.forEach(el => {
       const doc = documentsDe(el)[nom];
@@ -565,7 +651,6 @@
     });
 
     fermerFenetres();
-    majRetenir();
     scene.dataset.etape = nom;
 
     etapesVues.add(nom);
@@ -573,41 +658,133 @@
 
     if (annonce) annonce.textContent = `${titre} : ${nombre} éléments à découvrir dans l’image.`;
 
-    if (!sansScene && !enTransition) changerScene(nom);
+    if (!sansScene && !enTransition) changerScene(nom, revenue);
+    else { rappelRetour = revenue; majRappel(); }
   }
 
 
-  // ---------- « À retenir » : quand toutes les fenêtres de la période sont ouvertes ----------
+  // ---------- « À retenir » : une fenêtre, quand on quitte une période entièrement vue ----------
+  // (en changeant de période sur la frise, ou avec « continuer »). Une seule fois par période.
+  // Le bouton « c'est compris ! » ferme la fenêtre et lance la suite.
+  // Avec data-tout-vu sur le dialog : il s'ouvre dès que toutes les fenêtres de la période
+  // ont été ouvertes puis refermées ; en le fermant, « continuer » apparaît en bas à droite.
 
   const etapeComplete = nom => [...(docsParEtape[nom] || [])].every(d => vus.has(d));
+  const retenirsVus = new Set();
 
-  function majRetenir() {
-    retenirs.forEach(r => {
-      r.hidden = !(r.dataset.etape === etapeActive && etapeComplete(etapeActive));
-    });
+  function avecRetenir(suite) {
+    const fenetre = retenirs.find(r => r.dataset.etape === etapeActive);
+    if (!fenetre || retenirsVus.has(etapeActive) || !etapeComplete(etapeActive)) { suite(); return; }
+
+    retenirsVus.add(etapeActive);
+    fermerFenetres();
+    fenetre.addEventListener('close', suite, { once: true });   // bouton, ou Échap
+    fenetre.showModal();
+  }
+
+  retenirs.forEach(f => {
+    f.querySelector('[data-suite-retenir]')?.addEventListener('click', () => f.close());
+  });
+
+  // appelé à chaque fenêtre refermée
+  function retenirToutVu() {
+    const fenetre = retenirs.find(r => r.dataset.etape === etapeActive);
+    if (!fenetre?.hasAttribute('data-tout-vu') || retenirsVus.has(etapeActive)) return;
+    if (!etapeComplete(etapeActive)) return;
+    setTimeout(() => {
+      // toujours sur cette période, et plus rien d'ouvert ?
+      if (fenetre.dataset.etape !== etapeActive || retenirsVus.has(etapeActive)) return;
+      if (fenetre.open || fenetres.some(f => f.open)) return;
+      retenirsVus.add(etapeActive);
+      fenetre.addEventListener('close', () => majFin(), { once: true });
+      fenetre.showModal();
+    }, moinsDeMouvement ? 0 : 500);
+  }
+
+  // une période demandée par l'élève : d'abord l'« à retenir » de celle qu'il quitte
+  function demanderEtape(nom) {
+    if (!nom || nom === etapeActive) { choisirEtape(nom); return; }
+    // on quitte une période pas finie : la mascotte apparaît pendant que la scène sort
+    if (etapeActive && !etapeComplete(etapeActive)) { rappelDepart = true; majRappel(); }
+    avecRetenir(() => choisirEtape(nom));
   }
 
 
   // ---------- fin : « continuer » après les 4 périodes ----------
 
+  // « continuer » : quand au moins une fenêtre de chaque période a été ouverte
+  const unDeChaque = () => etapes.every(e => [...(docsParEtape[e] || [])].some(d => vus.has(d)));
+
   function majFin() {
     if (!pied) return;
-    if (!etapes.every(e => etapesVues.has(e))) return;
+    if (!unDeChaque()) return;
     pied.hidden = false;
-    if (rappel) rappel.hidden = vus.size >= total;
+    majRappel();
   }
 
-  document.getElementById('continuer_scene')?.addEventListener('click', () => {
+  // ---------- la barre rose du haut (<body data-progression="manuelle">) ----------
+  // chaque fenêtre ouverte la fait avancer, jusqu'à BARRE_FENETRES % ; la conclusion la remplit
+  const BARRE_FENETRES = 90;
+
+  function avancerBarre() {
+    if (typeof reglerProgression === 'function' && total) {
+      reglerProgression((vus.size / total) * BARRE_FENETRES, 100);
+    }
+  }
+  avancerBarre();
+
+  // ---------- la mascotte « tu n'as pas encore tout découvert » (#rappel_scene) ----------
+  // - quand on quitte une période pas finie, jusqu'à l'apparition de la nouvelle scène
+  // - quand on revient sur une période pas finie, jusqu'à ce qu'elle soit finie
+  // - à côté de « continuer », tant qu'il reste des fenêtres pas ouvertes
+
+  function majRappel() {
+    if (!rappel) return;
+    const fin = pied && !pied.hidden && vus.size < total;
+    const retour = rappelRetour && !enTransition && !etapeComplete(etapeActive);
+    rappel.hidden = !(rappelDepart || retour || fin);
+  }
+
+  document.getElementById('continuer_scene')?.addEventListener('click', () => avecRetenir(() => {
     fermerFenetres();
     if (pile) pile.hidden = true;
     if (conclusion) conclusion.hidden = false;
     if (typeof afficherSuite === 'function') afficherSuite();
+    if (typeof reglerProgression === 'function') reglerProgression(100, 100);
     if (typeof marquerPartieFaite === 'function' && typeof numPartie !== 'undefined') marquerPartieFaite(numPartie);
 
     const cible = conclusion || document.querySelector('.conteneur_suite');
-    if (cible && typeof calerEnHaut === 'function') calerEnHaut(cible);
-    else cible?.scrollIntoView({ behavior: 'smooth' });
-  });
+    if (!cible) return;
+    // après l'apparition de la conclusion et du bouton « passer à la suite »
+    requestAnimationFrame(() => {
+      laisserPlace(cible, MARGE_CONCLUSION);
+      if (typeof calerEnHaut === 'function') calerEnHaut(cible, null, MARGE_CONCLUSION);
+      else cible.scrollIntoView({ behavior: 'smooth' });
+    });
+  }));
+
+  // espace (en px) entre le bandeau du haut et la conclusion, une fois le scroll fini
+  const MARGE_CONCLUSION = 50;
+
+  // ajoute de la place en bas de la page s'il n'y en a pas assez
+  // pour que « cible » puisse monter tout en haut, sous le bandeau
+  function laisserPlace(cible, marge = 0) {
+    if (!zoneScroll) return;
+    const bandeau = document.getElementById('haut')?.offsetHeight || 0;
+    const position = zoneScroll.scrollTop + cible.getBoundingClientRect().top - zoneScroll.getBoundingClientRect().top;
+    const voulu = position - bandeau - 15 - marge;                 // le même calcul que calerEnHaut
+    const manque = voulu - (zoneScroll.scrollHeight - zoneScroll.clientHeight);
+    if (manque <= 0) return;
+
+    let espace = document.getElementById('espace_conclusion');
+    if (!espace) {
+      espace = document.createElement('div');
+      espace.id = 'espace_conclusion';
+      espace.setAttribute('aria-hidden', 'true');
+      zoneScroll.appendChild(espace);
+    }
+    espace.style.height = (espace.offsetHeight + manque) + 'px';
+  }
 
 
   // =================================================================
@@ -672,7 +849,7 @@
         piste.removeEventListener('pointermove', bouger);
         piste.removeEventListener('pointerup', lacher);
         piste.removeEventListener('pointercancel', lacher);
-        choisirEtape(etapes[index]);
+        demanderEtape(etapes[index]);
         placerBoule(index);                 // glisse au milieu de sa période
       };
 
@@ -691,7 +868,7 @@
       if (e.key === 'End')  n = etapes.length - 1;
       if (n === null) return;
       e.preventDefault();
-      choisirEtape(etapes[n]);
+      demanderEtape(etapes[n]);
     });
 
     if ('ResizeObserver' in window) {
@@ -699,7 +876,7 @@
     }
   }
 
-  boutons.forEach(b => b.addEventListener('click', () => choisirEtape(b.dataset.etape)));
+  boutons.forEach(b => b.addEventListener('click', () => demanderEtape(b.dataset.etape)));
 
 
   // =================================================================
@@ -724,8 +901,8 @@
     else if (r.left - MARGE - l >= MARGE)                  x = r.left - MARGE - l;
     else                                                   x = (window.innerWidth - l) / 2;
 
-    let y = r.top + r.height / 2 - h / 2;
-    y = Math.max(haut, Math.min(y, bas - h));
+    // en haut, juste sous le bandeau (plus haut si la fenêtre est très grande)
+    const y = Math.max(MARGE, Math.min(haut, bas - h));
 
     fenetre.style.left = Math.max(MARGE, x) + 'px';
     fenetre.style.top = Math.max(MARGE, y) + 'px';
@@ -733,7 +910,7 @@
 
   function rendreGrappable(fenetre) {
     fenetre.addEventListener('pointerdown', e => {
-      if (e.button !== 0 || e.target.closest('button, a, summary, input, textarea')) return;
+      if (e.button !== 0 || e.target.closest('button, a, summary, input, textarea, .bulle_mascotte')) return;
       if (e.offsetX > fenetre.clientWidth) return;
 
       const x0 = e.clientX - fenetre.offsetLeft;
@@ -744,6 +921,8 @@
       const bouger = ev => {
         fenetre.style.left = Math.min(window.innerWidth - 60, Math.max(60 - fenetre.offsetWidth, ev.clientX - x0)) + 'px';
         fenetre.style.top = Math.min(window.innerHeight - 40, Math.max(0, ev.clientY - y0)) + 'px';
+        placerBulle(fenetre);   // la bulle suit la fenêtre
+        placerFermer(fenetre);  // le rond rouge aussi
       };
       const lacher = () => {
         fenetre.classList.remove('deplacement');
@@ -757,12 +936,115 @@
     });
   }
 
+  // ---------- le rond rouge : toujours dans le coin haut droit de la fenêtre ----------
+  // (position: fixed, recalé quand la fenêtre s'ouvre, bouge ou que l'écran change de taille ;
+  //  distance au bord : --fermer_haut / --fermer_droite dans le CSS, 8px par défaut)
+
+  function placerFermer(fenetre) {
+    const b = fenetre._fermer;
+    if (!b) return;
+    const r = fenetre.getBoundingClientRect();
+    const style = getComputedStyle(fenetre);
+    const haut = parseFloat(style.getPropertyValue('--fermer_haut')) || 8;
+    const droite = parseFloat(style.getPropertyValue('--fermer_droite')) || 8;
+    b.style.top = (r.top + haut) + 'px';
+    b.style.left = (r.right - droite - b.offsetWidth) + 'px';
+  }
+
+  // ---------- bulle de la mascotte : 3 s après l'ouverture de sa fenêtre ----------
+  // accrochée au coin bas droit de la fenêtre (ou bas gauche s'il n'y a pas la place)
+
+  const DELAI_BULLE = 3000;   // en ms
+
+  function placerBulle(fenetre) {
+    const bulle = fenetre._bulle;
+    if (!bulle || bulle.hidden) return;
+    const r = fenetre.getBoundingClientRect();
+    const l = bulle.offsetWidth;
+    const h = bulle.offsetHeight;
+
+    let x = r.right - 40;
+    if (x + l > window.innerWidth - MARGE) x = r.left - l + 40;
+    let y = r.bottom - 30;
+    const bas = window.innerHeight - (document.getElementById('bandeau_bas')?.offsetHeight || 0) - MARGE;
+    y = Math.min(y, bas - h);
+
+    bulle.style.left = Math.max(MARGE, x) + 'px';
+    bulle.style.top = Math.max(MARGE, y) + 'px';
+  }
+
+  function programmerBulle(fenetre) {
+    const bulle = fenetre._bulle;
+    if (!bulle) return;
+    clearTimeout(fenetre._minuteurBulle);
+    bulle.hidden = true;
+    fenetre._minuteurBulle = setTimeout(() => {
+      if (!fenetre.open) return;
+      bulle.hidden = false;
+      placerBulle(fenetre);
+    }, moinsDeMouvement ? 0 : DELAI_BULLE);
+  }
+
+  function cacherBulle(fenetre) {
+    clearTimeout(fenetre._minuteurBulle);
+    if (fenetre._bulle) fenetre._bulle.hidden = true;
+  }
+
+  // ---------- « en apprendre plus » ----------
+  // Dans le HTML de la fenêtre :
+  //   <div class="fenetre_plus"><div class="fenetre_plus_interieur"> … </div></div>
+  //   <button type="button" class="bouton_plus" aria-expanded="false">en apprendre plus</button>
+  // Le bloc est fermé au départ et se déroule au clic sur le bouton.
+
+  function preparerPlus(fenetre) {
+    const plus = fenetre.querySelector('.fenetre_plus');
+    const bouton = fenetre.querySelector('.bouton_plus');
+    if (!plus || !bouton) return;
+
+    plus.inert = true;   // fermé : son contenu n'est pas atteignable au clavier
+    bouton.addEventListener('click', () => deroulerPlus(fenetre, !plus.classList.contains('ouvert')));
+    fenetre._plus = { plus, bouton, texte: bouton.textContent };   // texte d'origine du bouton
+  }
+
+  function deroulerPlus(fenetre, ouvrir) {
+    const p = fenetre._plus;
+    if (!p) return;
+    p.plus.classList.toggle('ouvert', ouvrir);
+    p.plus.inert = !ouvrir;
+    p.bouton.setAttribute('aria-expanded', String(ouvrir));
+    p.bouton.textContent = ouvrir ? 'voir moins' : p.texte;
+
+    // bulle data-apres-bouton : 3 s après le déroulé, cachée quand on replie
+    if (fenetre._bulle?.hasAttribute('data-apres-bouton')) {
+      if (ouvrir) programmerBulle(fenetre);
+      else cacherBulle(fenetre);
+    }
+  }
+
   fenetres.forEach(fenetre => {
     fenetre.tabIndex = -1;
-    fenetre.querySelector('.qcm_fermer')?.addEventListener('click', () => fenetre.close());
+    preparerPlus(fenetre);
+
+    // le rond rouge de la fenêtre (pas celui de la bulle)
+    fenetre._fermer = fenetre.querySelector(':scope > .qcm_fermer');
+    fenetre._fermer?.addEventListener('click', () => fenetre.close());
     rendreGrappable(fenetre);
-    fenetre.addEventListener('close', () => fenetre._dessin?.focus({ preventScroll: true }));
+
+    fenetre._bulle = fenetre.querySelector('.bulle_mascotte');
+    if (fenetre._bulle) {
+      fenetre._bulle.hidden = true;
+      fenetre._bulle.querySelector('.qcm_fermer')?.addEventListener('click', () => cacherBulle(fenetre));
+    }
+
+    fenetre.addEventListener('close', () => {
+      cacherBulle(fenetre);
+      deroulerPlus(fenetre, false);   // à la prochaine ouverture, la fenêtre est de nouveau courte
+      fenetre._dessin?.focus({ preventScroll: true });
+      retenirToutVu();
+    });
   });
+
+  window.addEventListener('resize', () => fenetres.forEach(f => { if (f.open) { placerBulle(f); placerFermer(f); } }));
 
   document.addEventListener('keydown', e => { if (e.key === 'Escape') fermerFenetres(); });
   document.addEventListener('pointerdown', e => {
@@ -784,15 +1066,20 @@
 
       fermerFenetres(fenetre);
       fenetre._dessin = el;
-      if (!fenetre.open) fenetre.show();
+      const dejaOuverte = fenetre.open;
+      if (!dejaOuverte) fenetre.show();
       fenetre.scrollTop = 0;
       placerFenetre(fenetre, el);
+      placerFermer(fenetre);
+      // bulle 3 s après l'ouverture (sauf celles qui attendent le bouton)
+      if (!dejaOuverte && !fenetre._bulle?.hasAttribute('data-apres-bouton')) programmerBulle(fenetre);
       fenetre.focus({ preventScroll: true });
 
       vus.add(id);
       el.classList.add('vu');
-      majRetenir();
+      avancerBarre();
       majFin();
+      majRappel();
     });
   });
 

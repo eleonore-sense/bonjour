@@ -35,14 +35,14 @@ const COURS = {
       fiches: '#',
       parties: [
         // I.
-        { section: "Qu'est-ce que l'éco-conception ?", nom: "Définitions et grands principes", duree: '10 min', lien: 'chap3_I-4.html' },
-        { section: "Qu'est-ce que l'éco-conception ?", nom: "Les réglementations liées à l'éco-conception", duree: '', lien: 'chap3_I_4.html' },
+        { section: "Qu'est-ce que l'éco-conception ?", nom: "Définitions et grands principes", duree: '10 min', lien: 'chap3_I_1.html' },
+        { section: "Qu'est-ce que l'éco-conception ?", nom: "Les réglementations liées à l'éco-conception", duree: '5min', lien: 'chap3_I_2.html' },
         { section: "Qu'est-ce que l'éco-conception ?", nom: "Activité: les niveaux d'éco-conception", duree: '15 min', lien: 'chap3_I_4.html', etoile: true },
         // II.
-        { section: "Éco-solutions et outils de l'éco-conception", nom: "Des éco-solutions à chaque étape du cycle de vie", duree: '20 min', lien: 'chap3_II-1.html' },
-        { section: "Éco-solutions et outils de l'éco-conception", nom: "Activité: les éco-solutions et la roue de Brezet", duree: '', lien: 'chap3_II-2.html', etoile: true },
-        { section: "Éco-solutions et outils de l'éco-conception", nom: "Les outils de l'éco-conception", duree: '', lien: 'chap3_II-3.html' },
-        { section: "Éco-solutions et outils de l'éco-conception", nom: "Activité: sac plastique ou sac en coton ?", duree: '', lien: 'chap3_II-4.html', etoile: true },
+        { section: "Éco-solutions et outils de l'éco-conception", nom: "Des éco-solutions à chaque étape du cycle de vie", duree: '20 min', lien: 'chap3_II_1.html' },
+        { section: "Éco-solutions et outils de l'éco-conception", nom: "Activité: les éco-solutions et la roue de Brezet", duree: '', lien: 'chap3_II_2.html', etoile: true },
+        { section: "Éco-solutions et outils de l'éco-conception", nom: "Les outils de l'éco-conception", duree: '', lien: 'chap3_II_3.html' },
+        { section: "Éco-solutions et outils de l'éco-conception", nom: "Activité: sac plastique ou sac en coton ?", duree: '', lien: 'chap3_II_4.html', etoile: true },
         // III.
         { section: "Appliquer une démarche d'éco-conception", nom: "Les étapes d'une démarche d'éco-conception", duree: '', lien: 'chap3_III-1.html' },
         { section: "Appliquer une démarche d'éco-conception", nom: "Exemple : le cola Saclay", duree: '', lien: 'chap3_III-2.html' },

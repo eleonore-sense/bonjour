@@ -40,6 +40,16 @@ if (!partie) {
 const sansRetourLigne = texte => texte.replace(/<br\s*\/?>/gi, ' ');
 const pourAttribut    = texte => String(texte).replace(/"/g, '&quot;');
 
+// copie mélangée d'un tableau
+function melanger(tableau) {
+  const copie = [...tableau];
+  for (let i = copie.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copie[i], copie[j]] = [copie[j], copie[i]];
+  }
+  return copie;
+}
+
 
 // ---------------------------------------------------------------------
 // 1. STRUCTURE COMMUNE
@@ -66,6 +76,11 @@ function construireStructure() {
   }
 
   document.body.insertAdjacentHTML('beforeend', htmlModale());
+
+  // bandeau du bas : ajouté s'il n'est pas déjà dans la page
+  if (!document.getElementById('bandeau_bas')) {
+    document.body.insertAdjacentHTML('beforeend', '<footer id="bandeau_bas"></footer>');
+  }
 
   if (partie) document.title = sansRetourLigne(partie.nom);
 }
@@ -185,11 +200,15 @@ initNotions();
 initBarreParties();
 initAnimationsRive();
 initDessins();
+initPopMascotte();
+initRappelFin();
 initGraphiques();
 initChoixVue();
 initRecentrage();
 initQCM();
 initClassement();
+initAfficher();
+initFinActivite();
 
 // Lance une action chaque fois qu'un élément passe la ligne des 60 % de l'écran
 function surPassage(element, action) {
@@ -254,11 +273,12 @@ function initLiensSource() {
   });
 }
 
+
 // ---------- Mots à définir → boîte de définition à droite ----------
 // La boîte s'ouvre au survol du mot (ou quand on y arrive au clavier) et reste affichée.
 // On peut l'attraper et la déplacer. Elle se ferme avec son rond rouge,
 // avec la touche Échap, ou quand on survole un autre mot.
-// Peut être appelée plusieurs fois (ex : après le chargement Supabase) :
+// Peut être appelée plusieurs fois (ex : après un ajout de contenu) :
 // un mot ou une boîte déjà préparés ne le sont pas une deuxième fois.
 function initNotions() {
   const conteneur = document.getElementById('contenu_chapitre');
@@ -322,40 +342,6 @@ function preparerBoite(boite) {
   boite.prepend(fermer);
 
   rendreDeplacable(boite);
-}
-
-
-// ---------- À remplacer aussi dans script.js ----------
-// Rend un élément déplaçable à la souris (sauf quand on clique sur un de ses boutons).
-// La position de départ est relue à chaque prise : si l'élément a été remis à sa place
-// entre-temps, il ne saute pas.
-function rendreDeplacable(el) {
-  el.addEventListener('pointerdown', e => {
-    if (e.target.closest('button')) return;
-    e.preventDefault();
-
-    const [x0 = 0, y0 = 0] = (el.style.translate || '0px 0px').split(' ').map(v => parseFloat(v) || 0);
-    const departX = e.clientX - x0;
-    const departY = e.clientY - y0;
-
-    el.setPointerCapture(e.pointerId);
-    el.classList.add('deplacement');
-
-    function bouger(ev) {
-      el.style.translate = `${ev.clientX - departX}px ${ev.clientY - departY}px`;
-    }
-
-    function lacher() {
-      el.classList.remove('deplacement');
-      el.removeEventListener('pointermove', bouger);
-      el.removeEventListener('pointerup', lacher);
-      el.removeEventListener('pointercancel', lacher);
-    }
-
-    el.addEventListener('pointermove', bouger);
-    el.addEventListener('pointerup', lacher);
-    el.addEventListener('pointercancel', lacher);
-  });
 }
 
 
@@ -473,8 +459,6 @@ function calculerSegments(ensemble) {
 }
 
 
-
-
 // ---------- Couleurs de couleurs.css dans les animations Rive ----------
 // Dans l'éditeur Rive, une propriété de couleur du View Model qui porte le nom
 // d'une couleur de la palette (bleu, rose, vert_citron…) prend la valeur
@@ -515,29 +499,14 @@ function couleurEnRgb(texte) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // ---------- Animations Rive ----------
 // Tout <canvas class="anim_riv"> placé dans un .media_exemple est pris en charge.
 // La 1re animation de la page se joue au chargement et au retour en haut,
 // les suivantes à chaque passage de la ligne des 60 %.
 function initAnimationsRive() {
   if (typeof rive === 'undefined') return;
-    // le moteur de Rive est dans le dossier rive/, pas sur internet
+
+  // le moteur de Rive est dans le dossier rive/, pas sur internet
   rive.RuntimeLoader.setWasmUrl('rive/rive.wasm');
   rive.RuntimeLoader.wasmFallbackURL = 'rive/rive_fallback.wasm';
 
@@ -560,7 +529,7 @@ function initAnimationsRive() {
         canvas: canvas,
         autoplay: false,
         stateMachine: canvas.dataset.machine,
-animations: canvas.dataset.anim,
+        animations: canvas.dataset.anim,
         autoBind: true,                     // relie le View Model de l'animation
         onLoad: () => {
           r.resizeDrawingSurfaceToCanvas();
@@ -568,7 +537,6 @@ animations: canvas.dataset.anim,
         },
         onLoadError: e => console.error('Rive :', canvas.dataset.riv, e),
       });
-
 
       // fin de l'animation : pause
       // (avec data-depart, on fait un tour complet et on s'arrête au point de départ)
@@ -581,6 +549,7 @@ animations: canvas.dataset.anim,
           r.pause();
         }
       });
+
       instances.push(r);
     });
 
@@ -627,6 +596,7 @@ animations: canvas.dataset.anim,
   groupes.slice(1).forEach(groupe => surPassage(groupe.media, () => jouer(groupe.instances)));
 }
 
+
 // ---------- Dessins (galerie + schémas) : infobulle et pop-up ----------
 function initDessins() {
   const modal = document.getElementById('modal_dessin');
@@ -642,7 +612,7 @@ function initDessins() {
     // l'<img> a peut-être déjà été remplacée par le SVG : on gère les deux cas
     const dessin = item.querySelector('img, svg.dessin');
     const srcDessin = dessin?.getAttribute('src') || dessin?.dataset.src;
-        const imageActeur = item.dataset.imageModal;
+    const imageActeur = item.dataset.imageModal;
 
     // Infobulle : texte seul, ou dessin + titre + texte pour les acteurs
     const tooltip = document.createElement('div');
@@ -669,7 +639,8 @@ function initDessins() {
       tooltip.textContent = def;
     }
     item.appendChild(tooltip);
-    // Pop-up au clic
+
+    // Pop-up au clic : une nouvelle image, passée à dessins.js pour ses couleurs
     item.addEventListener('click', () => {
       const nouvelle = document.createElement('img');
       nouvelle.className = 'modal_dessin_image';
@@ -693,17 +664,88 @@ function initDessins() {
     if (e.target === modal) modal.classList.remove('visible');
   });
 
-
-  modal.addEventListener('click', e => {
-    if (e.target === modal) modal.classList.remove('visible');
-  });
-
   // Échap ferme la pop-up
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') modal.classList.remove('visible');
   });
-
 }
+
+
+// ---------- Pop-up mascotte ----------
+// Sans data-declencheur : s'ouvre 1 s après l'arrivée sur la page.
+// (data-declencheur : s'ouvre au premier scroll où l'élément est entièrement visible)
+// Placée sous le titre, un peu à droite (centrée sur petit écran).
+// Se ferme au rond rouge, avec Échap et au clic en dehors.
+function initPopMascotte() {
+  // seulement la pop-up de class pop_mascotte (d'autres pages ont un #pop_mascotte géré par leur propre script)
+  const pop = document.querySelector('dialog.pop_mascotte');
+  if (!pop) return;
+
+  function placer() {
+    const haut  = document.getElementById('haut');
+    const titre = document.getElementById('titre_chapitre');
+    if (!haut || !titre || window.innerWidth <= 700) {
+      pop.classList.remove('placee');
+      pop.style.top = pop.style.left = '';
+      return;
+    }
+    pop.classList.add('placee');
+    pop.style.top  = (haut.getBoundingClientRect().bottom + 25) + 'px';
+    pop.style.left = (titre.getBoundingClientRect().left + 120) + 'px';
+  }
+
+  function ouvrir() {
+    placer();
+    pop.showModal();
+  }
+
+  pop.querySelector('.fermer_modal')?.addEventListener('click', () => pop.close());
+
+  pop.addEventListener('click', e => {
+    const r = pop.getBoundingClientRect();
+    const dedans = e.clientX >= r.left && e.clientX <= r.right
+                && e.clientY >= r.top  && e.clientY <= r.bottom;
+    if (!dedans) pop.close();
+  });
+
+  window.addEventListener('resize', () => { if (pop.open) placer(); });
+
+  const declencheur = pop.dataset.declencheur && document.querySelector(pop.dataset.declencheur);
+
+  if (declencheur && zoneScroll) {
+    // une seule fois, au premier scroll où l'élément est entièrement visible
+    function verifier() {
+      const r = declencheur.getBoundingClientRect();
+      const z = zoneScroll.getBoundingClientRect();
+      if (r.top >= z.top && r.bottom <= z.bottom) {
+        zoneScroll.removeEventListener('scroll', verifier);
+        ouvrir();
+      }
+    }
+    zoneScroll.addEventListener('scroll', verifier);
+  } else {
+    setTimeout(ouvrir, 1000);
+  }
+}
+
+
+// ---------- Encadré mascotte en fin de page ----------
+// Apparaît une seule fois, quand le bouton « passer à la suite » arrive à l'écran.
+function initRappelFin() {
+  const rappel = document.getElementById('rappel_fin');
+  const bouton = document.querySelector('.bouton_suite');
+  if (!rappel || !bouton || !zoneScroll) return;
+
+  const observateur = new IntersectionObserver(entries => {
+    if (entries.some(e => e.isIntersecting)) {
+      rappel.hidden = false;
+      observateur.disconnect();
+    }
+  }, { root: zoneScroll, threshold: 0.5 });
+
+  observateur.observe(bouton);
+}
+
 
 // ---------- Graphiques en barres + boutons produit A / B ----------
 function initGraphiques() {
@@ -826,6 +868,7 @@ function initChoixVue() {
   });
 }
 
+
 // ---------- Défilement par étapes ----------
 // <div data-recentrer data-premiere-etape="#id"> :
 // chaque geste de scroll vers le bas fait glisser la page vers l'étape suivante.
@@ -846,7 +889,13 @@ function initRecentrage() {
       ? document.querySelector(cible.dataset.premiereEtape)
       : null;
 
-    // les lignes de blocs du QCM
+    // data-etapes-avant="#a #b" : éléments centrés à l'écran avant la 1re étape
+    const avant = (cible.dataset.etapesAvant || '')
+      .split(/\s+/).filter(Boolean)
+      .map(sel => document.querySelector(sel)).filter(Boolean)
+      .map(el => [el]);
+
+    // les lignes de blocs du QCM (relues à chaque fois : le tirage a pu en retirer)
     function lignesBlocs() {
       const lignes = [];
       cible.querySelectorAll('.qcm_bloc').forEach(b => {
@@ -857,12 +906,12 @@ function initRecentrage() {
       return lignes;
     }
 
-    // étapes : la consigne calée en haut (qui montre aussi la 1re ligne),
-    // puis les lignes suivantes, centrées
+    // étapes : les éléments « avant », centrés, puis la consigne calée en haut
+    // (qui montre aussi la 1re ligne), puis les lignes suivantes, centrées
     function etapes() {
       const lignes = lignesBlocs();
-      if (!lignes.length) return premiere ? [premiere] : [[cible]];
-      return premiere ? [premiere, ...lignes.slice(1)] : lignes;
+      if (!lignes.length) return [...avant, ...(premiere ? [premiere] : [[cible]])];
+      return [...avant, ...(premiere ? [premiere, ...lignes.slice(1)] : lignes)];
     }
 
     // position de défilement où l'étape est bien placée (sans dépasser le bas de page)
@@ -953,27 +1002,40 @@ function initRecentrage() {
 }
 
 
-
 // ---------- QCM avec correction à lire ----------
 // <div class="qcm" data-texte-correction="…" data-texte-suite="…"
-//      data-suite-cible="#partie_2" data-progression-fin="50">
-//   <div class="qcm_bloc"> scénario + options + <div class="qcm_correction">…
+//      data-suite-cible="#partie_2" data-partie-actuelle="#partie_1"
+//      data-tirage="4"
+//      data-notion="un changement de modèle d’affaire" data-notion-cible="modele_affaire"
+//      data-progression-debut="0" data-progression-reponses="20" data-progression-fin="50">
+//   <div class="qcm_bloc" data-niveau="2" data-scenario="lessive">
+//     scénario + options + <div class="qcm_correction">…
 //   options : <input type="checkbox" data-juste> (bonne réponse)
 //             <input type="checkbox" data-neutre> (ni vraie ni fausse)
 //
-// 1. l'élève coche (cases bleues)
+// data-tirage="4" : seulement 4 blocs tirés au hasard, avec au moins un bloc
+//                   de chaque data-niveau (sans data-tirage : tous les blocs)
+// data-notion     : ce texte devient un mot notion (boîte data-notion-cible)
+//                   dans la 1re question restante qui le contient
+//
+// 1. l'élève coche (cases bleues) : la barre va de progression-debut à progression-reponses
 // 2. bouton « voir la correction » : vert = bonne réponse cochée,
 //    rouge = mauvaise réponse cochée, rose = bonne réponse oubliée
 //    (les réponses data-neutre restent sans couleur). Chaque bloc montre sa correction
-//    au survol, et la garde au clic.
+//    au survol, et la garde au clic. La barre va jusqu'à progression-fin.
 // 3. quand toutes les corrections ont été lues, le même bouton devient
 //    actif : il affiche la partie suivante de l'activité (data-suite-cible),
 //    ou, s'il n'y en a pas, remplit l'étoile et passe à la page suivante
 function initQCM() {
   document.querySelectorAll('.qcm').forEach(qcm => {
+    tirerBlocs(qcm);
+    lierNotion(qcm);
+
     const blocs = [...qcm.querySelectorAll('.qcm_bloc')];
     const lus = new Set();
-    const progressionFin = parseFloat(qcm.dataset.progressionFin || 100);
+    const progressionDebut    = parseFloat(qcm.dataset.progressionDebut || 0);
+    const progressionReponses = parseFloat(qcm.dataset.progressionReponses ?? progressionDebut);
+    const progressionFin      = parseFloat(qcm.dataset.progressionFin || 100);
     let etape = 'reponse';   // 'reponse' → 'correction' → 'fini'
 
     // Bloc fixe en bas à droite : légende (après correction) + bouton
@@ -994,11 +1056,31 @@ function initQCM() {
       <span class="neutre">ni vraie ni fausse</span>`;
     document.body.appendChild(legende);
 
+    // Bouton caché tant que la partie du QCM n'est pas affichée
+    const partieQcm = qcm.closest('.partie_activite');
+    if (partieQcm && partieQcm.classList.contains('cache')) {
+      pied.style.display = 'none';
+      partieQcm.addEventListener('affichee', () => { pied.style.display = ''; }, { once: true });
+    }
+
+    // Encadré mascotte « regarde toutes les corrections » (data-rappel),
+    // affiché après data-rappel-apres corrections lues (0 par défaut : dès la correction)
+    const rappel = qcm.dataset.rappel && document.querySelector(qcm.dataset.rappel);
+    const rappelApres = parseInt(qcm.dataset.rappelApres, 10) || 0;
+
+    // Pendant les réponses : la barre avance à chaque question à laquelle on a répondu
+    qcm.addEventListener('change', () => {
+      if (etape !== 'reponse') return;
+      const repondus = blocs.filter(b => b.querySelector('.qcm_option input:checked')).length;
+      reglerProgression(progressionDebut + (repondus / blocs.length) * (progressionReponses - progressionDebut), 100);
+    });
+
     function lire(bloc) {
       if (etape !== 'correction' || lus.has(bloc)) return;
       lus.add(bloc);
       bloc.classList.add('lu');
-      reglerProgression((lus.size / blocs.length) * progressionFin, 100);
+      reglerProgression(progressionReponses + (lus.size / blocs.length) * (progressionFin - progressionReponses), 100);
+      if (rappel) rappel.hidden = !(lus.size >= rappelApres && lus.size < blocs.length);
       if (lus.size === blocs.length) {
         bouton.disabled = false;
         bouton.title = '';
@@ -1009,12 +1091,16 @@ function initQCM() {
       // → afficher la correction
       if (etape === 'reponse') {
         etape = 'correction';
+        reglerProgression(progressionReponses, 100);
         qcm.classList.add('corrige');
         legende.classList.add('visible');
-             // Les définitions se ferment et ne s'ouvriront plus qu'au clic sur le mot
+
+        if (rappel && rappelApres === 0) rappel.hidden = false;
+
+        // Les définitions passent derrière les corrections, et ne s'ouvriront plus qu'au clic sur le mot
         document.body.classList.add('notions_au_clic');
         document.querySelectorAll('.mot_notion.epingle').forEach(m => m.classList.remove('epingle'));
-        document.querySelectorAll('.boite_notion.visible').forEach(b => b.classList.remove('visible'));   
+        document.querySelectorAll('.boite_notion').forEach(b => b.classList.add('arriere_plan'));
 
         qcm.querySelectorAll('.qcm_option input').forEach(c => {
           c.disabled = true;
@@ -1037,15 +1123,18 @@ function initQCM() {
       // → passer à la suite de l'activité
       if (etape === 'correction') {
         etape = 'fini';
+        rappel?.remove();
+
+        // les définitions disparaissent
+        document.querySelectorAll('.boite_notion').forEach(b => b.classList.remove('visible', 'arriere_plan'));
+
         const cible = qcm.dataset.suiteCible && document.querySelector(qcm.dataset.suiteCible);
         if (cible) {
-          // la partie suivante remplace la partie actuelle
+          // la partie suivante remplace la partie actuelle, sa consigne calée en haut
           pied.remove();
           legende.remove();
           document.querySelector(qcm.dataset.partieActuelle)?.classList.add('cache');
-          cible.classList.remove('cache');
-          cible.dispatchEvent(new Event('affichee'));
-          zoneScroll.scrollTop = 0;
+          afficherPartie(cible);
         } else {
           // fin de l'activité : étoile remplie, puis page suivante du cours
           marquerPartieFaite(numPartie);
@@ -1069,6 +1158,22 @@ function initQCM() {
     blocs.forEach(bloc => {
       const correction = bloc.querySelector('.qcm_correction');
       if (!correction) return;
+
+      // en tête de l'encadré : la ou les bonnes réponses, écrites d'après les cases data-juste
+      const justes = [...bloc.querySelectorAll('.qcm_option input[data-juste]')]
+        .map(c => c.closest('.qcm_option').textContent.trim());
+      if (justes.length) {
+        const tete = document.createElement('div');
+        tete.className = 'correction_justes';
+        const liste = document.createElement('ul');
+        justes.forEach(texte => {
+          const li = document.createElement('li');
+          li.textContent = texte;
+          liste.appendChild(li);
+        });
+        tete.appendChild(liste);
+        correction.prepend(tete);
+      }
 
       // on recopie le dessin du scénario dans l'encadré
       const dessin = bloc.querySelector('.qcm_scenario img');
@@ -1099,28 +1204,99 @@ function initQCM() {
       });
 
       // l'encadré passe devant quand on l'attrape
-      correction.addEventListener('pointerdown', () => { correction.style.zIndex = ++premierPlan; });      rendreDeplacable(correction);
+      correction.addEventListener('pointerdown', () => { correction.style.zIndex = ++premierPlan; });
+      rendreDeplacable(correction);
     });
   });
 }
 
+// Tirage au sort des blocs d'un QCM (data-tirage="4") :
+// d'abord un bloc au hasard par niveau, puis on complète au hasard.
+// Les blocs non tirés sont retirés de la page ; les autres gardent leur ordre.
+function tirerBlocs(qcm) {
+  const nombre = parseInt(qcm.dataset.tirage, 10);
+  const tous = [...qcm.querySelectorAll('.qcm_bloc')];
+  if (!nombre || nombre >= tous.length) return;
 
+  const unParNiveau = new Map();
+  melanger(tous).forEach(bloc => {
+    const niveau = bloc.dataset.niveau || '';
+    if (!unParNiveau.has(niveau)) unParNiveau.set(niveau, bloc);
+  });
+
+  let gardes = melanger([...unParNiveau.values()]).slice(0, nombre);
+  const reste = melanger(tous.filter(b => !gardes.includes(b)));
+  gardes = gardes.concat(reste.slice(0, nombre - gardes.length));
+
+  tous.forEach(bloc => { if (!gardes.includes(bloc)) bloc.remove(); });
+
+  // dessin à droite pour les blocs de la colonne de droite
+  qcm.querySelectorAll('.qcm_bloc').forEach((bloc, i) => {
+    bloc.classList.toggle('image_droite', i % 2 === 1);
+  });
+}
+
+
+// Transforme le texte de data-notion en mot notion, dans la 1re question qui le contient
+function lierNotion(qcm) {
+  const texte = qcm.dataset.notion;
+  const cibleId = qcm.dataset.notionCible;
+  if (!texte || !cibleId) return;
+
+  for (const option of qcm.querySelectorAll('.qcm_option span')) {
+    const marcheur = document.createTreeWalker(option, NodeFilter.SHOW_TEXT);
+    let noeud;
+    while ((noeud = marcheur.nextNode())) {
+      const i = noeud.textContent.indexOf(texte);
+      if (i === -1) continue;
+
+      const milieu = noeud.splitText(i);
+      milieu.splitText(texte.length);
+      const mot = document.createElement('span');
+      mot.className = 'mot_notion';
+      mot.dataset.cible = cibleId;
+      milieu.replaceWith(mot);
+      mot.appendChild(milieu);
+
+      initNotions();   // relie ce nouveau mot à sa boîte
+      return;
+    }
+  }
+}
 
 
 // ---------- Classement par glisser-déposer ----------
-// <div class="classement" data-texte-correction="…" data-texte-suite="…" data-progression-debut="50">
+// <div class="classement" data-texte-correction="…" data-texte-suite="…"
+//      data-progression-debut="50" data-progression-placement="90">
 //   .depot.reserve         : les .carte à classer (data-niveau = bon niveau)
 //   .niveau > .depot[data-niveau] : les zones où déposer
 //   .classement_correction : texte de correction
+// Une carte avec data-scenario="lessive" n'est gardée que si le QCM de la page
+// a tiré le bloc data-scenario="lessive" (les cartes sans data-scenario restent).
 // On attrape une carte à la souris, ou on clique la carte puis le niveau.
+// La barre va de progression-debut à progression-placement au fil des cartes posées,
+// puis à 100 % quand la correction s'affiche.
 // « voir la correction » s'active quand toutes les cartes sont placées,
 // puis « passer à la suite » remplit l'étoile et passe à la page suivante.
 function initClassement() {
+  // scénarios gardés par le tirage du QCM
+  const scenariosQcm = new Set(
+    [...document.querySelectorAll('.qcm_bloc[data-scenario]')].map(b => b.dataset.scenario)
+  );
+
   document.querySelectorAll('.classement').forEach(classement => {
+    if (scenariosQcm.size) {
+      // cartes et paragraphes de correction des scénarios non tirés
+      classement.querySelectorAll('.carte[data-scenario], .classement_correction [data-scenario]').forEach(el => {
+        if (!scenariosQcm.has(el.dataset.scenario)) el.remove();
+      });
+    }
+
     const cartes = [...classement.querySelectorAll('.carte')];
     const zones = [...classement.querySelectorAll('.niveau, .reserve')];
     const correction = classement.querySelector('.classement_correction');
     const debut = parseFloat(classement.dataset.progressionDebut || 0);
+    const placement = parseFloat(classement.dataset.progressionPlacement || 100);
     let etape = 'reponse';   // 'reponse' → 'correction' → 'fini'
     let choisie = null;
 
@@ -1133,11 +1309,12 @@ function initClassement() {
     bouton.textContent = classement.dataset.texteCorrection || 'voir la correction';
     bouton.title = 'place toutes les cartes pour voir la correction';
 
-    const partie = classement.closest('.partie_activite');
-    if (partie && partie.classList.contains('cache')) {
+    const partieActivite = classement.closest('.partie_activite');
+    if (partieActivite && partieActivite.classList.contains('cache')) {
       pied.style.display = 'none';
-      partie.addEventListener('affichee', () => { pied.style.display = ''; }, { once: true });
+      partieActivite.addEventListener('affichee', () => { pied.style.display = ''; }, { once: true });
     }
+
     // zone (niveau ou réserve) → l'endroit où poser la carte
     const depotDe = zone => zone.classList.contains('depot') ? zone : zone.querySelector('.depot');
 
@@ -1147,6 +1324,19 @@ function initClassement() {
 
     function marquerSurvol(zone) {
       zones.forEach(z => z.classList.toggle('survol', z === zone));
+    }
+
+    // Quand on attrape une carte de la réserve, la page glisse pour que le schéma
+    // soit juste sous le bandeau (la consigne bleue passe au-dessus).
+    // Seulement si la réserve est fixée à l'écran : sinon la carte bougerait avec la page.
+    function amenerSchema(carte) {
+      const reserve = carte.closest('.reserve');
+      if (!reserve || getComputedStyle(reserve).position !== 'fixed') return;
+
+      const hauteurBandeau = document.getElementById('haut')?.offsetHeight || 0;
+      const ecart = classement.getBoundingClientRect().top
+                  - zoneScroll.getBoundingClientRect().top - hauteurBandeau - 15;
+      if (Math.abs(ecart) > 10) calerEnHaut(classement);
     }
 
     function choisir(carte) {
@@ -1160,7 +1350,7 @@ function initClassement() {
       cartes.forEach(c => c.classList.remove('choisie'));
 
       const placees = cartes.filter(c => c.closest('.depot').dataset.niveau).length;
-      reglerProgression(debut + (placees / cartes.length) * (100 - debut), 100);
+      reglerProgression(debut + (placees / cartes.length) * (placement - debut), 100);
       bouton.disabled = placees < cartes.length;
       bouton.title = bouton.disabled ? 'place toutes les cartes pour voir la correction' : '';
     }
@@ -1181,6 +1371,7 @@ function initClassement() {
           const dx = ev.clientX - departX;
           const dy = ev.clientY - departY;
           if (!glisse && Math.hypot(dx, dy) < 5) return;
+          if (!glisse) amenerSchema(carte);   // 1er mouvement : le schéma vient sous le bandeau
           glisse = true;
           carte.classList.add('en_main');
           carte.style.translate = `${dx}px ${dy}px`;
@@ -1245,6 +1436,7 @@ function initClassement() {
       // → correction
       if (etape === 'reponse') {
         etape = 'correction';
+        reglerProgression(100, 100);
         classement.classList.add('corrige');
         choisie = null;
 
@@ -1252,12 +1444,8 @@ function initClassement() {
           carte.classList.remove('choisie');
           const juste = carte.closest('.depot').dataset.niveau === carte.dataset.niveau;
           carte.classList.add(juste ? 'juste' : 'erreur');
-          if (!juste) {
-            const note = document.createElement('span');
-            note.className = 'carte_correction';
-            note.textContent = `→ niveau ${carte.dataset.niveau}`;
-            carte.appendChild(note);
-          }
+          // le bon niveau s'ajoute dans l'étiquette de la carte
+          if (!juste) carte.querySelector('span')?.append(` → niveau ${carte.dataset.niveau}`);
         });
 
         if (correction) {
@@ -1269,16 +1457,69 @@ function initClassement() {
         return;
       }
 
-      // → fin de l'activité : étoile remplie, page suivante
       if (etape === 'correction') {
         etape = 'fini';
-        marquerPartieFaite(numPartie);
-        const lien = lienSuivant();
-        if (lien) window.location.href = lien;
+        const cible = classement.dataset.suiteCible && document.querySelector(classement.dataset.suiteCible);
+
+        if (cible) {
+          // → la suite apparaît sous le classement (ex : « à retenir »)
+          pied.remove();
+          correction?.classList.remove('ouverte');
+          cible.classList.remove('cache');
+          cible.dispatchEvent(new Event('affichee'));
+          requestAnimationFrame(() => centrerSur(cible.getBoundingClientRect()));
+        } else {
+          // → fin de l'activité : étoile remplie, page suivante
+          terminerActivite();
+        }
       }
     });
   });
 }
+
+
+// ---------- Bouton qui affiche une partie cachée ----------
+// <button data-afficher="#partie_1"> : la partie apparaît, le bouton disparaît,
+// et la consigne de la partie se cale en haut de l'écran.
+function initAfficher() {
+  document.querySelectorAll('[data-afficher]').forEach(bouton => {
+    bouton.addEventListener('click', () => {
+      const cible = document.querySelector(bouton.dataset.afficher);
+      if (!cible) return;
+      (bouton.closest('.conteneur_depart') || bouton).remove();
+      afficherPartie(cible);
+    });
+  });
+}
+
+// Affiche une partie cachée et cale sa consigne (ou la partie) en haut de l'écran
+function afficherPartie(cible) {
+  cible.classList.remove('cache');
+  cible.dispatchEvent(new Event('affichee'));
+  const haut = cible.querySelector('.consigne') || cible;
+  requestAnimationFrame(() => {
+    // la partie apparaît en glissant de bas en haut : on tient compte de ce décalage
+    const t = getComputedStyle(cible).transform;
+    const decalage = t && t !== 'none' ? new DOMMatrix(t).m42 : 0;
+    calerEnHaut(haut, null, decalage + 10);
+  });
+}
+
+
+// ---------- Bouton de fin d'activité ----------
+// <button data-fin-activite> : remplit l'étoile et passe à la page suivante
+function initFinActivite() {
+  document.querySelectorAll('[data-fin-activite]').forEach(bouton => {
+    bouton.addEventListener('click', terminerActivite);
+  });
+}
+
+function terminerActivite() {
+  marquerPartieFaite(numPartie);
+  const lien = lienSuivant();
+  if (lien) window.location.href = lien;
+}
+
 
 // ---------------------------------------------------------------------
 // 3. OUTILS POUR LES ACTIVITÉS
@@ -1302,25 +1543,23 @@ function marquerPartieFaite(p) {
   // demain : enregistrer aussi la progression dans le SCORM
 }
 
-
-
-// Rend un élément déplaçable à la souris (sauf quand on clique sur un de ses boutons)
+// Rend un élément déplaçable à la souris (sauf quand on clique sur un de ses boutons).
+// La position de départ est relue à chaque prise : si l'élément a été remis à sa place
+// entre-temps, il ne saute pas.
 function rendreDeplacable(el) {
-  let x = 0;
-  let y = 0;
-
   el.addEventListener('pointerdown', e => {
     if (e.target.closest('button')) return;
     e.preventDefault();
-    const departX = e.clientX - x;
-    const departY = e.clientY - y;
+
+    const [x0 = 0, y0 = 0] = (el.style.translate || '0px 0px').split(' ').map(v => parseFloat(v) || 0);
+    const departX = e.clientX - x0;
+    const departY = e.clientY - y0;
+
     el.setPointerCapture(e.pointerId);
     el.classList.add('deplacement');
 
     function bouger(ev) {
-      x = ev.clientX - departX;
-      y = ev.clientY - departY;
-      el.style.translate = `${x}px ${y}px`;
+      el.style.translate = `${ev.clientX - departX}px ${ev.clientY - departY}px`;
     }
 
     function lacher() {
@@ -1335,8 +1574,6 @@ function rendreDeplacable(el) {
     el.addEventListener('pointercancel', lacher);
   });
 }
-
-
 
 // Fait glisser la zone de contenu jusqu'à une position, en douceur
 var glissementEnCours = false;
@@ -1374,13 +1611,13 @@ function centrerSur(rect, surFin) {
 }
 
 // Cale un élément tout en haut, juste sous le bandeau
-function calerEnHaut(element, surFin) {
+// (marge : espace en plus au-dessus de l'élément, en px)
+function calerEnHaut(element, surFin, marge = 0) {
   const hauteurBandeau = document.getElementById('haut')?.offsetHeight || 0;
   const rectZone = zoneScroll.getBoundingClientRect();
   const rect = element.getBoundingClientRect();
-  glisserA(zoneScroll.scrollTop + (rect.top - rectZone.top) - hauteurBandeau - 15, surFin);
+  glisserA(zoneScroll.scrollTop + (rect.top - rectZone.top) - hauteurBandeau - 15 - marge, surFin);
 }
-
 
 // Rectangle qui englobe plusieurs éléments (ex : une ligne de blocs)
 function rectDe(elements) {
@@ -1389,7 +1626,3 @@ function rectDe(elements) {
   const bottom = Math.max(...rects.map(r => r.bottom));
   return { top, height: bottom - top };
 }
-
-
-
-

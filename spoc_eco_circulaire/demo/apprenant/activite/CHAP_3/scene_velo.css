@@ -584,10 +584,10 @@
   z-index: 300;
   cursor: grab;
   touch-action: none;
-  width: min(560px, 92vw);
+  width: min(680px, 92vw);
   max-height: 75vh;
   overflow-y: auto;
-  padding: 26px 30px 24px;
+  padding: 18px 22px 18px;
   background: var(--fond);
   color: var(--couleur_texte);
   border: 1px solid var(--trait);
@@ -609,7 +609,7 @@
 
 .fenetre_mascotte {
   width: min(460px, 92vw);
-  padding: 26px 30px 24px;
+  padding: 18px 22px 18px;
   background: var(--fond);
   color: var(--couleur_texte);
   border: 1px solid var(--trait);
@@ -626,8 +626,8 @@
 .fenetre_mascotte .qcm_fermer {
   width: 18px;
   height: 18px;
-  top: 12px;
-  right: 12px;
+  top: 8px;
+  right: 8px;
 }
 
 .fenetre_mascotte_dessin {
@@ -650,11 +650,23 @@
   cursor: pointer;
 }
 
-.fenetre_scene .qcm_fermer {
+/* rond rouge : dans le coin haut droit, même quand on fait défiler la fenêtre
+   (placé par scene_velo.js). Distance au bord : --fermer_haut et --fermer_droite
+   (8px par défaut). Ne concerne que les fenêtres pop-up, pas la mascotte ni les bulles. */
+.fenetre_scene > .qcm_fermer {
+  position: fixed;
+  right: auto;
+  z-index: 3;
   width: 18px;
   height: 18px;
-  top: 12px;
-  right: 12px;
+}
+
+/* celui de la bulle reste dans son coin */
+.bulle_mascotte .qcm_fermer {
+  width: 18px;
+  height: 18px;
+  top: 8px;
+  right: 8px;
 }
 
 /* titre en haut, en gras, sans pastille */
@@ -670,16 +682,57 @@
   margin: 0 0 10px;
 }
 
+/* exemple : légèrement décalé, avec un trait à gauche, comme dans le cours */
 .fenetre_scene .exemple {
-  margin: 15px 0 0;
+  margin: 15px 0 0 12px;
+  padding: 4px 0 4px 16px;
+  border-left: 1px solid var(--trait);
   max-width: none;
   min-width: 0;
 }
 
+/* ---- « en apprendre plus » : le bloc se déroule ---- */
+
+.fenetre_plus {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .45s ease;
+}
+
+.fenetre_plus.ouvert {
+  grid-template-rows: 1fr;
+}
+
+.fenetre_plus_interieur {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.bouton_plus {
+  display: block;
+  margin: 14px 0 12px;
+  padding: 5px 16px;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--couleur_texte);
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  cursor: pointer;
+  box-shadow: 0 0 0 var(--trait);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.bouton_plus:hover,
+.bouton_plus:focus-visible {
+  transform: translate(-3px, -3px);
+  box-shadow: 3px 3px 0 var(--trait);
+}
+
 .acteurs {
-  margin-top: 16px;
+  margin-top: 32px;
   padding-top: 10px;
-  border-top: 1px solid var(--trait_doux);
+  border-top: 1px solid var(--trait);
   font-size: 0.85rem;
 }
 
@@ -695,7 +748,13 @@
   width: 100%;
   margin: 12px 0 6px;
   border-collapse: collapse;
+  border: 1px solid var(--trait_doux);
   font-size: 0.82rem;
+}
+
+/* plus d'espace sous les sources */
+.fenetre_scene .span_source {
+  margin-bottom: 18px;
 }
 
 .tableau_donnees th,
@@ -703,6 +762,11 @@
   padding: 5px 8px;
   text-align: left;
   border-bottom: 1px solid var(--trait_doux);
+}
+
+/* un trait simple entre les colonnes */
+.tableau_donnees :is(th, td) + :is(th, td) {
+  border-left: 1px solid var(--trait_doux);
 }
 
 .tableau_donnees thead th {
@@ -751,17 +815,35 @@
 }
 
 
-/* ---- bulle de la mascotte ---- */
+/* ---- bulle de la mascotte ----
+   Dans le HTML, elle est dans sa fenêtre, mais elle s'affiche par-dessus,
+   accrochée à son coin bas droit (position calculée par scene_velo.js),
+   3 s après l'ouverture de la fenêtre. */
+
+@keyframes apparition_bulle {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
 
 .bulle_mascotte {
+  position: fixed;
+  z-index: 2;
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-top: 16px;
-  padding: 10px 14px;
-  background: var(--fond_intro);
-  border: 1px solid var(--violet_trait);
+  width: min(430px, 90vw);
+  padding: 16px 36px 16px 16px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  background: var(--vert_bleu);
+  border: 1px solid var(--trait);
   border-radius: var(--arrondi_boite);
+  cursor: default;
+  animation: apparition_bulle .6s ease;
+}
+
+.bulle_mascotte[hidden] {
+  display: none;
 }
 
 .bulle_mascotte p {
@@ -769,7 +851,7 @@
 }
 
 .bulle_mascotte_dessin {
-  width: 50px;
+  width: 70px;
   flex-shrink: 0;
 }
 
@@ -800,10 +882,35 @@
 
 .photo_fenetre img {
   display: block;
-  width: 100%;
+  width: auto;
+  max-width: min(100%, 300px);
   height: auto;
   border: 1px solid var(--trait);
   border-radius: 8px;
+}
+
+/* deux photos côte à côte (2CV / C3) */
+.photos_cote {
+  display: flex;
+  gap: 14px;
+  align-items: flex-end;
+}
+
+.photos_cote .photo_fenetre {
+  flex: 1;
+  margin: 14px 0 6px;
+}
+
+.photos_cote .photo_fenetre img {
+  max-width: 100%;
+  max-height: 140px;
+  object-fit: contain;
+}
+
+/* petit lien source sous la photo */
+.photo_fenetre figcaption {
+  margin-top: 3px;
+  font-size: 0.6rem;
 }
 
 
@@ -840,4 +947,74 @@
   .scene_compteur {
     display: none;
   }
+}
+
+/* =====================================================================
+   À RETENIR : fenêtre au centre de l'écran
+   ===================================================================== */
+
+.fenetre_retenir {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  height: fit-content;
+  width: min(520px, 90vw);
+  padding: 62px 26px 22px;   /* en haut : la pastille, puis un espace */
+  text-align: center;
+  color: var(--couleur_texte);
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+}
+
+.fenetre_retenir::backdrop {
+  background: transparent;
+}
+
+.fenetre_retenir[open] {
+  animation: apparition .4s ease;   /* défini dans style.css */
+}
+
+/* pastille rose en haut à gauche, comme « exemple » */
+.pastille_retenir {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  padding: 3px 10px 4px;
+  font-size: 0.85rem;
+  background: var(--rose);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+}
+
+.fenetre_retenir p {
+  margin: 0 0 18px;
+  font-family: var(--titre);
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+/* bouton « c'est compris ! » : fond de page, rose au survol */
+.fenetre_retenir .bouton_depart {
+  background: var(--fond);
+}
+
+.fenetre_retenir .bouton_depart:is(:hover, :focus-visible) {
+  background: var(--rose);
+}
+
+/* le titre ne passe pas sous le rond rouge */
+.fenetre_scene > h4 {
+  padding-right: 16px;
+}
+
+/* pastille « conclusion » : comme « à retenir », mais sans couleur */
+.pastille_conclusion {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 3px 10px 4px;
+  font-size: 0.85rem;
+  background: transparent;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
 }
