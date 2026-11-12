@@ -1017,12 +1017,16 @@ function initRecentrage() {
 //                   de chaque data-niveau (sans data-tirage : tous les blocs)
 // data-notion     : ce texte devient un mot notion (boîte data-notion-cible)
 //                   dans la 1re question restante qui le contient
+// data-aide="#aide_correction" (+ data-aide-delai="5000", en ms) : bulle de la mascotte
+//                   (dans le HTML, avec hidden) montrée si, ce temps après le clic sur
+//                   « correction », aucune correction n'a encore été ouverte
 //
 // 1. l'élève coche (cases bleues) : la barre va de progression-debut à progression-reponses
 // 2. bouton « voir la correction » : vert = bonne réponse cochée,
 //    rouge = mauvaise réponse cochée, rose = bonne réponse oubliée
-//    (les réponses data-neutre restent sans couleur). Chaque bloc montre sa correction
-//    au survol, et la garde au clic. La barre va jusqu'à progression-fin.
+//    (les réponses data-neutre restent hachurées). Une erreur a une case ronde.
+//    Sous chaque question, un bouton « voir la correction » (data-texte-bouton-correction)
+//    s'agrandit et devient la boîte de correction. La barre va jusqu'à progression-fin.
 // 3. quand toutes les corrections ont été lues, le même bouton devient
 //    actif : il affiche la partie suivante de l'activité (data-suite-cible),
 //    ou, s'il n'y en a pas, remplit l'étoile et passe à la page suivante
@@ -1068,6 +1072,12 @@ function initQCM() {
     const rappel = qcm.dataset.rappel && document.querySelector(qcm.dataset.rappel);
     const rappelApres = parseInt(qcm.dataset.rappelApres, 10) || 0;
 
+    // Bulle « passe ta souris sur… » (data-aide), si aucune correction n'est ouverte à temps
+    const aide = qcm.dataset.aide && document.querySelector(qcm.dataset.aide);
+    const aideDelai = parseInt(qcm.dataset.aideDelai, 10) || 5000;
+    const cacherAide = () => { if (aide) aide.hidden = true; };
+    aide?.querySelector('.qcm_fermer')?.addEventListener('click', cacherAide);
+
     // Pendant les réponses : la barre avance à chaque question à laquelle on a répondu
     qcm.addEventListener('change', () => {
       if (etape !== 'reponse') return;
@@ -1079,6 +1089,7 @@ function initQCM() {
       if (etape !== 'correction' || lus.has(bloc)) return;
       lus.add(bloc);
       bloc.classList.add('lu');
+      cacherAide();
       reglerProgression(progressionReponses + (lus.size / blocs.length) * (progressionFin - progressionReponses), 100);
       if (rappel) rappel.hidden = !(lus.size >= rappelApres && lus.size < blocs.length);
       if (lus.size === blocs.length) {
@@ -1097,6 +1108,12 @@ function initQCM() {
 
         if (rappel && rappelApres === 0) rappel.hidden = false;
 
+        if (aide) {
+          setTimeout(() => {
+            if (etape === 'correction' && lus.size === 0) aide.hidden = false;
+          }, aideDelai);
+        }
+
         // Les définitions passent derrière les corrections, et ne s'ouvriront plus qu'au clic sur le mot
         document.body.classList.add('notions_au_clic');
         document.querySelectorAll('.mot_notion.epingle').forEach(m => m.classList.remove('epingle'));
@@ -1114,9 +1131,11 @@ function initQCM() {
           else if (c.checked) option.classList.add('erreur');
         });
 
+        qcm.dispatchEvent(new Event('corrige'));
+
         bouton.textContent = qcm.dataset.texteSuite || 'continuer';
         bouton.disabled = true;
-        bouton.title = 'lis la correction de chaque scénario pour continuer';
+        bouton.title = 'ouvre la correction de chaque scénario pour continuer';
         return;
       }
 
@@ -1124,6 +1143,7 @@ function initQCM() {
       if (etape === 'correction') {
         etape = 'fini';
         rappel?.remove();
+        aide?.remove();
 
         // les définitions disparaissent
         document.querySelectorAll('.boite_notion').forEach(b => b.classList.remove('visible', 'arriere_plan'));
@@ -1144,22 +1164,28 @@ function initQCM() {
       }
     });
 
-    // Encadrés de correction : dessin du scénario, rond rouge pour fermer, déplaçables
-    let premierPlan = 50;
+    // Corrections : sous chaque question, un bouton « voir la correction » qui
+    // s'agrandit et devient la boîte de correction (et se replie de la même façon).
+    // Au clavier : Tab pour l'atteindre, Entrée / Espace pour ouvrir, Échap pour refermer.
+    const texteBouton = qcm.dataset.texteBoutonCorrection || 'voir la correction';
 
-    function ouvrir(bloc) {
-      const correction = bloc.querySelector('.qcm_correction');
-      bloc.classList.add('ouverte');
-      correction.style.zIndex = ++premierPlan;
-      lire(bloc);
-      centrerSur(correction.getBoundingClientRect());
+    function deplier(bloc, ouvrir) {
+      const zone = bloc._correction;
+      if (!zone) return;
+      zone.classList.toggle('ouverte', ouvrir);
+      bloc.classList.toggle('ouverte', ouvrir);
+      zone.bouton.setAttribute('aria-expanded', String(ouvrir));
+      if (ouvrir) zone.bouton.setAttribute('aria-label', 'fermer la correction');
+      else zone.bouton.removeAttribute('aria-label');
+      zone.contenu.inert = !ouvrir;
+      if (ouvrir) lire(bloc);
     }
 
-    blocs.forEach(bloc => {
+    blocs.forEach((bloc, i) => {
       const correction = bloc.querySelector('.qcm_correction');
       if (!correction) return;
 
-      // en tête de l'encadré : la ou les bonnes réponses, écrites d'après les cases data-juste
+      // en tête de la boîte : la ou les bonnes réponses, écrites d'après les cases data-juste
       const justes = [...bloc.querySelectorAll('.qcm_option input[data-juste]')]
         .map(c => c.closest('.qcm_option').textContent.trim());
       if (justes.length) {
@@ -1175,37 +1201,73 @@ function initQCM() {
         correction.prepend(tete);
       }
 
-      // on recopie le dessin du scénario dans l'encadré
+      // le dessin du scénario recopié dans la boîte
       const dessin = bloc.querySelector('.qcm_scenario img');
       if (dessin) {
         const copie = dessin.cloneNode();
         copie.className = 'qcm_correction_dessin';
+        copie.alt = '';
         correction.prepend(copie);
       }
 
-      // rond rouge pour fermer
-      const fermer = document.createElement('button');
-      fermer.type = 'button';
-      fermer.className = 'qcm_fermer';
-      fermer.setAttribute('aria-label', 'fermer la correction');
-      correction.prepend(fermer);
-      fermer.addEventListener('click', e => {
-        e.stopPropagation();
-        bloc.classList.remove('ouverte');
-      });
+      // la boîte qui se déplie : <div class="correction_depliable">
+      //   <button class="correction_bouton"> + <div class="correction_contenu"> (la correction)
+      const zone = document.createElement('div');
+      zone.className = 'correction_depliable';
+      zone.hidden = true;                                   // visible seulement après « correction »
 
-      // 1re fois : s'ouvre au survol (vrai mouvement de souris, pas pendant un glissement)
-      bloc.addEventListener('mousemove', () => {
-        if (etape === 'correction' && !lus.has(bloc) && !glissementEnCours) ouvrir(bloc);
-      });
-      bloc.addEventListener('click', e => {
-        if (etape === 'reponse' || e.target.closest('.mot_notion, .qcm_correction')) return;
-        ouvrir(bloc);
-      });
+      const bouton = document.createElement('button');
+      bouton.type = 'button';
+      bouton.className = 'correction_bouton';
+      bouton.setAttribute('aria-expanded', 'false');
+      const texte = document.createElement('span');
+      texte.className = 'correction_bouton_texte';
+      texte.textContent = texteBouton;
+      bouton.appendChild(texte);
 
-      // l'encadré passe devant quand on l'attrape
-      correction.addEventListener('pointerdown', () => { correction.style.zIndex = ++premierPlan; });
-      rendreDeplacable(correction);
+      const contenu = document.createElement('div');
+      contenu.className = 'correction_contenu';
+      contenu.id = correction.id || `correction_${i + 1}`;
+      contenu.inert = true;
+      bouton.setAttribute('aria-controls', contenu.id);
+
+      correction.replaceWith(zone);
+      correction.removeAttribute('id');
+      contenu.appendChild(correction);
+      zone.append(bouton, contenu);
+
+      zone.bouton = bouton;
+      zone.contenu = contenu;
+      bloc._correction = zone;
+
+      bouton.addEventListener('click', () => deplier(bloc, !zone.classList.contains('ouverte')));
+      zone.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && zone.classList.contains('ouverte')) {
+          e.preventDefault();
+          deplier(bloc, false);
+          bouton.focus();
+        }
+      });
+    });
+
+    // à la correction : les boutons apparaissent, et chaque réponse dit ce qu'elle est
+    // (pour les lecteurs d'écran ; à l'écran, la couleur ET la forme de la case)
+    const motsResultat = {
+      juste: 'bonne réponse',
+      erreur: 'erreur',
+      oubli: 'bonne réponse oubliée',
+      neutre: 'ni vraie ni fausse'
+    };
+    qcm.addEventListener('corrige', () => {
+      blocs.forEach(bloc => { if (bloc._correction) bloc._correction.hidden = false; });
+      qcm.querySelectorAll('.qcm_option').forEach(option => {
+        const type = Object.keys(motsResultat).find(t => option.classList.contains(t));
+        if (!type) return;
+        const mot = document.createElement('span');
+        mot.className = 'visuellement_cache';
+        mot.textContent = ` (${motsResultat[type]})`;
+        option.appendChild(mot);
+      });
     });
   });
 }

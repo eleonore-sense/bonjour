@@ -1357,16 +1357,12 @@ fieldset.qcm_bloc {
   cursor: default;
 }
 
-.qcm.corrige .qcm_option input        { background: var(--fond); }
-.qcm.corrige .qcm_option.juste input  { background: var(--vert); }
-.qcm.corrige .qcm_option.erreur input { background: var(--rouge); }
-.qcm.corrige .qcm_option.oubli input  { background: var(--rose); }
+.qcm.corrige .qcm_option input        { background: var(--fond); opacity: 1; }
+.qcm.corrige .qcm_option.juste input  { background: var(--vert); }                         /* carré plein */
+.qcm.corrige .qcm_option.erreur input { background: var(--rouge); border-radius: 50%; }    /* rond */
+.qcm.corrige .qcm_option.oubli input  { background: var(--rose); border-style: dashed; }   /* carré pointillé */
 .qcm.corrige .qcm_option.neutre input {
   background: repeating-linear-gradient(45deg, var(--trait) 0 1px, transparent 1px 4px);
-}
-
-.qcm.corrige .qcm_bloc {
-  cursor: pointer;
 }
 
 
@@ -1417,43 +1413,118 @@ fieldset.qcm_bloc {
 }
 
 .qcm_legende .juste::before  { background: var(--vert); }
-.qcm_legende .erreur::before { background: var(--rouge); }
-.qcm_legende .oubli::before  { background: var(--rose); }
+.qcm_legende .erreur::before { background: var(--rouge); border-radius: 50%; }
+.qcm_legende .oubli::before  { background: var(--rose); border-style: dashed; }
 .qcm_legende .neutre::before {
   background: repeating-linear-gradient(45deg, var(--trait) 0 1px, transparent 1px 4px);
 }
 
 
-/* ---------- QCM : corrections ---------- */
+/* ---------- QCM : corrections ----------
+   Sous chaque question, la pilule « voir la correction » s'agrandit
+   et devient la boîte de correction (scripts : initQCM). */
 
-.qcm_correction {
-  display: none;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(380px, 90vw);
+.correction_depliable {
+  interpolate-size: allow-keywords;  /* pour animer la largeur depuis celle du texte */
+  position: relative;
+  width: fit-content;                /* pilule fermée : la largeur du texte */
+  max-width: 100%;
+  margin-top: 22px;
   background: var(--fond);
   border: 1px solid var(--trait);
+  border-radius: 19px;
+  transition:
+    width .45s ease,
+    border-radius .45s ease,
+    background .3s ease,
+    box-shadow .2s ease,
+    transform .2s ease;
+}
+
+.correction_depliable[hidden] {
+  display: none;
+}
+
+.correction_depliable:not(.ouverte):has(.correction_bouton:hover, .correction_bouton:focus-visible) {
+  transform: translate(-4px, -4px);
+  box-shadow: 4px 4px 0 var(--trait);
+}
+
+.correction_depliable.ouverte {
+  width: 520px;                      /* largeur de la boîte ouverte */
   border-radius: var(--arrondi_boite);
-  padding: 10px 19px 3px;
+}
+
+/* le bouton : toute la pilule quand c'est fermé, le rond rouge quand c'est ouvert */
+.correction_bouton {
+  display: block;
+  width: 100%;
+  min-height: 32px;
+  padding: 5px 14px;
+  font: inherit;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  color: var(--couleur_texte);
+  text-align: center;
+  background: none;
+  border: 0;
+  border-radius: 19px;
+  cursor: pointer;
+}
+
+.correction_bouton:focus-visible {
+  outline-offset: 2px;
+}
+
+.correction_depliable.ouverte .correction_bouton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+  width: 15px;
+  height: 15px;
+  min-height: 0;
+  padding: 0;
+  background: var(--rouge);
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+}
+
+.correction_depliable.ouverte .correction_bouton_texte {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* le contenu se déplie en hauteur */
+.correction_contenu {
+  contain: inline-size;              /* la correction cachée n'élargit pas la pilule */
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .45s ease;
+}
+
+.correction_depliable.ouverte .correction_contenu {
+  grid-template-rows: 1fr;
+}
+
+.qcm_correction {
+  min-height: 0;
+  overflow: hidden;
+  padding: 0 19px;
   font-size: 0.9rem;
   line-height: 1.35em;
-  cursor: grab;
-  touch-action: none;
+  opacity: 0;
+  transition: opacity .25s ease, padding .45s ease;
 }
 
-.marge_en_plus {
-  top: 50px;
-}
-
-.qcm_bloc.ouverte .qcm_correction {
-  display: block;
-}
-
-.qcm_correction.deplacement {
-  cursor: grabbing;
-  user-select: none;
+.correction_depliable.ouverte .qcm_correction {
+  padding: 14px 19px 6px;
+  opacity: 1;
+  transition-delay: .15s;
 }
 
 .qcm_correction_dessin {
@@ -1510,6 +1581,47 @@ fieldset.qcm_bloc {
 
 .rappel_corrections {
   right: 250px;
+}
+
+.qcm_correction::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+
+/* ---------- Bulle d'aide de la mascotte (correction du QCM) ---------- */
+
+.bulle_aide {
+  position: fixed;
+  right: 250px;
+  bottom: calc(var(--hauteur_bandeau_bas) + 25px);
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: min(400px, 90vw);
+  padding: 16px 36px 16px 16px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  background: var(--vert_bleu);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+  animation: apparition_douce .8s ease;
+}
+
+.bulle_aide[hidden] {
+  display: none;
+}
+
+.bulle_aide p {
+  margin: 0;
+}
+
+.bulle_aide_dessin {
+  width: 64px;
+  height: auto;
+  flex-shrink: 0;
 }
 
 /* ---------- Parties d'activité qui apparaissent ---------- */
@@ -1759,7 +1871,7 @@ fieldset.qcm_bloc {
 
 .niveau_titre {
   font-family: var(--titre);
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   line-height: 1.1em;
   margin-bottom: 6px;
 }
@@ -2107,7 +2219,6 @@ svg.dessin {
 
 .qcm_pied,
 .qcm_legende,
-.qcm_correction,
 .classement_correction,
 .modal_dessin,
 .boite_notion,
@@ -2125,7 +2236,6 @@ svg.dessin {
 
 .qcm_pied[hidden],
 .qcm_legende:not(.visible),
-.qcm_bloc:not(.ouverte) .qcm_correction,
 .classement_correction:not(.ouverte),
 .modal_dessin:not(.visible),
 .boite_notion:not(.visible),
@@ -2141,7 +2251,6 @@ svg.dessin {
 @starting-style {
   .qcm_pied:not([hidden]),
   .qcm_legende.visible,
-  .qcm_bloc.ouverte .qcm_correction,
   .classement_correction.ouverte,
   .modal_dessin.visible,
   .boite_notion.visible,

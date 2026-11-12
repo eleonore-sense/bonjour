@@ -68,7 +68,9 @@
         <!-- data-tirage="4" : 4 questions tirées au hasard, au moins une par niveau (data-niveau).
              data-scenario relie chaque question à sa carte du classement.
              data-rappel : encadré mascotte affiché après data-rappel-apres corrections lues, tant que tout n’est pas lu.
-             data-notion : texte relié à la boîte data-notion-cible, dans la 1re question qui le contient. -->
+             data-notion : texte relié à la boîte data-notion-cible, dans la 1re question qui le contient.
+             data-aide : bulle de la mascotte, 5 s après « correction » si aucune correction n’est ouverte.
+             Correction : sous chaque question, un bouton « voir la correction » qui devient la boîte. -->
         <!-- Options : <input type="checkbox" data-juste>  = bonne réponse
                        <input type="checkbox" data-neutre> = ni vraie ni fausse
                        <input type="checkbox">             = mauvaise réponse -->
@@ -89,6 +91,8 @@
                data-tirage="4"
                data-rappel="#rappel_corrections"
                data-rappel-apres="2"
+               data-aide="#aide_correction"
+               data-aide-delai="5000"
                data-notion="un changement de modèle d’affaire"
                data-notion-cible="modele_affaire"
                data-progression-reponses="20"
@@ -237,6 +241,14 @@
             <img class="rappel_fin_dessin" src="dessin/mascotte/mascotte.svg" alt="">
             <p>regarde toutes les corrections pour passer à la suite&#8239;!</p>
           </aside>
+
+          <!-- bulle verte : 5 s après « correction », si aucune correction n'a été ouverte -->
+          <!-- DESSIN DE LA MASCOTTE : remplacer le chemin -->
+          <div class="bulle_aide" id="aide_correction" role="status" hidden>
+            <button type="button" class="qcm_fermer" aria-label="fermer la bulle"></button>
+            <img class="bulle_aide_dessin" src="dessin/mascotte/mascotte.svg" alt="">
+            <p>Clique sur «&#8239;voir la correction&#8239;» sous chaque question pour découvrir les réponses&#8239;!</p>
+          </div>
         </div>
 
 
