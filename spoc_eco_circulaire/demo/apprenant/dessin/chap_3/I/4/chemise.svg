@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="644.33" height="596.55" viewBox="-1.62 -1.37 644.33 596.55" stroke-linecap="round" stroke-linejoin="round">
+  <path class="vert_bleu trait_fin" d="M631.26,515.89s-99.63-365.14-106.46-389.9c-6.83-24.76-24.76-46.96-47.81-70.01-23.05-23.05-87.08-23.9-87.08-23.9l-22.2-11.95-88.79-1.71-25.61,15.37s-52.93,10.24-105.86,35.86C94.5,95.26,15.82,538.6,15.82,538.6l82.46,19.12L186.71,201.6l-21.51,389.58H483.07l-25.1-380.02,83.65,329.83,89.63-25.1Z"/>
+  <path class="violet trait_fin" d="M359.59,75.62l30.31-43.54-14.94-29.45s-30.97,14.39-43.33,14.73c-15.14,.41-62.96-14.73-62.96-14.73l-15.37,31.16,46.1,40.55,28.32-37.66,31.87,38.94Z"/>
+  <line class="sans_fond trait_fin" fill="none" x1="327.72" y1="36.69" x2="327.72" y2="591.18"/>
+  <circle class="violet trait_fin" cx="357.6" cy="162.16" r="13.15"/>
+  <circle class="violet trait_fin" cx="357.6" cy="328.27" r="13.15"/>
+  <circle class="violet trait_fin" cx="357.6" cy="519.48" r="13.15"/>
+  <rect class="violet trait_fin" x="222.56" y="160.97" width="66.92" height="109.94"/>
+  <rect class="violet trait_fin" x="6.56" y="516.49" width="95.9" height="51.98" transform="translate(108.7 -.03) rotate(11.44)"/>
+  <rect class="violet trait_fin" x="538.05" y="497.67" width="95.9" height="51.98" transform="translate(-106.71 152.49) rotate(-13.6)"/>
+</svg>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>cours</title>
+  <title>Les réglementations liées à l'éco-conception</title>
   <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="mobile.css" media="(max-width: 1100px)">
   <link rel="stylesheet" href="couleurs.css">
@@ -21,7 +21,7 @@
 <dialog class="pop_mascotte" id="pop_mascotte" aria-labelledby="pop_mascotte_texte">
   <button type="button" class="fermer_modal" aria-label="fermer"></button>
   <img class="pop_mascotte_image" src="dessin/mascotte/mascotte.svg" alt="">
-  <p class="pop_mascotte_texte" id="pop_mascotte_texte">L’éco-conception, c’est une bonne idée. Mais est-ce que c’est obligatoire&nbsp;?</p>
+  <p class="pop_mascotte_texte" id="pop_mascotte_texte">L’éco-conception, c’est une bonne idée. <br>Mais est-ce que c’est obligatoire&nbsp;?</p>
 </dialog>
 
 
@@ -31,7 +31,7 @@
 <div id="contenu_gauche">
 
   <!-- ================= 3. REGLEMENTATION ================= -->
-  <div class="petit_titre">3. les réglementations liées à l'éco-conception</div>
+  <div class="petit_titre">3. Les réglementations liées à l'éco-conception</div>
 
 <div class="txt_labeur">L’éco-conception n’est pas seulement une démarche volontaire des entreprises. <strong>La réglementation encourage</strong>, et parfois <strong>impose</strong>, de concevoir des produits <strong>plus durable, réparables et faciles à recycler</strong>.
     <p>
@@ -49,13 +49,12 @@
 <div class="bloc_exemple">
   <span class="intro_exemple">exemple</span>
 
-  <div class="ligne_exemple">
+    <div class="ligne_exemple">
     <div class="exemple">
       <p>Depuis le <strong>1er janvier 2023</strong>, les établissements de restauration pouvant accueillir au moins 20 convives doivent servir les repas et les boissons consommés sur place dans de <strong>la vaisselle réemployable</strong>&nbsp;: gobelets, couvercles, assiettes, récipients et couverts.</p>
     </div>
     <div class="media_exemple">
-<canvas class="anim_riv" data-riv="dessin/chap_3/I/1/basket/marche.riv" data-anim="marche" width="424" height="589"></canvas>
-<canvas class="anim_riv anim_decalee" data-riv="dessin/chap_3/I/1/basket/marche.riv" data-anim="marche" data-depart="1.133" width="424" height="589"></canvas>
+      <img src="dessin/chap_3/I/2/couvert.svg" alt="">
     </div>
   </div>
 
@@ -63,8 +62,8 @@
     <div class="exemple">
       <p>Depuis <strong>2021</strong>, les fabricants et distributeurs d’équipements électroniques et électriques comme les téléviseurs, smartphones, ordinateurs, ont l’obligation d’afficher <strong>l’indice de réparabilité</strong> sur les produits concernés, en magasin et en ligne. </p>
     </div>
-    <div class="media_exemple">
-      <canvas class="anim_riv" data-riv="dessin/chap_3/I/1/basket/basket_sorte.riv" data-machine="basket_sorte" width="433" height="193" id="basket_sorte"></canvas>
+    <div class="media_exemple_mini anim_pousse">
+      <img src="dessin/chap_3/I/2/smartphone_pousse.svg" alt="">
     </div>
   </div>
 
@@ -121,8 +120,7 @@
     </div>
 
     <div class="media_exemple">
-      <canvas class="anim_riv" data-riv="dessin/chap_3/I/1/basket/marche.riv" data-anim="marche" width="424" height="589"></canvas>
-      <canvas class="anim_riv anim_decalee" data-riv="dessin/chap_3/I/1/basket/marche.riv" data-anim="marche" data-depart="1.133" width="424" height="589"></canvas>
+                <img src="dessin/chap_3/I/2/eau.svg" alt="">
     </div>
   </div>
 </div>
@@ -147,5 +145,253 @@
 
 </div>
 
+<!-- ========== Pop-up de fin de partie ==========
+       data-apres="fin" + data-delai : s'ouvre 5 s après l'arrivée du bouton « passer à la suite » à l'écran (fin de la page).
+       Le « passer à la suite » de la page, cliqué avant, ouvre aussi cette pop-up.
+       « passer à la suite » (dans la pop-up) : le logo vole jusqu'à la pastille « fiches » du menu, puis page suivante. -->
+  <!-- à gauche : le logo de la fiche synthèse (sans src : il prend tout seul le picto du bouton « fiches » du menu) -->
+  <dialog class="pop_mascotte pop_fin" id="pop_fin" aria-labelledby="pop_fin_texte"
+          data-apres="fin" data-delai="5000">
+    <button type="button" class="fermer_modal" aria-label="fermer"></button>
+    <img class="logo_fiche" alt="">
+    <div class="pop_mascotte_contenu">
+      <p class="pop_mascotte_texte" id="pop_fin_texte">Bravo, tu as terminé cette partie du chapitre&#8239;! <br>Pour garder l’essentiel en tête, retrouve tout ce que tu viens de découvrir dans la fiche synthèse.</p>
+      <div class="pop_fin_boutons">
+        <button type="button" class="bouton_suite" data-ouvrir-fiche="#fiche_synthese">voir la fiche synthèse</button>
+        <button type="button" class="bouton_suite" data-suite-logo>passer à la suite</button>
+      </div>
+    </div>
+  </dialog>
+
+
+  <!-- ========== Fiche synthèse 1 : feuille au coin plié, qui défile ========== -->
+  <dialog class="fiche_synthese" id="fiche_synthese" aria-labelledby="fiche_titre">
+    <!-- bouton imprimer : dessin dans dessin/logo/imprimante.svg -->
+    <button type="button" class="bouton_imprimer" aria-label="imprimer la fiche">
+      <img src="dessin/picto/imprimante.svg" alt="">
+    </button>
+    <button type="button" class="qcm_fermer" aria-label="fermer la fiche"></button>
+
+    <div class="fiche_synthese_feuille">
+      <p class="fiche_numero">fiche synthèse 1</p>
+      <h2 class="fiche_titre_principal" id="fiche_titre">Les fondamentaux de l’éco-conception</h2>
+
+      <!-- l'essentiel -->
+      <div class="fiche_essentiel">
+        <p>Éco-concevoir, c’est intégrer l’environnement dans les choix de conception en raisonnant sur l’ensemble du cycle de vie, avec une approche multicritère et collaborative.</p>
+        <p>Éco-concevoir, c’est&#8239;:</p>
+        <p><span class="etoile"></span> intégrer la performance environnementale dans les décisions de conception, au même titre que les performances techniques et économiques&#8239;;
+          <br><span class="etoile"></span> considérer l’ensemble du cycle de vie&#8239;;
+          <br><span class="etoile"></span> prendre en compte plusieurs impacts environnementaux&#8239;;
+          <br><span class="etoile"></span> mobiliser les différents acteurs de la chaîne de valeur&#8239;;
+          <br><span class="etoile"></span> rechercher une réduction globale des impacts, en évitant les transferts d’impact.</p>
+      </div>
+
+      <!-- schéma : 3 anneaux — au centre le cycle de vie, puis les acteurs, puis les impacts
+           (places en % : left / top ; les dessins sans fichier n'ont que leur nom) -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Le cycle de vie, ses acteurs et ses impacts</span>
+        <div class="fiche_cible">
+          <svg class="cible_fond" viewBox="0 0 100 100" aria-hidden="true">
+            <defs>
+              <marker id="pointe_fiche" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M0 0 L10 5 L0 10 z" fill="var(--trait)"/>
+              </marker>
+            </defs>
+            <circle class="anneau" cx="50" cy="50" r="17"/>
+            <circle class="anneau" cx="50" cy="50" r="31"/>
+            <circle class="anneau" cx="50" cy="50" r="45"/>
+            <path class="fleche_cible" d="M56.4 34.2 A17 17 0 0 1 63.0 39.1" marker-end="url(#pointe_fiche)"/>
+            <path class="fleche_cible" d="M67.0 51.2 A17 17 0 0 1 64.4 59.0" marker-end="url(#pointe_fiche)"/>
+            <path class="fleche_cible" d="M54.1 66.5 A17 17 0 0 1 45.9 66.5" marker-end="url(#pointe_fiche)"/>
+            <path class="fleche_cible" d="M35.6 59.0 A17 17 0 0 1 33.0 51.2" marker-end="url(#pointe_fiche)"/>
+            <path class="fleche_cible" d="M37.0 39.1 A17 17 0 0 1 43.6 34.2" marker-end="url(#pointe_fiche)"/>
+          </svg>
+
+          <!-- le cycle de vie (anneau du centre) -->
+          <div class="cible_item cible_cycle" style="left:50.0%; top:33.0%;">
+            <img src="dessin/chap_3/I/1/multicritere/minerais.svg" alt="">
+            <span>extraction des matières premières</span>
+          </div>
+          <div class="cible_item cible_cycle" style="left:66.2%; top:44.7%;">
+            <img src="dessin/chap_3/I/1/cycle_de_vie/production.svg" alt="">
+            <span>production</span>
+          </div>
+          <div class="cible_item cible_cycle" style="left:60.0%; top:63.8%;">
+            <img src="dessin/chap_3/I/1/cycle_de_vie/distribution.svg" alt="">
+            <span>distribution</span>
+          </div>
+          <div class="cible_item cible_cycle" style="left:40.0%; top:63.8%;">
+            <img src="dessin/chap_3/I/1/cycle_de_vie/usage.svg" alt="">
+            <span>usage et maintenance</span>
+          </div>
+          <div class="cible_item cible_cycle" style="left:33.8%; top:44.7%;">
+            <img src="dessin/chap_3/I/1/multicritere/analyse_cycle_vie.svg" alt="">
+            <span>fin de vie, recyclage</span>
+          </div>
+
+          <!-- les acteurs (anneau du milieu) -->
+          <div class="cible_item cible_acteur" style="left:50.0%; top:19.0%;">
+            <img src="dessin/chap_3/I/1/multiacteur/acheteur_fournisseur.svg" alt="">
+            <span>acheteur et fournisseur</span>
+          </div>
+          <div class="cible_item cible_acteur" style="left:74.2%; top:30.7%;">
+            <img src="dessin/chap_3/I/1/multiacteur/recherche_developpement.svg" alt="">
+            <span>recherche et développement</span>
+          </div>
+          <div class="cible_item cible_acteur" style="left:80.2%; top:56.9%;">
+            <img src="dessin/chap_3/I/1/multiacteur/producteur.svg" alt="">
+            <span>producteur</span>
+          </div>
+          <div class="cible_item cible_acteur" style="left:63.5%; top:77.9%;">
+            <img src="dessin/chap_3/I/1/multiacteur/logistique.svg" alt="">
+            <span>logistique</span>
+          </div>
+          <div class="cible_item cible_acteur" style="left:36.5%; top:77.9%;">
+            <img src="dessin/chap_3/I/1/multiacteur/client.svg" alt="">
+            <span>utilisateur, client</span>
+          </div>
+          <div class="cible_item cible_acteur" style="left:19.8%; top:56.9%;">
+            <img src="dessin/chap_3/I/1/multiacteur/reparateur.svg" alt="">
+            <span>réparateur</span>
+          </div>
+          <div class="cible_item cible_acteur" style="left:25.8%; top:30.7%;">
+            <img src="dessin/chap_3/I/1/multiacteur/recycleur.svg" alt="">
+            <span>recycleur</span>
+          </div>
+
+          <!-- les impacts (anneau extérieur) -->
+          <div class="cible_item cible_impact" style="left:50.0%; top:5.0%;">
+            <img src="dessin/chap_3/I/1/multicritere/eutrophisation_marine.svg" alt="">
+            <span>eutrophisation</span>
+          </div>
+          <div class="cible_item cible_impact" style="left:81.8%; top:18.2%;">
+            <img src="dessin/chap_3/I/1/multicritere/couche_ozone.svg" alt="">
+            <span>appauvrissement de la couche d’ozone</span>
+          </div>
+          <div class="cible_item cible_impact" style="left:95.0%; top:50.0%;">
+            <img src="dessin/chap_3/I/1/multicritere/changement_climatique.svg" alt="">
+            <span>changement climatique</span>
+          </div>
+          <div class="cible_item cible_impact" style="left:81.8%; top:81.8%;">
+            <img src="dessin/chap_3/I/1/multicritere/particules_fine.svg" alt="">
+            <span>acidification</span>
+          </div>
+          <div class="cible_item cible_impact" style="left:50.0%; top:95.0%;">
+            <img src="dessin/chap_3/I/1/multicritere/minerais.svg" alt="">
+            <span>consommation des ressources</span>
+          </div>
+          <div class="cible_item cible_impact" style="left:18.2%; top:81.8%;">
+            <img src="dessin/chap_3/I/1/multicritere/toxicite_eau.svg" alt="">
+            <span>toxicité</span>
+          </div>
+          <div class="cible_item cible_impact" style="left:5.0%; top:50.0%;">
+            <img src="dessin/chap_3/I/1/multicritere/eau.svg" alt="">
+            <span>utilisation de l’eau</span>
+          </div>
+          <div class="cible_item cible_impact" style="left:18.2%; top:18.2%;">
+            <img src="dessin/chap_3/I/1/multicritere/ionisation.svg" alt="">
+            <span>rayonnements ionisants</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- notion 1 -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Une approche cycle de vie</span>
+        <p>Prendre en compte les différentes étapes de la vie d’un produit, d’un service ou d’un système, de l’extraction des matières premières jusqu’à la fin de vie.</p>
+        <p><span class="fiche_pourquoi">Pourquoi&#8239;?</span>Une décision prise lors de la conception peut modifier les impacts d’une ou plusieurs étapes du cycle de vie.</p>
+        <div class="fiche_exemples">
+          <span class="pastille_exemple">exemple</span>
+          <div class="fiche_exemple_ligne">
+            <p>Les choix de conception de la paire de baskets, comme les matériaux utilisés, leur composition, leur résistance ou leur structure, impactent la durabilité de la chaussure, sa capacité à être réparée et donc sa phase d’utilisation. Ils conditionnent également sa fin de vie&#8239;: certains composants pourraient être recyclés, le reste sera incinéré ou enfoui et relarguera potentiellement certaines substances toxiques.</p>
+            <!-- la basket : un SVG du même nom que l'animation Rive du cours (marche.riv → marche.svg) -->
+            <div class="fiche_exemple_dessins">
+              <img src="dessin/chap_3/I/1/basket/marche.svg" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- notion 2 -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Une approche multicritère</span>
+        <p>Évaluer la performance environnementale en considérant plusieurs catégories d’impact, et pas uniquement l’empreinte carbone.</p>
+        <p><span class="fiche_pourquoi">Pourquoi&#8239;?</span>Une solution d’éco-conception peut déplacer les impacts environnementaux d’une étape du cycle de vie vers une autre, ou d’un type d’impact vers un autre. On parle de transfert d’impact.</p>
+        <div class="fiche_exemples">
+          <span class="pastille_exemple">exemple</span>
+          <div class="fiche_exemple_ligne">
+            <p>Remplacer un plastique pétro-sourcé par un plastique biosourcé réduit les impacts liés au changement climatique (moins d’émissions de gaz à effet de serre), mais augmente les impacts liés à l’utilisation des sols et à l’eutrophisation, à cause de la culture agricole.</p>
+            <!-- dessins du cours : changement climatique et eutrophisation -->
+            <div class="fiche_exemple_dessins_petit">
+              <img src="dessin/chap_3/I/1/cycle_de_vie/usage.svg" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- notion 3 -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Une approche interdisciplinaire et multi-acteurs</span>
+        <p>L’éco-conception est une démarche multidisciplinaire, collaborative et multi-acteurs, qui implique les parties prenantes internes et externes de la chaîne de valeur.</p>
+        <p><span class="fiche_pourquoi">Pourquoi&#8239;?</span>Chaque acteur possède une expertise spécifique, ainsi que des contraintes, des informations et des attentes différentes.</p>
+        <div class="fiche_exemples">
+          <span class="pastille_exemple">exemple</span>
+          <div class="fiche_exemple_ligne">
+            <p>Le fournisseur de matière plastique pour la paire de baskets a ses propres contraintes de coût, de composition et de sourcing des matières. Le logisticien agit sur le transport, les modes d’acheminement et le schéma de distribution. L’utilisateur agit sur les conditions d’usage&#8239;: bien comprendre son usage permet de dimensionner et de concevoir la basket selon un vrai besoin.</p>
+            <!-- dessins du cours : fournisseur, logisticien, utilisateur -->
+            <div class="fiche_exemple_dessins">
+              <img src="dessin/chap_3/I/1/multiacteur/acheteur_fournisseur.svg" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- point de vigilance -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Point de vigilance</span>
+        <div class="fiche_vigilance">
+          <p class="fiche_formule">Éco-concevoir ≠ simplement réduire l’empreinte carbone</p>
+          <p>Une solution d’éco-conception doit être analysée&#8239;:</p>
+          <ul>
+            <li>sur l’ensemble du cycle de vie&#8239;;</li>
+            <li>avec plusieurs indicateurs environnementaux&#8239;;</li>
+            <li>en tenant compte des effets potentiels entre étapes et entre impacts.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- réglementation -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Réglementation</span>
+        <p>L’éco-conception s’inscrit aujourd’hui dans un cadre réglementaire qui renforce progressivement les exigences environnementales applicables aux produits. En France, la loi AGEC et, à l’échelle européenne, le règlement ESPR constituent notamment des références majeures.</p>
+      </div>
+
+      <!-- questions à se poser -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Questions à se poser</span>
+        <ol>
+          <li>Quel besoin ou service doit être rendu&#8239;?</li>
+          <li>Quelles sont les étapes du cycle de vie du produit&#8239;?</li>
+          <li>Quels sont ses principaux impacts environnementaux&#8239;?</li>
+          <li>Quels acteurs peuvent agir&#8239;?</li>
+          <li>Où se situent les principales marges d’amélioration&#8239;?</li>
+          <li>Ma solution réduit-elle les impacts sans les déplacer&#8239;?</li>
+        </ol>
+      </div>
+
+      <!-- EXEMPLE DE CAS CONCRET : à venir (paire de baskets éco-conçue, multi-indicateur / multi-étape / multi-acteur, « à creuser » d'après la prof) -->
+
+      <!-- pour aller plus loin -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Pour aller plus loin</span>
+        <ul>
+          <li><span>Comprendre l’ESPR et le passeport numérique des produits&#8239;: <a class="source" href="https://bigmedia.bpifrance.fr/nos-dossiers/espr-le-reglement-europeen-sur-lecoconception-des-produits-durables" target="_blank" rel="noopener">Bpifrance</a> et <a class="source" href="https://eur-lex.europa.eu/eli/reg/2024/1781/oj/eng" target="_blank" rel="noopener">le règlement (UE) 2024/1781</a></span></li>
+          <!-- LIEN À COMPLÉTER : le chapitre sur les impacts environnementaux et sociaux -->
+          <li><span>Approfondir les impacts environnementaux&#8239;: <a class="lien_cours" href="">le chapitre sur les impacts environnementaux et sociaux</a></span></li>
+        </ul>
+      </div>
+    </div>
+  </dialog>
 </body>
 </html>

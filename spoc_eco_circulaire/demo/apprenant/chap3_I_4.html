@@ -159,7 +159,7 @@
             <!-- Question 4 : rétrofit des camions -->
             <div class="qcm_bloc" data-niveau="3" data-scenario="camion">
               <div class="qcm_scenario">
-                <img src="dessin/chap_3/I/4/velo.svg" alt="">
+                <img src="dessin/chap_3/I/4/camion.svg" alt="">
                 <p>Une société de livraison a décidé de convertir la motorisation diesel de ses vieux camions en motorisation électrique à batterie (on parle de rétrofit). Cette éco-conception entraîne&#8239;:</p>
               </div>
               <div class="qcm_options">
@@ -179,7 +179,7 @@
             <!-- Question 5 : textile -->
             <div class="qcm_bloc" data-niveau="1" data-scenario="textile">
               <div class="qcm_scenario">
-                <img src="dessin/chap_3/I/4/textile.svg" alt="">
+                <img src="dessin/chap_3/I/4/chemise.svg" alt="">
                 <p>Un producteur de fibre textile a investi dans une nouvelle machine de filature électrique, plus efficace énergétiquement, qui permet de limiter les rebuts de production. Cette éco-conception entraîne&#8239;:</p>
               </div>
               <div class="qcm_options">
@@ -217,7 +217,7 @@
             <!-- DESSIN À CRÉER : velo_location.svg -->
             <div class="qcm_bloc" data-niveau="4" data-scenario="velo">
               <div class="qcm_scenario">
-                <img src="dessin/chap_3/I/4/velo_location.svg" alt="">
+                <img src="dessin/chap_3/I/4/velo.svg" alt="">
                 <p>Une entreprise ne vend plus ses vélos, mais propose un service de location avec entretien et réparation inclus. Quelle proposition est la plus juste&#8239;?</p>
               </div>
               <div class="qcm_options">
@@ -283,12 +283,12 @@
               </div>
 
               <div class="carte" data-niveau="1" data-scenario="textile">
-                <img src="dessin/chap_3/I/4/textile.svg" alt="">
+                <img src="dessin/chap_3/I/4/chemise.svg" alt="">
                 <span>nouvelle machine de filature</span>
               </div>
 
               <div class="carte" data-niveau="3" data-scenario="camion">
-                <img src="dessin/chap_3/I/4/velo.svg" alt="">
+                <img src="dessin/chap_3/I/4/camion.svg" alt="">
                 <span>rétrofit des camions de livraison</span>
               </div>
 
@@ -303,7 +303,7 @@
               </div>
 
               <div class="carte" data-niveau="4" data-scenario="velo">
-                <img src="dessin/chap_3/I/4/velo_location.svg" alt="">
+                <img src="dessin/chap_3/I/4/velo.svg" alt="">
                 <span>location de vélos avec entretien</span>
               </div>
 
@@ -408,5 +408,169 @@
   <footer id="bandeau_bas">
   </footer>
 
+
+<!-- ========== Pop-up de fin de partie ==========
+       data-apres="#a_retenir" + data-delai : s'ouvre 5 s après l'apparition du « à retenir ».
+       Le « passer à la suite » de la page, cliqué avant, ouvre aussi cette pop-up.
+       « passer à la suite » (dans la pop-up) : le logo vole jusqu'à la pastille « fiches » du menu, puis page suivante. -->
+  <!-- à gauche : le logo de la fiche synthèse (sans src : il prend tout seul le picto du bouton « fiches » du menu) -->
+  <dialog class="pop_mascotte pop_fin" id="pop_fin" aria-labelledby="pop_fin_texte"
+          data-apres="#a_retenir" data-delai="5000">
+    <button type="button" class="fermer_modal" aria-label="fermer"></button>
+    <img class="logo_fiche" alt="">
+    <div class="pop_mascotte_contenu">
+      <p class="pop_mascotte_texte" id="pop_fin_texte">Bravo, tu as terminé cette partie du chapitre&#8239;! <br>Pour garder l’essentiel en tête, retrouve tout ce que tu viens de découvrir dans la fiche synthèse.</p>
+      <div class="pop_fin_boutons">
+        <button type="button" class="bouton_suite" data-ouvrir-fiche="#fiche_synthese">voir la fiche synthèse</button>
+        <button type="button" class="bouton_suite" data-suite-logo>passer à la suite</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ========== Fiche synthèse 2 : feuille au coin plié, qui défile ========== -->
+  <dialog class="fiche_synthese" id="fiche_synthese" aria-labelledby="fiche_titre">
+    <!-- DESSIN « IMPRIMER » : remplacer le <span> par <img src="dessin/icone/imprimer.svg" alt=""> -->
+    <button type="button" class="bouton_imprimer" aria-label="imprimer la fiche">
+      <img src="dessin/picto/imprimante.svg" alt="">
+    </button>
+    <button type="button" class="qcm_fermer" aria-label="fermer la fiche"></button>
+
+    <div class="fiche_synthese_feuille">
+      <p class="fiche_numero">fiche synthèse 2</p>
+      <h2 class="fiche_titre_principal" id="fiche_titre">Les niveaux d’éco-conception</h2>
+
+      <!-- l'essentiel -->
+      <div class="fiche_essentiel">
+        <p>Les solutions d’éco-conception peuvent être classées selon leur niveau de transformation du produit, de la technologie ou du modèle économique.</p>
+        <p>On distingue 4 niveaux d’éco-conception, allant du changement localisé → au changement profond.</p>
+        <p>Plus le niveau augmente, plus la solution demande généralement du temps, des ressources et des investissements pour être mise en œuvre, mais plus son potentiel de transformation environnementale peut être important.</p>
+      </div>
+
+      <!-- schéma : l'escalier des 4 niveaux (comme dans l'activité) -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Les 4 niveaux</span>
+        <div class="fiche_escalier">
+          <div class="marche m1"><strong>niveau 1</strong>optimisation<br><span>améliorer l’existant</span></div>
+          <div class="marche m2"><strong>niveau 2</strong>restructuration<br><span>repenser la conception du produit</span></div>
+          <div class="marche m3"><strong>niveau 3</strong>innovation technologique<br><span>changer de technologie ou de procédé</span></div>
+          <div class="marche m4"><strong>niveau 4</strong>nouveau modèle économique<br><span>changer la manière de vendre et/ou d’utiliser</span></div>
+        </div>
+        <div class="fiche_escalier_axe"><span>changement localisé</span><span>changement profond</span></div>
+        <p>Plus on se déplace vers le niveau 4, plus on remet en question le système existant&#8239;: produit → technologie → modèle économique.</p>
+      </div>
+
+      <!-- niveau 1 -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Niveau 1&#8239;: optimisation</span>
+        <p><strong>Améliorer l’existant&#8239;:</strong> on améliore le produit ou le procédé sans modifier profondément sa structure ou sa fonction.</p>
+        <p>Exemples de leviers&#8239;:</p>
+        <ul>
+          <li>améliorer les rendements&#8239;;</li>
+          <li>réduire la consommation d’énergie&#8239;;</li>
+          <li>diminuer les déchets et les émissions&#8239;;</li>
+          <li>alléger le produit&#8239;;</li>
+          <li>optimiser la production.</li>
+        </ul>
+        <div class="fiche_exemples">
+          <span class="pastille_exemple">la production de fibre textile</span>
+          <div class="fiche_exemple_ligne">
+            <p>Une nouvelle machine de filature, plus performante, permet de réduire la consommation énergétique et les rebuts de production, sans modifier la composition de la fibre ni le modèle économique.</p>
+            <div class="fiche_exemple_dessins_petit">
+              <img src="dessin/chap_3/I/4/chemise.svg" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- niveau 2 -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Niveau 2&#8239;: restructuration</span>
+        <p><strong>Repenser la conception du produit&#8239;:</strong> on modifie plus profondément la structure ou la composition du produit, tout en conservant globalement sa fonction.</p>
+        <p>Exemples&#8239;:</p>
+        <ul>
+          <li>modifier la composition&#8239;;</li>
+          <li>repenser l’architecture&#8239;;</li>
+          <li>réduire ou modifier les matériaux&#8239;;</li>
+          <li>concevoir pour faciliter la fabrication, la réparation, le réemploi ou le recyclage.</li>
+        </ul>
+        <div class="fiche_exemples">
+          <span class="pastille_exemple">la lessive concentrée</span>
+          <div class="fiche_exemple_ligne">
+            <p>La formulation du produit est modifiée, et le packaging est adapté.</p>
+            <div class="fiche_exemple_dessins_petit">
+              <img src="dessin/chap_3/I/4/lessive.svg" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- niveau 3 -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Niveau 3&#8239;: innovation technologique</span>
+        <p><strong>Changer de technologie ou de procédé&#8239;:</strong> on introduit une nouvelle technologie ou un nouveau procédé, susceptible de modifier fortement les performances environnementales.</p>
+        <p>Cela peut nécessiter&#8239;:</p>
+        <ul>
+          <li>de nouveaux procédés de production&#8239;;</li>
+          <li>une nouvelle technologie&#8239;;</li>
+          <li>une modification importante du produit.</li>
+        </ul>
+        <div class="fiche_exemples">
+          <span class="pastille_exemple">le rétrofit d’un camion diesel en électrique</span>
+          <div class="fiche_exemple_ligne">
+            <p>La chaîne de traction thermique est retirée et remplacée par une chaîne électrique, avec ajout d’une batterie, tout en conservant le châssis et la cabine.</p>
+            <div class="fiche_exemple_dessins_petit">
+              <img src="dessin/chap_3/I/4/camion.svg" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- niveau 4 -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Niveau 4&#8239;: nouveau modèle économique</span>
+        <p><strong>Changer la manière de vendre et/ou d’utiliser&#8239;:</strong> le changement ne porte plus seulement sur le produit ou la technologie&#8239;: il concerne le modèle économique et la manière dont le service est fourni.</p>
+        <div class="fiche_exemples">
+          <span class="pastille_exemple">de la vente à la location d’une imprimante</span>
+          <div class="fiche_exemple_ligne">
+            <p>Au lieu de vendre l’imprimante au client, le fabricant reste propriétaire de l’équipement et le loue.</p>
+            <div class="fiche_exemple_dessins_petit">
+              <img src="dessin/chap_3/I/4/imprimante.svg" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- point de vigilance -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Point de vigilance</span>
+        <div class="fiche_vigilance">
+          <p class="fiche_formule">Un niveau d’éco-conception plus élevé ≠ une solution automatiquement meilleure</p>
+          <p>Les quatre niveaux permettent de caractériser la profondeur du changement, mais ils ne permettent pas à eux seuls de conclure sur la performance environnementale d’une solution.</p>
+          <p>Une solution doit être évaluée au regard de son impact environnemental, du service rendu et des contraintes de mise en œuvre. Autrement dit&#8239;: <span class="fiche_formule">niveau 4 ≠ automatiquement plus performant que niveau 1.</span></p>
+        </div>
+      </div>
+
+      <!-- en pratique -->
+      <div class="fiche_section">
+        <span class="pastille_titre">En pratique</span>
+        <p><strong>Comment identifier le niveau d’une solution d’éco-conception&#8239;?</strong> Qu’est-ce qui change&#8239;?</p>
+        <ul>
+          <li>le produit existant&#8239;? → probablement niveau 1</li>
+          <li>sa structure ou sa composition&#8239;? → niveau 2</li>
+          <li>la technologie ou le procédé&#8239;? → niveau 3</li>
+          <li>la manière de vendre ou d’utiliser le produit&#8239;? → niveau 4</li>
+        </ul>
+        <p>En pratique, plusieurs niveaux peuvent se recouper.</p>
+      </div>
+
+      <!-- pour aller plus loin -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Pour aller plus loin</span>
+        <ul>
+          <li><span>Approfondir le changement de modèle économique associé au niveau 4, l’économie de la fonctionnalité et de la coopération&#8239;: <a class="source" href="https://economie-circulaire.ademe.fr/economie-fonctionnalite-cooperation-entreprises" target="_blank" rel="noopener">ADEME</a></span></li>
+        </ul>
+      </div>
+    </div>
+  </dialog>
 </body>
 </html>

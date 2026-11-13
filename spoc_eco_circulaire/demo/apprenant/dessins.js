@@ -64,6 +64,13 @@
     const id = 'dessin_' + (++compteur);
 
     ajouterViewBox(svg);
+
+    // dans un exemple, la taille vient du CSS (.media_exemple > .dessin) :
+    // on retire width / height, sinon Firefox réserve la largeur d'origine du dessin
+    if (img.closest('.media_exemple')) {
+      svg.removeAttribute('width');
+      svg.removeAttribute('height');
+    }
     isolerIdentifiants(svg, id);
     isolerStyles(svg, id);
 
@@ -130,13 +137,18 @@
   }
 
   // le <style> d'un SVG s'appliquerait à toute la page une fois inséré :
-  // on le limite à son propre dessin
+  // on le limite à son propre dessin.
+  // Les @keyframes restent dehors : enfermés dans un sélecteur, ils seraient ignorés.
   function isolerStyles(svg, id) {
+    const KEYFRAMES = /@keyframes\s+[\w-]+\s*\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/g;
+
     svg.querySelectorAll('style').forEach(style => {
-      style.textContent = `svg[data-dessin="${id}"] { ${style.textContent} }`;
+      const texte      = style.textContent;
+      const animations = (texte.match(KEYFRAMES) || []).join('\n');
+      const reste      = texte.replace(KEYFRAMES, '');
+      style.textContent = `${animations}\nsvg[data-dessin="${id}"] { ${reste} }`;
     });
   }
-
 
   // ---------- Lancement ----------
 

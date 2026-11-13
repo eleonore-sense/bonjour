@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>cours</title>
+  <title>chapitre 3_ II _ Des éco-solutions à chaque étape du cycle de vie</title>
 
   <link rel="stylesheet" href="couleurs.css">
   <link rel="stylesheet" href="style.css">
@@ -438,19 +438,20 @@
       <p>Souder le cadre, mouler les pièces plastiques, faire tourner les machines&#8239;: tout cela consomme de l’énergie, d’origine thermique (comme le gaz) ou électrique. Or un kWh d’électricité n’a pas le même impact selon sa source&#8239;: produit à partir de charbon, il émet environ 75 fois plus de gaz à effet de serre qu’un kWh éolien.</p>
       <p>Le choix de l’énergie qui alimente l’atelier est donc un levier direct sur l’empreinte carbone du vélo.</p>
 
-      <table class="tableau_donnees">
-        <caption class="visuellement_cache">Émissions de gaz à effet de serre selon la source d’électricité</caption>
-        <thead><tr><th scope="col">Source d’énergie</th><th scope="col">g CO₂ éq / kWh</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">Charbon</th>               <td class="nombre">~820</td></tr>
-          <tr><th scope="row">Fioul</th>                 <td class="nombre">~730</td></tr>
-          <tr><th scope="row">Gaz naturel</th>           <td class="nombre">~490</td></tr>
-          <tr><th scope="row">Solaire photovoltaïque</th><td class="nombre">~45 à 48</td></tr>
-          <tr><th scope="row">Hydraulique</th>           <td class="nombre">~24</td></tr>
-          <tr><th scope="row">Nucléaire</th>             <td class="nombre">~12</td></tr>
-          <tr><th scope="row">Éolien (terrestre / en mer)</th><td class="nombre">~11 à 12</td></tr>
-        </tbody>
-      </table>
+      <!-- GRAPHIQUE EN BARRES : --max = la plus grande valeur ; sur chaque ligne,
+           --valeur = la longueur de la barre, --i = son rang (pour le décalage de l'animation) -->
+      <figure class="barres_h" style="--max: 820;">
+        <figcaption>g CO₂ éq / kWh, selon la source d’électricité</figcaption>
+        <ul>
+          <li style="--valeur: 820; --i: 0;"><span class="barres_nom">Charbon</span><span class="barres_piste"><span class="barres_barre"></span><span class="barres_valeur">~820</span></span></li>
+          <li style="--valeur: 730; --i: 1;"><span class="barres_nom">Fioul</span><span class="barres_piste"><span class="barres_barre"></span><span class="barres_valeur">~730</span></span></li>
+          <li style="--valeur: 490; --i: 2;"><span class="barres_nom">Gaz naturel</span><span class="barres_piste"><span class="barres_barre"></span><span class="barres_valeur">~490</span></span></li>
+          <li style="--valeur: 47; --i: 3;"><span class="barres_nom">Solaire photovoltaïque</span><span class="barres_piste"><span class="barres_barre"></span><span class="barres_valeur">~45 à 48</span></span></li>
+          <li style="--valeur: 24; --i: 4;"><span class="barres_nom">Hydraulique</span><span class="barres_piste"><span class="barres_barre"></span><span class="barres_valeur">~24</span></span></li>
+          <li style="--valeur: 12; --i: 5;"><span class="barres_nom">Nucléaire</span><span class="barres_piste"><span class="barres_barre"></span><span class="barres_valeur">~12</span></span></li>
+          <li style="--valeur: 12; --i: 6;"><span class="barres_nom">Éolien (terrestre / en mer)</span><span class="barres_piste"><span class="barres_barre"></span><span class="barres_valeur">~11 à 12</span></span></li>
+        </ul>
+      </figure>
       <span class="span_source"><span class="souligne_fin">source&#8239;:</span> GIEC (AR5), valeurs médianes en ACV,
         <a class="source" href="https://orki.green/article/quel-bilan-carbone-pour-la-production-d-electricite" target="_blank" rel="noopener">orki.green</a></span>
     </div>
@@ -665,7 +666,7 @@
 
       <p>En France, le réemploi et le reconditionnement sont <strong>prioritaires</strong> sur le recyclage&#8239;: le réseau associatif Heureux Cyclage a réemployé 71&nbsp;% des vélos collectés en 2018, et 158&nbsp;000 vélos d’occasion ont été vendus par des professionnels en 2024.</p>
       <p>Le recyclage n’intervient qu’en dernier recours. Il est encadré par la filière REP Articles de sport et de loisirs (loi AGEC), pilotée par l’éco-organisme Ecologic&#8239;: en 2024, 6&nbsp;000&nbsp;tonnes de vélos ont été collectées et recyclées (acier, aluminium, caoutchouc, plastiques), sur un gisement estimé à 46&nbsp;000&nbsp;tonnes.</p>
-<span class="span_source"><span class="souligne_fin">sources&#8239;:</span> ADEME, Impact socio-économique des usages du vélo en France <a class="source" href="https://librairie.ademe.fr/mobilite-et-transports/9313-impact-socio-economique-des-usages-du-velo-en-france.html" target="_blank" rel="noopener">librairie.ademe.fr</a>&#8239;; <br>
+      <span class="span_source"><span class="souligne_fin">sources&#8239;:</span> ADEME, Impact socio-économique des usages du vélo en France <a class="source" href="https://librairie.ademe.fr/mobilite-et-transports/9313-impact-socio-economique-des-usages-du-velo-en-france.html" target="_blank" rel="noopener">librairie.ademe.fr</a>&#8239;; <br>
       ADEME, Étude préalable filière REP - Articles de sport et de loisirs (2020) <a class="source" href="https://librairie.ademe.fr/dechets-economie-circulaire/4083-etude-prealable-a-la-mise-en-place-de-la-filiere-rep-articles-de-sport-et-loisirs.html" target="_blank" rel="noopener">librairie.ademe.fr</a>&#8239;;</span>
     </div>
   </div>

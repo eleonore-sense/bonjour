@@ -11,7 +11,6 @@
 <script src="rive/rive.js"></script>
   <script src="cours.js" defer></script>
   <script src="script.js" defer></script>
-<script src="dessins.js" defer></script>
 </head>
 
 <!-- Où est cette page dans le cours ? (le reste vient de cours.js) -->
@@ -21,7 +20,8 @@
 <dialog class="pop_mascotte" id="pop_mascotte" aria-labelledby="pop_mascotte_texte">
   <button type="button" class="fermer_modal" aria-label="fermer"></button>
   <img class="pop_mascotte_image" src="dessin/mascotte/mascotte.svg" alt="">
-  <p class="pop_mascotte_texte" id="pop_mascotte_texte">On parle beaucoup d’éco-conception… mais au fait, c’est quoi&nbsp;?</p>
+  <p class="pop_mascotte_texte" id="pop_mascotte_texte">On parle beaucoup d’éco-conception… 
+    <br>Mais au fait, c’est quoi?</p>
 </dialog>
 
 
@@ -207,8 +207,8 @@
     <span class="intro_exemple">exemple</span>
     <p>Remplacer le polymère pétro-sourcé par un polymère biosourcé permet de diminuer les impacts sur le changement climatique et l’épuisement des ressources fossiles, mais augmente les impacts sur l’utilisation des sols, la consommation d’eau et l’eutrophisation (à cause de la culture des végétaux d’où sont extraits les composés nécessaires à la production du polymère biosourcé).</p>
     <div class="choix_produit" data-graph="graph_transfert graph_cycle">
-      <button class="bouton_produit actif" data-produit="a">produit A : polymère pétro-sourcé</button>
-      <button class="bouton_produit" data-produit="b">produit B : polymère biosourcé</button>
+      <button class="bouton_produit actif" data-produit="a">produit A&#8239;: chaussure à base de polymère pétro-sourcé</button>
+      <button class="bouton_produit" data-produit="b">produit B&#8239;: chaussure à base de polymère biosourcé</button>
     </div>
   </div>
 </div>
@@ -220,12 +220,11 @@
 
 <div class="graphiques_vues">
   <div class="graphique" id="graph_transfert" data-max="12">
-    <div class="graph_donnee" data-nom="acidification"                       data-a="5"  data-b="10"></div>
-    <div class="graph_donnee" data-nom="changement climatique"               data-a="10" data-b="5"></div>
-    <div class="graph_donnee" data-nom="eutrophisation"                      data-a="2"  data-b="2"></div>
-    <div class="graph_donnee" data-nom="épuisement des ressources abiotiques" data-a="4"  data-b="8"></div>
-    <div class="graph_donnee" data-nom="consommation d'eau"                  data-a="8"  data-b="4"></div>
-    <div class="graph_donnee" data-nom="particules fines"                    data-a="5"  data-b="5"></div>
+    <div class="graph_donnee" data-nom="changement climatique"                data-a="10" data-b="6"></div>
+    <div class="graph_donnee" data-nom="épuisement des ressources fossiles"   data-a="9"  data-b="4"></div>
+    <div class="graph_donnee" data-nom="consommation d'eau"                   data-a="3"  data-b="8"></div>
+    <div class="graph_donnee" data-nom="utilisation des sols"                 data-a="2"  data-b="7"></div>
+    <div class="graph_donnee" data-nom="eutrophisation"                       data-a="3"  data-b="6"></div>
   </div>
 
   <div class="graphique vue_cachee noms_caches" id="graph_cycle" data-max="25">

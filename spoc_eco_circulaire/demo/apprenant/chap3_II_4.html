@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>chapitre 3_ II _ Activité: à chaque situation son outil</title>
+
+  <link rel="stylesheet" href="couleurs.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="mobile.css" media="(max-width: 1100px)">
+
+  <script src="rive/rive.js"></script>
+  <script src="cours.js" defer></script>
+  <script src="script.js" defer></script>
+  <script src="dessins.js" defer></script>
+</head>
+
+
+<!-- Où est cette page dans le cours ? (le reste vient de cours.js)
+     data-partie : à vérifier dans cours.js (la page après « Les outils de l’éco-conception ») -->
+<body data-chapitre="3" data-partie="7" data-suite="non" data-progression="manuelle">
+
+  <!-- ========== Pop-up mascotte d'accueil ========== -->
+  <!-- DESSIN DE LA MASCOTTE : remplacer le chemin -->
+  <!-- s'ouvre toute seule 1 s après l'arrivée sur la page ; le QCM est déjà là, derrière -->
+  <dialog class="pop_mascotte" id="pop_mascotte" aria-labelledby="pop_mascotte_texte">
+    <button type="button" class="fermer_modal" aria-label="fermer"></button>
+    <img class="pop_mascotte_image" src="dessin/mascotte/mascotte.svg" alt="">
+    <div class="pop_mascotte_contenu">
+      <p class="pop_mascotte_texte" id="pop_mascotte_texte">Chaque problème a son outil&#8239;! <br>À toi de jouer&#8239;: sauras-tu choisir le bon pour chaque situation&#8239;?</p>
+      <button type="button" class="bouton_suite" data-fermer-pop>je suis prêt·e&#8239;!</button>
+    </div>
+  </dialog>
+
+
+  <div id="droite_contenu">
+    <div id="contenu_chapitre">
+
+      <div id="contenu_gauche">
+
+        <div class="petit_titre">4. Activité&#8239;: à chaque situation son outil&#8239;!</div>
+
+
+        <!-- ========== QCM ========== -->
+        <!-- data-tirage="4" : 4 questions tirées au hasard parmi les 8.
+             data-niveau sert ici de thème (qualitatif, indicateur, empreinte) : le tirage prend d'abord des thèmes différents.
+             Pas de boîte de correction (rien à expliquer) : à la correction, les cases se colorent
+             et « passer à la suite » est tout de suite actif.
+             « passer à la suite » (après avoir lu toutes les corrections) fait apparaître #a_retenir sous le QCM
+             (pas de data-partie-actuelle : le QCM reste visible au-dessus). -->
+        <!-- Options : <input type="checkbox" data-juste>  = bonne réponse
+                       <input type="checkbox">             = mauvaise réponse -->
+
+        <div class="partie_activite" id="partie_1">
+
+          <div class="consigne" id="consigne_partie_1">
+            Pour chaque situation, choisis le ou les outils adaptés (plusieurs réponses sont possibles).
+          </div>
+
+          <div class="qcm"
+               data-recentrer
+               data-premiere-etape="#consigne_partie_1"
+               data-texte-correction="correction"
+               data-texte-suite="passer à la suite"
+               data-suite-cible="#a_retenir"
+               data-tirage="4"
+               data-progression-reponses="40"
+               data-progression-fin="90">
+
+            <!-- Question 1 : site_web -->
+            <!-- DESSIN À CRÉER : site_web.svg -->
+            <div class="qcm_bloc" data-niveau="qualitatif" data-scenario="site_web">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/II/2/ordinateur.svg" alt="">
+                <p>Une entreprise veut vérifier qu’elle n’oublie aucun levier d’éco-conception lors du développement d’un site web. Quel outil peut-elle utiliser en premier&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Une check-list ou un référentiel d’écoconception</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Une empreinte carbone uniquement</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Une mesure du temps de chargement des pages du site web</span></label>
+              </div>
+            </div>
+
+            <!-- Question 2 : reparation -->
+            <!-- DESSIN À CRÉER : reparation.svg -->
+            <div class="qcm_bloc" data-niveau="indicateur" data-scenario="reparation">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/I/1/multiacteur/reparateur.svg" alt="">
+                <p>Un fabricant veut comparer la facilité de réparation de deux appareils. Quel indicateur peut l’aider&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Le temps nécessaire pour remplacer un composant</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>La disponibilité de la notice de réparation</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Le volume des ventes uniquement</span></label>
+              </div>
+            </div>
+
+            <!-- Question 3 : materiau -->
+            <!-- DESSIN À CRÉER : materiau.svg -->
+            <div class="qcm_bloc" data-niveau="empreinte" data-scenario="materiau">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/I/1/multicritere/particules_fine.svg" alt="">
+                <p>Une entreprise constate qu’un nouveau matériau réduit l’empreinte carbone de son produit. Peut-elle conclure qu’il est globalement plus écologique&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox"> <span>Oui, car le carbone résume tous les impacts</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Non, il faut aussi examiner d’autres impacts potentiels</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Oui, si le matériau est recyclé</span></label>
+              </div>
+            </div>
+
+            <!-- Question 4 : meubles -->
+            <!-- DESSIN À CRÉER : meubles.svg -->
+            <div class="qcm_bloc" data-niveau="qualitatif" data-scenario="meubles">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/II/2/chaise.svg" alt="">
+                <p>Une entreprise souhaite éco-concevoir une nouvelle gamme de meubles. Quel outil peut l’aider à identifier des recommandations adaptées à son secteur&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Un guide sectoriel d’éco-conception</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Une étiquette énergie</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Un indicateur de contenu recyclé</span></label>
+              </div>
+            </div>
+
+            <!-- Question 5 : plastique_recycle -->
+            <!-- DESSIN À CRÉER : plastique_recycle.svg -->
+            <div class="qcm_bloc" data-niveau="indicateur" data-scenario="plastique_recycle">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/I/1/multicritere/analyse_cycle_vie.svg" alt="">
+                <p>Un fabricant annonce que son produit contient 40&nbsp;% de plastique recyclé. Que peut-on en conclure&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox"> <span>Le produit a nécessairement un impact environnemental plus faible</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Le produit contient une certaine proportion de matière recyclée, sans que cela suffise à déterminer son impact global</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Le produit sera automatiquement recyclable en fin de vie</span></label>
+              </div>
+            </div>
+
+            <!-- Question 6 : gaz_effet_serre -->
+            <!-- DESSIN À CRÉER : gaz_effet_serre.svg -->
+            <div class="qcm_bloc" data-niveau="empreinte" data-scenario="gaz_effet_serre">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/I/1/multicritere/couche_ozone.svg" alt="">
+                <p>Une entreprise souhaite quantifier les émissions de gaz à effet de serre associées à la fabrication et à l’utilisation de son produit. Quel indicateur doit-elle privilégier&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox"> <span>Le temps de démontage</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>L’empreinte carbone</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Le taux de matière recyclée</span></label>
+              </div>
+            </div>
+
+            <!-- Question 7 : lave_linge -->
+            <!-- DESSIN À CRÉER : lave_linge.svg -->
+            <div class="qcm_bloc" data-niveau="indicateur" data-scenario="lave_linge">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/I/4/lessive.svg" alt="">
+                <p>Un fabricant compare deux lave-linges. Il souhaite connaître leur consommation d’électricité pendant l’utilisation. Quelle information est la plus pertinente&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>La consommation énergétique indiquée sur l’étiquette énergie, selon le programme de référence</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Le nombre de matériaux différents utilisés</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>La mesure en direct de la consommation électrique sur une lessive test</span></label>
+              </div>
+            </div>
+
+            <!-- Question 8 : aluminium -->
+            <!-- DESSIN À CRÉER : aluminium.svg -->
+            <div class="qcm_bloc" data-niveau="empreinte" data-scenario="aluminium">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/I/1/multicritere/minerais.svg" alt="">
+                <p>Une entreprise remplace l’aluminium d’un composant par un autre matériau. L’empreinte carbone diminue, mais elle souhaite vérifier les autres effets environnementaux de ce changement. Quel outil est le plus adapté&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox"> <span>Une check-list de bonnes pratiques uniquement</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Une analyse du cycle de vie (ACV) multicritère</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>L’indicateur de consommation d’eau</span></label>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ========== À retenir (après la correction) : rectangle rose, puis la mascotte ========== -->
+          <div class="partie_activite cache" id="a_retenir">
+            <div class="a_retenir_boite">
+              <p>Les outils d’éco-conception sont complémentaires. Les check-lists et les guides aident à identifier des pistes d’amélioration, tandis que les indicateurs permettent de mesurer certaines caractéristiques ou certains impacts.</p>
+              <p>Mais attention&#8239;: une solution qui améliore un indicateur n’est pas nécessairement la meilleure à tous les points de vue. Pour guider les choix de conception, il faut donc choisir les outils adaptés à la question posée et, lorsque c’est nécessaire, évaluer les impacts sur l’ensemble du cycle de vie.</p>
+
+              <!-- bulle verte de la mascotte (apparaît 2 s après) — texte : la mascotte de la partie III du cours -->
+              <!-- DESSIN DE LA MASCOTTE : remplacer le chemin -->
+              <div class="a_retenir_mascotte">
+                <img class="pop_mascotte_image" src="dessin/mascotte/mascotte.svg" alt="">
+                <p class="pop_mascotte_texte">Tu as des idées d’éco-solutions&#8239;? Super&#8239;! Mais comment passer d’une bonne idée à un produit vraiment plus respectueux de l’environnement&#8239;? Suis-moi, on découvre les étapes pour y arriver&#8239;!</p>
+              </div>
+            </div>
+
+            <!-- vers la partie suivante (chapitre 3, III.1 : les étapes d'une démarche d'éco-conception) -->
+            <div class="conteneur_suite">
+              <button type="button" class="bouton_suite" data-fin-activite>passer à la suite</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- ========== Notion ========== -->
+
+      <div id="notion_droite"></div>
+
+    </div>
+  </div>
+
+
+  <!-- ========== Pop-up de fin de partie ==========
+       data-apres + data-delai : s'ouvre 5 s après l'apparition du « à retenir ».
+       data-cible-logo : la pastille du menu de gauche vers laquelle vole le logo
+       (par défaut, le bouton du menu qui parle de « fiche » ; sinon mettre son id, ex. "#bouton_fiches img").
+       « passer à la suite » : le logo vole jusqu'à la pastille, puis on passe à la page suivante. -->
+  <!-- à gauche : le logo de la fiche synthèse (sans src : il prend tout seul l'image du bouton « fiches » du menu) -->
+  <dialog class="pop_mascotte pop_fin" id="pop_fin" aria-labelledby="pop_fin_texte"
+          data-apres="#a_retenir" data-delai="5000">
+    <button type="button" class="fermer_modal" aria-label="fermer"></button>
+    <img class="logo_fiche" alt="">
+    <div class="pop_mascotte_contenu">
+      <p class="pop_mascotte_texte" id="pop_fin_texte">Bravo, tu as terminé cette partie du chapitre&#8239;! <br>Pour garder l’essentiel en tête, retrouve tout ce que tu viens de découvrir dans la fiche synthèse.</p>
+      <div class="pop_fin_boutons">
+        <button type="button" class="bouton_suite" data-ouvrir-fiche="#fiche_synthese">voir la fiche synthèse</button>
+        <button type="button" class="bouton_suite" data-suite-logo>passer à la suite</button>
+      </div>
+    </div>
+  </dialog>
+
+
+  <!-- ========== Fiche synthèse 3 : feuille au coin plié, qui défile ========== -->
+  <dialog class="fiche_synthese" id="fiche_synthese" aria-labelledby="fiche_titre">
+    <!-- DESSIN « IMPRIMER » : remplacer le <span> par <img src="dessin/icone/imprimer.svg" alt=""> -->
+    <button type="button" class="bouton_imprimer" aria-label="imprimer la fiche">
+      <img src="dessin/picto/imprimante.svg" alt="">
+    </button>
+    <button type="button" class="qcm_fermer" aria-label="fermer la fiche"></button>
+
+    <div class="fiche_synthese_feuille">
+      <p class="fiche_numero">fiche synthèse 3</p>
+      <h2 class="fiche_titre_principal" id="fiche_titre">Les solutions et outils d’éco-conception</h2>
+
+      <!-- l'essentiel -->
+      <div class="fiche_essentiel">
+        <p>Il existe de nombreux leviers d’éco-conception permettant d’agir à différentes étapes du cycle de vie d’un produit. <br>On peut notamment agir sur&#8239;: <br>les matières premières → la fabrication → la distribution → l’usage → la fin de vie.</p>
+        <p>Ces leviers peuvent être identifiés à l’aide&#8239;:</p>
+        <p><span class="etoile"></span> <strong>d’outils qualitatifs</strong> qui proposent des recommandations, règles ou lignes directrices&#8239;;
+          <br><span class="etoile"></span> <strong>d’outils quantitatifs</strong> qui permettent de mesurer ou comparer des performances à partir d’indicateurs.</p>
+        <p>Un levier indique comment agir (c’est une solution d’éco-conception)&#8239;; un outil aide à identifier, orienter ou évaluer les solutions pertinentes.</p>
+      </div>
+      <!-- schéma : la roue de Brezet simplifiée (mêmes dessins que l'activité) -->
+      <div class="fiche_section">
+        <span class="pastille_titre">La roue de Brezet</span>
+        <div class="schema_cycle fiche_roue">
+          <svg class="fleches_cycle" viewBox="0 0 100 100" aria-hidden="true">
+            <defs>
+              <marker id="pointe_fiche" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="10" markerHeight="20" orient="auto">
+                <path d="M0 0 L10 5 L0 10 z" fill="var(--trait)"/>
+              </marker>
+            </defs>
+            <path d="M65.5 15.3 A38 38 0 0 1 78.0 24.4" marker-end="url(#pointe_fiche)"/>
+            <path d="M87.8 53.7 A38 38 0 0 1 82.7 69.4" marker-end="url(#pointe_fiche)"/>
+            <path d="M57.5 87.3 A38 38 0 0 1 42.5 87.3" marker-end="url(#pointe_fiche)"/>
+            <path d="M17.3 69.4 A38 38 0 0 1 12.2 53.7" marker-end="url(#pointe_fiche)"/>
+            <path d="M22.0 24.4 A38 38 0 0 1 34.5 15.3" marker-end="url(#pointe_fiche)"/>
+          </svg>
+          <div class="etape_fiche" style="left:50%; top:12%;">
+            <img src="dessin/chap_3/I/1/multicritere/minerais.svg" alt="">
+            <span>matériaux et masse</span>
+          </div>
+          <div class="etape_fiche" style="left:86%; top:38%;">
+            <img src="dessin/chap_3/I/1/cycle_de_vie/production.svg" alt="">
+            <span>production propre</span>
+          </div>
+          <div class="etape_fiche" style="left:72%; top:81%;">
+            <img src="dessin/chap_3/I/1/cycle_de_vie/distribution.svg" alt="">
+            <span>distribution</span>
+          </div>
+          <div class="etape_fiche" style="left:28%; top:81%;">
+            <img src="dessin/chap_3/I/1/cycle_de_vie/usage.svg" alt="">
+            <span>usage et durée de vie</span>
+          </div>
+          <div class="etape_fiche" style="left:14%; top:38%;">
+            <img src="dessin/chap_3/I/1/multicritere/analyse_cycle_vie.svg" alt="">
+            <span>fin de vie</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- notion 1 -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Les Design for X</span>
+        <p>Les Design for X consistent à intégrer dans la conception une fonction ou une contrainte particulière afin d’améliorer la performance environnementale du produit.</p>
+        <table class="tableau_fiche">
+          <thead>
+            <tr><th scope="col">Design for…</th><th scope="col">Objectif</th><th scope="col">Éco-solution</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Design for Assembly</th><td>Faciliter l’assemblage</td><td>Limiter le nombre de pièces, standardiser les composants</td></tr>
+            <tr><th scope="row">Design for Disassembly</th><td>Faciliter le démontage</td><td>Limiter les assemblages permanents (colles, soudure), privilégier les fixations réversibles</td></tr>
+            <tr><th scope="row">Design for Repair</th><td>Faciliter la réparation</td><td>Fournir des notices de réparation, rendre la réparation possible avec des outils standards</td></tr>
+            <tr><th scope="row">Design for Logistics</th><td>Réduire les impacts logistiques</td><td>Réduire le volume et la masse des emballages, optimiser le taux de chargement…</td></tr>
+            <tr><th scope="row">Design for Use</th><td>Réduire les impacts pendant l’usage</td><td>Réduire la consommation d’énergie, optimiser les performances…</td></tr>
+            <tr><th scope="row">Design for Recycling</th><td>Faciliter le recyclage</td><td>Utiliser des matériaux recyclables, limiter la diversité des matériaux…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- notion 2 -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Les outils qualitatifs</span>
+        <p><strong>Guider les choix de conception&#8239;:</strong> les outils qualitatifs ne calculent pas directement un impact environnemental. Ils proposent des règles, recommandations ou lignes directrices permettant de structurer la recherche de solutions.</p>
+        <div class="fiche_exemples">
+          <span class="pastille_exemple">exemples</span>
+          <ul>
+            <li><span><strong>Check-list d’éco-conception&#8239;:</strong> liste d’actions à examiner aux différentes étapes du cycle de vie. Elle peut être associée à des niveaux de priorité ou à un score d’avancement.</span></li>
+            <li><span><strong>Guide sectoriel&#8239;:</strong> recommandations adaptées à un secteur d’activité et organisées selon les étapes du cycle de vie.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- notion 3 -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Les outils quantitatifs</span>
+        <p><strong>Mesurer pour objectiver les choix&#8239;:</strong> les outils quantitatifs permettent de mesurer, comparer ou suivre une performance à partir de données et d’indicateurs. Ils permettent ainsi d’objectiver les choix de conception.</p>
+        <div class="fiche_exemples">
+          <span class="pastille_exemple">exemples d’indicateurs</span>
+          <ul class="liste_simple">
+            <li><span>♻️ <strong>Contenu recyclé&#8239;:</strong> part de matière recyclée utilisée dans le produit.</span></li>
+            <li><span>🔧 <strong>Temps de désassemblage / réparation&#8239;:</strong> temps nécessaire pour démonter, réparer ou remonter une pièce.</span></li>
+            <li><span>⏳ <strong>Durabilité&#8239;:</strong> capacité d’un produit à durer dans le temps sans perte majeure de performance.</span></li>
+            <li><span>💧 <strong>Empreinte eau&#8239;:</strong> évalue les impacts associés à l’utilisation de l’eau.</span></li>
+            <li><span>🌍 <strong>Empreinte environnementale / ACV&#8239;:</strong> permet d’évaluer les impacts environnementaux d’un produit, procédé ou service sur son cycle de vie, en considérant plusieurs indicateurs.</span></li>
+          </ul>
+        </div>
+        <p>Plus la question est complexe, plus il peut être nécessaire de croiser plusieurs indicateurs.</p>
+      </div>
+
+      <!-- point de vigilance -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Point de vigilance</span>
+        <div class="fiche_vigilance">
+          <p><strong>Une éco-solution générique n’est pas nécessairement la solution la plus pertinente.</strong></p>
+          <p>Une même solution peut avoir des effets différents selon&#8239;:</p>
+          <ul>
+            <li>le produit&#8239;;</li>
+            <li>son cycle de vie&#8239;;</li>
+            <li>ses usages&#8239;;</li>
+            <li>les matériaux utilisés&#8239;;</li>
+            <li>les procédés de fabrication&#8239;;</li>
+            <li>les acteurs impliqués.</li>
+          </ul>
+          <p>Les outils d’éco-conception permettent justement de spécifier et d’orienter les choix en fonction du produit étudié, alors que les leviers génériques constituent surtout un point de départ pour rechercher des solutions.</p>
+        </div>
+      </div>
+
+      <!-- exemple de cas concret -->
+      <!-- ILLUSTRATION À VENIR : représentation illustrée des leviers du vélo cargo -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Exemple de cas concret</span>
+        <div class="fiche_exemples">
+          <span class="pastille_exemple">le vélo cargo</span>
+          <table class="tableau_fiche">
+            <thead>
+              <tr><th scope="col">Étape</th><th scope="col">Exemple de piste</th><th scope="col">Acteur principal</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Matières</th><td>Choisir des matières à plus faible impact</td><td>R&amp;D / fournisseurs</td></tr>
+              <tr><th scope="row">Fabrication</th><td>Réduire énergie, déchets et étapes de production</td><td>Production / HSE</td></tr>
+              <tr><th scope="row">Assemblage</th><td>Faciliter assemblage et démontage</td><td>Concepteurs / ingénieurs</td></tr>
+              <tr><th scope="row">Distribution</th><td>Réduire volume et masse de l’emballage</td><td>Logistique / fournisseurs</td></tr>
+              <tr><th scope="row">Transport</th><td>Optimiser le mode de transport</td><td>Logistique / transporteur</td></tr>
+              <tr><th scope="row">Usage</th><td>Augmenter durée de vie, réparabilité</td><td>Concepteur / utilisateur</td></tr>
+              <tr><th scope="row">Fin de vie</th><td>Faciliter démontage et recyclage</td><td>Concepteur / recycleur</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- pour aller plus loin -->
+      <div class="fiche_section">
+        <span class="pastille_titre">Pour aller plus loin</span>
+        <ul>
+          <li><span>Approfondir les leviers d’éco-conception&#8239;: <a class="source" href="https://librairie.ademe.fr/industrie-et-production-durable/6121-ecoconcevoir-un-produit-un-procede-ou-un-service.html" target="_blank" rel="noopener">ADEME, écoconcevoir un produit, un procédé ou un service</a></span></li>
+          <li><span>Guide sectoriel d’éco-conception pour les mobiliers meublants&#8239;: <a class="source" href="https://librairie.ademe.fr/industrie-et-production-durable/6836-guide-d-eco-conception-pour-les-mobiliers-meublants.html" target="_blank" rel="noopener">librairie.ademe.fr</a></span></li>
+          <li><span>Guide sectoriel d’éco-conception, textile d’habillement&#8239;: <a class="source" href="https://librairie.ademe.fr/economie-circulaire-et-dechets/8044-guide-sectoriel-d-ecoconception-textile-d-habillement.html" target="_blank" rel="noopener">librairie.ademe.fr</a></span></li>
+          <!-- LIEN À COMPLÉTER : le chapitre sur l'ACV -->
+          <li><span>Mieux comprendre l’analyse du cycle de vie&#8239;: <a class="lien_cours" href="">le chapitre sur l’ACV</a></span></li>
+          <li><span>Avoir accès à des données d’empreinte carbone de produits du quotidien&#8239;: <a class="source" href="https://base-empreinte.ademe.fr/" target="_blank" rel="noopener">Base Empreinte®</a></span></li>
+        </ul>
+      </div>
+    </div>
+  </dialog>
+
+
+  <!-- ========== Bandeau du bas (logos) ========== -->
+
+  <footer id="bandeau_bas">
+  </footer>
+
+</body>
+</html>

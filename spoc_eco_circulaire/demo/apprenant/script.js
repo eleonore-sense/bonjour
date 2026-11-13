@@ -195,6 +195,7 @@ const zoneScroll = document.getElementById('droite_contenu');
 
 initScroll();
 initBoutonsMenu();
+initPictos();
 initLiensSource();
 initNotions();
 initBarreParties();
@@ -209,6 +210,8 @@ initQCM();
 initClassement();
 initAfficher();
 initFinActivite();
+initCaptures();
+initPopFin();
 
 // Lance une action chaque fois qu'un élément passe la ligne des 60 % de l'écran
 function surPassage(element, action) {
@@ -262,6 +265,35 @@ function initBoutonsMenu() {
       tooltip.classList.remove('visible');
     });
   });
+}
+
+
+// ---------- Pictos du menu : SVG insérés dans la page ----------
+// Les <img> .svg des pastilles du menu sont remplacées par le SVG lui-même :
+// l'épaisseur et la couleur du trait se règlent alors dans le CSS (.picto, --epaisseur_picto).
+// data-src garde le chemin du fichier (pour les réglages de taille par picto).
+// Ne marche qu'avec un serveur (Live Server…) : en file://, les <img> restent.
+function insererSvg(img) {
+  const src = img.getAttribute('src');
+  return fetch(img.src)
+    .then(rep => rep.ok ? rep.text() : Promise.reject())
+    .then(texte => {
+      const svg = new DOMParser().parseFromString(texte, 'image/svg+xml').querySelector('svg');
+      if (!svg) return null;
+      svg.removeAttribute('width');
+      svg.removeAttribute('height');
+      svg.classList.add('picto');
+      if (img.className) img.className.split(/\s+/).forEach(c => c && svg.classList.add(c));
+      svg.dataset.src = src;
+      svg.setAttribute('aria-hidden', 'true');
+      img.replaceWith(svg);
+      return svg;
+    })
+    .catch(() => null);
+}
+
+function initPictos() {
+  document.querySelectorAll('.bouton_icone img[src$=".svg"]').forEach(insererSvg);
 }
 
 
@@ -694,10 +726,29 @@ function initPopMascotte() {
     pop.style.left = (titre.getBoundingClientRect().left + 120) + 'px';
   }
 
+  // voile blanc sur la zone de contenu seulement (pas sur le menu ni le bandeau du bas)
+  const voile = document.createElement('div');
+  voile.className = 'voile_mascotte';
+  voile.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(voile);
+
+  function placerVoile() {
+    const cible = zoneScroll || document.body;
+    const r = cible.getBoundingClientRect();
+    Object.assign(voile.style, {
+      left: r.left + 'px', top: r.top + 'px',
+      width: r.width + 'px', height: r.height + 'px'
+    });
+  }
+
   function ouvrir() {
     placer();
+    placerVoile();
     pop.showModal();
+    voile.classList.add('visible');
   }
+
+  pop.addEventListener('close', () => voile.classList.remove('visible'));
 
   pop.querySelector('.fermer_modal')?.addEventListener('click', () => pop.close());
 
@@ -708,7 +759,29 @@ function initPopMascotte() {
     if (!dedans) pop.close();
   });
 
-  window.addEventListener('resize', () => { if (pop.open) placer(); });
+  window.addEventListener('resize', () => { if (pop.open) { placer(); placerVoile(); } });
+
+  // data-afficher-apres="#partie_1" : à la fermeture de la pop-up (bouton, rond rouge,
+  // Échap ou clic à côté), cette partie apparaît et la page glisse jusqu'à elle
+  const apres = pop.dataset.afficherApres && document.querySelector(pop.dataset.afficherApres);
+  if (apres) {
+    pop.addEventListener('close', () => {
+      if (apres.classList.contains('cache')) afficherPartie(apres);
+    });
+  }
+  pop.querySelectorAll('[data-fermer-pop]').forEach(b => b.addEventListener('click', () => pop.close()));
+
+  // data-ouverture="bouton" : la pop-up s'ouvre au clic sur un bouton data-ouvrir-mascotte
+  // (qui disparaît avec son conteneur), pas toute seule
+  if (pop.dataset.ouverture === 'bouton') {
+    document.querySelectorAll('[data-ouvrir-mascotte]').forEach(b => {
+      b.addEventListener('click', () => {
+        (b.closest('.conteneur_depart') || b).remove();
+        ouvrir();
+      });
+    });
+    return;
+  }
 
   const declencheur = pop.dataset.declencheur && document.querySelector(pop.dataset.declencheur);
 
@@ -1131,11 +1204,11 @@ function initQCM() {
           else if (c.checked) option.classList.add('erreur');
         });
 
-        qcm.dispatchEvent(new Event('corrige'));
-
         bouton.textContent = qcm.dataset.texteSuite || 'continuer';
         bouton.disabled = true;
         bouton.title = 'ouvre la correction de chaque scénario pour continuer';
+
+        qcm.dispatchEvent(new Event('corrige'));
         return;
       }
 
@@ -1169,16 +1242,58 @@ function initQCM() {
     // Au clavier : Tab pour l'atteindre, Entrée / Espace pour ouvrir, Échap pour refermer.
     const texteBouton = qcm.dataset.texteBoutonCorrection || 'voir la correction';
 
+    // ouvrir : la pilule grandit, puis le texte apparaît.
+    // fermer : le texte disparaît d'abord, puis la boîte redevient une pilule.
+    const DUREE_TEXTE = 200;     // ms : disparition du texte (= transition d'opacité du CSS)
+    const DUREE_BOITE = 350;     // ms : changement de taille (= transitions du CSS)
+
     function deplier(bloc, ouvrir) {
       const zone = bloc._correction;
       if (!zone) return;
-      zone.classList.toggle('ouverte', ouvrir);
+      clearTimeout(zone._minuteur);
       bloc.classList.toggle('ouverte', ouvrir);
       zone.bouton.setAttribute('aria-expanded', String(ouvrir));
       if (ouvrir) zone.bouton.setAttribute('aria-label', 'fermer la correction');
       else zone.bouton.removeAttribute('aria-label');
       zone.contenu.inert = !ouvrir;
-      if (ouvrir) lire(bloc);
+
+      if (ouvrir) {
+        zone.classList.add('ouverte', 'texte_visible');
+        lire(bloc);
+        zone._minuteur = setTimeout(() => montrerEnEntier(zone), DUREE_BOITE + 150);
+      } else {
+        zone.classList.remove('texte_visible');
+        zone._minuteur = setTimeout(() => zone.classList.remove('ouverte'), DUREE_TEXTE);
+      }
+    }
+
+    // si la boîte ouverte dépasse en bas de l'écran : petit scroll, juste assez pour la voir en entier
+    function montrerEnEntier(zone) {
+      if (!zoneScroll || !zone.classList.contains('ouverte')) return;
+      const r = zone.getBoundingClientRect();
+      const z = zoneScroll.getBoundingClientRect();
+      const bas = Math.min(z.bottom, window.innerHeight)
+                - (document.getElementById('bandeau_bas')?.offsetHeight || 0) - 40;   // 40 px de marge sous la boîte
+      const depasse = r.bottom - bas;
+      if (depasse <= 0) return;
+      const hautMax = r.top - z.top - 20;          // sans faire sortir le haut de la boîte
+      const decalage = Math.min(depasse, Math.max(0, hautMax));
+      if (decalage <= 0) return;
+
+      // pas assez de page en dessous pour descendre autant : on ajoute de la place en bas
+      const manque = zoneScroll.scrollTop + decalage - (zoneScroll.scrollHeight - zoneScroll.clientHeight);
+      if (manque > 0) {
+        let espace = document.getElementById('espace_correction');
+        if (!espace) {
+          espace = document.createElement('div');
+          espace.id = 'espace_correction';
+          espace.setAttribute('aria-hidden', 'true');
+          zoneScroll.appendChild(espace);
+        }
+        espace.style.height = (espace.offsetHeight + manque) + 'px';
+      }
+      const doux = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      zoneScroll.scrollBy({ top: decalage, behavior: doux ? 'smooth' : 'auto' });
     }
 
     blocs.forEach((bloc, i) => {
@@ -1199,15 +1314,6 @@ function initQCM() {
         });
         tete.appendChild(liste);
         correction.prepend(tete);
-      }
-
-      // le dessin du scénario recopié dans la boîte
-      const dessin = bloc.querySelector('.qcm_scenario img');
-      if (dessin) {
-        const copie = dessin.cloneNode();
-        copie.className = 'qcm_correction_dessin';
-        copie.alt = '';
-        correction.prepend(copie);
       }
 
       // la boîte qui se déplie : <div class="correction_depliable">
@@ -1231,10 +1337,15 @@ function initQCM() {
       contenu.inert = true;
       bouton.setAttribute('aria-controls', contenu.id);
 
-      correction.replaceWith(zone);
+      // la place gardée sous la question (la taille de la pilule) : la boîte ouverte passe par-dessus la suite
+      const place = document.createElement('div');
+      place.className = 'correction_place';
+      place.hidden = true;
+      correction.replaceWith(place);
       correction.removeAttribute('id');
       contenu.appendChild(correction);
       zone.append(bouton, contenu);
+      place.appendChild(zone);
 
       zone.bouton = bouton;
       zone.contenu = contenu;
@@ -1259,7 +1370,14 @@ function initQCM() {
       neutre: 'ni vraie ni fausse'
     };
     qcm.addEventListener('corrige', () => {
-      blocs.forEach(bloc => { if (bloc._correction) bloc._correction.hidden = false; });
+      blocs.forEach(bloc => {
+        if (bloc._correction) {
+          bloc._correction.hidden = false;
+          bloc._correction.parentElement.hidden = false;
+        } else {
+          lire(bloc);   // pas de boîte de correction : rien à ouvrir, la question compte comme lue
+        }
+      });
       qcm.querySelectorAll('.qcm_option').forEach(option => {
         const type = Object.keys(motsResultat).find(t => option.classList.contains(t));
         if (!type) return;
@@ -1332,9 +1450,13 @@ function lierNotion(qcm) {
 //      data-progression-debut="50" data-progression-placement="90">
 //   .depot.reserve         : les .carte à classer (data-niveau = bon niveau)
 //   .niveau > .depot[data-niveau] : les zones où déposer
-//   .classement_correction : texte de correction
+//   .classement_correction : texte de correction (facultatif)
+//   Sur un .depot, data-nom = le nom de la zone, ajouté à une carte mal placée à la correction
 // Une carte avec data-scenario="lessive" n'est gardée que si le QCM de la page
 // a tiré le bloc data-scenario="lessive" (les cartes sans data-scenario restent).
+// data-cartes-par-scenario="2" : en plus, seulement 2 cartes au hasard par question.
+// data-centrer=".schema_cycle" : au 1er glisser, ce schéma se centre à l'écran.
+// data-correction="deplacer" : à la correction, les cartes mal placées glissent à leur bonne place.
 // On attrape une carte à la souris, ou on clique la carte puis le niveau.
 // La barre va de progression-debut à progression-placement au fil des cartes posées,
 // puis à 100 % quand la correction s'affiche.
@@ -1352,6 +1474,17 @@ function initClassement() {
       classement.querySelectorAll('.carte[data-scenario], .classement_correction [data-scenario]').forEach(el => {
         if (!scenariosQcm.has(el.dataset.scenario)) el.remove();
       });
+    }
+
+    // data-cartes-par-scenario="2" : on ne garde que 2 cartes (au hasard) par question tirée
+    const parScenario = parseInt(classement.dataset.cartesParScenario, 10);
+    if (parScenario) {
+      const groupes = new Map();
+      classement.querySelectorAll('.carte[data-scenario]').forEach(c => {
+        if (!groupes.has(c.dataset.scenario)) groupes.set(c.dataset.scenario, []);
+        groupes.get(c.dataset.scenario).push(c);
+      });
+      groupes.forEach(liste => melanger(liste).slice(parScenario).forEach(c => c.remove()));
     }
 
     const cartes = [...classement.querySelectorAll('.carte')];
@@ -1394,6 +1527,21 @@ function initClassement() {
     function amenerSchema(carte) {
       const reserve = carte.closest('.reserve');
       if (!reserve || getComputedStyle(reserve).position !== 'fixed') return;
+
+      // data-centrer="…" : ces éléments (ex. les dessins de la roue) se centrent dans la partie
+      // visible de l'écran, sous le bandeau du haut (au lieu de caler le classement en haut)
+      const aCentrer = classement.dataset.centrer ? [...classement.querySelectorAll(classement.dataset.centrer)] : [];
+      if (aCentrer.length) {
+        const rects = aCentrer.map(el => el.getBoundingClientRect());
+        const haut = Math.min(...rects.map(r => r.top));
+        const bas = Math.max(...rects.map(r => r.bottom));
+        const z = zoneScroll.getBoundingClientRect();
+        const hauteurBandeau = document.getElementById('haut')?.offsetHeight || 0;
+        const centreVisible = z.top + hauteurBandeau + (zoneScroll.clientHeight - hauteurBandeau) / 2;
+        const ecart = (haut + bas) / 2 - centreVisible;
+        if (Math.abs(ecart) > 20) glisserA(zoneScroll.scrollTop + ecart);
+        return;
+      }
 
       const hauteurBandeau = document.getElementById('haut')?.offsetHeight || 0;
       const ecart = classement.getBoundingClientRect().top
@@ -1502,13 +1650,39 @@ function initClassement() {
         classement.classList.add('corrige');
         choisie = null;
 
+        // data-correction="deplacer" : les cartes mal placées glissent jusqu'à leur bonne zone
+        const deplacer = classement.dataset.correction === 'deplacer';
+        const departs = deplacer ? new Map(cartes.map(c => [c, c.getBoundingClientRect()])) : null;
+
         cartes.forEach(carte => {
           carte.classList.remove('choisie');
           const juste = carte.closest('.depot').dataset.niveau === carte.dataset.niveau;
           carte.classList.add(juste ? 'juste' : 'erreur');
-          // le bon niveau s'ajoute dans l'étiquette de la carte
-          if (!juste) carte.querySelector('span')?.append(` → niveau ${carte.dataset.niveau}`);
+          if (deplacer) {
+            if (!juste) classement.querySelector(`.depot[data-niveau="${carte.dataset.niveau}"]`)?.appendChild(carte);
+            return;
+          }
+          // la bonne zone s'ajoute dans l'étiquette de la carte : son data-nom, sinon « niveau N »
+          if (!juste) {
+            const bonne = classement.querySelector(`.depot[data-niveau="${carte.dataset.niveau}"]`);
+            carte.querySelector('span')?.append(` → ${bonne?.dataset.nom || 'niveau ' + carte.dataset.niveau}`);
+          }
         });
+
+        // chaque carte glisse de son ancienne place à la nouvelle
+        if (deplacer && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          cartes.forEach(carte => {
+            const avant = departs.get(carte);
+            const apres = carte.getBoundingClientRect();
+            const dx = avant.left - apres.left;
+            const dy = avant.top - apres.top;
+            if (Math.abs(dx) + Math.abs(dy) < 1) return;
+            carte.animate(
+              [{ translate: `${dx}px ${dy}px` }, { translate: '0 0' }],
+              { duration: 700, easing: 'ease-in-out', delay: 200, fill: 'backwards' }
+            );
+          });
+        }
 
         if (correction) {
           correction.classList.add('ouverte');
@@ -1558,12 +1732,193 @@ function initAfficher() {
 function afficherPartie(cible) {
   cible.classList.remove('cache');
   cible.dispatchEvent(new Event('affichee'));
-  const haut = cible.querySelector('.consigne') || cible;
+  // ce qui se cale en haut de l'écran : l'élément data-haut, sinon la consigne
+  const haut = cible.querySelector('[data-haut]') || cible.querySelector('.consigne') || cible;
   requestAnimationFrame(() => {
     // la partie apparaît en glissant de bas en haut : on tient compte de ce décalage
     const t = getComputedStyle(cible).transform;
     const decalage = t && t !== 'none' ? new DOMMatrix(t).m42 : 0;
     calerEnHaut(haut, null, decalage + 10);
+  });
+}
+
+
+// ---------- Pop-up de fin de partie (mascotte + fiche synthèse) ----------
+// <dialog class="pop_mascotte pop_fin" data-apres="#a_retenir" data-delai="5000"
+//         data-cible-logo="…">  (la pastille du menu vers laquelle vole le logo)
+//   .logo_fiche                         : le logo de la fiche synthèse, dans la bulle
+//   [data-ouvrir-fiche="#fiche_synthese"] : ouvre la fiche (dialog.fiche_synthese)
+//   [data-suite-logo]                   : le logo vole jusqu'à la pastille du menu, puis page suivante
+// La pop-up s'ouvre data-delai ms après l'apparition de data-apres.
+function initPopFin() {
+  document.querySelectorAll('dialog.pop_fin').forEach(pop => {
+    // voile couleur --fond sur la zone de contenu, comme pour la mascotte d'accueil
+    const voile = document.createElement('div');
+    voile.className = 'voile_mascotte';
+    voile.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(voile);
+
+    let vue = false;   // la pop-up s'est-elle déjà ouverte ?
+    let minuteur = null;
+
+    function ouvrir() {
+      clearTimeout(minuteur);
+      if (pop.open) return;
+      vue = true;
+      const r = (zoneScroll || document.body).getBoundingClientRect();
+      Object.assign(voile.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
+      pop.showModal();
+      voile.classList.add('visible');
+    }
+    pop.addEventListener('close', () => voile.classList.remove('visible'));
+    pop.querySelector('.fermer_modal')?.addEventListener('click', () => pop.close());
+
+    // ouverture automatique, data-delai ms après :
+    // - data-apres="#a_retenir" : l'apparition de cette partie (activités)
+    // - data-apres="fin"        : l'arrivée du bouton « passer à la suite » à l'écran (pages de cours)
+    const delai = parseInt(pop.dataset.delai, 10) || 5000;
+    if (pop.dataset.apres === 'fin') {
+      const bas = document.querySelector('.conteneur_suite');
+      if (bas) {
+        const obs = new IntersectionObserver(entrees => {
+          if (entrees.some(en => en.isIntersecting)) {
+            obs.disconnect();
+            minuteur = setTimeout(ouvrir, delai);
+          }
+        }, { root: zoneScroll, threshold: 0.6 });
+        obs.observe(bas);
+      }
+    } else {
+      const apres = pop.dataset.apres && document.querySelector(pop.dataset.apres);
+      apres?.addEventListener('affichee', () => { minuteur = setTimeout(ouvrir, delai); }, { once: true });
+    }
+
+    // le « passer à la suite » de la page, cliqué avant l'ouverture : il ouvre la pop-up au lieu de partir
+    document.querySelectorAll('[data-fin-activite], .conteneur_suite .bouton_suite').forEach(b => {
+      b.addEventListener('click', e => {
+        if (vue) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        ouvrir();
+      }, { capture: true });
+    });
+
+    // la fiche synthèse, par-dessus la pop-up
+    pop.querySelectorAll('[data-ouvrir-fiche]').forEach(b => {
+      const fiche = document.querySelector(b.dataset.ouvrirFiche);
+      if (!fiche) return;
+      b.addEventListener('click', () => fiche.showModal());
+    });
+
+    // la pastille du menu : data-cible-logo, sinon le bouton du menu qui parle de « fiche »
+    function trouverPastille() {
+      if (pop.dataset.cibleLogo) return document.querySelector(pop.dataset.cibleLogo);
+      const image = b => b.querySelector('img, .picto');
+      const srcDe = el => el?.getAttribute('src') || el?.dataset?.src || '';
+      const bouton = [...document.querySelectorAll('.bouton_icone')].find(b =>
+        /fiche|notion/i.test((b.dataset.tooltip || '') + (b.getAttribute('href') || '') + srcDe(image(b))));
+      return (bouton && image(bouton)) || bouton || null;
+    }
+
+    // le logo de la bulle = l'image de la pastille (même dessin), si le HTML n'en donne pas.
+    // Puis le SVG est inséré dans la page (au lieu d'une <img>) : son épaisseur de trait
+    // se règle alors dans le CSS (.logo_fiche, --epaisseur_logo).
+    const logoBulle = pop.querySelector('.logo_fiche');
+    const pastilleImg = trouverPastille();
+    const srcPastille = pastilleImg?.getAttribute?.('src') || pastilleImg?.dataset?.src;
+    if (logoBulle && !logoBulle.getAttribute('src') && srcPastille) logoBulle.setAttribute('src', srcPastille);
+    if (logoBulle?.tagName === 'IMG' && /\.svg($|\?)/i.test(logoBulle.getAttribute('src') || '')) {
+      fetch(logoBulle.src)
+        .then(rep => rep.ok ? rep.text() : Promise.reject())
+        .then(texte => {
+          const svg = new DOMParser().parseFromString(texte, 'image/svg+xml').querySelector('svg');
+          if (!svg) return;
+          svg.removeAttribute('width');
+          svg.removeAttribute('height');
+          svg.setAttribute('class', logoBulle.className);
+          svg.setAttribute('aria-hidden', 'true');
+          logoBulle.replaceWith(svg);
+        })
+        .catch(() => { /* en local (file://) : on garde l'image telle quelle */ });
+    }
+
+    // « passer à la suite » : le logo vole vers la pastille du menu, puis page suivante
+    pop.querySelectorAll('[data-suite-logo]').forEach(b => {
+      b.addEventListener('click', () => {
+        const logo = pop.querySelector('.logo_fiche');
+        const cible = trouverPastille();
+        const doux = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!logo || !cible || !doux) { terminerActivite(); return; }
+
+        // le logo part dans une bulle ronde (fond --fond), comme les pastilles du menu
+        const rectLogo = logo.getBoundingClientRect();
+        const pastille = cible.closest('.bouton_icone') || cible;
+        const arrivee = pastille.getBoundingClientRect();
+        const taille = Math.max(rectLogo.width, rectLogo.height) + 30;
+        const vol = document.createElement('div');
+        vol.className = 'logo_vol';
+        Object.assign(vol.style, {
+          left: (rectLogo.left + rectLogo.width / 2 - taille / 2) + 'px',
+          top: (rectLogo.top + rectLogo.height / 2 - taille / 2) + 'px',
+          width: taille + 'px', height: taille + 'px'
+        });
+        const copie = logo.cloneNode(true);
+        copie.removeAttribute('style');
+        vol.appendChild(copie);
+        document.body.appendChild(vol);
+        const depart = vol.getBoundingClientRect();
+        pop.close();
+
+        const dx = (arrivee.left + arrivee.width / 2) - (depart.left + depart.width / 2);
+        const dy = (arrivee.top + arrivee.height / 2) - (depart.top + depart.height / 2);
+        const echelle = Math.max(arrivee.width / depart.width, 0.2);
+        vol.animate([
+          { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+          { transform: `translate(${dx * 0.5}px, ${dy * 0.5 - 80}px) scale(${(1 + echelle) / 2})`, opacity: 1, offset: 0.5 },
+          { transform: `translate(${dx}px, ${dy}px) scale(${echelle})`, opacity: 0.6 }
+        ], { duration: 1100, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
+          vol.remove();
+          pastille.classList.add('pastille_recoit');
+          setTimeout(terminerActivite, 700);
+        };
+      });
+    });
+  });
+
+  document.querySelectorAll('dialog.fiche_synthese').forEach(fiche => {
+    fiche.querySelector('.qcm_fermer')?.addEventListener('click', () => fiche.close());
+    // le picto du bouton imprimer, inséré en SVG (trait réglé dans le CSS, comme le menu)
+    fiche.querySelectorAll('.bouton_imprimer img[src$=".svg"]').forEach(insererSvg);
+    // bouton imprimer : n'imprime que la fiche (voir @media print dans le CSS)
+    fiche.querySelector('.bouton_imprimer')?.addEventListener('click', () => {
+      document.documentElement.classList.add('impression_fiche');
+      window.print();
+    });
+  });
+  window.addEventListener('afterprint', () => document.documentElement.classList.remove('impression_fiche'));
+}
+
+
+// ---------- Capture d'écran en pop-up ----------
+// <button class="bouton_capture" data-capture="#capture_rgesn"> (un dessin dedans)
+// ouvre <dialog class="fenetre_capture" id="capture_rgesn"> (rond rouge .fermer_modal + image).
+// Se ferme avec le rond rouge, Échap ou un clic à côté.
+function initCaptures() {
+  document.querySelectorAll('[data-capture]').forEach(bouton => {
+    const fenetre = document.querySelector(bouton.dataset.capture);
+    if (!fenetre) return;
+    bouton.addEventListener('click', () => fenetre.showModal());
+  });
+
+  document.querySelectorAll('dialog.fenetre_capture').forEach(fenetre => {
+    fenetre.querySelector('.fermer_modal')?.addEventListener('click', () => fenetre.close());
+    fenetre.addEventListener('click', e => {
+      if (e.target === fenetre) {
+        const r = fenetre.getBoundingClientRect();
+        const dedans = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+        if (!dedans) fenetre.close();
+      }
+    });
   });
 }
 
@@ -1688,3 +2043,14 @@ function rectDe(elements) {
   const bottom = Math.max(...rects.map(r => r.bottom));
   return { top, height: bottom - top };
 }
+
+
+
+// ---------- Pousses : la plante grandit au passage de la ligne des 60 % ----------
+document.querySelectorAll('.anim_pousse').forEach(bloc => {
+  surPassage(bloc, () => {
+    bloc.classList.remove('joue');
+    void bloc.offsetWidth;          // relance l'animation à chaque passage
+    bloc.classList.add('joue');
+  });
+});

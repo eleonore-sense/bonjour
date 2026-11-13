@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="347.38" height="664.96" viewBox="-3.5 -3.5 347.38 664.96" stroke-linecap="round" stroke-linejoin="round">
+  <path class="rose trait_fin" d="M287.9,599.65c0,31.93-54.04,57.81-120.7,57.81s-120.7-25.88-120.7-57.81v-27.49h241.39v27.49Z"/>
+  <ellipse class="rose trait_fin" cx="167.21" cy="572.17" rx="120.7" ry="57.81"/>
+  <rect class="bleu_clair trait_fin" x="139.15" y="243.54" width="54.97" height="341.78" rx="14.17" ry="14.17"/>
+  <path class="vert_citron trait_fin" d="M335.15,292.11L270.57,58.31H65.03L4.62,293.25c-2.69,5.15-4.12,10.51-4.12,16.01,0,40.26,75.97,72.9,169.69,72.9s169.69-32.64,169.69-72.9c0-5.91-1.65-11.65-4.74-17.15Z"/>
+  <ellipse class="blanc trait_fin" cx="167.8" cy="58.31" rx="102.77" ry="57.81"/>
+</svg>

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="245.11" height="523.57" viewBox="0 0 245.11 523.57" stroke-linecap="round" stroke-linejoin="round">
+  <style>
+    /* cycle de 6 s : l'eau est calme, la goutte tombe, l'eau s'agite puis se calme */
+    .goutte { transform-box: view-box; animation: goutte 6s infinite; }
+    .eau_agitee { transform-box: view-box; transform-origin: 0 236.6px; transform: scaleY(0.01);
+                  animation: eau_agitee 6s infinite; }
+    .eau_vague { animation: eau_vague 0.7s linear infinite; }
+
+    @keyframes goutte {
+      0%, 15% { transform: translateY(0); opacity: 1; animation-timing-function: ease-in; }
+      28%     { transform: translateY(88px); opacity: 1; }
+      30%     { transform: translateY(95px); opacity: 0; }
+      92%     { transform: translateY(0); opacity: 0; }
+      100%    { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes eau_agitee {
+      0%, 28% { transform: scaleY(0.01); }
+      34%     { transform: scaleY(1); }
+      55%     { transform: scaleY(0.8); }
+      80%     { transform: scaleY(0.3); }
+      95%, 100% { transform: scaleY(0.01); }
+    }
+    @keyframes eau_vague { from { transform: translateX(0); } to { transform: translateX(50px); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .goutte, .eau_agitee, .eau_vague { animation: none; }
+    }
+  </style>
+  <path class="rose_pale trait_fin" d="M208.89,326.52v81.7s.51,9.19-25.53,9.19h-49.02v104.16H2.6l31.66-118.46v-66.38c0-22.98,12.25-35.74,35.74-35.74h74.81c4.67,0,8.38,3.85,8.28,8.52-.2,9.38-2.55,23.13-14.67,23.13h-55.15"/>
+  <polyline class="bleu_clair trait_fin" points="228.61 1.84 157.38 32.29 159.68 71.35 242.78 35.1"/>
+  <circle class="bleu_clair trait_fin" cx="156.8" cy="52.47" r="19.53"/>
+  <polygon class="bleu_clair trait_fin" points="151.52 378.86 213.86 378.86 235.29 213.68 151.52 213.68 67.75 213.68 89.19 378.86 151.52 378.86"/>
+  <!-- l'eau du verre, découpée à la forme du verre :
+       une eau calme dessous, et par-dessus la vague (qui s'aplatit quand l'eau est calme) -->
+  <clipPath id="eau_verre">
+    <polygon points="89.5 214 213.5 214 195.62 355.94 107.42 355.94"/>
+  </clipPath>
+  <g clip-path="url(#eau_verre)">
+    <polygon class="bleu" points="92.26 236.6 210.79 236.6 195.62 355.94 107.42 355.94"/>
+    <g class="eau_agitee">
+      <g class="eau_vague">
+        <path class="bleu" d="M30,227.6 q12.5,-9 25,0 t25,0 t25,0 t25,0 t25,0 t25,0 t25,0 t25,0 t25,0 t25,0 t25,0 V256.6 H30 Z"/>
+        <path class="sans_fond trait_fin" fill="none" d="M30,227.6 q12.5,-9 25,0 t25,0 t25,0 t25,0 t25,0 t25,0 t25,0 t25,0 t25,0 t25,0 t25,0"/>
+      </g>
+    </g>
+  </g>
+  <polyline class="sans_fond trait_fin" fill="none" points="92.26 236.6 107.42 355.94 195.62 355.94 210.79 236.6"/>
+  <path class="goutte bleu trait_fin" d="M171.12,135.74c0,14.34-8.26,18.44-18.44,18.44s-18.44-4.1-18.44-18.44c0-12.35,18.15-45.95,18.15-45.95,0,0,18.73,33.55,18.73,45.95h0Z"/>
+  <path class="rose_pale trait_fin" d="M34.26,403.11v-66.38c0-22.98,12.25-35.74,35.74-35.74h75.83c4.02,0,7.28,3.25,7.27,7.28-.02,9.35-2.02,24.38-14.68,24.38h-55.15"/>
+  <path class="rose_pale trait_fin" d="M182.28,283.12h43.02c9.84,0,17.81,7.97,17.81,17.81h0c0,9.84-7.97,17.81-17.81,17.81h-43.02c-9.84,0-17.81-7.97-17.81-17.81h0c0-9.84,7.97-17.81,17.81-17.81Z"/>
+  <path class="sans_fond trait_fin" fill="none" d="M172,286.18h15.46c4.01,0,7.27,3.25,7.27,7.27v10.49c0,4.01-3.25,7.27-7.27,7.27h-19.41"/>
+  <path class="rose_pale trait_fin" d="M182.28,318.92h43.02c9.84,0,17.81,7.97,17.81,17.81h0c0,9.84-7.97,17.81-17.81,17.81h-43.02c-9.84,0-17.81-7.97-17.81-17.81h0c0-9.84,7.97-17.81,17.81-17.81Z"/>
+  <path class="sans_fond trait_fin" fill="none" d="M172,321.99h15.46c4.01,0,7.27,3.25,7.27,7.27v10.49c0,4.01-3.25,7.27-7.27,7.27h-19.41"/>
+  <path class="rose_pale trait_fin" d="M182.28,354.73h43.02c9.84,0,17.81,7.97,17.81,17.81h0c0,9.84-7.97,17.81-17.81,17.81h-43.02c-9.84,0-17.81-7.97-17.81-17.81h0c0-9.84,7.97-17.81,17.81-17.81Z"/>
+  <path class="sans_fond trait_fin" fill="none" d="M172,357.79h15.46c4.01,0,7.27,3.25,7.27,7.27v10.49c0,4.01-3.25,7.27-7.27,7.27h-19.41"/>
+  <path class="rose_pale trait_fin" d="M182.28,390.54h43.02c9.84,0,17.81,7.97,17.81,17.81h0c0,9.84-7.97,17.81-17.81,17.81h-43.02c-9.84,0-17.81-7.97-17.81-17.81h0c0-9.84,7.97-17.81,17.81-17.81Z"/>
+  <path class="sans_fond trait_fin" fill="none" d="M172,393.6h15.46c4.01,0,7.27,3.25,7.27,7.27v10.49c0,4.01-3.25,7.27-7.27,7.27h-19.41"/>
+  <path class="sans_fond trait_fin" fill="none" d="M117.36,301.88v8.24c0,4.01,3.25,7.27,7.27,7.27h15.34c4.01,0,7.27-3.25,7.27-7.27v-8.63"/>
+</svg>

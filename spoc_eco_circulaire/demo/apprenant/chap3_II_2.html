@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>chapitre 3_ II _ Activité: à chaque problème, ses éco-solutions</title>
+
+  <link rel="stylesheet" href="couleurs.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="mobile.css" media="(max-width: 1100px)">
+
+  <script src="rive/rive.js"></script>
+  <script src="cours.js" defer></script>
+  <script src="script.js" defer></script>
+  <script src="dessins.js" defer></script>
+</head>
+
+
+<!-- Où est cette page dans le cours ? (le reste vient de cours.js) -->
+<body data-chapitre="3" data-partie="5" data-suite="non" data-progression="manuelle">
+
+  <!-- ========== Pop-up mascotte d'accueil ========== -->
+  <!-- DESSIN DE LA MASCOTTE : remplacer le chemin -->
+  <!-- data-ouverture="bouton" : s'ouvre au clic sur « c'est parti ! » (data-ouvrir-mascotte), pas toute seule.
+       data-afficher-apres : en la fermant (« je suis prêt·e ! », rond rouge ou clic à côté),
+       la partie 1 apparaît et la page glisse jusqu'à elle. -->
+  <dialog class="pop_mascotte" id="pop_mascotte" aria-labelledby="pop_mascotte_texte"
+          data-ouverture="bouton" data-afficher-apres="#partie_1">
+    <button type="button" class="fermer_modal" aria-label="fermer"></button>
+    <img class="pop_mascotte_image" src="dessin/mascotte/mascotte.svg" alt="">
+    <div class="pop_mascotte_contenu">
+      <p class="pop_mascotte_texte" id="pop_mascotte_texte">Des idées, il y en a plein&#8239;! Mais comment s’y retrouver et choisir les bonnes éco-solutions&#8239;? <br>Suis-moi, on fait le tour de la question&#8239;!</p>
+      <button type="button" class="bouton_suite" data-fermer-pop>je suis prêt·e&#8239;!</button>
+    </div>
+  </dialog>
+
+
+  <div id="droite_contenu">
+    <div id="contenu_chapitre">
+
+      <div id="contenu_gauche">
+
+        <div class="petit_titre">2. Activité&#8239;: à chaque problème, ses éco-solutions&#8239;!</div>
+
+
+        <!-- ========== Introduction ========== -->
+
+        <div class="txt_labeur">
+          <p>Un produit peut être amélioré de nombreuses façons&#8239;: utiliser moins de matière, choisir un matériau différent, limiter les consommations d’énergie, faciliter les réparations ou encore repenser la manière de le partager.</p>
+          <p>La roue de Brezet permet de structurer ces pistes d’action et de repérer les solutions possibles aux différentes étapes du cycle de vie.</p>
+          <p>Dans cette activité, tu vas d’abord identifier les éco-solutions adaptées à plusieurs situations, puis les associer à la bonne catégorie de la roue.</p>
+        </div>
+
+        <!-- data-recentrer : au 1er geste de scroll, les règles se placent au centre de l'écran -->
+        <div class="txt_labeur" id="regles_activite" data-recentrer>
+          <span class="souligne">Les règles de l’activité&#8239;:</span><br>
+          Pour chaque question, sélectionne toutes les réponses pertinentes. Puis réalise le glisser-déposer pour associer chaque solution à la stratégie d’éco-conception correspondante.
+        </div>
+
+        <!-- data-ouvrir-mascotte : le bouton disparaît et la pop-up de la mascotte s'ouvre -->
+        <div class="conteneur_depart" id="depart">
+          <button type="button" class="bouton_suite" data-ouvrir-mascotte>c’est parti&#8239;!</button>
+        </div>
+
+
+        <!-- ========== Partie 1 : QCM ========== -->
+        <!-- data-tirage="4" : 4 questions tirées au hasard parmi les 9.
+             data-niveau sert ici de thème (réparation, transport, fin de vie, usage, matières, production) :
+             le tirage prend d'abord des thèmes différents, donc pas deux questions sur le même sujet.
+             data-rappel : encadré mascotte affiché après data-rappel-apres corrections lues, tant que tout n’est pas lu.
+             data-aide : bulle de la mascotte, 5 s après « correction » si aucune correction n’est ouverte.
+             Correction : sous chaque question, un bouton « voir la correction » qui devient la boîte. -->
+        <!-- Options : <input type="checkbox" data-juste>  = bonne réponse
+                       <input type="checkbox" data-neutre> = ni vraie ni fausse
+                       <input type="checkbox">             = mauvaise réponse -->
+
+        <div class="partie_activite cache" id="partie_1">
+
+          <div class="consigne" id="consigne_partie_1">
+            <span class="souligne">Première partie&#8239;:</span> pour chaque question, sélectionne toutes les réponses pertinentes.
+          </div>
+
+          <div class="qcm"
+               data-recentrer
+               data-premiere-etape="#consigne_partie_1"
+               data-texte-correction="correction"
+               data-texte-suite="passer à la suite"
+               data-suite-cible="#partie_2"
+               data-partie-actuelle="#partie_1"
+               data-tirage="4"
+               data-rappel="#rappel_corrections"
+               data-rappel-apres="2"
+               data-aide="#aide_correction"
+               data-aide-delai="5000"
+               data-progression-reponses="20"
+               data-progression-fin="50">
+
+            <!-- Question 1 : smartphone -->
+            <!-- DESSIN À CRÉER : smartphone.svg -->
+            <div class="qcm_bloc" data-niveau="reparation" data-scenario="smartphone">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/IV/eclate_loupe.svg" alt="">
+                <p>Une entreprise souhaite améliorer la réparabilité d'un smartphone. Parmi les propositions suivantes, lesquelles sont pertinentes&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Utiliser des vis plutôt qu'un assemblage permanent</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Rendre la batterie accessible et remplaçable</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Augmenter la quantité de colle</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Utiliser des outils standards</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Rendre les composants soudés entre eux</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Faciliter l'accès aux composants</span></label>
+              </div>
+              <div class="qcm_correction">
+                <div class="plus_loin">
+                  <p>Faciliter l'accès aux composants, leur remplacement et le recours à des outils standards permet de faciliter la réparation. Les assemblages permanents ou difficiles à démonter vont au contraire compliquer cette opération.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 2 : transport -->
+            <!-- DESSIN À CRÉER : transport.svg -->
+            <div class="qcm_bloc" data-niveau="logistique" data-scenario="transport">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/I/4/camion.svg" alt="">
+                <p>Une entreprise souhaite réduire les impacts liés au transport et à la logistique de son produit. Quelles solutions peut-elle envisager&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Réduire le volume de l'emballage</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Réduire la masse du produit lorsque cela est compatible avec ses fonctions</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Optimiser le taux de chargement des véhicules</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Augmenter la quantité de matériau d'emballage pour protéger davantage le produit, sans autre modification</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Privilégier des modes de transport moins impactants lorsque cela est possible</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Augmenter le volume occupé par chaque produit pendant le transport</span></label>
+              </div>
+              <div class="qcm_correction">
+                <div class="plus_loin">
+                  <p>Le Design for Logistics cherche notamment à réduire les volumes et masses transportés et à optimiser la logistique. Le choix du mode de transport peut également contribuer à réduire les impacts.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 3 : recyclage -->
+            <!-- DESSIN À CRÉER : recyclage.svg -->
+            <div class="qcm_bloc" data-niveau="fin_de_vie" data-scenario="recyclage">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/I/1/multicritere/analyse_cycle_vie.svg" alt="">
+                <p>Une entreprise souhaite faciliter le recyclage de son produit en fin de vie. Quelles solutions de conception sont pertinentes&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Utiliser des matériaux recyclables</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Limiter la diversité des matériaux lorsque cela est possible</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Faciliter la séparation des différents matériaux</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Multiplier les matériaux différents pour augmenter les performances du produit, sans considérer leur recyclabilité</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Faciliter le démontage du produit</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Rendre les matériaux indissociables les uns des autres</span></label>
+              </div>
+              <div class="qcm_correction">
+                <div class="plus_loin">
+                  <p>Faciliter le recyclage passe notamment par le choix de matériaux recyclables, la limitation de leur diversité et la possibilité de séparer les différents matériaux en fin de vie.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 4 : utilisation -->
+            <!-- DESSIN À CRÉER : utilisation.svg -->
+            <div class="qcm_bloc" data-niveau="usage" data-scenario="utilisation">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/I/1/multiacteur/client.svg" alt="">
+                <p>Une entreprise souhaite réduire les impacts environnementaux de son produit pendant la phase d’utilisation. Choisis parmi les solutions suivantes, les plus pertinentes&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Réduire la consommation d’énergie du produit pendant son utilisation</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Optimiser les performances du produit en usage</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Faciliter l’entretien et la maintenance du produit</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Réduire la masse de l’emballage pour optimiser le transport</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Augmenter la consommation énergétique du produit pour améliorer ses performances</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Augmenter la durée de vie du produit</span></label>
+              </div>
+              <div class="qcm_correction">
+                <div class="plus_loin">
+                  <p>Le Design for Use vise notamment à réduire les impacts liés à l’utilisation du produit. Cela peut passer par une réduction de la consommation d’énergie, l’optimisation des performances en usage, mais aussi par la facilitation de l’entretien et l’augmentation de la durée de vie. Les solutions concernant spécifiquement l’emballage et le transport relèvent plutôt du Design for Logistics.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 5 : baskets -->
+            <!-- DESSIN À CRÉER : baskets.svg -->
+            <div class="qcm_bloc" data-niveau="matieres" data-scenario="baskets">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/I/1/cycle_de_vie/usage.svg" alt="">
+                <p>Une entreprise souhaite réduire l’impact environnemental de ses baskets. Quelles solutions peut-elle envisager&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Utiliser une matière recyclée adaptée au besoin</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Choisir systématiquement le matériau le plus léger, quel que soit son impact</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Réduire la quantité de matière utilisée lorsque c’est possible</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Vérifier l’origine des matières et les conditions de leur production</span></label>
+              </div>
+              <div class="qcm_correction">
+                <div class="plus_loin">
+                  <p>Une matière recyclée n’est pas automatiquement la meilleure solution dans tous les cas. Il faut aussi considérer ses propriétés, son procédé de production et les impacts associés. Alléger le produit peut être intéressant, mais pas si cela réduit fortement sa durée de vie.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 6 : meubles -->
+            <!-- DESSIN À CRÉER : meubles.svg -->
+            <div class="qcm_bloc" data-niveau="production" data-scenario="meubles">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/II/2/chaise.svg" alt="">
+                <p>Une usine fabrique des meubles. Quelles actions relèvent de l’optimisation de la production&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Réduire les chutes de matière lors de la découpe</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Améliorer l’efficacité énergétique des machines</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Remplacer la vente des meubles par un service de location</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Réduire les émissions et les déchets du procédé de fabrication</span></label>
+              </div>
+              <div class="qcm_correction">
+                <div class="plus_loin">
+                  <p>Ces actions améliorent l’efficacité du procédé de fabrication. La location relève plutôt d’une réflexion sur le modèle économique.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 7 : ordinateur -->
+            <!-- DESSIN À CRÉER : ordinateur.svg -->
+            <div class="qcm_bloc" data-niveau="reparation" data-scenario="ordinateur">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/II/2/ordinateur.svg" alt="">
+                <p>Un fabricant d’ordinateurs veut réduire les impacts liés à la durée de vie de ses produits. Quelles solutions peut-il mettre en place&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Faciliter le remplacement de la batterie et des composants défectueux</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Proposer des pièces détachées et des instructions de réparation</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Rendre les composants difficiles à remplacer pour encourager l’achat d’un appareil neuf</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Prévoir une conception robuste et adaptée à la durée d’utilisation visée</span></label>
+              </div>
+              <div class="qcm_correction">
+                <div class="plus_loin">
+                  <p>Réparer et conserver plus longtemps un appareil peut éviter la fabrication prématurée d’un produit neuf. La robustesse doit toutefois être adaptée aux besoins et ne pas conduire à surdimensionner inutilement le produit.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 8 : cartons -->
+            <!-- DESSIN À CRÉER : cartons.svg -->
+            <div class="qcm_bloc" data-niveau="logistique" data-scenario="cartons">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/II/1/carton.svg" alt="">
+                <p>Une marque expédie ses produits dans des cartons volumineux contenant beaucoup de vide. Quelles éco-solutions peut-elle envisager&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Adapter la taille des emballages aux produits</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Augmenter la quantité de matériau de calage sans vérifier son utilité</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Optimiser le chargement des véhicules de transport</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Étudier des emballages réutilisables lorsque le système le permet</span></label>
+              </div>
+              <div class="qcm_correction">
+                <div class="plus_loin">
+                  <p>Réduire le volume transporté et mieux utiliser la capacité des véhicules peut diminuer les impacts logistiques. Un emballage réutilisable est intéressant si sa durée d’utilisation, son retour et son nettoyage sont cohérents avec le système étudié.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question 9 : lampe -->
+            <!-- DESSIN À CRÉER : lampe.svg -->
+            <div class="qcm_bloc" data-niveau="fin_de_vie" data-scenario="lampe">
+              <div class="qcm_scenario">
+                <img src="dessin/chap_3/II/2/lampe.svg" alt="">
+                <p>Un fabricant conçoit une lampe pour faciliter son recyclage. Quelles décisions peuvent l’aider&#8239;?</p>
+              </div>
+              <div class="qcm_options">
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Faciliter le démontage des principaux composants</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Limiter les associations de matériaux difficiles à séparer</span></label>
+                <label class="qcm_option"><input type="checkbox"> <span>Coller définitivement tous les composants entre eux</span></label>
+                <label class="qcm_option"><input type="checkbox" data-juste> <span>Tenir compte des filières de collecte et de recyclage réellement disponibles</span></label>
+              </div>
+              <div class="qcm_correction">
+                <div class="plus_loin">
+                  <p>Un produit conçu pour être recyclable n’est pas nécessairement recyclé en pratique. Il faut également considérer la collecte, les procédés de traitement et les débouchés des matières récupérées.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- encadré mascotte pendant la correction du QCM -->
+          <!-- DESSIN DE LA MASCOTTE : remplacer le chemin -->
+          <aside class="rappel_fin rappel_corrections" id="rappel_corrections" hidden>
+            <img class="rappel_fin_dessin" src="dessin/mascotte/mascotte.svg" alt="">
+            <p>regarde toutes les corrections pour passer à la suite&#8239;!</p>
+          </aside>
+
+          <!-- bulle verte : 5 s après « correction », si aucune correction n'a été ouverte -->
+          <!-- DESSIN DE LA MASCOTTE : remplacer le chemin -->
+          <div class="bulle_aide" id="aide_correction" role="status" hidden>
+            <button type="button" class="qcm_fermer" aria-label="fermer la bulle"></button>
+            <img class="bulle_aide_dessin" src="dessin/mascotte/mascotte.svg" alt="">
+            <p>Clique sur «&#8239;voir la correction&#8239;» sous chaque question pour découvrir les réponses&#8239;!</p>
+          </div>
+        </div>
+
+
+        <!-- ========== Partie 2 : roue de Brezet (glisser-déposer) ========== -->
+
+        <div class="partie_activite cache" id="partie_2">
+
+          <!-- data-haut : c'est cette phrase qui se cale en haut de l'écran quand la partie apparaît -->
+          <div class="txt_labeur" data-haut>
+            La roue de Brezet est un outil qui rassemble un ensemble de solutions d’éco-conception par étape du cycle de vie du produit.
+          </div>
+
+          <div class="consigne" id="consigne_partie_2">
+            <span class="souligne">Deuxième partie&#8239;:</span> associe chaque éco-solution à la stratégie correspondante dans la roue de Brezet.
+          </div>
+
+          <!-- Les cartes (data-niveau = la bonne étape) : seules celles des questions tirées au QCM restent (data-scenario).
+               Les étapes : le schéma du cycle de vie du chapitre 1, chaque dessin avec sa stratégie.
+               data-nom sur chaque zone : ajouté à une carte mal placée, à la correction. -->
+          <div class="classement roue_brezet"
+               data-cartes-par-scenario="2"
+               data-centrer=".etape_brezet :is(img, .dessin)"
+                              data-correction="deplacer"
+               data-recentrer
+               data-premiere-etape="#consigne_partie_2"
+               data-texte-correction="correction"
+               data-texte-suite="passer à la suite"
+               data-suite-cible="#a_retenir"
+               data-progression-debut="50"
+               data-progression-placement="90">
+
+            <!-- Cartes à placer -->
+            <!-- Cartes à placer : toutes les bonnes réponses des 9 questions du QCM (pas seulement celles tirées).
+                 data-niveau = la bonne étape de la roue. -->
+            <!-- Cartes à placer : les bonnes réponses de chaque question.
+                 data-scenario = la question : seules les cartes des 4 questions tirées au QCM restent.
+                 data-niveau = la bonne étape de la roue. -->
+            <div class="depot reserve">
+              <!-- smartphone -->
+              <div class="carte carte_texte" data-scenario="smartphone" data-niveau="usage"><span>vis plutôt que colle</span></div>
+              <div class="carte carte_texte" data-scenario="smartphone" data-niveau="usage"><span>batterie remplaçable</span></div>
+              <div class="carte carte_texte" data-scenario="smartphone" data-niveau="usage"><span>outils standards</span></div>
+              <div class="carte carte_texte" data-scenario="smartphone" data-niveau="usage"><span>composants accessibles</span></div>
+              <!-- transport -->
+              <div class="carte carte_texte" data-scenario="transport" data-niveau="logistique"><span>emballage moins volumineux</span></div>
+              <div class="carte carte_texte" data-scenario="transport" data-niveau="logistique"><span>produit allégé</span></div>
+              <div class="carte carte_texte" data-scenario="transport" data-niveau="logistique"><span>véhicules bien remplis</span></div>
+              <div class="carte carte_texte" data-scenario="transport" data-niveau="logistique"><span>transport moins impactant</span></div>
+              <!-- recyclage -->
+              <div class="carte carte_texte" data-scenario="recyclage" data-niveau="fin_de_vie"><span>matériaux recyclables</span></div>
+              <div class="carte carte_texte" data-scenario="recyclage" data-niveau="fin_de_vie"><span>moins de matériaux différents</span></div>
+              <div class="carte carte_texte" data-scenario="recyclage" data-niveau="fin_de_vie"><span>matériaux séparables</span></div>
+              <div class="carte carte_texte" data-scenario="recyclage" data-niveau="fin_de_vie"><span>produit démontable</span></div>
+              <!-- utilisation -->
+              <div class="carte carte_texte" data-scenario="utilisation" data-niveau="usage"><span>moins d’énergie à l’usage</span></div>
+              <div class="carte carte_texte" data-scenario="utilisation" data-niveau="usage"><span>performances optimisées</span></div>
+              <div class="carte carte_texte" data-scenario="utilisation" data-niveau="usage"><span>entretien facilité</span></div>
+              <div class="carte carte_texte" data-scenario="utilisation" data-niveau="usage"><span>durée de vie allongée</span></div>
+              <!-- baskets -->
+              <div class="carte carte_texte" data-scenario="baskets" data-niveau="matieres"><span>matière recyclée adaptée</span></div>
+              <div class="carte carte_texte" data-scenario="baskets" data-niveau="matieres"><span>moins de matière</span></div>
+              <div class="carte carte_texte" data-scenario="baskets" data-niveau="matieres"><span>origine des matières vérifiée</span></div>
+              <!-- meubles -->
+              <div class="carte carte_texte" data-scenario="meubles" data-niveau="production"><span>moins de chutes de découpe</span></div>
+              <div class="carte carte_texte" data-scenario="meubles" data-niveau="production"><span>machines plus efficaces</span></div>
+              <div class="carte carte_texte" data-scenario="meubles" data-niveau="production"><span>moins d’émissions et de déchets</span></div>
+              <!-- ordinateur -->
+              <div class="carte carte_texte" data-scenario="ordinateur" data-niveau="usage"><span>composants remplaçables</span></div>
+              <div class="carte carte_texte" data-scenario="ordinateur" data-niveau="usage"><span>pièces détachées et notice</span></div>
+              <div class="carte carte_texte" data-scenario="ordinateur" data-niveau="usage"><span>conception robuste</span></div>
+              <!-- cartons -->
+              <div class="carte carte_texte" data-scenario="cartons" data-niveau="logistique"><span>emballage ajusté</span></div>
+              <div class="carte carte_texte" data-scenario="cartons" data-niveau="logistique"><span>chargement optimisé</span></div>
+              <div class="carte carte_texte" data-scenario="cartons" data-niveau="logistique"><span>emballage réutilisable</span></div>
+              <!-- lampe -->
+              <div class="carte carte_texte" data-scenario="lampe" data-niveau="fin_de_vie"><span>démontage facilité</span></div>
+              <div class="carte carte_texte" data-scenario="lampe" data-niveau="fin_de_vie"><span>assemblages séparables</span></div>
+              <div class="carte carte_texte" data-scenario="lampe" data-niveau="fin_de_vie"><span>filières de recyclage existantes</span></div>
+            </div>
+
+            <!-- Schéma : la roue (mêmes flèches et mêmes places que le schéma du chapitre 1) -->
+            <div class="schema_cycle schema_centre">
+              <svg class="fleches_cycle" viewBox="0 0 100 100" aria-hidden="true">
+                <defs>
+                  <marker id="pointe_brezet" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="10" markerHeight="20" orient="auto">
+                    <path d="M0 0 L10 5 L0 10 z" fill="var(--trait)"/>
+                  </marker>
+                </defs>
+                <path d="M64.2 14.8 A38 38 0 0 1 79.1 25.6" marker-end="url(#pointe_brezet)"/>
+                <path d="M87.9 52.7 A38 38 0 0 1 82.2 70.1" marker-end="url(#pointe_brezet)"/>
+                <path d="M59.2 86.9 A38 38 0 0 1 40.8 86.9" marker-end="url(#pointe_brezet)"/>
+                <path d="M17.8 70.1 A38 38 0 0 1 12.1 52.7" marker-end="url(#pointe_brezet)"/>
+                <path d="M20.9 25.6 A38 38 0 0 1 35.8 14.8" marker-end="url(#pointe_brezet)"/>
+              </svg>
+
+                <div class="niveau etape_brezet" style="left:50%; top:12%;">
+                  <img src="dessin/chap_3/I/1/multicritere/minerais.svg" alt="">
+                  <span class="nom_dessin">choisir des matériaux à faible impact</span>
+                  <div class="depot" data-niveau="matieres" data-nom="choisir des matériaux à faible impact"></div>
+                </div>
+
+                <div class="niveau etape_brezet" style="left:86%; top:38%;">
+                  <img src="dessin/chap_3/I/1/cycle_de_vie/production.svg" alt="">
+                  <span class="nom_dessin">optimiser la production</span>
+                  <div class="depot" data-niveau="production" data-nom="optimiser la production"></div>
+                </div>
+
+                <div class="niveau etape_brezet" style="left:72%; top:81%;">
+                  <img src="dessin/chap_3/I/1/cycle_de_vie/distribution.svg" alt="">
+                  <span class="nom_dessin">optimiser la logistique</span>
+                  <div class="depot" data-niveau="logistique" data-nom="optimiser la logistique"></div>
+                </div>
+
+                <div class="niveau etape_brezet" style="left:28%; top:81%;">
+                  <img src="dessin/chap_3/I/1/cycle_de_vie/usage.svg" alt="">
+                  <span class="nom_dessin">optimiser l’usage et la durée de vie</span>
+                  <div class="depot" data-niveau="usage" data-nom="optimiser l’usage et la durée de vie"></div>
+                </div>
+
+                <div class="niveau etape_brezet" style="left:14%; top:38%;">
+                  <img src="dessin/chap_3/I/1/multicritere/analyse_cycle_vie.svg" alt="">
+                  <span class="nom_dessin">faciliter le recyclage</span>
+                  <div class="depot" data-niveau="fin_de_vie" data-nom="faciliter le recyclage"></div>
+                </div>
+            </div>
+
+          </div>
+
+
+          <!-- ========== À retenir ========== -->
+          <div class="partie_activite cache" id="a_retenir">
+            <div class="a_retenir_boite">
+              <p>La roue de Brezet est un outil pour explorer et organiser les pistes d’éco-conception&#8239;: choisir les matériaux, réduire la quantité de matière, optimiser la production et la distribution, améliorer l’usage ou encore préparer la fin de vie. Elle aide à ne pas oublier de leviers, mais elle ne dit pas à elle seule quelle solution est la meilleure. Pour choisir entre plusieurs options, il faut tenir compte des besoins du produit et évaluer leurs effets sur l’ensemble du cycle de vie.</p>
+
+              <!-- DESSIN DE LA MASCOTTE : remplacer le chemin -->
+              <div class="a_retenir_mascotte">
+                <img class="pop_mascotte_image" src="dessin/mascotte/mascotte.svg" alt="">
+                <p class="pop_mascotte_texte">Passons maintenant aux outils qui permettent de guider ces choix et de comparer les solutions&#8239;!</p>
+              </div>
+            </div>
+
+            <div class="conteneur_suite">
+              <button type="button" class="bouton_suite" data-fin-activite>passer à la suite</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- ========== Notion ========== -->
+
+      <div id="notion_droite"></div>
+
+    </div>
+  </div>
+
+
+  <!-- ========== Bandeau du bas (logos) ========== -->
+
+  <footer id="bandeau_bas">
+  </footer>
+
+</body>
+</html>

@@ -14,7 +14,7 @@
   --italic:              Instrument_italic, Arial, sans-serif;
   --etoile:              wingding;
 
-  --caractere_etoile:    "";
+  --caractere_etoile:    "";
 
   --arrondi_pilule:      999px;
   --arrondi_boite:       14px;
@@ -73,8 +73,9 @@
   box-sizing: border-box;
 }
 
+/* taille de tous les textes du site (tout est en rem) : 100% = taille normale */
 html {
-  font-size: 100%;
+  font-size: 90%;
 }
 
 body {
@@ -331,6 +332,24 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   height: 30px;
   filter: brightness(0) invert(1);
 }
+
+/* pictos du menu insérés en SVG (script : initPictos) : même épaisseur de trait pour tous */
+.bouton_icone .picto {
+  --epaisseur_picto: 1.2px;          /* épaisseur du trait des pictos du menu */
+  width: 30px;
+  height: 30px;
+  color: #fff;                       /* le trait en blanc, comme avant */
+}
+
+.picto :is(path, line, polyline, polygon, rect, circle, ellipse) {
+  vector-effect: non-scaling-stroke;
+  stroke-width: var(--epaisseur_picto, 1.5px);
+}
+
+/* taille de certains pictos du menu (repérés par le nom de leur fichier : src ou data-src) */
+.bouton_icone :is(img, .picto):is([src*="maison"], [data-src*="maison"])  { width: 33px; height: 33px; }
+.bouton_icone :is(img, .picto):is([src*="notion"], [data-src*="notion"])  { width: 20px; height: 20px; }
+.bouton_icone :is(img, .picto):is([src*="loupe"],  [data-src*="loupe"])   { width: 22px; height: 22px; }
 
 .bouton_icone:hover,
 .bouton_icone:focus-visible {
@@ -729,9 +748,26 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   gap: 25px;
 }
 
+/* pas de voile sur tout l'écran : voir .voile_mascotte (zone de contenu seulement) */
 .pop_mascotte::backdrop {
   background: transparent;
 }
+
+/* voile blanc sous la pop-up, sur la zone de contenu seulement
+   (pas sur le menu de gauche ni le bandeau du bas). Placé par script.js. */
+.voile_mascotte {
+  position: fixed;
+  z-index: 97;
+  background: color-mix(in srgb, var(--fond) 50%, transparent);   /* couleur --fond à 50 % */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duree_apparition) ease;
+}
+
+.voile_mascotte.visible {
+  opacity: 1;
+}
+
 
 .pop_mascotte_image {
   width: 130px;
@@ -989,7 +1025,7 @@ strong {
 .ligne_exemple {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 60px;
   margin-bottom: 25px;
 }
 
@@ -1005,9 +1041,7 @@ strong {
   flex: 1;
   min-width: 0;
   max-width: 27vw;
-}
-
-.exemple_large {
+}.exemple_large {
   max-width: none;
   flex: 1;
 }
@@ -1019,11 +1053,16 @@ strong {
 .exemple p:last-child {
   margin-bottom: 0;
 }
+
+
 /* ---------- Fiche dans un exemple ---------- */
 
+/* la feuille : prend la largeur de son tableau, coin coupé en haut à droite */
 .fiche_exemple {
   --taille_coin: 26px;
   position: relative;
+  width: fit-content;
+  max-width: 100%;
   padding: 22px 24px 30px;
   margin-bottom: 12px;
   background: #fff;
@@ -1056,6 +1095,11 @@ strong {
   );
 }
 
+/* une colonne qui contient une fiche prend la largeur de la fiche, pas toute la place */
+.exemple:has(> .fiche_exemple) {
+  flex: 0 1 auto;
+}
+
 .fiche_titre {
   margin: 0 0 16px;
   padding-right: var(--taille_coin);
@@ -1063,9 +1107,9 @@ strong {
   line-height: 1.3;
 }
 
-/* tableau fermé, colonnes marquées */
+/* tableau fermé, colonnes marquées : chaque colonne prend la largeur de son texte */
 .tableau_fiche {
-  width: 100%;
+  width: auto;
   border-collapse: collapse;
   border: 1px solid var(--trait);
   background: #fff;
@@ -1078,15 +1122,17 @@ strong {
   padding: 7px 12px;
   text-align: left;
   vertical-align: top;
+  white-space: nowrap;             /* chaque ligne sur une seule ligne */
   border: 1px solid var(--trait);
 }
 
 .tableau_fiche th {
-  width: 38%;
   font-family: var(--titre);
   font-weight: normal;
 }
-/* ---------- Animations Rive ---------- */
+
+
+/* ---------- Animations Rive et dessins des exemples ---------- */
 
 .media_exemple {
   display: flex;
@@ -1096,17 +1142,33 @@ strong {
 }
 
 .media_exemple canvas {
+  display: block;
   height: 220px;
   width: auto;
-  display: block;
 }
+
+/* dessins SVG des exemples : même hauteur que les animations Rive */
+.media_exemple_mini > :is(img, .dessin) {
+  height: 175px;
+  width: auto;
+  max-width: none;
+  flex-shrink: 0;
+}
+
+
+.media_exemple > :is(img, .dessin) {
+  height: 225px;
+  width: auto;
+  max-width: none;
+  flex-shrink: 0;
+}
+
 
 .anim_decalee {
   margin-left: -62px;
   position: relative;
   z-index: 2;
 }
-
 
 /* ---------- Galerie de dessins ---------- */
 
@@ -1305,7 +1367,8 @@ fieldset.qcm_bloc {
 
 .qcm_scenario img,
 .qcm_scenario .dessin {
-  width: auto;
+  width: 90px;                       /* taille par défaut ; à régler dessin par dessin dans la section 5 */
+  height: auto;
   max-height: 130px;
   flex-shrink: 0;
 }
@@ -1424,18 +1487,26 @@ fieldset.qcm_bloc {
    Sous chaque question, la pilule « voir la correction » s'agrandit
    et devient la boîte de correction (scripts : initQCM). */
 
+/* la place gardée sous la question : la hauteur de la pilule */
+.correction_place {
+  position: relative;
+  height: 34px;
+  margin-top: 22px;
+}
+
 .correction_depliable {
   interpolate-size: allow-keywords;  /* pour animer la largeur depuis celle du texte */
-  position: relative;
+  position: absolute;                /* ouverte, elle passe par-dessus ce qui suit */
+  top: 0;
+  left: 0;
+  z-index: 2;
   width: fit-content;                /* pilule fermée : la largeur du texte */
-  max-width: 100%;
-  margin-top: 22px;
   background: var(--fond);
   border: 1px solid var(--trait);
   border-radius: 19px;
   transition:
-    width .45s ease,
-    border-radius .45s ease,
+    width .35s ease,
+    border-radius .35s ease,
     background .3s ease,
     box-shadow .2s ease,
     transform .2s ease;
@@ -1451,7 +1522,8 @@ fieldset.qcm_bloc {
 }
 
 .correction_depliable.ouverte {
-  width: 520px;                      /* largeur de la boîte ouverte */
+  z-index: 60;
+  width: min(480px, 92vw);           /* largeur de la boîte ouverte */
   border-radius: var(--arrondi_boite);
 }
 
@@ -1504,7 +1576,7 @@ fieldset.qcm_bloc {
   contain: inline-size;              /* la correction cachée n'élargit pas la pilule */
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows .45s ease;
+  transition: grid-template-rows .35s ease;
 }
 
 .correction_depliable.ouverte .correction_contenu {
@@ -1518,13 +1590,21 @@ fieldset.qcm_bloc {
   font-size: 0.9rem;
   line-height: 1.35em;
   opacity: 0;
-  transition: opacity .25s ease, padding .45s ease;
+  transition: opacity .2s ease, padding .35s ease;
 }
 
 .correction_depliable.ouverte .qcm_correction {
-  padding: 14px 19px 6px;
+  padding: 14px 19px 14px;
+}
+
+/* le texte : apparaît après l'ouverture, disparaît avant la fermeture */
+.correction_depliable.texte_visible .qcm_correction {
   opacity: 1;
-  transition-delay: .15s;
+  transition-delay: .15s, 0s;
+}
+
+.correction_bouton_texte {
+  transition: opacity .2s ease;
 }
 
 .qcm_correction_dessin {
@@ -1558,14 +1638,32 @@ fieldset.qcm_bloc {
 }
 .correction_justes {
   font-family: var(--titre);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 
 .correction_justes ul {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;                          /* espace entre les bonnes réponses */
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+/* une étoile devant chaque bonne réponse */
+.correction_justes li {
+  display: flex;
+  gap: 8px;
+}
+
+.correction_justes li::before {
+  content: var(--caractere_etoile);
+  flex-shrink: 0;
+  font-family: var(--etoile);
+  font-size: 0.9rem;
+  -webkit-text-stroke: 0.3px currentColor;
+  color: var(--trait);
 }
 
 .qcm_correction .plus_loin {
@@ -2110,6 +2208,10 @@ width: auto; padding: 4px;
   margin: 0;
 }
 
+.a_retenir_boite > p + p {
+  margin-top: 12px;
+}
+
 
 .a_retenir_mascotte .pop_mascotte_image {
   width: 90px;
@@ -2117,7 +2219,7 @@ width: auto; padding: 4px;
 .a_retenir_boite {
   position: relative;
   max-width: 760px;
-  margin: 60px auto 150px;
+  margin: 60px auto 200px;           /* en bas : la place de la bulle de la mascotte */
   padding: 22px 26px;
   font-family: var(--titre);
   font-size: 1.1rem;
@@ -2418,3 +2520,809 @@ svg.dessin {
 .ecart_apres_petit  { margin-bottom: 15px !important; }
 .ecart_apres        { margin-bottom: 30px !important; }
 .ecart_apres_grand  { margin-bottom: 60px !important; }
+
+/* =====================================================================
+   ROUE DE BREZET (glisser-déposer sur le schéma du cycle de vie)
+   ===================================================================== */
+
+/* pop-up mascotte avec un bouton sous le texte */
+.pop_mascotte_contenu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.pop_mascotte_contenu .bouton_suite {
+  background: var(--fond);
+}
+
+.pop_mascotte_contenu .bouton_suite:hover,
+.pop_mascotte_contenu .bouton_suite:focus-visible {
+  background: var(--rose);
+}
+
+/* le classement en forme de roue : pas de grille ni d'axes */
+.classement.roue_brezet {
+  display: block;
+  width: 100%;
+}
+
+.roue_brezet .schema_cycle {
+  max-width: 640px;
+  margin: 40px auto 0;
+}
+
+/* une étape = un dessin, son nom (la stratégie) et la zone où s'accrochent les cartes */
+.roue_brezet .etape_brezet {
+  position: absolute;
+  width: 190px;
+  transform: translate(-50%, -45px);   /* ancré au milieu du dessin : les cartes s'ajoutent dessous */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 6px;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* le dessin : <img>, ou <svg class="dessin"> une fois inséré par dessins.js */
+.roue_brezet .etape_brezet :is(img, .dessin) {
+  width: auto;
+  max-width: 80px;
+  height: auto;
+  max-height: 70px;
+  pointer-events: none;
+  filter: drop-shadow(0 0 0 var(--trait));
+  transition: transform .2s ease, filter .2s ease;
+}
+
+.roue_brezet .etape_brezet .nom_dessin {
+  width: auto;
+  margin-top: 8px;
+  font-family: var(--titre);
+  font-size: 0.8rem;
+  line-height: 1.2;
+}
+
+/* zone survolée avec une carte (ou choisie au clavier) : le dessin se soulève avec son ombre */
+.roue_brezet .etape_brezet.survol :is(img, .dessin),
+.roue_brezet .etape_brezet:focus-visible :is(img, .dessin) {
+  transform: translate(-4px, -4px);
+  filter: drop-shadow(4px 4px 0 var(--trait));
+}
+
+.roue_brezet .etape_brezet:focus-visible {
+  outline-offset: 6px;
+}
+
+/* beaucoup de cartes : la réserve se range en colonnes de 8, vers la gauche */
+.roue_brezet .reserve {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(11, auto);
+  justify-items: end;
+  gap: 8px 10px;
+}
+
+.roue_brezet .etape_brezet .nom_dessin small {
+  display: block;
+  margin-top: 3px;
+  font-family: var(--labeur);
+}
+
+.roue_brezet .schema_cycle {
+  margin-bottom: 260px;              /* place pour les cartes accrochées aux dessins du bas */
+}
+
+/* les cartes accrochées sous un dessin : l'une en dessous de l'autre */
+.roue_brezet .etape_brezet .depot {
+  width: 300px;
+  min-height: 0;
+  margin-top: 6px;
+  padding: 0;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 5px;
+}
+
+/* les cartes : une courte phrase dans une pilule */
+.roue_brezet .carte_texte {
+  padding: 4px 12px;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  box-shadow: 0 0 0 var(--trait);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.roue_brezet .carte_texte > span,
+.roue_brezet .reserve .carte_texte > span {
+  position: static;
+  margin: 0;
+  padding: 0;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  background: none;
+  border: 0;
+  transform: none;
+  opacity: 1;
+}
+
+.roue_brezet .carte_texte:hover,
+.roue_brezet .carte_texte:focus-visible,
+.roue_brezet .carte_texte.en_main,
+.roue_brezet .carte_texte.choisie {
+  transform: translate(-3px, -3px);
+  box-shadow: 3px 3px 0 var(--trait);
+}
+
+.roue_brezet.corrige .carte_texte:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* à la correction, la carte mal placée affiche la bonne stratégie : on autorise le retour à la ligne */
+.roue_brezet.corrige .carte_texte.erreur > span {
+  white-space: normal;
+}
+
+/* correction de la roue : les cartes bien placées prennent un fond vert ;
+   les autres ont glissé jusqu'à leur bonne place et gardent leur rond rouge */
+.classement.roue_brezet.corrige .carte.carte_texte > span {
+  color: var(--couleur_texte);
+}
+
+.roue_brezet.corrige .carte_texte.juste {
+  background: var(--vert);
+  transition: background .4s ease .9s;
+}
+
+/* bonne réponse : juste le fond vert, sans rond */
+.roue_brezet.corrige .carte_texte.juste::after {
+  display: none;
+}
+
+
+/* ---------- Capture d'écran en pop-up (dessin cliquable) ---------- */
+
+.bouton_capture {
+  display: block;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: zoom-in;
+}
+
+.bouton_capture :is(img, .dessin) {
+  display: block;
+  width: auto;
+  max-width: 160px;
+  max-height: 140px;
+  filter: drop-shadow(0 0 0 var(--trait));
+  transition: transform .2s ease, filter .2s ease;
+}
+
+.bouton_capture:hover :is(img, .dessin),
+.bouton_capture:focus-visible :is(img, .dessin) {
+  transform: translate(-4px, -4px);
+  filter: drop-shadow(4px 4px 0 var(--trait));
+}
+
+.fenetre_capture {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: fit-content;
+  height: fit-content;
+  max-width: min(900px, 90vw);
+  max-height: 85vh;
+  padding: 34px 20px 20px;
+  overflow: auto;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+}
+
+.fenetre_capture::backdrop {
+  background: color-mix(in srgb, var(--fond) 50%, transparent);
+}
+
+.fenetre_capture img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: calc(var(--arrondi_boite) / 2);
+}
+
+/* lignes avec étoile dans un texte : un peu d'air entre elles */
+.ligne_etoile {
+  margin: 0 0 8px;
+}
+
+/* titre en pastille, fond transparent (ex. « Le guide sectoriel ») */
+.pastille_titre {
+  display: inline-block;
+  padding: 4px 12px 5px;
+  font-family: var(--titre);
+  background: transparent;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+}
+
+/* lien vers une autre partie du cours : souligné, prune, rose au survol */
+.lien_cours {
+  color: var(--prune);
+  -webkit-text-stroke-color: currentColor;   /* le contour des lettres en gras suit la couleur du lien */
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  transition: color .2s ease;
+}
+
+.lien_cours:hover,
+.lien_cours:focus-visible {
+  color: var(--rose);
+}
+
+
+/* ---------- Pop-up de fin de partie ---------- */
+
+.pop_fin {
+  max-width: min(680px, 92vw);       /* plus large que la pop-up d'accueil */
+  padding: 30px 44px 30px 36px;      /* haut, droite (place du rond rouge), bas, gauche */
+  background: var(--fond);
+}
+
+.pop_fin[open] {
+  align-items: center;
+  gap: 32px;                         /* entre le logo et le texte */
+}
+
+.pop_fin .pop_mascotte_contenu {
+  gap: 18px;                         /* entre le texte et les boutons */
+}
+
+.pop_fin_boutons {
+  display: flex;
+  flex-wrap: nowrap;                 /* les deux boutons côte à côte */
+  gap: 70px;                         /* entre « voir la fiche synthèse » et « passer à la suite » */
+}
+
+/* boutons : fond --fond, rose au survol */
+.pop_fin .bouton_suite {
+  background: var(--fond);
+}
+
+.pop_fin .bouton_suite:hover,
+.pop_fin .bouton_suite:focus-visible {
+  background: var(--rose);
+}
+
+/* le logo de la fiche synthèse, à la place de la mascotte */
+.pop_fin .logo_fiche {
+  width: 70px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+/* le logo qui vole vers la pastille du menu, dans une bulle ronde */
+.logo_vol {
+  position: fixed;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.logo_vol .logo_fiche {
+  width: 50%;
+  height: auto;
+  color: var(--trait);
+}
+
+/* la pastille du menu qui reçoit le logo */
+@keyframes pastille_recoit {
+  0%, 100% { transform: none; box-shadow: 0 0 0 var(--trait); border-color: var(--trait); }
+  40%      { transform: translate(-4px, -4px) scale(1.15); box-shadow: 4px 4px 0 var(--trait); border-color: var(--fond); }
+}
+
+.bouton_icone.pastille_recoit {
+  animation: pastille_recoit .7s ease;
+}
+
+
+/* ---------- Fiche synthèse : feuille au coin plié, qui défile ---------- */
+
+.fiche_synthese {
+  --taille_coin: 34px;
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(820px, 92vw);
+  height: min(80vh, 900px);
+  padding: 0;
+  overflow: visible;
+  background: transparent;
+  border: 0;
+}
+
+.fiche_synthese::backdrop {
+  background: color-mix(in srgb, var(--fond) 50%, transparent);
+}
+
+.fiche_synthese_feuille {
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  padding: 44px 44px 40px 44px;     /* en haut : la place des boutons imprimer et fermer */
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  clip-path: polygon(0 0, calc(100% - var(--taille_coin)) 0, 100% var(--taille_coin), 100% 100%, 0 100%);
+  scrollbar-width: thin;
+}
+
+/* coin replié, en haut à droite (sur la fenêtre, pas sur la feuille qui défile) */
+.fiche_synthese::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  width: var(--taille_coin);
+  height: var(--taille_coin);
+  border-left: 1px solid var(--trait);
+  border-bottom: 1px solid var(--trait);
+  background: linear-gradient(to top right, var(--fond) calc(50% - 1px), var(--trait) calc(50% - 1px), var(--trait) 50%, transparent 50%);
+}
+
+/* le rond rouge, à gauche du coin plié */
+.fiche_synthese > .qcm_fermer {
+  top: 10px;
+  right: calc(var(--taille_coin) + 10px);
+  z-index: 2;
+}
+
+/* le bouton imprimer, à gauche du rond rouge */
+.fiche_synthese > .bouton_imprimer {
+  position: absolute;
+  top: 4px;
+  right: calc(var(--taille_coin) + 34px);
+  z-index: 2;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.bouton_imprimer :is(img, .dessin) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* emplacement vide tant qu'il n'y a pas de dessin */
+.bouton_imprimer .emplacement_imprimer {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 1px dashed var(--trait);
+  border-radius: 4px;
+}
+
+
+/* ---------- Contenu de la fiche synthèse ---------- */
+
+.fiche_numero {
+  margin: 0 0 4px;
+  font-size: 0.8rem;
+}
+
+.fiche_titre_principal {
+  margin: 0 70px 26px 0;
+  font-family: var(--titre);
+  font-size: 1.4rem;
+  line-height: 1.2;
+}
+
+.fiche_section {
+  margin-top: 34px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.fiche_section > .pastille_titre {
+  margin-bottom: 12px;
+}
+
+.fiche_synthese_feuille p {
+  margin: 0 0 8px;
+}
+
+.fiche_synthese_feuille ul {
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.fiche_synthese_feuille li {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.fiche_synthese_feuille li::before {
+  content: var(--caractere_etoile);
+  flex-shrink: 0;
+  font-family: var(--etoile);
+  -webkit-text-stroke: 0.3px currentColor;
+}
+
+.fiche_synthese_feuille .liste_simple li::before {
+  content: none;
+}
+
+/* l'essentiel : rectangle rose */
+.fiche_essentiel {
+  padding: 16px 20px;
+  background: var(--rose);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+}
+
+/* point de vigilance : sans cadre, liste resserrée */
+.fiche_vigilance ul {
+  margin: 0 0 8px;
+}
+
+.fiche_vigilance li {
+  margin-bottom: 2px;
+}
+
+.fiche_section .tableau_fiche {
+  margin: 6px 0 8px;
+  background: transparent;
+}
+
+.fiche_section .tableau_fiche th {
+  width: auto;
+}
+
+.fiche_section .tableau_fiche thead th {
+  background: var(--vert_bleu);
+}
+
+/* la roue de Brezet simplifiée */
+.fiche_roue {
+  max-width: 340px;                  /* roue resserrée : dessins plus proches */
+  margin: 0 auto;
+}
+
+.fiche_section > .pastille_titre + .fiche_roue {
+  margin-top: -4px;                  /* moins d'espace entre le titre et la roue */
+}
+
+.fiche_roue .etape_fiche {
+  position: absolute;
+  width: 140px;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-size: 0.72rem;
+  line-height: 1.2;
+}
+
+.fiche_roue .etape_fiche :is(img, .dessin) {
+  width: auto;
+  max-width: 54px;
+  height: auto;
+  max-height: 46px;
+  margin-bottom: 4px;
+}
+
+.fiche_roue .centre_roue {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--titre);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+
+/* ---------- Impression : seulement la fiche ---------- */
+
+@media print {
+  html.impression_fiche body > *:not(.fiche_synthese) {
+    display: none !important;
+  }
+
+  html.impression_fiche .fiche_synthese {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+  }
+
+  html.impression_fiche .fiche_synthese::backdrop {
+    display: none;
+  }
+
+  html.impression_fiche .fiche_synthese_feuille {
+    height: auto;
+    overflow: visible;
+    padding: 0;
+    background: #fff;
+    border: 0;
+    clip-path: none;
+  }
+
+  html.impression_fiche .fiche_synthese::after {
+    display: none;
+  }
+
+  html.impression_fiche .fiche_synthese > button {
+    display: none;
+  }
+}
+
+/* exemples dans la fiche : en retrait, avec un trait à gauche et une pastille sans couleur */
+.fiche_exemples {
+  margin: 10px 80px 10px 4%;
+  padding: 4px 0 4px 18px;
+  border-left: 1px solid var(--trait);
+}
+
+.pastille_exemple {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 2px 9px 3px;
+  font-size: 0.8rem;
+  background: transparent;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+}
+
+/* épaisseur du trait du logo de la fiche, quelle que soit sa taille
+   (marche quand le SVG est inséré dans la page, c'est-à-dire avec un serveur : Live Server…) */
+.pop_fin .logo_fiche {
+  --epaisseur_logo: 1.5px;
+  color: var(--trait);
+}
+
+.logo_fiche :is(path, line, polyline, polygon, rect, circle, ellipse) {
+  vector-effect: non-scaling-stroke;
+  stroke-width: var(--epaisseur_logo, 1.5px);
+}
+
+
+/* ---------- Fiches synthèse : éléments en plus (fiches 1 et 2) ---------- */
+
+/* « Pourquoi ? » : sur sa propre ligne */
+.fiche_pourquoi {
+  display: block;
+  font-family: var(--titre);
+}
+
+/* acteurs et impacts autour du schéma : petites pastilles */
+.fiche_autour {
+  margin-top: 14px;
+}
+
+.fiche_autour p {
+  margin: 0 0 6px;
+  font-family: var(--titre);
+  font-size: 0.8rem;
+}
+
+.fiche_pastilles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.fiche_pastilles span {
+  padding: 2px 9px 3px;
+  font-size: 0.75rem;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+}
+
+/* listes numérotées (questions à se poser, les 4 niveaux) */
+.fiche_synthese_feuille ol {
+  margin: 0 0 8px;
+  padding-left: 22px;
+}
+
+.fiche_synthese_feuille ol li {
+  display: list-item;
+  margin-bottom: 4px;
+}
+
+.fiche_synthese_feuille ol li::before {
+  content: none;
+}
+
+/* numéros en gras */
+.fiche_synthese_feuille ol li::marker {
+  font-family: var(--extra_bold);
+}
+
+/* « niveau 4 ≠ … » : la phrase forte */
+.fiche_formule {
+  font-family: var(--titre);
+}
+
+/* l'escalier des 4 niveaux (fiche 2) */
+.fiche_escalier {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.fiche_escalier .marche {
+  padding: 8px 8px 10px;
+  font-size: 0.75rem;
+  line-height: 1.25;
+  text-align: center;
+  background: var(--vert_citron);
+  border: 1px solid var(--trait);
+}
+
+.fiche_escalier .marche strong {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.fiche_escalier .marche span {
+  font-size: 0.7rem;
+}
+
+.fiche_escalier .m1 { min-height: 80px; }
+.fiche_escalier .m2 { min-height: 110px; }
+.fiche_escalier .m3 { min-height: 140px; }
+.fiche_escalier .m4 { min-height: 170px; }
+
+.fiche_escalier_axe {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0 12px;
+  padding-top: 6px;
+  font-size: 0.75rem;
+  border-top: 1px solid var(--trait);
+}
+
+.fiche_escalier_axe::after {
+  content: "";
+  position: absolute;
+  right: -6px;
+  top: -4.5px;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 7px solid var(--trait);
+}
+
+/* ---------- Fiche 1 : le schéma en 3 anneaux (cycle de vie, acteurs, impacts) ---------- */
+
+.fiche_cible {
+  position: relative;
+  width: min(100%, 600px);
+  aspect-ratio: 1;
+  margin: 6px auto 0;
+}
+
+.cible_fond {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.cible_fond .anneau {
+  fill: none;
+  stroke: var(--vert_citron);        /* les anneaux du fond */
+  stroke-width: 4;
+}
+
+.cible_fond .fleche_cible {
+  fill: none;
+  stroke: var(--trait);
+  stroke-width: 0.25;                /* épaisseur des flèches du centre */
+  stroke-linecap: round;
+}
+
+.cible_item {
+  position: absolute;
+  width: 96px;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-size: 0.62rem;
+  line-height: 1.15;
+}
+
+.cible_item :is(img, .dessin) {
+  width: auto;
+  max-width: 46px;
+  height: auto;
+  max-height: 40px;
+  margin-bottom: 3px;
+}
+
+.cible_cycle :is(img, .dessin) {
+  max-width: 40px;
+  max-height: 34px;
+}
+
+/* exemple avec dessin(s) à droite, dans les fiches */
+.fiche_exemple_ligne {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.fiche_exemple_ligne > p {
+  flex: 1;
+  margin: 0;
+}
+
+.fiche_exemple_dessins {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.fiche_exemple_dessins :is(img, .dessin) {
+  width: auto;
+  max-width: 130px;
+  height: auto;
+  max-height: 200px;
+}
+
+.fiche_exemple_dessins_petit :is(img, .dessin) {
+  width: auto;
+  max-width: 100px;
+  height: auto;
+  max-height: 100px;
+}
+/* le picto « imprimer » de la fiche : même trait que les pictos du menu, en couleur du texte */
+.bouton_imprimer .picto {
+  --epaisseur_picto: 1.2px;
+  color: var(--trait);
+}
+
+/* une colonne qui contient une fiche prend la largeur de la fiche, pas toute la place */
+.exemple:has(> .fiche_exemple) {
+  flex: 0 1 auto;
+}
+
+/* ---------- Pousse qui grandit au passage (dessins avec <g class="pousse">) ---------- */
+.anim_pousse .pousse { transform: scale(0); }
+.anim_pousse.joue .pousse { animation: pousse_grandit 2.5s ease-out forwards; }
+
+@keyframes pousse_grandit {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim_pousse .pousse { transform: none; }
+  .anim_pousse.joue .pousse { animation: none; }
+}

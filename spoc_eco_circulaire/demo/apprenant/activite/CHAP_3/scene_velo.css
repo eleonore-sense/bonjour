@@ -1018,3 +1018,77 @@
   border: 1px solid var(--trait);
   border-radius: var(--arrondi_pilule);
 }
+
+/* ---------- Graphique en barres horizontales (fenêtres « en apprendre plus ») ----------
+   Les barres poussent quand la partie « en apprendre plus » s'ouvre. */
+
+.barres_h {
+  margin: 14px 0 0;
+}
+
+.barres_h figcaption {
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+}
+
+.barres_h ul {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.barres_h li {
+  display: grid;
+  grid-template-columns: 11em 1fr;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.8rem;
+  line-height: 1.2;
+}
+
+.barres_nom {
+  text-align: right;
+}
+
+.barres_piste {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.barres_barre {
+  flex: none;
+  width: max(2px, calc(var(--valeur) / var(--max) * (100% - 5.5em)));
+  height: 16px;
+  background: var(--orange);
+  border: 1px solid var(--trait);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .6s ease calc(var(--i, 0) * 80ms);
+}
+
+.fenetre_plus.ouvert .barres_barre {
+  transform: scaleX(1);
+}
+
+.barres_valeur {
+  flex: none;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity .3s ease calc(var(--i, 0) * 80ms + .4s);
+}
+
+.fenetre_plus.ouvert .barres_valeur {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .barres_barre,
+  .barres_valeur {
+    transition: none;
+  }
+}

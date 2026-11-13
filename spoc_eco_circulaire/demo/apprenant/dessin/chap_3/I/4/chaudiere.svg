@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="227.28" height="508.32" viewBox="-3.5 -3.5 227.28 508.32" stroke-linecap="round" stroke-linejoin="round">
+  <circle class="trait_fin" fill="#9e9e9e" cx="108.93" cy="42.67" r="42.17"/>
+  <path class="bleu_clair trait_fin" d="M133.68,38.94c-.42-13.49-11.48-24.3-25.08-24.3s-24.65,10.81-25.08,24.3h-.02V109.45h50.19V38.94h-.02Z"/>
+  <rect class="bleu_clair trait_fin" x="65.97" y="466.56" width="13.94" height="34.26"/>
+  <rect class="bleu_clair trait_fin" x="141.66" y="466.56" width="13.94" height="34.26"/>
+  <rect class="trait_fin" fill="#9e9e9e" x="59.93" y="436.64" width="26.51" height="30.12" rx="5.67" ry="5.67"/>
+  <rect class="trait_fin" fill="#9e9e9e" x="135.62" y="436.64" width="26.51" height="30.12" rx="5.67" ry="5.67"/>
+  <rect class="bleu_clair trait_fin" x="23.39" y="388.45" width="175.9" height="56.63" rx="5.67" ry="5.67"/>
+  <rect class="blanc trait_fin" x=".5" y="81.22" width="219.28" height="345.78" rx="5.67" ry="5.67"/>
+  <rect class="vert_citron trait_fin" x="78.81" y="364.36" width="63.86" height="32.53" rx="5.67" ry="5.67"/>
+  <circle class="bleu trait_fin" cx="49.3" cy="383.03" r="13.86"/>
+  <circle class="bleu trait_fin" cx="172.79" cy="383.03" r="13.86"/>
+</svg>
