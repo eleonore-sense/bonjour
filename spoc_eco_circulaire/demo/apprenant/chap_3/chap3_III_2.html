@@ -7,15 +7,15 @@
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../mobile.css" media="(max-width: 1100px)">
   <link rel="stylesheet" href="../couleurs.css">
-    <link rel="stylesheet" href="style/chap_3.css">
+  <link rel="stylesheet" href="style/chap3.css"><!-- même nom que dans les autres pages du III -->
   <script src="../rive/rive.js"></script>
   <script src="../cours.js" defer></script>
   <script src="../script.js" defer></script>
   <script src="../dessins.js" defer></script>
 </head>
 
-<!-- Où est cette page dans le cours ? (le reste vient de cours.js) — data-partie à régler -->
-<body data-chapitre="3" data-partie="?" data-racine="../">
+<!-- Où est cette page dans le cours ? (le reste vient de cours.js) -->
+  <body data-chapitre="3" data-partie="8" data-racine="../" data-etape="B" data-mini-apres="#schema_etapes">
 
 
 <div id="droite_contenu">
@@ -23,50 +23,78 @@
 
 <div id="contenu_gauche">
 
+  <div class="petit_titre">1. Les étapes d'une démarche d'éco-conception</div>
+
   <!-- ================= ÉTAPE B ================= -->
   <div class="txt_labeur">
     <span class="pastille_titre titre_etape"><span class="lettre_etape">B</span> analyser&nbsp;: comprendre le problème</span>
     <p>Une fois les opportunités identifiées, il faut comprendre plus précisément le produit, son fonctionnement, ses usages et ses impacts environnementaux.</p>
     <p>Quatre analyses complémentaires peuvent être mobilisées&nbsp;:</p>
-    <p class="ligne_etoile">1. L’analyse du cycle de vie du produit&nbsp;: elle permet d’identifier les grandes étapes du cycle de vie, depuis l’extraction des matières premières jusqu’à la fin de vie.</p>
-    <p class="ligne_etoile">2. L’analyse fonctionnelle&nbsp;: elle sert à identifier les fonctions que le produit doit assurer et les contraintes auxquelles il doit répondre.</p>
-    <p class="ligne_etoile">3. L’analyse environnementale&nbsp;: elle permet d’identifier les principaux impacts environnementaux et les étapes du cycle de vie qui y contribuent. Une ACV peut notamment être mobilisée pour approfondir cette analyse.</p>
-    <p class="ligne_etoile">4. L’analyse des usages&nbsp;: elle vise à comprendre comment le produit est réellement utilisé, entretenu, transporté ou éliminé.</p>
-  </div>
-
-  <div class="txt_labeur">
-    <br><span class="etoile"></span> <strong>De l’analyse à la problématique</strong>
-    <p>Ces analyses permettent de formuler une problématique précise et de définir un cahier des charges pour guider la recherche de solutions.</p>
-    <p>Celui-ci rassemble les critères auxquels les solutions devront répondre&nbsp;:</p>
-    <p class="ligne_etoile"><span class="etoile"></span> environnement&nbsp;: réduction des impacts et de la consommation de ressources&#8239;;</p>
-    <p class="ligne_etoile"><span class="etoile"></span> technique&nbsp;: performances, qualité et sécurité&#8239;;</p>
-    <p class="ligne_etoile"><span class="etoile"></span> économie&nbsp;: coûts de production, investissements et prix&#8239;;</p>
-    <p class="ligne_etoile"><span class="etoile"></span> usage&nbsp;: attentes des utilisateurs et facilité d’utilisation&#8239;;</p>
-    <p class="ligne_etoile"><span class="etoile"></span> autres contraintes&nbsp;: réglementation, production, logistique ou fin de vie.</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>L’analyse du cycle de vie du produit&nbsp;:</strong> elle permet d’identifier les grandes étapes du cycle de vie, depuis l’extraction des matières premières jusqu’à la fin de vie.</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>L’analyse fonctionnelle&nbsp;:</strong> elle sert à identifier les fonctions que le produit doit assurer et les contraintes auxquelles il doit répondre.</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>L’analyse environnementale&nbsp;:</strong> elle permet d’identifier les principaux impacts environnementaux et les étapes du cycle de vie qui y contribuent. Une ACV peut notamment être mobilisée pour approfondir cette analyse.</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>L’analyse des usages&nbsp;:</strong> elle vise à comprendre comment le produit est réellement utilisé, entretenu, transporté ou éliminé.</p>
   </div>
 
 
-  <!-- ================= EXEMPLE : LE SACLAY COLA ================= -->
-  <div class="bloc_exemple bloc_deborde">
+  <!-- ================= EXEMPLE, 1er TEMPS : LES ANALYSES ================= -->
+  <div class="bloc_exemple">
     <span class="intro_exemple">exemple</span>
 
-    <!-- analyse du cycle de vie : une frise -->
-    <p><strong>Analyse du cycle de vie</strong></p>
-    <ol class="frise_cycle">
-      <li><img src="../dessin/chap_3/III/2/matieres_premieres.svg" alt=""><span>matières premières</span></li>
-      <li><img src="../dessin/chap_3/III/2/sirop.svg" alt=""><span>fabrication du sirop</span></li>
-      <li><img src="../dessin/chap_3/III/2/carbonatation.svg" alt=""><span>mélange et carbonatation</span></li>
-      <li><img src="../dessin/chap_3/III/2/bouteille.svg" alt=""><span>mise en bouteille</span></li>
-      <li><img src="../dessin/chap_3/III/2/distribution.svg" alt=""><span>distribution</span></li>
-      <li><img src="../dessin/chap_3/III/2/consommation.svg" alt=""><span>consommation</span></li>
-      <li><img src="../dessin/chap_3/III/2/fin_de_vie.svg" alt=""><span>fin de vie de la bouteille</span></li>
-    </ol>
+    <!-- analyse du cycle de vie : schéma en cercle, sans survol -->
+    <p><span class="etoile"></span> <strong>Analyse du cycle de vie</strong></p>
+    <div class="schema_cycle schema_centre schema_acv">
+      <svg class="fleches_cycle" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <marker id="pointe_acv" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--trait)"/>
+          </marker>
+        </defs>
+        <path d="M63.7 5.1 A47 47 0 0 1 76.3 11.0" marker-end="url(#pointe_acv)"/>
+        <path d="M93.7 32.7 A47 47 0 0 1 96.9 46.3" marker-end="url(#pointe_acv)"/>
+        <path d="M90.8 73.4 A47 47 0 0 1 82.1 84.3" marker-end="url(#pointe_acv)"/>
+        <path d="M57.1 96.5 A47 47 0 0 1 43.2 96.5" marker-end="url(#pointe_acv)"/>
+        <path d="M18.1 84.5 A47 47 0 0 1 9.4 73.7" marker-end="url(#pointe_acv)"/>
+        <path d="M3.1 46.6 A47 47 0 0 1 6.2 33.0" marker-end="url(#pointe_acv)"/>
+        <path d="M23.4 11.2 A47 47 0 0 1 35.9 5.2" marker-end="url(#pointe_acv)"/>
+      </svg>
 
-    <!-- analyse environnementale : texte + tableau -->
-    <p class="ecart_avant"><strong>Analyse environnementale</strong></p>
-    <p>Les principaux impacts sont notamment liés aux matières premières, en particulier au verre de la bouteille, mais également à la culture de la betterave (pour le sucre) et des fruits et épices (pour l’arôme). Le procédé de production du cola dans l’usine de brasserie a également un impact non négligeable. L’utilisation du réfrigérateur lors de la phase d’usage est également un poste d’émission.</p>
+      <div class="etape_cycle" style="left:50%; top:14%;">
+        <img src="../dessin/chap_3/III/2/matieres_premieres.svg" alt="">
+        <span class="nom_dessin">matières premières</span>
+      </div>
+      <div class="etape_cycle" style="left:78.1%; top:27.6%;">
+        <img src="../dessin/chap_3/III/2/sirop.svg" alt="">
+        <span class="nom_dessin">fabrication du sirop</span>
+      </div>
+      <div class="etape_cycle" style="left:85.1%; top:58%;">
+        <img src="../dessin/chap_3/III/2/carbonatation.svg" alt="">
+        <span class="nom_dessin">mélange et carbonatation</span>
+      </div>
+      <div class="etape_cycle" style="left:65.6%; top:82.4%;">
+        <img src="../dessin/chap_3/III/2/bouteille.svg" alt="">
+        <span class="nom_dessin">mise en bouteille</span>
+      </div>
+      <div class="etape_cycle" style="left:34.4%; top:82.4%;">
+        <img src="../dessin/chap_3/III/2/distribution.svg" alt="">
+        <span class="nom_dessin">distribution</span>
+      </div>
+      <div class="etape_cycle" style="left:14.9%; top:58%;">
+        <img src="../dessin/chap_3/III/2/consommation.svg" alt="">
+        <span class="nom_dessin">consommation</span>
+      </div>
+      <div class="etape_cycle" style="left:21.9%; top:27.6%;">
+        <img src="../dessin/chap_3/III/2/fin_de_vie.svg" alt="">
+        <span class="nom_dessin">fin de vie de la bouteille</span>
+      </div>
+    </div>
 
-    <div class="tableau_defile">
+    <!-- analyse environnementale : tableau (couleurs seules), légende, puis le texte -->
+    <p class="ecart_avant_grand"><span class="etoile"></span> <strong>Analyse environnementale</strong></p>
+
+    <!-- survol d'une catégorie (ligne ou colonne) : le reste du tableau passe en fond --fond.
+         survol d'une case ou d'une ligne de légende : les autres niveaux passent à 50 %. -->
+    <div class="bloc_impacts">
       <table class="tableau_impacts">
         <caption class="visuellement_cache">Analyse environnementale du cola en bouteille : impact de chaque étape du cycle de vie</caption>
         <thead>
@@ -81,41 +109,127 @@
           </tr>
         </thead>
         <tbody>
-          <!-- entoure = cases entourées en rouge dans la figure de la prof -->
+          <!-- important = poste entouré en rouge dans la figure de la prof (petit rond prune) -->
           <tr><th scope="row">énergie / effet de serre</th>
-            <td class="significatif entoure">+</td><td class="significatif entoure">+</td><td class="faible">=0</td><td class="faible">=0</td><td class="fort entoure">+++</td><td class="faible">=0</td></tr>
+            <td class="significatif important"><span class="visuellement_cache">impact significatif, poste important</span></td><td class="significatif important"><span class="visuellement_cache">impact significatif, poste important</span></td><td class="faible"><span class="visuellement_cache">faible impact</span></td><td class="faible"><span class="visuellement_cache">faible impact</span></td><td class="fort important"><span class="visuellement_cache">impact fort, poste important</span></td><td class="faible"><span class="visuellement_cache">faible impact</span></td></tr>
           <tr><th scope="row">émissions dans l’air</th>
-            <td class="fort entoure">+++</td><td class="fort entoure">+++</td><td class="faible">=0</td><td class="significatif">+</td><td class="significatif entoure">+</td><td class="significatif">+</td></tr>
+            <td class="fort important"><span class="visuellement_cache">impact fort, poste important</span></td><td class="fort important"><span class="visuellement_cache">impact fort, poste important</span></td><td class="faible"><span class="visuellement_cache">faible impact</span></td><td class="significatif"><span class="visuellement_cache">impact significatif</span></td><td class="significatif important"><span class="visuellement_cache">impact significatif, poste important</span></td><td class="significatif"><span class="visuellement_cache">impact significatif</span></td></tr>
           <tr><th scope="row">émissions dans l’eau</th>
-            <td class="fort entoure">+++</td><td class="faible">=0</td><td class="faible">=0</td><td class="faible">=0</td><td class="significatif">+</td><td class="faible">=0</td></tr>
+            <td class="fort important"><span class="visuellement_cache">impact fort, poste important</span></td><td class="faible"><span class="visuellement_cache">faible impact</span></td><td class="faible"><span class="visuellement_cache">faible impact</span></td><td class="faible"><span class="visuellement_cache">faible impact</span></td><td class="significatif"><span class="visuellement_cache">impact significatif</span></td><td class="faible"><span class="visuellement_cache">faible impact</span></td></tr>
           <tr><th scope="row">consommation d’eau</th>
-            <td class="fort entoure">+++</td><td class="significatif">+</td><td class="faible">=0</td><td class="faible">=0</td><td class="significatif">+</td><td class="faible">=0</td></tr>
+            <td class="fort important"><span class="visuellement_cache">impact fort, poste important</span></td><td class="significatif"><span class="visuellement_cache">impact significatif</span></td><td class="faible"><span class="visuellement_cache">faible impact</span></td><td class="faible"><span class="visuellement_cache">faible impact</span></td><td class="significatif"><span class="visuellement_cache">impact significatif</span></td><td class="faible"><span class="visuellement_cache">faible impact</span></td></tr>
           <tr><th scope="row">ressources naturelles (hors énergie)</th>
-            <td class="significatif entoure">+</td><td></td><td class="faible">=0</td><td></td><td></td><td></td></tr>
+            <td class="significatif important"><span class="visuellement_cache">impact significatif, poste important</span></td><td></td><td class="faible"><span class="visuellement_cache">faible impact</span></td><td></td><td></td><td></td></tr>
           <tr><th scope="row">utilisation des sols</th>
-            <td class="significatif entoure">+</td><td></td><td class="faible">=0</td><td></td><td></td><td></td></tr>
+            <td class="significatif important"><span class="visuellement_cache">impact significatif, poste important</span></td><td></td><td class="faible"><span class="visuellement_cache">faible impact</span></td><td></td><td></td><td></td></tr>
           <tr><th scope="row">production de déchets</th>
-            <td class="faible entoure">=0</td><td class="faible">=0</td><td></td><td class="faible">=0</td><td></td><td class="significatif">+</td></tr>
+            <td class="faible"><span class="visuellement_cache">faible impact</span></td><td class="faible"><span class="visuellement_cache">faible impact</span></td><td></td><td class="faible"><span class="visuellement_cache">faible impact</span></td><td></td><td class="significatif"><span class="visuellement_cache">impact significatif</span></td></tr>
           <tr><th scope="row">substances toxiques</th>
-            <td class="significatif entoure">+</td><td class="faible">=0</td><td></td><td></td><td></td><td></td></tr>
+            <td class="significatif important"><span class="visuellement_cache">impact significatif, poste important</span></td><td class="faible"><span class="visuellement_cache">faible impact</span></td><td></td><td></td><td></td><td></td></tr>
         </tbody>
       </table>
+
+      <ul class="legende_impacts">
+        <li data-niveau="fort"><span class="carre fort"></span>impact fort</li>
+        <li data-niveau="significatif"><span class="carre significatif"></span>impact significatif</li>
+        <li data-niveau="faible"><span class="carre faible"></span>faible impact</li>
+        <li><span class="point_important"></span>postes les plus importants</li>
+      </ul>
     </div>
 
-    <p class="legende_impacts">
-      <span class="fort">+++</span> impact fort
-      <span class="significatif">+</span> impact significatif
-      <span class="faible">=0</span> faible impact
-      <span class="repere_entoure"></span> postes les plus importants
-    </p>
+    <p>Les principaux impacts sont notamment liés aux matières premières, en particulier au verre de la bouteille, mais également à la culture de la betterave (pour le sucre) et des fruits et épices (pour l’arôme). Le procédé de production du cola dans l’usine de brasserie a également un impact non négligeable. L’utilisation du réfrigérateur lors de la phase d’usage est également un poste d’émission.</p>
 
-    <!-- analyse d'usage -->
-    <p class="ecart_avant"><strong>Analyse d’usage</strong></p>
-    <p>Le consommateur achète la bouteille, la transporte, consomme le cola, puis jette ou trie la bouteille. L’usage et la fin de vie de l’emballage doivent donc être pris en compte.</p>
-    <!-- FIGURE À VENIR : analyse d'usage (celle du PDF est celle de la bière, « à adapter pour le cola ») -->
+    <!-- analyse d'usage : frise en 11 étapes (d'après la figure de H. Teulon, adaptée au cola).
+         On attrape la boule (ou on clique sur une étape, ou flèches du clavier) : le dessin et sa phrase changent. -->
+    <p class="ecart_avant_grand"><span class="etoile"></span> <strong>Analyse d’usage</strong></p>
+    <div class="frise_usage" style="--etapes: 11">
+      <div class="frise_scenes" aria-live="polite">
+        <figure class="frise_scene">
+          <img src="../dessin/chap_3/III/2/usage/achat.svg" alt="">
+          <figcaption>Le consommateur se rend sur le lieu de vente, cherche le rayon des boissons, choisit son cola et le paie.</figcaption>
+        </figure>
+        <figure class="frise_scene">
+          <img src="../dessin/chap_3/III/2/usage/trajet.svg" alt="">
+          <figcaption>Il rapporte la bouteille chez lui. Selon le point de vente, le trajet est plus ou moins long, à pied ou en voiture.</figcaption>
+        </figure>
+        <figure class="frise_scene">
+          <img src="../dessin/chap_3/III/2/usage/rangement.svg" alt="">
+          <figcaption>À la maison, il range la bouteille dans un placard ou au frigo, selon le moment où il compte la boire.</figcaption>
+        </figure>
+        <figure class="frise_scene">
+          <img src="../dessin/chap_3/III/2/usage/conservation.svg" alt="">
+          <figcaption>La bouteille reste rangée et peut subir des variations de température ou des changements de place.</figcaption>
+        </figure>
+        <figure class="frise_scene">
+          <img src="../dessin/chap_3/III/2/usage/jour_j.svg" alt="">
+          <figcaption>Le jour J, la bouteille est sortie. Elle a pu passer quelques minutes au congélateur pour être bien fraîche.</figcaption>
+        </figure>
+        <figure class="frise_scene">
+          <img src="../dessin/chap_3/III/2/usage/ouverture.svg" alt="">
+          <figcaption>On ouvre la bouteille. Un peu de cola peut déborder&nbsp;: c’est une perte.</figcaption>
+        </figure>
+        <figure class="frise_scene">
+          <img src="../dessin/chap_3/III/2/usage/service.svg" alt="">
+          <figcaption>On sert le cola dans un verre, ou on le boit à la bouteille. Servi trop vite, il mousse&nbsp;: on attend, puis on complète.</figcaption>
+        </figure>
+        <figure class="frise_scene">
+          <img src="../dessin/chap_3/III/2/usage/degustation.svg" alt="">
+          <figcaption>Le cola est dégusté. S’il reste trop longtemps dehors, il se réchauffe et perd ses bulles.</figcaption>
+        </figure>
+        <figure class="frise_scene">
+          <img src="../dessin/chap_3/III/2/usage/fin.svg" alt="">
+          <figcaption>Il reste un fond de cola. La bouteille vide peut être gardée quelques minutes, heures ou jours.</figcaption>
+        </figure>
+        <figure class="frise_scene">
+          <img src="../dessin/chap_3/III/2/usage/dechet.svg" alt="">
+          <figcaption>La bouteille vide est jetée&nbsp;: à la poubelle des ordures ménagères, dans la poubelle à verre, au point de collecte du verre, ou rapportée au point de vente.</figcaption>
+        </figure>
+        <figure class="frise_scene">
+          <img src="../dessin/chap_3/III/2/usage/nettoyage.svg" alt="">
+          <figcaption>Le verre est lavé puis rangé&nbsp;: de l’eau est consommée pour le rinçage et le lavage.</figcaption>
+        </figure>
+      </div>
 
-    <!-- constat, problématique, cahier des charges -->
-    <p class="ecart_avant"><strong>→ Constat</strong></p>
+      <div class="frise_barre">
+        <div class="frise_segments">
+          <button type="button" class="frise_segment"><span>achat</span></button>
+          <button type="button" class="frise_segment"><span>trajet du retour</span></button>
+          <button type="button" class="frise_segment"><span>rangement</span></button>
+          <button type="button" class="frise_segment"><span>conservation</span></button>
+          <button type="button" class="frise_segment"><span>jour J</span></button>
+          <button type="button" class="frise_segment"><span>ouverture</span></button>
+          <button type="button" class="frise_segment"><span>service</span></button>
+          <button type="button" class="frise_segment"><span>dégustation</span></button>
+          <button type="button" class="frise_segment"><span>fin</span></button>
+          <button type="button" class="frise_segment"><span>déchet</span></button>
+          <button type="button" class="frise_segment"><span>nettoyage</span></button>
+        </div>
+        <input type="range" class="frise_curseur" min="1" max="11" step="1" value="1" aria-label="les étapes de l’usage du cola">
+      </div>
+    </div>
+    <span class="span_source"><span class="souligne_fin">d’après&nbsp;:</span> Hélène Teulon, <span class="italic">Le guide de l’éco-innovation</span>, Eyrolles, 2014</span>
+    <p class="ecart_avant">L’usage et la fin de vie de l’emballage doivent donc être pris en compte.</p>
+  </div>
+
+
+  <!-- ================= DE L'ANALYSE À LA PROBLÉMATIQUE ================= -->
+  <div class="txt_labeur">
+    <span class="pastille_titre pastille_fond">De l’analyse à la problématique</span>
+    <p>Ces analyses permettent de formuler une problématique précise et de définir un cahier des charges pour guider la recherche de solutions.</p>
+    <p>Celui-ci rassemble les critères auxquels les solutions devront répondre&nbsp;:</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>environnement&nbsp;:</strong> réduction des impacts et de la consommation de ressources&#8239;;</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>technique&nbsp;:</strong> performances, qualité et sécurité&#8239;;</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>économie&nbsp;:</strong> coûts de production, investissements et prix&#8239;;</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>usage&nbsp;:</strong> attentes des utilisateurs et facilité d’utilisation&#8239;;</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>autres contraintes&nbsp;:</strong> réglementation, production, logistique ou fin de vie.</p>
+  </div>
+
+
+  <!-- ================= EXEMPLE, 2e TEMPS : PROBLÉMATIQUE ET CAHIER DES CHARGES ================= -->
+  <div class="bloc_exemple">
+    <span class="intro_exemple">exemple</span>
+
+    <p><strong>→ Constat</strong></p>
     <p>Ces analyses ont permis de mettre en évidence l’impact de l’emballage en verre de la bouteille, mais également de la culture des ingrédients. Le procédé de brasserie consomme une importante quantité d’énergie. Le consommateur ne trie pas toujours la bouteille en verre et le procédé de recyclage du verre est particulièrement énergivore.</p>
 
     <p class="ecart_avant"><strong>→ Une problématique possible&nbsp;:</strong></p>

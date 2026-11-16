@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Étape D : sélectionner</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../mobile.css" media="(max-width: 1100px)">
+  <link rel="stylesheet" href="../couleurs.css">
+  <link rel="stylesheet" href="style/chap3.css">
+  <script src="../rive/rive.js"></script>
+  <script src="../cours.js" defer></script>
+  <script src="../script.js" defer></script>
+  <script src="../dessins.js" defer></script>
+</head>
+
+<!-- Où est cette page dans le cours ? (le reste vient de cours.js) -->
+  <body data-chapitre="3" data-partie="8" data-racine="../" data-etape="D" data-mini-apres="#schema_etapes">
+
+<div id="droite_contenu">
+<div id="contenu_chapitre">
+
+<div id="contenu_gauche">
+
+  <div class="petit_titre">1. Les étapes d'une démarche d'éco-conception</div>
+
+  <!-- ================= ÉTAPE D ================= -->
+  <div class="txt_labeur">
+    <span class="pastille_titre titre_etape"><span class="lettre_etape">D</span> sélectionner&nbsp;: choisir les idées les plus pertinentes</span>
+    <p>L’objectif est d’évaluer et de sélectionner collectivement les solutions les plus pertinentes avant de passer au prototypage. L’équipe compare les solutions à partir du cahier des charges et des critères définis lors de l’analyse&nbsp;:</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>critères environnementaux&nbsp;:</strong> impacts environnementaux, consommation de ressources, émissions, déchets…</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>valeur client&nbsp;:</strong> qualité, usage, satisfaction et attentes du consommateur&#8239;;</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>coût&nbsp;:</strong> coût de production, investissement, prix…</p>
+    <p>Lorsque les données sont insuffisantes pour quantifier précisément les impacts, les performances ou les coûts, une grille d’évaluation semi-quantitative peut être utilisée.</p>
+    <p>L’objectif est de comparer les solutions de manière cohérente afin de retenir les plus pertinentes.</p>
+  </div>
+
+
+  <!-- ================= EXEMPLE : CHOISIR LA SOLUTION POUR LE COLA ================= -->
+  <div class="bloc_exemple">
+    <span class="intro_exemple">exemple</span>
+
+    <p>Après avoir analysé son produit et identifié plusieurs pistes d’amélioration, l’équipe du <span class="italic">Saclay Cola</span> doit choisir les solutions les plus pertinentes.</p>
+    <p>Les analyses ont notamment révélé que la fabrication du cola consomme de l’énergie et que l’emballage en verre contribue aux impacts environnementaux du produit.</p>
+    <p>L’équipe explore plusieurs pistes&nbsp;: alléger la bouteille, développer un système de consigne, utiliser des matières recyclées ou encore optimiser le procédé de fabrication.</p>
+    <p>Pour sélectionner les solutions, elle compare leurs bénéfices environnementaux potentiels, leur faisabilité technique, leur coût et leur compatibilité avec les besoins des consommateurs, suivant une échelle semi-quantitative.</p>
+
+    <!-- le radar de la prof, retourné : les axes = les critères, les formes = les solutions.
+         Boutons : « voir tout », puis une solution à la fois (les autres passent à 20 %). -->
+    <figure class="bloc_radar" id="bloc_radar">
+      <figcaption>
+        <span class="pastille_titre pastille_fond">Évaluation des éco-solutions&nbsp;: cola en bouteille en verre</span>
+      </figcaption>
+
+      <div class="radar_choix" role="radiogroup" aria-label="Solution à afficher">
+        <label><input type="radio" name="solution_cola" value="tout" checked><span>voir tout</span></label>
+        <label data-solution="consigne"><input type="radio" name="solution_cola" value="consigne"><span>développer un système de consigne</span></label>
+        <label data-solution="emballage"><input type="radio" name="solution_cola" value="emballage"><span>utiliser un emballage et une étiquette à faible impact</span></label>
+        <label data-solution="sirop"><input type="radio" name="solution_cola" value="sirop"><span>optimiser le mélange du sirop</span></label>
+        <label data-solution="bio"><input type="radio" name="solution_cola" value="bio"><span>utiliser des ingrédients biologiques</span></label>
+      </div>
+
+      <svg class="radar" viewBox="-120 0 640 400" role="img"
+           aria-label="Graphique radar : les quatre solutions notées de −3 à +3 sur quatre critères. Le détail des notes est dans le tableau qui suit.">
+        <!-- cercles de -2 à +3 (0 en pointillé) et axes -->
+        <g class="radar_grille">
+          <circle cx="200" cy="200" r="25"/>
+          <circle cx="200" cy="200" r="50"/>
+          <circle class="radar_zero" cx="200" cy="200" r="75"/>
+          <circle cx="200" cy="200" r="100"/>
+          <circle cx="200" cy="200" r="125"/>
+          <circle cx="200" cy="200" r="150"/>
+          <line x1="200" y1="50" x2="200" y2="350"/>
+          <line x1="50" y1="200" x2="350" y2="200"/>
+        </g>
+        <g class="radar_graduations">
+          <text x="206" y="54">+3</text><text x="206" y="79">+2</text><text x="206" y="104">+1</text>
+          <text x="206" y="129">0</text><text x="206" y="154">−1</text><text x="206" y="179">−2</text><text x="206" y="204">−3</text>
+        </g>
+
+        <!-- une forme par solution. Ordre des points : environnement (haut), performance (droite),
+             expérience client (bas), coût (gauche). Rayon = (note + 3) × 25 -->
+        <g class="radar_serie" data-solution="consigne">
+          <polygon points="200,50 275,200 200,250 175,200"/>
+          <circle cx="200" cy="50" r="4"/><circle cx="275" cy="200" r="4"/><circle cx="200" cy="250" r="4"/><circle cx="175" cy="200" r="4"/>
+        </g>
+        <g class="radar_serie" data-solution="emballage">
+          <polygon points="200,75 275,200 200,275 150,200"/>
+          <circle cx="200" cy="75" r="4"/><circle cx="275" cy="200" r="4"/><circle cx="200" cy="275" r="4"/><circle cx="150" cy="200" r="4"/>
+        </g>
+        <g class="radar_serie" data-solution="bio">
+          <polygon points="200,75 275,200 200,300 150,200"/>
+          <circle cx="200" cy="75" r="4"/><circle cx="275" cy="200" r="4"/><circle cx="200" cy="300" r="4"/><circle cx="150" cy="200" r="4"/>
+        </g>
+        <g class="radar_serie" data-solution="sirop">
+          <polygon points="200,62.5 325,200 200,275 200,200"/>
+          <circle cx="200" cy="62.5" r="4"/><circle cx="325" cy="200" r="4"/><circle cx="200" cy="275" r="4"/><circle cx="200" cy="200" r="4"/>
+        </g>
+
+        <!-- les 4 critères -->
+        <g class="radar_axes">
+          <text x="200" y="32" text-anchor="middle">bénéfice environnemental</text>
+          <text x="362" y="196" text-anchor="start"><tspan x="362">performance</tspan><tspan x="362" dy="17">du produit</tspan></text>
+          <text x="200" y="378" text-anchor="middle">expérience client</text>
+          <text x="38" y="196" text-anchor="end"><tspan x="38">gain</tspan><tspan x="38" dy="17">économique</tspan></text>
+        </g>
+      </svg>
+
+      <!-- les mêmes notes, pour les lecteurs d'écran -->
+      <table class="visuellement_cache">
+        <caption>Notes des quatre solutions, de −3 à +3</caption>
+        <thead><tr><th scope="col">solution</th><th scope="col">bénéfice environnemental</th><th scope="col">performance du produit</th><th scope="col">expérience client</th><th scope="col">gain économique</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">consigne</th><td>+3</td><td>0</td><td>−1</td><td>−2</td></tr>
+          <tr><th scope="row">emballage et étiquette à faible impact</th><td>+2</td><td>0</td><td>0</td><td>−1</td></tr>
+          <tr><th scope="row">optimisation du mélange du sirop</th><td>+2,5</td><td>+2</td><td>0</td><td>−3</td></tr>
+          <tr><th scope="row">ingrédients biologiques</th><td>+2</td><td>0</td><td>+1</td><td>−1</td></tr>
+        </tbody>
+      </table>
+    </figure>
+
+    <!-- encadré mascotte : apparaît quand le radar arrive à l'écran (data-apparait-avec) -->
+    <aside class="rappel_fin rappel_radar" data-apparait-avec="#bloc_radar" role="status" hidden>
+      <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+      <img class="rappel_fin_dessin" src="../dessin/mascotte/mascotte.svg" alt="">
+      <p>Chaque solution reçoit une note de −3 à +3 pour chaque critère, par rapport à la bouteille actuelle&nbsp;: plus c’est loin du centre, mieux c’est&#8239;!</p>
+    </aside>
+
+    <p class="ecart_avant_grand">De cette analyse, l’équipe tire les conclusions suivantes&nbsp;: en usine de brasserie, les différents ingrédients sont mélangés dans de grandes cuves, par lots (<span lang="en">batch</span>). L’idée retenue consiste à mettre en place un mélange continu, dans lequel les ingrédients sont dosés en temps réel. Cela permet d’obtenir une qualité constante, un goût homogène, une réduction des pertes de matières, moins de nettoyage, une consommation d’énergie optimisée, et donc une diminution des coûts.</p>
+    <p>Voici la fiche idée de la solution retenue&nbsp;:</p>
+
+
+    <!-- la fiche idée de la prof, refaite en HTML -->
+    <div class="fiche_exemple fiche_idee" id="fiche_idee">
+      <p class="fiche_titre"><strong>Fiche idée</strong>
+        <br>éco-conception du <span class="italic">Saclay Cola</span> en bouteille en verre</p>
+      <div class="idee_infos">
+        <p><strong>Axe&nbsp;:</strong> technologies propres / optimisation du procédé de fabrication.</p>
+        <p><strong>Date&nbsp;:</strong> 16/11/2026 &nbsp;·&nbsp; <strong>Statut&nbsp;:</strong> sélectionnée.</p>
+      </div>
+
+      <table class="tableau_idee">
+        <caption class="visuellement_cache">Fiche idée n° 02 : remplacer le mélange du sirop par lots par un mélange continu piloté automatiquement</caption>
+        <tbody>
+          <tr>
+            <th scope="row">titre de l’idée</th>
+            <td colspan="3" class="idee_titre">Remplacer le mélange du sirop par lots (<span lang="en">batch</span>) par un mélange continu piloté automatiquement</td>
+          </tr>
+          <tr>
+            <th scope="row">description de l’idée</th>
+            <td colspan="3">
+              <p>Aujourd’hui, les ingrédients du sirop (eau, sucre, arômes, caféine, colorant, acides…) sont souvent mélangés par lots dans de grandes cuves.</p>
+              <p>L’idée consiste à mettre en place un mélange continu, dans lequel les différents ingrédients sont dosés en temps réel grâce à des débitmètres. Un automate ajuste instantanément les débits afin de garantir la composition du sirop.</p>
+              <p>Cette technologie permet de produire uniquement la quantité nécessaire, tout en limitant les écarts de fabrication.</p>
+            </td>
+          </tr>
+          <tr class="idee_colonnes">
+            <th scope="row" rowspan="2">points positifs de l’idée</th>
+            <th scope="col">valeur client</th>
+            <th scope="col">environnement</th>
+            <th scope="col">coût</th>
+          </tr>
+          <tr>
+            <td><ul>
+              <li>qualité du cola plus constante&#8239;;</li>
+              <li>goût homogène d’une bouteille à l’autre.</li>
+            </ul></td>
+            <td><ul>
+              <li>réduction des pertes de matières premières (sucre, arômes…)&#8239;;</li>
+              <li>moins de nettoyage des cuves, donc moins d’eau, de détergents et d’énergie&#8239;;</li>
+              <li>réduction des rebuts de production&#8239;;</li>
+              <li>consommation d’énergie optimisée.</li>
+            </ul></td>
+            <td><ul>
+              <li>diminution des pertes de matières premières&#8239;;</li>
+              <li>réduction des coûts de nettoyage&#8239;;</li>
+              <li>productivité accrue grâce à un procédé continu&#8239;;</li>
+              <li>investissement initial dans les équipements et l’automatisation.</li>
+            </ul></td>
+          </tr>
+          <tr>
+            <th scope="row">difficultés, freins</th>
+            <td colspan="3"><ul class="idee_deux_colonnes">
+              <li>investissement important pour moderniser la ligne de production&#8239;;</li>
+              <li>arrêt temporaire de la production pendant l’installation&#8239;;</li>
+              <li>formation des opérateurs&#8239;;</li>
+              <li>besoin d’une instrumentation et d’une maintenance plus poussées&#8239;;</li>
+              <li>intégration avec les équipements existants.</li>
+            </ul></td>
+          </tr>
+          <tr>
+            <th scope="row">plan d’action</th>
+            <td colspan="3"><ol class="idee_plan">
+              <li>étudier la faisabilité technique sur une ligne pilote</li>
+              <li>comparer les consommations d’eau, d’énergie et les pertes avec le procédé actuel</li>
+              <li>évaluer le retour sur investissement</li>
+              <li>déployer progressivement sur les lignes de production</li>
+            </ol></td>
+          </tr>
+          <tr>
+            <th scope="row">horizon</th>
+            <td colspan="3" class="idee_horizon">
+              <div class="idee_horizon_barre">
+                <span>court terme</span><span>long terme</span>
+                <span class="idee_horizon_point" aria-hidden="true"></span>
+              </div>
+              <p><strong>court à moyen terme (1 à 3 ans)</strong></p>
+              <p>Cette solution est déjà maîtrisée dans l’industrie agroalimentaire et peut être déployée lors du renouvellement ou de la modernisation d’une ligne de production.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- encadré mascotte : apparaît quand la fiche idée arrive à l'écran -->
+    <aside class="rappel_fin rappel_radar" data-apparait-avec="#fiche_idee" role="status" hidden>
+      <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+      <img class="rappel_fin_dessin" src="../dessin/mascotte/mascotte.svg" alt="">
+      <p>Cette fiche idée a été rédigée pendant la phase précédente&nbsp;: c’est elle qui a été retenue&#8239;!</p>
+    </aside>
+    <!-- SOURCE À VÉRIFIER : la fiche de la prof porte le logo Créargie -->
+    <span class="span_source"><span class="souligne_fin">modèle de fiche&nbsp;:</span> Créargie</span>
+  </div>
+
+  <div class="contenu_gras definition ecart_avant_tres_grand">Une démarche d’éco-conception ne consiste pas seulement à trouver une idée intéressante. Elle permet de comprendre un problème, d’explorer différentes solutions, de les comparer, puis de tester et de valider celles qui semblent les plus pertinentes.</div>
+
+</div>
+
+</div>
+</div>
+</body>
+</html>

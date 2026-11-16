@@ -211,7 +211,9 @@ initAfficher();
 initFinActivite();
 initCaptures();
 initPopFin();
-
+initFrises();
+initApparitions();
+initMiniEtapes();
 // Lance une action chaque fois qu'un élément passe la ligne des 60 % de l'écran
 function surPassage(element, action) {
   new IntersectionObserver(
@@ -709,8 +711,8 @@ function initDessins() {
 // Se ferme au rond rouge, avec Échap et au clic en dehors.
 function initPopMascotte() {
   // seulement la pop-up de class pop_mascotte (d'autres pages ont un #pop_mascotte géré par leur propre script)
-  const pop = document.querySelector('dialog.pop_mascotte');
-  if (!pop) return;
+  const pop = document.querySelector('dialog.pop_mascotte:not(.pop_fin)');
+    if (!pop) return;
 
   function placer() {
     const haut  = document.getElementById('haut');
@@ -783,6 +785,19 @@ function initPopMascotte() {
   }
 
   const declencheur = pop.dataset.declencheur && document.querySelector(pop.dataset.declencheur);
+ 
+  // data-scroll="20" : s'ouvre une seule fois, quand la page a défilé d'au moins 20 px
+  const seuilScroll = parseInt(pop.dataset.scroll, 10);
+  if (!isNaN(seuilScroll) && zoneScroll) {
+    function verifierScroll() {
+      if (zoneScroll.scrollTop >= seuilScroll) {
+        zoneScroll.removeEventListener('scroll', verifierScroll);
+        ouvrir();
+      }
+    }
+    zoneScroll.addEventListener('scroll', verifierScroll);
+    return;
+  }
 
   if (declencheur && zoneScroll) {
     // une seule fois, au premier scroll où l'élément est entièrement visible
@@ -801,12 +816,37 @@ function initPopMascotte() {
 }
 
 
-// ---------- Encadré mascotte en fin de page ----------
-// Apparaît une seule fois, quand le bouton « passer à la suite » arrive à l'écran.
+// ---------- Encadré mascotte « pour aller plus loin » ----------
+// Par défaut : apparaît une seule fois, quand le bouton « passer à la suite » arrive à l'écran.
+// data-des="#a" data-jusqua="#b" : visible quand #a est entièrement lisible à l'écran,
+//   jusqu'à ce que le haut de #b passe le milieu de l'écran (revient si on remonte).
+// data-deplacable : on peut l'attraper et le déplacer (comme les boîtes de définition).
 function initRappelFin() {
   const rappel = document.getElementById('rappel_fin');
+  if (!rappel || !zoneScroll) return;
+
+  if (rappel.hasAttribute('data-deplacable')) rendreDeplacable(rappel);
+
+  const des    = rappel.dataset.des    && document.querySelector(rappel.dataset.des);
+  const jusqua = rappel.dataset.jusqua && document.querySelector(rappel.dataset.jusqua);
+
+  if (des && jusqua) {
+    function verifier() {
+      const zone    = zoneScroll.getBoundingClientRect();
+      const lisible = des.getBoundingClientRect().bottom <= zone.bottom;
+      const passe   = jusqua.getBoundingClientRect().top < zone.top + zone.height / 2;
+      const visible = lisible && !passe;
+      if (visible) rappel.hidden = false;           // 1re apparition (avec son animation)
+      rappel.classList.toggle('sortie', !visible);  // ensuite : fondu à l'entrée et à la sortie
+    }
+    zoneScroll.addEventListener('scroll', verifier);
+    window.addEventListener('resize', verifier);
+    verifier();
+    return;
+  }
+
   const bouton = document.querySelector('.bouton_suite');
-  if (!rappel || !bouton || !zoneScroll) return;
+  if (!bouton) return;
 
   const observateur = new IntersectionObserver(entries => {
     if (entries.some(e => e.isIntersecting)) {
@@ -1937,6 +1977,90 @@ function terminerActivite() {
 }
 
 
+// ---------- Encadré qui apparaît avec un élément ----------
+// <aside data-apparait-avec="#bloc_radar" hidden> : il apparaît (une seule fois)
+// quand cet élément passe la ligne des 60 % de l'écran. Son rond rouge (.qcm_fermer) le ferme.
+function initApparitions() {
+  document.querySelectorAll('[data-apparait-avec]').forEach(el => {
+    const cible = document.querySelector(el.dataset.apparaitAvec);
+    if (!cible) return;
+    let deja = false;
+    surPassage(cible, () => {
+      if (deja) return;
+      deja = true;
+      document.querySelectorAll('[data-apparait-avec]').forEach(autre => { if (autre !== el) autre.hidden = true; });
+      el.hidden = false;
+    });
+    el.querySelector('.qcm_fermer')?.addEventListener('click', () => { el.hidden = true; });
+  });
+}
+
+
+// ---------- Mini schéma des étapes (en haut à droite) ----------
+// <body data-etape="B"> : le mini schéma des 6 étapes (cours.js : etapesDemarche) apparaît en haut à droite,
+// l'étape B mise en avant et son nom au centre. data-etape="E F" : deux étapes à la fois.
+// <body data-mini-apres="#schema_etapes"> : il n'apparaît qu'une fois cet élément dépassé en faisant défiler la page
+// (et disparaît si on remonte jusqu'à lui).
+// Simple repère : rien n'est cliquable. Masqué sur petit écran (CSS).
+function initMiniEtapes() {
+  const lettres = (document.body.dataset.etape || '').split(/\s+/).filter(Boolean);
+  const etapes  = COURS.etapesDemarche;
+  const gauche  = document.getElementById('contenu_gauche');
+  if (!lettres.length || !etapes || !gauche) return;
+
+  // places des 6 dessins sur le cercle (en %), dans l'ordre A → F
+  const PLACES = [[50, 14], [81.2, 32], [81.2, 68], [50, 86], [18.8, 68], [18.8, 32]];
+  const estEnCours = e => lettres.includes(e.lettre);
+
+  const dessins = etapes.map((e, i) => `
+      <div class="mini_etape${estEnCours(e) ? ' en_cours' : ''}" style="left:${PLACES[i][0]}%; top:${PLACES[i][1]}%;">
+        <img src="${versRacine(e.dessin)}" alt="">
+        <span class="mini_nom" aria-hidden="true">${e.lettre}. ${e.nom}</span>
+      </div>`).join('');
+
+  const centre = etapes.filter(estEnCours).map(e => `${e.lettre}. ${e.nom}`).join('<br>');
+  const liste  = etapes.map(e => `<li>${e.lettre}. ${e.nom}${estEnCours(e) ? ' (étape en cours)' : ''}</li>`).join('');
+
+  // dans #contenu_gauche : dessins.js y insère les SVG (couleurs de couleurs.css)
+  gauche.insertAdjacentHTML('afterbegin', `
+    <aside class="mini_etapes" aria-label="Où en es-tu dans la démarche d’éco-conception ?">
+      <svg class="mini_fleches" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <marker id="pointe_mini" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M0 0 L10 5 L0 10 z"/>
+          </marker>
+        </defs>
+        <path d="M59.9 15.4 A36 36 0 0 1 75.0 24.1" marker-end="url(#pointe_mini)"/>
+        <path d="M84.9 41.3 A36 36 0 0 1 84.9 58.7" marker-end="url(#pointe_mini)"/>
+        <path d="M75.0 75.9 A36 36 0 0 1 59.9 84.6" marker-end="url(#pointe_mini)"/>
+        <path d="M40.1 84.6 A36 36 0 0 1 25.0 75.9" marker-end="url(#pointe_mini)"/>
+        <path d="M15.1 58.7 A36 36 0 0 1 15.1 41.3" marker-end="url(#pointe_mini)"/>
+        <path d="M25.0 24.1 A36 36 0 0 1 40.1 15.4" marker-end="url(#pointe_mini)"/>
+      </svg>
+      ${dessins}
+      <p class="mini_centre" aria-hidden="true">${centre}</p>
+      <ul class="visuellement_cache">${liste}</ul>
+    </aside>`);
+
+  const mini = gauche.querySelector('.mini_etapes');
+  const des  = document.body.dataset.miniDes && document.querySelector(document.body.dataset.miniDes);
+
+  // sans data-mini-des : visible tout de suite
+  if (!des || !zoneScroll) {
+    mini.classList.add('visible');
+    return;
+  }
+
+  // avec data-mini-des : visible dès que l'élément passe la ligne des 60 % de l'écran (comme les autres apparitions)
+  function verifier() {
+    const zone  = zoneScroll.getBoundingClientRect();
+    const ligne = zone.top + zone.height * 0.6;
+    mini.classList.toggle('visible', des.getBoundingClientRect().top < ligne);
+  }
+  zoneScroll.addEventListener('scroll', verifier);
+  window.addEventListener('resize', verifier);
+  verifier();
+}
 // ---------------------------------------------------------------------
 // 3. OUTILS POUR LES ACTIVITÉS
 // ---------------------------------------------------------------------
@@ -1964,7 +2088,7 @@ function marquerPartieFaite(p) {
 // entre-temps, il ne saute pas.
 function rendreDeplacable(el) {
   el.addEventListener('pointerdown', e => {
-    if (e.target.closest('button')) return;
+    if (e.target.closest('button, a')) return;
     e.preventDefault();
 
     const [x0 = 0, y0 = 0] = (el.style.translate || '0px 0px').split(' ').map(v => parseFloat(v) || 0);
@@ -2053,3 +2177,37 @@ document.querySelectorAll('.anim_pousse').forEach(bloc => {
     bloc.classList.add('joue');
   });
 });
+
+
+
+// ---------- Frise à étapes (ex. analyse d'usage) ----------
+// <div class="frise_usage"> : des .frise_scene (dessin + phrase), des .frise_segment (les étapes)
+// et un <input type="range" class="frise_curseur">.
+// On fait glisser la boule, on clique une étape, ou on utilise les flèches du clavier :
+// le dessin et la phrase de l'étape apparaissent, son intervalle passe en gras.
+function initFrises() {
+  document.querySelectorAll('.frise_usage').forEach(frise => {
+    const curseur  = frise.querySelector('.frise_curseur');
+    const scenes   = [...frise.querySelectorAll('.frise_scene')];
+    const segments = [...frise.querySelectorAll('.frise_segment')];
+    if (!curseur || !segments.length) return;
+
+    curseur.min = 1;
+    curseur.max = segments.length;
+
+    function afficher(n) {
+      curseur.value = n;
+      scenes.forEach((s, i) => s.classList.toggle('visible', i === n - 1));
+      segments.forEach((s, i) => {
+        s.classList.toggle('choisi', i === n - 1);
+        s.setAttribute('aria-pressed', String(i === n - 1));
+      });
+      curseur.setAttribute('aria-valuetext', segments[n - 1].textContent.trim());
+    }
+
+    curseur.addEventListener('input', () => afficher(parseInt(curseur.value, 10)));
+    segments.forEach((s, i) => s.addEventListener('click', () => afficher(i + 1)));
+
+    afficher(parseInt(curseur.value, 10) || 1);
+  });
+}

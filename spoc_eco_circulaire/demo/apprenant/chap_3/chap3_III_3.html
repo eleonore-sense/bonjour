@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Étape C : imaginer</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../mobile.css" media="(max-width: 1100px)">
+  <link rel="stylesheet" href="../couleurs.css">
+  <link rel="stylesheet" href="style/chap3.css">
+  <script src="../rive/rive.js"></script>
+  <script src="../cours.js" defer></script>
+  <script src="../script.js" defer></script>
+  <script src="../dessins.js" defer></script>
+</head>
+
+<!-- Où est cette page dans le cours ? (le reste vient de cours.js) -->
+  <body data-chapitre="3" data-partie="8" data-racine="../" data-etape="C" data-mini-apres="#schema_etapes">
+
+
+<!-- data-scroll="20" : la pop-up s'ouvre quand on a fait défiler la page de 20 px -->
+<dialog class="pop_mascotte" id="pop_mascotte" aria-labelledby="pop_mascotte_texte" data-scroll="20">
+  <button type="button" class="fermer_modal" aria-label="fermer"></button>
+  <img class="pop_mascotte_image" src="../dessin/mascotte/mascotte.svg" alt="">
+  <p class="pop_mascotte_texte" id="pop_mascotte_texte">Pendant la phase d’idéation, le jugement est mis de côté&nbsp;: pas de mauvaise idée, pas de frein à la créativité&#8239;!</p>
+</dialog>
+
+
+<div id="droite_contenu">
+<div id="contenu_chapitre">
+
+<div id="contenu_gauche">
+
+  <div class="petit_titre">1. Les étapes d'une démarche d'éco-conception</div>
+
+  <!-- ================= ÉTAPE C ================= -->
+  <div class="txt_labeur">
+    <span class="pastille_titre titre_etape"><span class="lettre_etape">C</span> imaginer&nbsp;: rechercher des pistes d’éco-conception</span>
+    <p>Une fois la problématique et le cahier des charges définis, l’équipe peut commencer la recherche de solutions.</p>
+    <p>Cette phase mobilise des profils variés&nbsp;: marketing, R&amp;D, environnement, industrialisation, SAV, recyclage…</p>
+    <p>L’objectif est de produire un grand nombre d’idées, aussi diverses que possible, afin d’identifier les pistes d’éco-conception les plus pertinentes.</p>
+  </div>
+
+
+  <!-- ================= EXEMPLE : LES PISTES POUR LE COLA ================= -->
+  <div class="bloc_exemple">
+    <span class="intro_exemple">exemple</span>
+
+    <p>À partir de la problématique sur l’emballage du cola, l’équipe peut explorer différentes pistes&nbsp;:</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>matériaux&nbsp;:</strong> utiliser des matériaux recyclés ou réduire la quantité de matière&#8239;;</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>production&nbsp;:</strong> utiliser des procédés de brasserie innovants pour diminuer la consommation énergétique&#8239;;</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>emballage&nbsp;:</strong> alléger la bouteille, optimiser sa forme ou développer le réemploi&#8239;;</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>fin de vie&nbsp;:</strong> faciliter la collecte, le tri et le recyclage&#8239;;</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>transport&nbsp;:</strong> réduire le poids ou optimiser le conditionnement.</p>
+
+    <!-- la roue des stratégies appliquée au cola (figure de la prof) :
+         au survol d'une stratégie, ses idées ; au clic, la pop-up du dessin -->
+    <div class="schema_cycle schema_centre schema_pistes">
+
+      <div class="centre_schema">cycle de vie<br>du produit</div>
+
+      <div class="etape_cycle item_dessin en_haut" style="left:50%; top:14%;" tabindex="0"
+           data-nom="Nouveaux concepts"
+           data-def="Communiquer sur les bénéfices de la consigne.">
+        <img src="../dessin/chap_3/III/3/nouveaux_concepts.svg" alt="">
+        <span class="nom_dessin">nouveaux concepts</span>
+      </div>
+      <div class="etape_cycle item_dessin a_droite" style="left:78.1%; top:27.6%;" tabindex="0"
+           data-nom="Sélection des matériaux"
+           data-def="Verre recyclé. Encres et colles à faible impact. Ingrédients issus de l’agriculture biologique.">
+        <img src="../dessin/chap_3/III/3/materiaux.svg" alt="">
+        <span class="nom_dessin">sélection des matériaux</span>
+      </div>
+      <div class="etape_cycle item_dessin a_droite" style="left:85.1%; top:58%;" tabindex="0"
+           data-nom="Réduire la quantité de matériaux"
+           data-def="Verre allégé.">
+        <img src="../dessin/chap_3/III/3/reduire.svg" alt="">
+        <span class="nom_dessin">réduire la quantité de matériaux</span>
+      </div>
+      <div class="etape_cycle item_dessin a_droite" style="left:65.6%; top:82.4%;" tabindex="0"
+           data-nom="Optimiser la production"
+           data-def="Recycler les eaux de process. Mélange continu du sirop.">
+        <img src="../dessin/chap_3/III/3/production.svg" alt="">
+        <span class="nom_dessin">optimiser la production</span>
+      </div>
+      <div class="etape_cycle item_dessin" style="left:34.4%; top:82.4%;" tabindex="0"
+           data-nom="Logistique"
+           data-def="Utiliser des caisses et des intercalaires réutilisables. Réduire le suremballage. Utiliser des véhicules à faible émission.">
+        <img src="../dessin/chap_3/III/3/logistique.svg" alt="">
+        <span class="nom_dessin">logistique</span>
+      </div>
+      <div class="etape_cycle item_dessin" style="left:14.9%; top:58%;" tabindex="0"
+           data-nom="Usage"
+           data-def="Mettre en place la consigne. Avoir une bouteille robuste.">
+        <img src="../dessin/chap_3/III/3/usage.svg" alt="">
+        <span class="nom_dessin">usage</span>
+      </div>
+      <div class="etape_cycle item_dessin" style="left:21.9%; top:27.6%;" tabindex="0"
+           data-nom="Recycler"
+           data-def="Rendre la bouteille 100 % recyclable.">
+        <img src="../dessin/chap_3/III/3/recycler.svg" alt="">
+        <span class="nom_dessin">recycler</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="contenu_gras definition ecart_avant_tres_grand">L’objectif n’est pas encore de choisir la meilleure solution&nbsp;: il s’agit d’explorer largement les possibilités.</div>
+
+
+  <!-- encadré mascotte en bas de page : « fiche idée » et « brainstorming » ouvrent leur pop-up -->
+  <aside class="rappel_fin" id="rappel_fin" aria-label="Pour aller plus loin" hidden>
+    <img class="rappel_fin_dessin" src="../dessin/mascotte/mascotte.svg" alt="">
+    <div>
+      <p>Tu veux aller plus loin&#8239;?
+        <br>Découvre les principes du <button type="button" class="mot_pop" data-capture="#pop_brainstorming">brainstorming</button>, qui favorisent la créativité et les échanges au sein d’un groupe.</p>
+      <p>Et pour tout savoir sur la démarche d’idéation&#8239;: <a class="source" href="https://www.dthinking.academy/blog/ateliers-dideation-un-guide-complet-pour-stimuler-la-creativite-et-linnovation">dthinking.academy</a></p>
+    </div>
+  </aside>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- ========== Pop-ups « fiche idée » et « brainstorming » (ouvertes depuis l'encadré du bas) ========== -->
+<!-- CONTENU À VENIR : pour l'instant, seulement la phrase du PDF de la prof -->
+<dialog class="fenetre_capture fenetre_def" id="pop_fiche_idee" aria-labelledby="titre_fiche_idee">
+  <button type="button" class="fermer_modal" aria-label="fermer"></button>
+  <h3 id="titre_fiche_idee">La fiche idée</h3>
+  <p>Elle permet de décrire une idée, de l’approfondir et de l’évaluer selon sa valeur client, ses impacts environnementaux, son coût et ses contraintes.</p>
+</dialog>
+
+<dialog class="fenetre_capture fenetre_def" id="pop_brainstorming" aria-labelledby="titre_brainstorming">
+  <button type="button" class="fermer_modal" aria-label="fermer"></button>
+  <h3 id="titre_brainstorming">Les règles du brainstorming</h3>
+  <p>À rappeler avant chaque séance de créativité, et à garder affichées pendant toute la réunion&nbsp;:</p>
+  <ul>
+    <li>pas de censure&nbsp;: il n’y a pas d’idée stupide ou trop farfelue&#8239;;</li>
+    <li>pas d’autocensure, liberté de parole&#8239;;</li>
+    <li>écouter les autres&#8239;;</li>
+    <li>être bref, pour permettre aux autres de s’exprimer&#8239;;</li>
+    <li>construire sur les idées des autres&#8239;;</li>
+    <li>s’impliquer.</li>
+  </ul>
+  <p>Construire sur les idées des autres est la clé&nbsp;: en rebondissant les uns sur les autres, le groupe sort des sentiers battus et devient plus créatif que la somme de ses membres.</p>
+  <!-- SOURCE À COMPLÉTER : d'où vient cet encadré ? -->
+  <span class="span_source"><span class="souligne_fin">source&nbsp;:</span> à compléter</span>
+</dialog>
+
+
+
+</body>
+</html>

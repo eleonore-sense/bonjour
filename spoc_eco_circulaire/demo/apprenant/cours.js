@@ -17,6 +17,19 @@ const COURS = {
   ],
 
   // ---------------------------------------------------------------
+  // Les 6 étapes de la démarche d'éco-conception (chapitre 3, III)
+  // pour le mini schéma en haut à droite des pages des étapes
+  // (dans la page : <body data-etape="B">, ou data-etape="E F" pour deux étapes)
+  // ---------------------------------------------------------------
+  etapesDemarche: [
+    { lettre: 'A', nom: 'avant-projet et cadrage',   dessin: 'dessin/chap_3/III/1/cadrer.svg' },
+    { lettre: 'B', nom: 'analyser',                  dessin: 'dessin/chap_3/III/1/analyser.svg' },
+    { lettre: 'C', nom: 'imaginer',                  dessin: 'dessin/chap_3/III/1/imaginer.svg' },
+    { lettre: 'D', nom: 'sélectionner',              dessin: 'dessin/chap_3/III/1/selectionner.svg' },
+    { lettre: 'E', nom: 'réaliser',                  dessin: 'dessin/chap_3/III/1/realiser.svg' },
+    { lettre: 'F', nom: 'communiquer et capitaliser', dessin: 'dessin/chap_3/III/1/communiquer.svg' },
+  ],
+  // ---------------------------------------------------------------
   // Chapitres (onglets de gauche) et leurs parties (barre verticale)
   //   titre   : <br> autorisé pour couper la ligne dans l'onglet
   //   fiches  : lien vers les fiches notion du chapitre
@@ -46,8 +59,8 @@ const COURS = {
         // III.
         // III.
         { section: "Appliquer une démarche d'éco-conception", nom: "Les étapes d'une démarche d'éco-conception", duree: '15 min',
-          pages: ['chap_3/chap3_III_1.html', 'chap_3/chap3_III_2.html', 'chap_3/chap3_III_3.html', 'chap_3/chap3_III_4.html', 'chap_3/chap3_III_5.html'] },
-        { section: "Appliquer une démarche d'éco-conception", nom: "Témoignage: mettre en place une démarche", duree: '', lien: 'chap_3/chap_3/chap3_III_6.html' },
+          pages: ['chap_3/chap3_III_1.html', 'chap_3/chap3_III_2.html', 'chap_3/chap3_III_3.html', 'chap_3/chap3_III_4.html', 'chap_3/chap3_III_5.html' , 'chap_3/chap3_III_5.html'] },
+        { section: "Appliquer une démarche d'éco-conception", nom: "Témoignage: mettre en place une démarche", duree: '', lien: 'chap_3/chap3_III_7.html' },
         // IV.
    
         { section: "Appliquer une démarche d'éco-conception", nom: "Activité: cas d'étude d'un smartphone", duree: '30 min', etoile: true,

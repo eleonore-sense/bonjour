@@ -558,7 +558,7 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   position: sticky;
   top: 3px;
   background: var(--fond);
-  z-index: 10;
+  z-index: 80;
   font-size: 1.25rem;
   padding-right: 40px;
 }
@@ -1144,6 +1144,13 @@ strong {
   font-size: 0.9rem;
   line-height: 1.35;
   animation: apparition_douce .8s ease;
+    transition: opacity .6s ease, visibility .6s ease;
+}
+
+.rappel_fin.sortie {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .rappel_fin[hidden] {
@@ -1165,7 +1172,16 @@ strong {
   padding: 0;
   list-style: none;
 }
+/* encadré « pour aller plus loin » qu'on peut déplacer */
+.rappel_fin[data-deplacable] {
+  cursor: grab;
+  touch-action: none;
+}
 
+.rappel_fin.deplacement {
+  cursor: grabbing;
+  user-select: none;
+}
 /* ---------- Capture d'écran en pop-up (dessin cliquable) ---------- */
 
 .bouton_capture {
@@ -2785,6 +2801,10 @@ fieldset.qcm_bloc {
   color: var(--trait);
 }
 
+/* couleurs du picto « imprimer » (inséré en picto, pas en dessin : couleurs.css ne s'y applique pas) */
+.bouton_imprimer .picto .prune     { fill: var(--prune); }
+.bouton_imprimer .picto .blanc     { fill: #fff; }
+.bouton_imprimer .picto .trait_fin { stroke: currentColor; }
 /* ---------- Contenu de la fiche synthèse ---------- */
 
 .fiche_numero {

@@ -208,69 +208,38 @@
 }
 
 
-/* =====================================================================
-   4. FRISE DU CYCLE DE VIE (étape B)
-   ===================================================================== */
 
-.frise_cycle {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px 34px;                    /* entre les étapes (place de la flèche) */
-  margin: 14px 0 0;
-  padding: 0;
-  list-style: none;
-}
 
-.frise_cycle li {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 90px;
-  font-size: 0.8rem;
-  line-height: 1.2;
-  text-align: center;
-}
-
-.frise_cycle :is(img, .dessin) {
-  width: auto;
-  max-width: 60px;
-  height: auto;
-  max-height: 55px;
-  margin-bottom: 6px;
-}
-
-/* la flèche entre deux étapes */
-.frise_cycle li:not(:last-child)::after {
-  content: "→";
-  position: absolute;
-  top: 18px;
-  right: -26px;
-  font-size: 1rem;
-}
 
 
 /* =====================================================================
    5. TABLEAU DES IMPACTS (étape B)
    ===================================================================== */
 
-/* le tableau peut défiler sur petit écran */
-.tableau_defile {
+/* tableau + légende : le tableau peut déborder à droite de l'exemple */
+.bloc_impacts {
+  width: 125%;
+  margin: 14px 0 12px;
   overflow-x: auto;
-  margin-top: 14px;
 }
 
 .tableau_impacts {
-  border-collapse: separate;
-  border-spacing: 4px;
+  border-collapse: collapse;
   font-size: 0.75rem;
   line-height: 1.2;
 }
 
+/* tous les traits de case */
+.tableau_impacts th,
+.tableau_impacts td {
+  border: 1px solid var(--trait);
+}
+
 .tableau_impacts th {
-  padding: 4px 6px;
+  padding: 5px 8px;
   font-family: var(--titre);
   font-weight: normal;
+  cursor: pointer;
 }
 
 .tableau_impacts thead th {
@@ -278,54 +247,1065 @@
   vertical-align: bottom;
 }
 
+.tableau_impacts thead th:first-child {
+  cursor: default;
+}
+
 .tableau_impacts tbody th {
   text-align: right;
-  max-width: 140px;
+  max-width: 150px;
 }
 
+/* les cases : la couleur seule (le texte est caché, pour les lecteurs d'écran) */
 .tableau_impacts td {
-  min-width: 70px;
-  padding: 4px 6px;
-  text-align: center;
-  border: 1px solid transparent;
+  position: relative;
+  width: 72px;
+  height: 30px;
+  transition: background .2s ease, opacity .2s ease;
 }
 
-/* niveaux d'impact (cases et légende) */
-.tableau_impacts .fort,
-.legende_impacts .fort         { background: var(--rouge); color: var(--texte_inverse); border: 1px solid var(--trait); }
-.tableau_impacts .significatif,
-.legende_impacts .significatif { background: var(--orange); border: 1px solid var(--trait); }
-.tableau_impacts .faible,
-.legende_impacts .faible       { background: var(--vert); border: 1px solid var(--trait); }
+/* niveaux d'impact (cases et carrés de la légende) */
+.tableau_impacts td.fort,
+.legende_impacts .carre.fort         { background: var(--rouge); }
+.tableau_impacts td.significatif,
+.legende_impacts .carre.significatif { background: var(--orange); }
+.tableau_impacts td.faible,
+.legende_impacts .carre.faible       { background: var(--vert); }
 
-/* cases entourées dans la figure de la prof */
-.tableau_impacts .entoure {
-  outline: 2px solid var(--trait);
-  outline-offset: 1px;
+/* poste important : petit rond prune, à droite dans la case */
+.tableau_impacts td.important::after,
+.legende_impacts .point_important {
+  width: 9px;
+  height: 9px;
+  background: var(--prune);
+  border: 1px solid var(--trait);
+  border-radius: 50%;
 }
 
+.tableau_impacts td.important::after {
+  content: "";
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: opacity .2s ease;
+}
+
+/* ---------- Survols du tableau : ce qui n'est pas concerné passe à 20 % ---------- */
+
+.tableau_impacts th,
+.tableau_impacts td,
+.legende_impacts li {
+  transition: opacity .2s ease;
+}
+
+/* survol d'une catégorie à gauche : les autres lignes (cases et noms) */
+.tableau_impacts:has(tbody th:hover) tbody tr:not(:has(> th:hover)) :is(th, td),
+
+/* survol d'une étape en haut : les autres colonnes (cases et noms d'étape) */
+.tableau_impacts:has(thead th:nth-child(2):hover) :is(tbody td, thead th):not(:nth-child(2)),
+.tableau_impacts:has(thead th:nth-child(3):hover) :is(tbody td, thead th):not(:nth-child(3)),
+.tableau_impacts:has(thead th:nth-child(4):hover) :is(tbody td, thead th):not(:nth-child(4)),
+.tableau_impacts:has(thead th:nth-child(5):hover) :is(tbody td, thead th):not(:nth-child(5)),
+.tableau_impacts:has(thead th:nth-child(6):hover) :is(tbody td, thead th):not(:nth-child(6)),
+.tableau_impacts:has(thead th:nth-child(7):hover) :is(tbody td, thead th):not(:nth-child(7)),
+
+/* survol d'une case colorée : toutes les autres cases, et les noms sauf sa ligne et sa colonne */
+.tableau_impacts:has(td:is(.fort, .significatif, .faible):hover) td:not(:hover),
+.tableau_impacts:has(td:is(.fort, .significatif, .faible):hover) tbody tr:not(:has(td:hover)) th,
+.tableau_impacts:has(tbody td:nth-child(2):is(.fort, .significatif, .faible):hover) thead th:not(:nth-child(2)),
+.tableau_impacts:has(tbody td:nth-child(3):is(.fort, .significatif, .faible):hover) thead th:not(:nth-child(3)),
+.tableau_impacts:has(tbody td:nth-child(4):is(.fort, .significatif, .faible):hover) thead th:not(:nth-child(4)),
+.tableau_impacts:has(tbody td:nth-child(5):is(.fort, .significatif, .faible):hover) thead th:not(:nth-child(5)),
+.tableau_impacts:has(tbody td:nth-child(6):is(.fort, .significatif, .faible):hover) thead th:not(:nth-child(6)),
+.tableau_impacts:has(tbody td:nth-child(7):is(.fort, .significatif, .faible):hover) thead th:not(:nth-child(7)),
+
+/* survol d'une ligne de la légende : les autres niveaux (cases et légende) */
+.bloc_impacts:has(.legende_impacts [data-niveau="fort"]:hover)
+  :is(tbody td:not(.fort), .legende_impacts [data-niveau]:not([data-niveau="fort"])),
+.bloc_impacts:has(.legende_impacts [data-niveau="significatif"]:hover)
+  :is(tbody td:not(.significatif), .legende_impacts [data-niveau]:not([data-niveau="significatif"])),
+.bloc_impacts:has(.legende_impacts [data-niveau="faible"]:hover)
+  :is(tbody td:not(.faible), .legende_impacts [data-niveau]:not([data-niveau="faible"])) {
+  opacity: .2;
+}
+/* la légende */
 .legende_impacts {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 6px 10px;
-  margin-top: 10px;
+  gap: 8px 22px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
   font-size: 0.75rem;
 }
 
-.legende_impacts span {
-  padding: 1px 8px;
+.legende_impacts li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: opacity .2s ease;
 }
 
-.legende_impacts .repere_entoure {
-  width: 18px;
+.legende_impacts [data-niveau] {
+  cursor: pointer;
+}
+
+.legende_impacts .carre {
+  width: 22px;
   height: 14px;
+  border: 1px solid var(--trait);
+}
+/* =====================================================================
+   6. FRISE D'USAGE (étape B) : une boule à faire glisser d'une étape à l'autre
+   ===================================================================== */
+
+.frise_usage {
+  --etapes: 11;                      /* nombre d'étapes (réglé aussi dans le HTML) */
+  max-width: 620px;
+  margin: 16px auto 8px;
+}
+
+/* les dessins, l'un sur l'autre : seul celui de l'étape choisie est visible */
+.frise_scenes {
+  display: grid;
+}
+
+.frise_scene {
+  grid-area: 1 / 1;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .4s ease, visibility .4s ease;
+}
+
+.frise_scene.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.frise_scene :is(img, .dessin) {
+  width: auto;
+  max-width: 200px;
+  height: auto;
+  max-height: 140px;
+}
+
+.frise_scene figcaption {
+  max-width: 420px;
+  margin-top: 10px;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* la barre : 11 intervalles côte à côte */
+.frise_barre {
+  position: relative;
+  height: 64px;
+  margin-top: 16px;
+}
+
+.frise_segments {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--etapes), 1fr);
+}
+
+.frise_segment {
+  position: relative;
   padding: 0;
-  outline: 2px solid var(--trait);
-  outline-offset: 1px;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* le morceau de barre de l'intervalle (épais quand il est choisi) */
+.frise_segment::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 44px;
+  height: 1px;
+  background: var(--trait);
+  transition: height .2s ease, top .2s ease;
+}
+
+.frise_segment.choisi::before {
+  top: 43px;
+  height: 3px;
+}
+
+/* les petits traits entre les intervalles (et aux deux bouts) */
+.frise_segment::after,
+.frise_segments::after {
+  content: "";
+  position: absolute;
+  top: 38px;
+  width: 1px;
+  height: 13px;
+  background: var(--trait);
+}
+
+.frise_segment::after {
+  left: 0;
+}
+
+.frise_segments::after {
+  right: 0;
+}
+
+/* le nom de l'étape : une pilule au-dessus, visible au survol ou quand l'étape est choisie */
+.frise_segment span {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  padding: 2px 10px 3px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+
+.frise_segment:is(:hover, :focus-visible) span,
+.frise_segment.choisi span {
+  opacity: 1;
+}
+
+.frise_segment.choisi span {
+  font-family: var(--titre);
+}
+
+/* le curseur (la boule) : posé au centre de l'intervalle choisi.
+   Seule la boule attrape la souris : on peut cliquer les intervalles à travers. */
+.frise_curseur {
+  position: absolute;
+  top: 35px;
+  left: calc(100% / (var(--etapes) * 2) - 9px);
+  width: calc(100% - 100% / var(--etapes) + 18px);
+  height: 18px;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  pointer-events: none;
+}
+
+.frise_curseur::-webkit-slider-runnable-track { height: 18px; background: transparent; }
+.frise_curseur::-moz-range-track              { height: 18px; background: transparent; }
+
+.frise_curseur::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--trait);
+  border: 0;
+  border-radius: 50%;
+  cursor: grab;
+  pointer-events: auto;
+}
+
+.frise_curseur::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: var(--trait);
+  border: 0;
+  border-radius: 50%;
+  cursor: grab;
+  pointer-events: auto;
+}
+
+.frise_curseur:active::-webkit-slider-thumb { cursor: grabbing; }
+.frise_curseur:active::-moz-range-thumb     { cursor: grabbing; }
+
+.frise_curseur:focus-visible {
+  outline: none;
+}
+
+.frise_curseur:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 3px var(--focus); }
+.frise_curseur:focus-visible::-moz-range-thumb     { box-shadow: 0 0 0 3px var(--focus); }
+
+
+/* =====================================================================
+   7. PASTILLE DE TITRE SUR FOND --fond
+   ===================================================================== */
+
+.pastille_titre.pastille_fond {
+  margin-bottom: 12px;
+  background: var(--fond);
 }
 
 
+
+
+/* =====================================================================
+   8. ROUE DES PISTES (étape C) : 7 stratégies autour du cycle de vie
+   ===================================================================== */
+
+.schema_pistes {
+  max-width: 600px;
+  margin-top: 40px;
+}
+
+.schema_pistes .etape_cycle {
+  width: 130px;
+}
+
+.schema_pistes .etape_cycle :is(img, .dessin) {
+  max-width: 60px;
+  max-height: 55px;
+}
+
+/* le numéro de la stratégie devant son nom */
+.schema_pistes .nom_dessin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 0.8rem;
+  line-height: 1.15;
+}
+
+/* les idées au survol : boîte plus petite que celle des galeries */
+.schema_pistes .tooltip_dessin {
+  width: 280px;
+  padding: 14px 16px;
+  font-size: 0.85rem;
+}
+
+
+
+/* =====================================================================
+   8. ROUE DES PISTES (étape C) : 7 stratégies autour du cycle de vie
+   ===================================================================== */
+
+.schema_pistes {
+  max-width: 600px;
+  margin-top: 40px;
+}
+
+.schema_pistes .etape_cycle {
+  width: 130px;
+}
+
+.schema_pistes .etape_cycle :is(img, .dessin) {
+  max-width: 60px;
+  max-height: 55px;
+}
+
+.schema_pistes .nom_dessin {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  line-height: 1.15;
+  text-align: center;
+}
+
+/* les idées au survol : la largeur du texte, sans dépasser 280px */
+.schema_pistes .tooltip_dessin {
+  width: max-content;
+  max-width: 280px;
+  padding: 14px 16px;
+  font-size: 0.85rem;
+}
+
+
+/* =====================================================================
+   9. MOTS QUI OUVRENT UNE POP-UP (ex. « fiche idée », « brainstorming »)
+   ===================================================================== */
+
+/* le mot : en gras et souligné, comme un mot notion */
+.mot_pop {
+  padding: 0;
+  font: inherit;
+  font-family: var(--extra_bold);
+  letter-spacing: 0.03em;
+  -webkit-text-stroke: 0.3px currentColor;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.mot_pop:hover,
+.mot_pop:focus-visible {
+  color: var(--prune);
+}
+
+/* sa pop-up : une boîte de texte */
+.fenetre_def {
+  max-width: min(440px, 90vw);
+  padding: 30px 26px 22px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.fenetre_def h3 {
+  margin: 0 0 10px;
+  font-family: var(--titre);
+  font-size: 1rem;
+}
+
+.fenetre_def p {
+  margin: 0 0 8px;
+}
+
+
+.fenetre_def ul {
+  margin: 0 0 10px;
+  padding-left: 18px;
+}
+
+.fenetre_def li {
+  margin-bottom: 4px;
+}
+
+/* =====================================================================
+   10. RADAR (étape D) : une forme par solution, « voir tout » ou une à la fois
+   ===================================================================== */
+
+.bloc_radar {
+  margin: 30px 0 0;
+}
+
+/* la couleur de chaque solution (couleurs de couleurs.css) */
+.bloc_radar [data-solution="consigne"]  { --couleur_solution: var(--bleu); }
+.bloc_radar [data-solution="emballage"] { --couleur_solution: var(--violet); }
+.bloc_radar [data-solution="sirop"]     { --couleur_solution: var(--rose); }
+.bloc_radar [data-solution="bio"]       { --couleur_solution: var(--orange); }
+
+/* les boutons : des pilules (boutons radio cachés) ; le choisi prend la couleur de sa solution */
+.radar_choix {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.radar_choix input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.radar_choix span {
+  display: inline-block;
+  padding: 5px 14px;
+  font-size: 0.85rem;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+/* un petit rond de la couleur de la solution, devant son nom */
+.radar_choix [data-solution] span::before {
+  content: "";
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 7px;
+  background: var(--couleur_solution);
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+}
+
+.radar_choix label:hover span {
+  transform: translate(-3px, -3px);
+  box-shadow: 3px 3px 0 var(--trait);
+}
+
+.radar_choix input:checked + span {
+  background: var(--couleur_solution, var(--trait));
+}
+
+.radar_choix input[value="tout"]:checked + span {
+  color: var(--texte_inverse);
+}
+
+.radar_choix input:focus-visible + span {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* le graphique : grand */
+.radar {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  margin: 14px auto 0;
+  overflow: visible;
+}
+
+.radar_grille :is(circle, line) {
+  fill: none;
+  stroke: var(--trait_doux);
+  stroke-width: 1;
+}
+
+.radar_grille .radar_zero {
+  stroke: var(--trait);
+  stroke-dasharray: 4 3;
+}
+
+.radar_graduations text {
+  font-size: 10px;
+  fill: var(--trait);
+}
+
+.radar_axes text {
+  font-family: var(--titre);
+  font-size: 14px;
+  fill: var(--couleur_texte);
+}
+
+/* les formes */
+.radar_serie {
+  transition: opacity .4s ease;
+}
+
+.radar_serie polygon {
+  fill: color-mix(in srgb, var(--couleur_solution) 0%, transparent);
+  stroke: var(--couleur_solution);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  transition: fill .4s ease;
+}
+
+.radar_serie circle {
+  fill: var(--couleur_solution);
+  stroke: var(--trait);
+  stroke-width: 1;
+}
+
+/* une solution choisie : sa forme se remplit, les autres passent à 20 % */
+.bloc_radar:has(input[value="consigne"]:checked)  .radar_serie:not([data-solution="consigne"]),
+.bloc_radar:has(input[value="emballage"]:checked) .radar_serie:not([data-solution="emballage"]),
+.bloc_radar:has(input[value="sirop"]:checked)     .radar_serie:not([data-solution="sirop"]),
+.bloc_radar:has(input[value="bio"]:checked)       .radar_serie:not([data-solution="bio"]) {
+  opacity: .2;
+}
+
+.bloc_radar:has(input[value="consigne"]:checked)  .radar_serie[data-solution="consigne"] polygon,
+.bloc_radar:has(input[value="emballage"]:checked) .radar_serie[data-solution="emballage"] polygon,
+.bloc_radar:has(input[value="sirop"]:checked)     .radar_serie[data-solution="sirop"] polygon,
+.bloc_radar:has(input[value="bio"]:checked)       .radar_serie[data-solution="bio"] polygon {
+  fill: color-mix(in srgb, var(--couleur_solution) 30%, transparent);
+}
+
+/* l'encadré de la mascotte (style de .rappel_fin) : un peu plus haut, avec son rond rouge */
+.rappel_radar {
+  padding-right: 36px;
+}
+
+.rappel_radar p {
+  margin: 0;
+}
+
+/* =====================================================================
+   11. FICHE IDÉE (étape D) : dans une feuille au coin plié (.fiche_exemple)
+   ===================================================================== */
+
+
+.tableau_idee {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.tableau_idee :is(th, td) {
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid var(--trait);
+}
+
+.tableau_idee th {
+  font-family: var(--titre);
+  font-weight: normal;
+}
+
+.tableau_idee tbody > tr > th[scope="row"] {
+  width: 120px;
+  background: var(--bleu_clair);
+}
+
+.tableau_idee p {
+  margin: 0 0 6px;
+}
+
+.tableau_idee ul,
+.tableau_idee ol {
+  margin: 0;
+  padding-left: 16px;
+}
+
+
+.idee_titre {
+  font-family: var(--titre);
+  font-size: 0.95rem;
+}
+
+.idee_colonnes th[scope="col"] {
+  text-align: center;
+}
+
+.idee_deux_colonnes {
+  columns: 2;
+  column-gap: 30px;
+}
+
+
+/* l'en-tête de la fiche : des phrases au-dessus du tableau */
+.idee_infos {
+  margin-bottom: 12px;
+  font-size: 0.8rem;
+}
+
+.idee_infos p {
+  margin: 0 0 4px;
+}
+
+/* choix : bien aéré, l'idée retenue entourée et écrite en gras */
+.idee_choix {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 16px 10px !important;
+  font-size: 1.3rem;
+}
+
+.idee_choix > span {
+  opacity: .35;
+}
+
+.idee_choix > .choisi {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 14px 4px 8px;
+  font-size: 0.85rem;
+  opacity: 1;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+}
+
+.idee_choix > .choisi > span {
+  font-size: 1.3rem;
+}
+/* plan d'action : 4 étapes en ligne, avec des flèches */
+.idee_plan {
+  display: flex;
+  gap: 26px;
+  padding-left: 0 !important;
+  list-style: none;
+  counter-reset: plan;
+}
+
+.idee_plan li {
+  position: relative;
+  flex: 1;
+  counter-increment: plan;
+}
+
+.idee_plan li::before {
+  content: counter(plan) ". ";
+  font-family: var(--titre);
+}
+
+.idee_plan li:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  right: -20px;
+  top: 0;
+}
+
+
+
+.idee_horizon p {
+  text-align: center;
+}
+
+
+/* la fiche : plus large que l'exemple (elle déborde à droite) */
+.fiche_exemple.fiche_idee {
+  width: 120%;
+  max-width: none;
+  margin-top: 14px;
+}
+
+
+/* horizon : la ligne du court au long terme */
+.idee_horizon_barre {
+  position: relative;                /* repère pour le point et la flèche */
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--trait);
+  font-size: 0.75rem;
+}
+
+/* la pointe de flèche au bout de la ligne, côté « long terme » */
+.idee_horizon_barre::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  right: -2px;
+  border-top: 4.5px solid transparent;
+  border-bottom: 4.5px solid transparent;
+  border-left: 8px solid var(--trait);
+}
+
+.idee_horizon_point {
+  position: absolute;
+  top: -6px;
+  left: 25%;                         /* entre « court terme » et le milieu */
+  width: 11px;
+  height: 11px;
+  background: var(--trait);
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+
+/* =====================================================================
+   12. MINI SCHÉMA DES ÉTAPES (en haut à droite, fixe) : simple repère
+   ===================================================================== */
+
+.mini_etapes {
+  position: fixed;
+  top: 150px;                        /* sous le bandeau du titre */
+  right: 3vw;
+  z-index: 20;
+  width: 210px;
+  aspect-ratio: 1;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .4s ease, visibility .4s ease;
+}
+
+.mini_etapes.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mini_fleches {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.mini_fleches path:not(marker path) {
+  fill: none;
+  stroke: var(--trait);
+  stroke-width: 0.6;
+  stroke-linecap: round;
+}
+
+.mini_fleches marker path {
+  fill: var(--trait);
+}
+
+/* un dessin : pâle, sauf l'étape en cours */
+.mini_etape {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  opacity: .4;
+  transition: opacity .2s ease;
+}
+
+.mini_etape :is(img, .dessin) {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.mini_etape:hover {
+  opacity: 1;
+}
+
+/* l'étape en cours : un rond rose derrière son dessin */
+.mini_etape.en_cours {
+  opacity: 1;
+}
+
+.mini_etape.en_cours::before {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  z-index: -1;
+  background: var(--rose);
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+}
+
+/* le nom d'une étape : dans une pilule, au survol (sauf l'étape en cours, écrite au centre) */
+.mini_nom {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  z-index: 2;
+  margin-top: 5px;
+  padding: 1px 8px 2px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+
+.mini_etape:hover .mini_nom {
+  opacity: 1;
+}
+
+.mini_etape.en_cours .mini_nom {
+  display: none;
+}
+
+/* au centre : le nom de l'étape en cours */
+.mini_centre {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 46%;
+  margin: 0;
+  transform: translate(-50%, -50%);
+  font-family: var(--titre);
+  font-size: 0.75rem;
+  line-height: 1.2;
+  text-align: center;
+}
+
+/* =====================================================================
+   13. SCHÉMA « DU PROTOTYPE À LA MISE SUR LE MARCHÉ » (étape E)
+   ===================================================================== */
+
+.schema_dev {
+  width: 125%;
+  margin: 30px 0 10px;
+}
+
+/* titre en capsule et sous-titre, à gauche */
+.schema_dev figcaption {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.schema_dev_sous_titre {
+  font-size: 0.85rem;
+}
+
+/* les 4 étapes */
+.schema_dev_etapes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.schema_dev_etapes li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* le cadre du dessin : toute la largeur de l'étape, les flèches se calent dessus */
+.schema_dev_dessin {
+  position: relative;
+  width: 100%;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.schema_dev_dessin :is(img, .dessin) {
+  width: 100%;
+  max-width: 160px;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* flèche entre deux étapes : centrée dans l'espace (40px) et sur la hauteur du dessin */
+.schema_dev_etapes li + li .schema_dev_dessin::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 8px);
+  width: 24px;
+  height: 1px;
+  background: var(--trait);
+}
+
+.schema_dev_etapes li + li .schema_dev_dessin::after {
+  content: "";
+  position: absolute;
+  top: calc(50% - 4px);
+  right: calc(100% + 8px);
+  border: 4.5px solid transparent;
+  border-right: none;
+  border-left: 7px solid var(--trait);
+}
+
+.schema_dev_etapes p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+
+
+/* la flèche retour : du milieu de l'étape 4 au milieu de l'étape 1 */
+.schema_dev_retour {
+  position: relative;
+  height: 40px;
+  margin: 10px calc((100% - 120px) / 8) 0;
+  border: 1px solid var(--trait);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+}
+
+/* pointe vers le haut, côté étape 1 */
+.schema_dev_retour::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: -5px;
+  border: 4.5px solid transparent;
+  border-top: none;
+  border-bottom: 7px solid var(--trait);
+}
+
+/* la phrase, dans une pilule posée sur la ligne */
+.schema_dev_retour span {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 50%);
+  padding: 3px 14px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+}
+
+/* =====================================================================
+   14. LISTE DES 6 ÉTAPES (conclusion) : rond à lettre + phrase
+   ===================================================================== */
+
+.liste_etapes {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.liste_etapes li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.liste_etapes .lettre_etape {
+  flex-shrink: 0;
+}
+
+
+/* =====================================================================
+   15. FICHE 4 : SCHÉMA DES 6 ÉTAPES + CERCLE DES PARTIES PRENANTES
+   ===================================================================== */
+
+.fiche_cercle {
+  position: relative;
+  width: min(600px, 100%);
+  aspect-ratio: 1;
+  margin: 20px auto;
+}
+
+/* le 2e cercle : gros trait vert citron */
+.fiche_cercle::before {
+  content: "";
+  position: absolute;
+  inset: 7.5%;
+  border: 6px solid var(--vert_citron);
+  border-radius: 50%;
+}
+
+/* le schéma du début du III, à l'intérieur du cercle vert */
+.fiche_cercle .schema_etapes {
+  position: absolute;
+  inset: 17%;
+  width: auto;
+  max-width: none;
+  margin: 0;
+}
+
+/* les parties prenantes, en pilules posées sur le trait vert */
+.fiche_cercle_acteurs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fiche_cercle_acteurs li {
+  position: absolute;
+  z-index: 1;
+  padding: 1px 10px 2px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  transform: translate(-50%, -50%);
+}
+
+
+/* pas d'étoile ni de retrait devant les pilules */
+.fiche_cercle_acteurs li {
+  margin: 0;
+  padding-left: 10px;
+}
+
+.fiche_cercle_acteurs li::before,
+.fiche_cercle_acteurs li::marker {
+  content: none;
+}
 /* =====================================================================
    PETITS ÉCRANS
    ===================================================================== */
