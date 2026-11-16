@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>chapitre 3_ II _ Des éco-solutions à chaque étape du cycle de vie</title>
+
+  <link rel="stylesheet" href="../couleurs.css">
+  <link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../mobile.css" media="(max-width: 1100px)">
+  <link rel="stylesheet" href="style/scene_velo.css">
+
+<script src="../rive/rive.js"></script>
+  <script src="../cours.js" defer></script>
+  <script src="../script.js" defer></script>
+  <script src="../dessins.js" defer></script>
+  <script src="activite/scene_velo.js" defer></script>
+</head>
+
+<!-- Où est cette page dans le cours ? (le reste vient de cours.js)
+     data-suite="cache" : le bouton « passer à la suite » (sous la conclusion)
+     apparaît après le clic sur « continuer ».
+     data-progression="manuelle" : la barre rose avance avec les fenêtres ouvertes (scene_velo.js),
+     pas avec le scroll. -->
+<body data-chapitre="3" data-partie="4" data-racine="../" data-suite="cache" data-progression="manuelle">
+
+<a class="lien_evitement" href="#contenu_gauche">Aller au contenu</a>
+
+<div id="droite_contenu">
+<div id="contenu_chapitre">
+
+<main id="contenu_gauche">
+
+  <h1 class="petit_titre">1. Des éco-solutions à chaque étape du cycle de vie</h1>
+
+
+  <!-- ================= INTRODUCTION ================= -->
+
+  <div class="intro_illustree">
+    <div class="txt_labeur">
+      <p>Imaginons l'entreprise <span class="italic">Bon Pied Bon Cycle</span> qui fabrique des vélos cargo. Elle souhaite réduire les impacts environnementaux de ses produits tout en répondant aux besoins de ses clients.</p>
+      <p>Par où commencer&#8239;? Faut-il choisir d’autres matériaux, modifier la fabrication, optimiser le transport, faciliter les réparations ou améliorer le recyclage&#8239;?</p>
+      <p>En réalité, les possibilités d’action existent à toutes les étapes du cycle de vie&#8239;! Explorons les principales éco-solutions à travers quatre étapes&#8239;: la production, la distribution, l’utilisation et la fin de vie du vélo cargo.</p>
+    </div>
+<img class="intro_illustration" src="../dessin/chap_3/II/1/logo_bon_pied.svg" alt="">
+  </div>
+
+  <div class="conteneur_depart" data-scene-depart>
+    <button type="button" class="bouton_depart" aria-controls="partie_scene">c’est parti&#8239;!</button>
+  </div>
+
+
+  <!-- ================= LA SCÈNE (apparaît au clic sur « c'est parti ») ================= -->
+
+  <section class="scene_partie" id="partie_scene" aria-labelledby="consigne_scene" hidden>
+
+    <h2 class="consigne" id="consigne_scene">
+      Clique sur les différentes parties du vélo et découvre comment les choix de conception peuvent contribuer à réduire ses impacts environnementaux.
+    </h2>
+
+    <div class="scene" id="scene_velo">
+
+      <p class="visuellement_cache scene_annonce" role="status"></p>
+
+      <!-- ---------------------------------------------------------------
+           L'IMAGE : tout est en px, mesurés sur le dessin de fond de la fabrication.
+           - taille de l'image = taille de fond_velo.svg
+           - chaque dessin : left / top = son coin haut gauche, en px
+           - taille de chaque dessin = sa taille dans son fichier SVG
+             (pour la changer : width: …px dans son style, la hauteur suit)
+
+           UNE SCÈNE PAR PÉRIODE : <div class="scene_groupe" data-etapes="…">
+           - data-etapes : les périodes où cette scène est affichée
+           - data-delai  : temps (ms) entre l'apparition du fond et l'arrivée des dessins qui bougent
+           Quand on change de période, l'ancienne scène sort, puis la nouvelle entre.
+
+           LES DESSINS QUI BOUGENT : class « mobile »
+           - data-arrivee : « droite » ou « gauche » = côté de l'écran d'où il arrive
+           - data-sortie  : « droite » ou « gauche » = côté par où il quitte l'écran
+           - data-duree   : durée de l'arrivée, en ms
+           - data-duree-sortie : durée de la sortie, en ms (sinon la même)
+           --------------------------------------------------------------- -->
+      <div class="scene_cadre">
+        <div class="scene_image">
+
+
+          <!-- ============ SCÈNE 1 : LA FABRICATION ============ -->
+          <div class="scene_groupe" data-etapes="production" data-delai="2000">
+
+            <!-- le paysage de fond (il donne la taille de toute l'image) -->
+            <img class="scene_fond" src="../dessin/chap_3/II/1/fond_velo.svg" alt="">
+
+            <!-- l'usine -->
+            <button type="button" class="scene_element"
+                    data-documents="production:pop_fabrication"
+                    style="left: 382px; top: 34px;">
+              <img src="../dessin/chap_3/II/1/usine.svg" alt="">
+              <span class="scene_nom"></span>
+            </button>
+
+            <!-- le panneau : énergie et lieu de production -->
+            <button type="button" class="scene_element"
+                    data-documents="production:pop_energie"
+                    style="left: 93px; top: 280px;">
+              <img src="../dessin/chap_3/II/1/panneau.svg" alt="">
+              <span class="scene_nom"></span>
+            </button>
+
+            <!-- les clous -->
+            <button type="button" class="scene_element"
+                    data-documents="production:pop_fixations"
+                    style="left: 50px; top: 406px;">
+              <img src="../dessin/chap_3/II/1/clous.svg" alt="">
+              <span class="scene_nom"></span>
+            </button>
+
+            <!-- le vélo (Rive) : arrive de la droite, repart par la gauche.
+                 Sur le canvas : data-avance = depuis combien de ms les roues tournent déjà
+                 quand le vélo entre dans l'écran. Elles tournent ensuite jusqu'à l'arrivée. -->
+            <button type="button" class="scene_element element_velo mobile"
+                    data-documents="production:pop_materiaux"
+                    data-arrivee="droite" data-sortie="gauche" data-duree="3000" data-duree-sortie="2000"
+                    style="left: 219px; top: 228px;">
+              <canvas class="velo_riv" width="488" height="415"
+                      data-riv="../dessin/chap_3/II/1/velo_usine.riv" data-animation="roule"
+                      data-avance="1000"></canvas>
+              <span class="scene_nom"></span>
+            </button>
+          </div>
+
+
+          <!-- ============ SCÈNE 2 : LE TRANSPORT ============ -->
+          <div class="scene_groupe" data-etapes="distribution" data-delai="600">
+
+            <!-- la ligne du sol (top, left, width en px) -->
+            <div class="scene_ligne" style="top: 356px; left: 48px; width: 700px;"></div>
+            <img class="scene_decor" src="../dessin/chap_3/II/1/arbre.svg" alt="" style="left: 97px; top: 123px;">
+            <!-- le camion : arrive de la gauche et passe derrière le carton, repart par la droite.
+                 2 dessins : fermé (le 1er) et ouvert (class « dessin_ouvert »), montré pendant le chargement -->
+            <button type="button" class="scene_element mobile" id="camion_transport"
+                    data-documents="distribution:pop_transport"
+                    data-arrivee="gauche" data-sortie="droite" data-duree="2500" data-duree-sortie="2000"
+                    style="left: 313px; top: 94px;">
+              <img src="../dessin/chap_3/II/1/camion_ferme.svg" alt="">
+              <img class="dessin_ouvert" src="../dessin/chap_3/II/1/camion_ouvert.svg" alt="">
+              <span class="scene_nom"></span>
+            </button>
+
+            <!-- le carton : déjà là. En quittant la scène, il entre dans le camion.
+                 data-dans      : l'id du camion
+                 data-porte     : où il entre, en % du camion (x y) : ici la porte arrière, à gauche
+                 data-arc       : hauteur de la courbe, en px
+                 data-recul     : de combien de px il part vers la gauche en montant
+                 data-derriere  : quand il passe derrière le camion (0 = au départ, 0.5 = au sommet, 1 = à la fin)
+                 data-duree-chargement : durée du trajet, en ms -->
+            <button type="button" class="scene_element chargement"
+                    data-documents="distribution:pop_emballage"
+                    data-dans="camion_transport" data-porte="10 55" data-arc="260" data-recul="100" data-derriere="0.5" data-duree-chargement="1400"
+                    style="left: 130px; top: 383px;">
+              <img src="../dessin/chap_3/II/1/carton.svg" alt="">
+              <span class="scene_nom"></span>
+            </button>
+          </div>
+
+
+          <!-- ============ SCÈNE 3 : L'USAGE ============
+               La boutique (durée de vie, réparation), la pompe (entretien) et le vélo
+               (velo_dame.riv, consommation), qui arrive et repart comme celui de la fabrication. -->
+          <div class="scene_groupe" data-etapes="utilisation" data-delai="2000">
+            <img class="scene_decor" src="../dessin/chap_3/II/1/palmier.svg" alt="" style="left: 632px; top: -8px; width: 156px;">
+            <!-- la ligne du sol (top, left, width en px) -->
+            <div class="scene_ligne" style="top: 370px; left: -14px; width: 830px;"></div>
+
+            <!-- la boutique, en fond (avant le vélo dans le HTML : le vélo passe devant) -->
+            <button type="button" class="scene_element"
+                    data-documents="utilisation:pop_notice"
+                    style="left: 0px; top: 74px; width: 523px;">
+              <img src="../dessin/chap_3/II/1/boutique_velo.svg" alt="">
+              <span class="scene_nom"></span>
+            </button>
+
+            <!-- la pompe à vélo -->
+            <button type="button" class="scene_element"
+                    data-documents="utilisation:pop_duree_vie"
+                    style="left: 36px; top:335px;">
+              <img src="../dessin/chap_3/II/1/pompe_velo.svg" alt="">
+              <span class="scene_nom"></span>
+            </button>
+
+            <button type="button" class="scene_element element_velo mobile"
+                    data-documents="utilisation:pop_batterie_usage"
+                    data-arrivee="droite" data-sortie="gauche" data-duree="3000" data-duree-sortie="2000"
+                    style="left: 203px; top: 76px; width: 810px;">
+              <!-- largeur du vélo : width dans le style du bouton ci-dessus (la hauteur suit,
+                   avec les proportions de velo_dame.riv) -->
+              <canvas class="velo_riv"
+                      data-riv="../dessin/chap_3/II/1/velo_dame.riv" data-animation="roule"
+                      data-avance="1000"></canvas>
+              <span class="scene_nom"></span>
+            </button>
+          </div>
+
+
+          <!-- ============ SCÈNE 4 : LA FIN DE VIE ============
+               La recyclerie (réemploi, partage), la poubelle (recyclage) et le vélo abîmé
+               (velo_abime.riv, batterie), qui arrive de la droite à petits coups et repart par la gauche. -->
+          <div class="scene_groupe" data-etapes="fin_de_vie" data-delai="2000">
+            <!-- la ligne du sol (top, left, width en px) -->
+            <div class="scene_ligne" style="top: 370px; left: -14px; width: 850px;"></div>
+
+            <!-- décor : le lampadaire -->
+            <img class="scene_decor" src="../dessin/chap_3/II/1/lampadaire.svg" alt="" style="left: 116px; top: -3px; width: 43px;">
+
+            <!-- la recyclerie, en fond (avant le vélo dans le HTML : le vélo passe devant) -->
+            <button type="button" class="scene_element"
+                    data-documents="fin_de_vie:pop_partage"
+                    style="left: 270px; top: 4px; width: 688px;">
+              <img src="../dessin/chap_3/II/1/recyclerie.svg" alt="">
+              <span class="scene_nom"></span>
+            </button>
+
+            <!-- la poubelle -->
+            <button type="button" class="scene_element"
+                    data-documents="fin_de_vie:pop_recyclage"
+                    style="left: -4px; top: 340px; width: 116px;">
+              <img src="../dessin/chap_3/II/1/poubelle.svg" alt="">
+              <span class="scene_nom"></span>
+            </button>
+
+            <!-- le vélo abîmé : il avance difficilement, sur 2 passages de son animation Rive (2 × 5 s).
+                 data-arrets : ses arrêts en ms (le 2e passage = le 1er + 5000).
+                 data-courbe : linear = il avance à vitesse constante tant que les roues tournent.
+                 data-boucle (sur le canvas) : durée de velo_abime.riv ; les roues suivent le temps du trajet -->
+            <button type="button" class="scene_element element_velo mobile"
+                    data-documents="fin_de_vie:pop_batterie_fin"
+                    data-arrivee="droite" data-sortie="gauche" data-duree="10000"
+                    data-arrets="1250-2140 3480-4160 6250-7140 8480-9160"
+                    data-courbe="linear"
+                    style="left: 425px; top: 277px; width: 480px;">
+              <canvas class="velo_riv"
+                      data-riv="../dessin/chap_3/II/1/velo_abime.riv" data-animation="roule"
+                      data-boucle="5000"></canvas>
+              <span class="scene_nom"></span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- ---------------------------------------------------------------
+           LA FRISE : un segment par étape, la boule se pose au milieu.
+           Les segments sont ajoutés par scene_velo.js, un par bouton ci-dessous.
+           --------------------------------------------------------------- -->
+      <div class="frise">
+        <p class="frise_texte" id="frise_texte">fais évoluer le vélo tout au long de sa vie&#8239;:</p>
+
+        <div class="frise_barre">
+          <ul class="frise_etapes">
+            <li><button type="button" class="frise_etape" data-etape="production">
+              <span class="frise_titre">la fabrication</span>
+            </button></li>
+            <li><button type="button" class="frise_etape" data-etape="distribution">
+              <span class="frise_titre">le transport</span>
+            </button></li>
+            <li><button type="button" class="frise_etape" data-etape="utilisation">
+              <span class="frise_titre">l’usage</span>
+            </button></li>
+            <li><button type="button" class="frise_etape" data-etape="fin_de_vie">
+              <span class="frise_titre">la fin de vie</span>
+            </button></li>
+          </ul>
+
+          <div class="frise_piste">
+            <span class="frise_boule" role="slider" tabindex="0" aria-labelledby="frise_texte"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= CONCLUSION : apparaît au clic sur « continuer » ================= -->
+
+    <div class="txt_labeur scene_conclusion" id="conclusion_scene" hidden>
+      <span class="pastille_conclusion">conclusion</span>
+      <p>Au travers de l’exemple du vélo cargo, on comprend que l’éco-conception ne se concentre pas uniquement sur la phase de production du vélo (incluant le choix des matières, le lieu et le type d’énergie pour produire et assembler), mais s’applique également à l’ensemble des étapes du cycle de vie du vélo&#8239;: son usage, sa maintenance jusqu’à sa fin de vie.</p>
+      <p>Cette éco-conception sollicite un ensemble de parties prenantes et d’acteurs clés, qui vont permettre de déployer des éco-solutions pertinentes par rapport aux enjeux de la filière&#8239;!</p>
+    </div>
+
+  </section>
+
+  <!-- ================= EN BAS À DROITE DE L'ÉCRAN =================
+       De haut en bas : la mascotte (s'il reste des choses
+       à découvrir), le bouton « continuer » (quand les 4 étapes ont été vues). -->
+
+  <div class="pile_scene" id="pile_scene" hidden>
+
+    <div class="rappel_scene" id="rappel_scene" role="status" hidden>
+      <!-- DESSIN DE LA MASCOTTE : remplacer ce <div> par
+           <img class="rappel_scene_dessin" src="../dessin/…svg" alt=""> -->
+      <div class="rappel_scene_dessin emplacement_illustration" aria-hidden="true">mascotte</div>
+      <p>Tu n’as pas encore tout découvert&#8239;!</p>
+    </div>
+
+    <div class="qcm_pied" id="pied_scene" hidden>
+      <button type="button" class="qcm_verifier" id="continuer_scene">continuer</button>
+    </div>
+  </div>
+</main>
+
+
+<!-- Boîtes de définition des mots notion de la page -->
+<div id="notion_droite"></div>
+
+</div>
+</div>
+
+
+
+<!-- =====================================================================
+     FENÊTRE DE LA MASCOTTE : s'ouvre quand le vélo est arrivé.
+     À sa fermeture, la consigne apparaît en haut.
+     ===================================================================== -->
+
+<dialog class="fenetre_document fenetre_mascotte" id="pop_mascotte" aria-labelledby="texte_mascotte">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <!-- DESSIN DE LA MASCOTTE : remplacer ce <div> par
+       <img class="fenetre_mascotte_dessin" src="../dessin/…svg" alt=""> -->
+  <div class="fenetre_mascotte_dessin emplacement_illustration" aria-hidden="true">mascotte</div>
+  <div class="fenetre_mascotte_texte">
+    <p id="texte_mascotte">Clique sur les différents éléments du dessin pour découvrir des proposition de choix de conception qui peuvent contribuer à réduire les impacts environnementaux&#8239;!</p>
+    <button type="button" class="bouton_depart" data-fermer>c’est compris</button>
+  </div>
+</dialog>
+
+
+<!-- =====================================================================
+     À RETENIR (une fenêtre par étape)
+     S'ouvre quand toutes les fenêtres de l'étape ont été vues et qu'on veut
+     changer d'étape (ou cliquer sur « continuer »). Le bouton lance la suite.
+     ===================================================================== -->
+
+<dialog class="fenetre_retenir" data-etape="distribution" aria-labelledby="retenir_distribution">
+  <span class="pastille_retenir">à retenir</span>
+  <p id="retenir_distribution">Réduire le volume transporté et mieux organiser la logistique peut être aussi important que choisir un autre matériau d’emballage.</p>
+  <button type="button" class="bouton_depart" data-suite-retenir>c’est compris&#8239;!</button>
+</dialog>
+
+<dialog class="fenetre_retenir" data-etape="utilisation" aria-labelledby="retenir_utilisation">
+  <span class="pastille_retenir">à retenir</span>
+  <p id="retenir_utilisation">Un produit bien conçu ne suffit pas toujours&#8239;: sa maintenance, sa réparabilité et les pratiques d’utilisation influencent aussi ses impacts réels.</p>
+  <button type="button" class="bouton_depart" data-suite-retenir>c’est compris&#8239;!</button>
+</dialog>
+
+<!-- data-tout-vu : s'ouvre quand toutes les fenêtres de la fin de vie ont été ouvertes et refermées,
+     puis « continuer » apparaît en bas à droite -->
+<dialog class="fenetre_retenir" data-etape="fin_de_vie" data-tout-vu aria-labelledby="retenir_fin_de_vie">
+  <span class="pastille_retenir">à retenir</span>
+  <p id="retenir_fin_de_vie">Le recyclage n’est pas la seule solution. Préserver la fonction du produit, le réparer et le réemployer sont également des leviers à étudier.</p>
+  <button type="button" class="bouton_depart" data-suite-retenir>c’est compris&#8239;!</button>
+</dialog>
+
+
+<!-- =====================================================================
+     FENÊTRES (une par élément et par étape)
+     ===================================================================== -->
+
+
+<!-- ---------- 1. PRODUCTION ---------- -->
+
+<dialog class="fenetre_document fenetre_scene" id="pop_materiaux" aria-labelledby="titre_pop_materiaux">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <h4 id="titre_pop_materiaux">Choisir les matériaux avec soin</h4>
+
+  <p>Tous les matériaux n’ont pas les mêmes impacts. Leur production peut mobiliser des quantités différentes d’énergie et de ressources, émettre des gaz à effet de serre ou exercer d’autres pressions sur l’environnement.</p>
+  <p>L’éco-conception consiste à comparer les matériaux en tenant compte de leurs propriétés, de leur masse, de leur origine et de leur transformation, mais aussi des performances attendues du vélo.</p>
+
+  <div class="bulle_mascotte">
+    <button type="button" class="qcm_fermer" aria-label="fermer la bulle"></button>
+    <!-- DESSIN DE LA MASCOTTE : remplacer le chemin -->
+    <img class="bulle_mascotte_dessin" src="../dessin/mascotte/mascotte.svg" alt="">
+    <p>On parle beaucoup de CO₂ ici… mais n’oublie pas&#8239;: l’éco-conception, c’est aussi l’eau, la toxicité, l’utilisation des ressources minérales et fossiles… Ne mets pas tous tes œufs dans le même panier carbone&#8239;!</p>
+  </div>
+
+  <table class="tableau_donnees">
+    <caption class="visuellement_cache">Comparaison de matériaux pour le cadre</caption>
+    <thead>
+      <tr><th scope="col">matériau</th><th scope="col">empreinte carbone&#8239;/&#8239;kg</th><th scope="col">résistance mécanique&#8239;/&#8239;volume de matériaux</th><th scope="col">Coût €&#8239;/&#8239;kg</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">Acier (produit en UE)</th>         <td class="nombre">faible</td>  <td class="nombre">élevée</td><td class="nombre">faible</td></tr>
+      <tr><th scope="row">Aluminium (produit en UE)</th>     <td class="nombre">moyenne</td> <td class="nombre">moyenne</td><td class="nombre">moyen</td></tr>
+      <tr><th scope="row">Aluminium (produit en Chine)</th>  <td class="nombre">élevée</td>  <td class="nombre">moyenne</td><td class="nombre">moyen</td></tr>
+      <tr><th scope="row">Polyéthylène PE (UE)</th>          <td class="nombre">faible</td>  <td class="nombre">faible</td><td class="nombre">moyen</td></tr>
+    </tbody>
+  </table>
+  <span class="span_source"><span class="souligne_fin">source&#8239;:</span> BAFU, 2025
+    <a class="source" href="https://esu-services.ch/fr/banque-de-donnees/database/" target="_blank" rel="noopener">esu-services.ch</a></span>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> bureau d’études, fournisseurs de matières premières.</p>
+</dialog>
+
+
+<dialog class="fenetre_document fenetre_scene" id="pop_fixations" aria-labelledby="titre_pop_fixations">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <h4 id="titre_pop_fixations">Faciliter l’assemblage et le démontage</h4>
+
+  <p>Vis, jonctions, soudures&#8239;: le choix des fixations influence la facilité avec laquelle un vélo peut être assemblé, entretenu, réparé ou démonté. Des assemblages démontables, des pièces standardisées et un accès facile aux composants peuvent simplifier ces opérations.</p>
+
+  <!-- se déroule avec le bouton -->
+  <div class="fenetre_plus">
+    <div class="fenetre_plus_interieur">
+      <div class="exemple">
+        <span class="intro_exemple">exemple</span>
+        <p>Une fixation réversible (vis, clips) se défait&#8239;; un collage est définitif. L’assemblage traditionnel japonais <span lang="ja-Latn">kigumi</span> (木組み) emboîte les pièces de bois sans clou ni colle&#8239;: on peut le démonter et le réparer.</p>
+        <figure class="photo_fenetre">
+          <img src="../dessin/chap_3/II/1/kigumi.jpg" alt="Assemblage en bois kigumi : des pièces taillées qui s’emboîtent sans clou ni colle.">
+          <figcaption><a class="source" href="">source de l’image</a></figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+  <button type="button" class="bouton_plus" aria-expanded="false">voir un exemple&#8239;: le kigumi</button>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> designers produits, ingénieurs mécaniques.</p>
+</dialog>
+
+
+<dialog class="fenetre_document fenetre_scene" id="pop_fabrication" aria-labelledby="titre_pop_fabrication">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <h4 id="titre_pop_fabrication">Réduire les impacts de la fabrication</h4>
+
+  <p>La fabrication consomme de l’énergie et des matières premières. Elle peut aussi générer des rebuts et des émissions dans l’air, l’eau ou les sols.</p>
+  <p>Plusieurs leviers sont possibles&#8239;: améliorer le rendement des procédés, limiter les pertes de matière, réduire les consommations d’énergie et prévenir les pollutions.</p>
+
+  <!-- se déroule avec le bouton -->
+  <div class="fenetre_plus">
+    <div class="fenetre_plus_interieur">
+      <p>Souder le cadre, mouler les pièces plastiques, faire tourner les machines&#8239;: tout cela consomme de l’énergie, d’origine thermique (comme le gaz) ou électrique. Or un kWh d’électricité n’a pas le même impact selon sa source&#8239;: produit à partir de charbon, il émet environ 75 fois plus de gaz à effet de serre qu’un kWh éolien.</p>
+      <p>Le choix de l’énergie qui alimente l’atelier est donc un levier direct sur l’empreinte carbone du vélo.</p>
+
+      <!-- GRAPHIQUE EN BARRES : --max = la plus grande valeur ; sur chaque ligne,
+           --valeur = la longueur de la barre, --i = son rang (pour le décalage de l'animation) -->
+      <figure class="barres_h" style="--max: 820;">
+        <figcaption>g CO₂ éq / kWh, selon la source d’électricité</figcaption>
+        <ul>
+          <li style="--valeur: 820; --i: 0;"><span class="barres_nom">Charbon</span><span class="barres_piste"><span class="barres_barre"></span><span class="barres_valeur">~820</span></span></li>
+          <li style="--valeur: 730; --i: 1;"><span class="barres_nom">Fioul</span><span class="barres_piste"><span class="barres_barre"></span><span class="barres_valeur">~730</span></span></li>
+          <li style="--valeur: 490; --i: 2;"><span class="barres_nom">Gaz naturel</span><span class="barres_piste"><span class="barres_barre"></span><span class="barres_valeur">~490</span></span></li>
+          <li style="--valeur: 47; --i: 3;"><span class="barres_nom">Solaire photovoltaïque</span><span class="barres_piste"><span class="barres_barre"></span><span class="barres_valeur">~45 à 48</span></span></li>
+          <li style="--valeur: 24; --i: 4;"><span class="barres_nom">Hydraulique</span><span class="barres_piste"><span class="barres_barre"></span><span class="barres_valeur">~24</span></span></li>
+          <li style="--valeur: 12; --i: 5;"><span class="barres_nom">Nucléaire</span><span class="barres_piste"><span class="barres_barre"></span><span class="barres_valeur">~12</span></span></li>
+          <li style="--valeur: 12; --i: 6;"><span class="barres_nom">Éolien (terrestre / en mer)</span><span class="barres_piste"><span class="barres_barre"></span><span class="barres_valeur">~11 à 12</span></span></li>
+        </ul>
+      </figure>
+      <span class="span_source"><span class="souligne_fin">source&#8239;:</span> GIEC (AR5), valeurs médianes en ACV,
+        <a class="source" href="https://orki.green/article/quel-bilan-carbone-pour-la-production-d-electricite" target="_blank" rel="noopener">orki.green</a></span>
+    </div>
+  </div>
+  <button type="button" class="bouton_plus" aria-expanded="false">comparer les sources d’électricité</button>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> responsable production de l’usine, fournisseur d’énergie.</p>
+</dialog>
+
+
+<dialog class="fenetre_document fenetre_scene" id="pop_energie" aria-labelledby="titre_pop_energie">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <h4 id="titre_pop_energie">Choisir le lieu de production</h4>
+
+  <p>Le pays où se trouve l’atelier compte aussi&#8239;: chaque pays a son propre mix électrique (ce qu’il produit, importe et exporte chaque année). Produire son vélo ou ses matériaux en France ou en Pologne n’aura pas du tout la même empreinte environnementale&#8239;!</p>
+
+  <!-- data-apres-bouton : la bulle apparaît 3 s après le clic sur le bouton, pas à l'ouverture -->
+  <div class="bulle_mascotte" data-apres-bouton>
+    <button type="button" class="qcm_fermer" aria-label="fermer la bulle"></button>
+    <!-- DESSIN DE LA MASCOTTE : remplacer le chemin -->
+    <img class="bulle_mascotte_dessin" src="../dessin/mascotte/mascotte.svg" alt="">
+    <p>Regarde la France&#8239;: très peu de CO₂, mais plus de rayonnements ionisants, à cause du nucléaire. C’est l’intérêt d’une approche multicritère&#8239;!</p>
+  </div>
+
+  <!-- se déroule avec le bouton -->
+  <div class="fenetre_plus">
+    <div class="fenetre_plus_interieur">
+      <table class="tableau_donnees">
+        <caption class="visuellement_cache">Impacts d’un kWh d’électricité selon le pays</caption>
+        <thead>
+          <tr><th scope="col">Pays</th><th scope="col">g CO₂ éq / kWh</th><th scope="col">Acidification (mol H+ éq)</th><th scope="col">Rayonnements ionisants (kBq U235 éq)</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Chine</th>      <td class="nombre">717</td><td class="nombre">6,24 × 10⁻⁴</td><td class="nombre">6,98 × 10⁻²</td></tr>
+          <tr><th scope="row">France</th>     <td class="nombre">73,1</td><td class="nombre">2,22 × 10⁻⁴</td><td class="nombre">1,12</td></tr>
+          <tr><th scope="row">Inde</th>       <td class="nombre">968</td><td class="nombre">6,62 × 10⁻³</td><td class="nombre">5,60 × 10⁻²</td></tr>
+          <tr><th scope="row">Pologne</th>    <td class="nombre">728</td><td class="nombre">1,41 × 10⁻³</td><td class="nombre">3,34 × 10⁻²</td></tr>
+          <tr><th scope="row">États-Unis</th> <td class="nombre">422</td><td class="nombre">1,03 × 10⁻³</td><td class="nombre">2,82 × 10⁻¹</td></tr>
+        </tbody>
+      </table>
+      <span class="span_source"><span class="souligne_fin">source&#8239;:</span> BAFU, 2025,
+        <a class="source" href="https://esu-services.ch/fr/banque-de-donnees/database/" target="_blank" rel="noopener">esu-services.ch</a></span>
+    </div>
+  </div>
+  <button type="button" class="bouton_plus" aria-expanded="false">comparer les pays de production</button>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> responsable production de l’usine, fournisseur d’énergie.</p>
+</dialog>
+
+
+<!-- ---------- 2. DISTRIBUTION ---------- -->
+
+<dialog class="fenetre_document fenetre_scene" id="pop_emballage" aria-labelledby="titre_pop_emballage">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <h4 id="titre_pop_emballage">Concevoir des emballages adaptés</h4>
+
+  <p>Un emballage doit protéger le vélo, mais il peut aussi être conçu pour utiliser moins de matière, être réutilisé et prendre moins de place pendant le transport.</p>
+  <p>Optimiser la forme des emballages permet en plus de mieux remplir les camions et les conteneurs, et donc de réduire le nombre de trajets.</p>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> responsable logistique / supply chain, fournisseur d’emballages, acheteur.</p>
+</dialog>
+
+
+<dialog class="fenetre_document fenetre_scene" id="pop_transport" aria-labelledby="titre_pop_transport">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <h4 id="titre_pop_transport">Optimiser le transport</h4>
+
+  <p>Les impacts du transport dépendent du mode utilisé, de la distance parcourue, du taux de chargement et des caractéristiques des véhicules.</p>
+  <p>Regrouper les livraisons, éviter les trajets à vide et choisir un mode de transport moins impactant quand c’est possible&#8239;: autant de leviers à étudier.</p>
+
+  <div class="bulle_mascotte">
+    <button type="button" class="qcm_fermer" aria-label="fermer la bulle"></button>
+    <!-- DESSIN DE LA MASCOTTE : remplacer le chemin -->
+    <img class="bulle_mascotte_dessin" src="../dessin/mascotte/mascotte.svg" alt="">
+    <p>Le train et le fluvial sont moins carbonés, mais pas toujours possibles partout&#8239;!</p>
+  </div>
+
+  <!-- se déroule avec le bouton -->
+  <div class="fenetre_plus">
+    <div class="fenetre_plus_interieur">
+      <p>Le <strong>g CO₂ éq / t.km</strong> correspond aux émissions de gaz à effet de serre pour transporter une tonne de marchandise sur un kilomètre&#8239;: plus il est élevé, plus le mode de transport est carboné.</p>
+
+      <table class="tableau_donnees">
+        <caption class="visuellement_cache">Émissions par mode de transport</caption>
+        <thead><tr><th scope="col">Mode de transport</th><th scope="col">Région</th><th scope="col">g CO₂ éq / t.km</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Route (camion 32 t)</th><td>Europe</td><td class="nombre">~90</td></tr>
+          <tr><th scope="row">Voie fluviale</th>      <td>Monde</td> <td class="nombre">~20</td></tr>
+          <tr><th scope="row">Maritime</th>           <td>Monde</td> <td class="nombre">~25</td></tr>
+          <tr><th scope="row">Aérien</th>             <td>Monde</td> <td class="nombre">~516 à 608</td></tr>
+          <tr><th scope="row">Train</th>              <td>Europe</td><td class="nombre">~20</td></tr>
+        </tbody>
+      </table>
+      <span class="span_source"><span class="souligne_fin">source&#8239;:</span> GLEC Framework 2025, Global Logistics Emissions Council</span>
+    </div>
+  </div>
+  <button type="button" class="bouton_plus" aria-expanded="false">comparer les modes de transport</button>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> responsable logistique / supply chain, transporteur, affréteur.</p>
+</dialog>
+
+
+<!-- ---------- 3. UTILISATION ---------- -->
+
+<dialog class="fenetre_document fenetre_scene" id="pop_batterie_usage" aria-labelledby="titre_pop_batterie_usage">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <h4 id="titre_pop_batterie_usage">Réduire les consommations à l’usage</h4>
+
+  <p>Pour un vélo à assistance électrique, la batterie et l’électricité consommée pendant les recharges contribuent aux impacts de la phase d’utilisation.</p>
+  <p>Une meilleure efficacité énergétique peut réduire la quantité d’électricité nécessaire pour un même service rendu.</p>
+
+  <!-- se déroule avec le bouton -->
+  <div class="fenetre_plus">
+    <div class="fenetre_plus_interieur">
+      <p>L’efficacité énergétique des voitures a énormément progressé en 80&nbsp;ans&#8239;: elles consomment beaucoup moins de carburant par cm³ de cylindrée, par km/h de vitesse maximale ou par cheval de puissance.</p>
+      <p>Et pourtant, leur consommation réelle (en litres aux 100&nbsp;km) a augmenté, car leur taille, leur puissance et leur confort ont fortement augmenté aussi. Le gain d’efficacité n’a pas servi à économiser de l’énergie&#8239;: il a été transféré vers plus de performance.</p>
+
+      <div class="exemple">
+        <span class="intro_exemple">exemple</span>
+        <p>La 2CV (1959, 375&nbsp;cm³) consommait environ 4&nbsp;L/100&nbsp;km. La C3 (2008, 1&nbsp;400&nbsp;cm³) consomme 5 à 6&nbsp;L/100&nbsp;km, malgré des décennies de progrès technique.</p>
+        <div class="photos_cote">
+          <figure class="photo_fenetre">
+            <img src="../dessin/chap_3/II/1/2CV_1959.jpg" alt="La 2CV de 1959 : une petite voiture légère.">
+            <figcaption><a class="source" href="">source de l’image</a></figcaption>
+          </figure>
+          <figure class="photo_fenetre">
+            <img src="../dessin/chap_3/II/1/C3_2008.jpg" alt="La C3 de 2008 : une voiture plus grosse et plus puissante.">
+            <figcaption><a class="source" href="">source de l’image</a></figcaption>
+          </figure>
+        </div>
+        <span class="span_source"><span class="souligne_fin">source&#8239;:</span> J.-M. Jancovici, cours aux Mines, 2019,
+          <a class="source" href="https://www.youtube.com/watch?v=PEY6LmscKc4" target="_blank" rel="noopener">youtube.com</a></span>
+      </div>
+    </div>
+  </div>
+  <button type="button" class="bouton_plus" aria-expanded="false">plus efficace ne veut pas dire plus sobre</button>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> ingénieur motorisation, designer produit, fabricant de batterie (sous-traitant technique).</p>
+</dialog>
+
+
+<dialog class="fenetre_document fenetre_scene" id="pop_duree_vie" aria-labelledby="titre_pop_duree_vie">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <h4 id="titre_pop_duree_vie">Allonger la durée de vie</h4>
+
+  <p>Augmenter la durée de vie du produit passe par la réparation, la maintenance, la réutilisation, le reconditionnement et le remanufacturing, tout en prévenant l’obsolescence technique et esthétique.</p>
+  <p>On va donc concevoir le vélo pour qu’il soit réparable avec des outils standards du commerce&#8239;: limiter les jointures difficiles à défaire (soudures, colle), favoriser les vis, faciliter le nettoyage…</p>
+
+  <!-- se déroule avec le bouton -->
+  <div class="fenetre_plus">
+    <div class="fenetre_plus_interieur">
+      <dl class="definitions_fenetre">
+        <dt>Réutilisation</dt>
+        <dd>prolonger la durée de vie du produit en le cédant à un autre utilisateur (seconde main, don, consigne), sans transformation majeure.</dd>
+        <dt>Reconditionnement</dt>
+        <dd>remettre à neuf un produit usagé pour lui donner une seconde vie, avec des performances proches du neuf (nettoyage, remplacement de pièces, mises à jour).</dd>
+        <dt>Remanufacturing</dt>
+        <dd>démonter un produit en fin de vie pour réutiliser ses composants dans un nouveau produit de même fonction, par des procédés industriels&#8239;: les performances sont identiques à celles de composants neufs.</dd>
+      </dl>
+    </div>
+  </div>
+  <button type="button" class="bouton_plus" aria-expanded="false">réutiliser, reconditionner, remanufacturer&#8239;: les définitions</button>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> designer produit, réparateur, réseau de reconditionnement.</p>
+</dialog>
+
+
+<dialog class="fenetre_document fenetre_scene" id="pop_notice" aria-labelledby="titre_pop_notice">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <h4 id="titre_pop_notice">Aider à entretenir et réparer</h4>
+
+  <p>Une notice claire et accessible, pour l’entretien du vélo comme pour la gestion de la batterie, permet à l’utilisateur de réparer et d’entretenir facilement son vélo, et prolonge ainsi sa durée de vie.</p>
+
+  <!-- se déroule avec le bouton -->
+  <div class="fenetre_plus">
+    <div class="fenetre_plus_interieur">
+      <div class="exemple">
+        <span class="intro_exemple">exemple</span>
+        <p>Une page de la notice de réparation de notre vélo cargo&#8239;: un schéma et des étapes numérotées.</p>
+        <!-- PAGE DE NOTICE STYLISÉE : remplacer le chemin (un .svg sera colorié par couleurs.css) -->
+        <figure class="photo_fenetre">
+          <img src="../dessin/chap_3/II/1/page_notice.svg" alt="Page de notice : schéma de la roue avant et étapes numérotées pour changer la chambre à air.">
+        </figure>
+        <span class="span_source"><span class="souligne_fin">source d’inspiration&#8239;:</span> <a class="source" href="https://www.bosch-ebike.com/ca-fr/service/telechargements">Bosch eBike Systems, téléchargements</a></span>
+      </div>
+    </div>
+  </div>
+  <button type="button" class="bouton_plus" aria-expanded="false">voir une page de notice</button>
+
+</dialog>
+
+
+<!-- ---------- 4. FIN DE VIE ---------- -->
+
+<dialog class="fenetre_document fenetre_scene" id="pop_recyclage" aria-labelledby="titre_pop_recyclage">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <h4 id="titre_pop_recyclage">Faciliter le démontage et le recyclage</h4>
+
+  <p>La fin de vie se prépare dès la conception. Limiter les assemblages difficiles à séparer et faciliter l’identification des matériaux peut simplifier le tri et leur orientation vers les filières adaptées.</p>
+
+  <div class="bulle_mascotte">
+    <button type="button" class="qcm_fermer" aria-label="fermer la bulle"></button>
+    <!-- DESSIN DE LA MASCOTTE : remplacer le chemin -->
+    <img class="bulle_mascotte_dessin" src="../dessin/mascotte/mascotte.svg" alt="">
+    <p>Tous les plastiques n’ont pas de filière de recyclage. En France, seuls les thermoplastiques comme le PE, le PP et le PET sont concernés.</p>
+  </div>
+  <!-- se déroule avec le bouton -->
+  <div class="fenetre_plus">
+    <div class="fenetre_plus_interieur">
+      <span class="span_source"><span class="souligne_fin">source&#8239;:</span> ADEME, Bilan national du recyclage 2024,
+        <a class="source" href="https://infos.ademe.fr/economie-circulaire-dechets/2024/bilan-national-du-recyclage-suivant-les-filieres/" target="_blank" rel="noopener">infos.ademe.fr</a></span>
+
+      <p>En France, le réemploi et le reconditionnement sont <strong>prioritaires</strong> sur le recyclage&#8239;: le réseau associatif Heureux Cyclage a réemployé 71&nbsp;% des vélos collectés en 2018, et 158&nbsp;000 vélos d’occasion ont été vendus par des professionnels en 2024.</p>
+      <p>Le recyclage n’intervient qu’en dernier recours. Il est encadré par la filière REP Articles de sport et de loisirs (loi AGEC), pilotée par l’éco-organisme Ecologic&#8239;: en 2024, 6&nbsp;000&nbsp;tonnes de vélos ont été collectées et recyclées (acier, aluminium, caoutchouc, plastiques), sur un gisement estimé à 46&nbsp;000&nbsp;tonnes.</p>
+      <span class="span_source"><span class="souligne_fin">sources&#8239;:</span> ADEME, Impact socio-économique des usages du vélo en France <a class="source" href="https://librairie.ademe.fr/mobilite-et-transports/9313-impact-socio-economique-des-usages-du-velo-en-france.html" target="_blank" rel="noopener">librairie.ademe.fr</a>&#8239;; <br>
+      ADEME, Étude préalable filière REP - Articles de sport et de loisirs (2020) <a class="source" href="https://librairie.ademe.fr/dechets-economie-circulaire/4083-etude-prealable-a-la-mise-en-place-de-la-filiere-rep-articles-de-sport-et-loisirs.html" target="_blank" rel="noopener">librairie.ademe.fr</a>&#8239;;</span>
+    </div>
+  </div>
+  <button type="button" class="bouton_plus" aria-expanded="false">réemployer avant de recycler</button>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> designer produit (choix des matériaux et de l’assemblage), bureau d’études, éco-organisme Ecologic, réseau associatif Heureux Cyclage.</p>
+</dialog>
+
+
+<dialog class="fenetre_document fenetre_scene" id="pop_batterie_fin" aria-labelledby="titre_pop_batterie_fin">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <h4 id="titre_pop_batterie_fin">Prévoir le devenir de la batterie</h4>
+
+  <p>La filière REP encadre spécifiquement la collecte, le tri et le recyclage des batteries. En France, les éco-organismes agréés pour les batteries sont <strong>Corepile</strong> et <strong>Batribox</strong>, agréés pour toutes les catégories de batteries depuis 2025.</p>
+
+  <!-- se déroule avec le bouton -->
+  <div class="fenetre_plus">
+    <div class="fenetre_plus_interieur">
+      <dl class="definitions_fenetre">
+        <dt>REP (Responsabilité Élargie du Producteur)</dt>
+        <dd>dispositif réglementaire qui impose aux producteurs, importateurs ou distributeurs d’un produit de prendre en charge sa fin de vie, afin de réduire son impact environnemental. Cette responsabilité couvre la collecte, le tri, le recyclage ou l’élimination des déchets générés par leurs produits, ainsi que le financement de ces opérations.</dd>
+        <dt>Éco-organisme</dt>
+        <dd>structure privée à but non lucratif (souvent une association ou une société), agréée par les pouvoirs publics pour organiser et financer la gestion de la fin de vie des produits dans le cadre d’une filière REP.</dd>
+      </dl>
+    </div>
+  </div>
+  <button type="button" class="bouton_plus" aria-expanded="false">REP et éco-organisme&#8239;: les définitions</button>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> éco-organismes (Corepile, Batribox), distributeurs et réparateurs, sociétés de transport spécialisées, centres de tri, industriels du recyclage.</p>
+</dialog>
+
+
+<dialog class="fenetre_document fenetre_scene" id="pop_partage" aria-labelledby="titre_pop_partage">
+  <button type="button" class="qcm_fermer" aria-label="fermer"></button>
+  <h4 id="titre_pop_partage">Favoriser le réemploi et le partage</h4>
+
+  <p>Une autre approche pour réduire l’impact en fin de vie consiste à intensifier l’usage du vélo par plusieurs personnes, via la mutualisation, le partage ou la dématérialisation du service (location plutôt qu’achat).</p>
+
+  <!-- se déroule avec le bouton -->
+  <div class="fenetre_plus">
+    <div class="fenetre_plus_interieur">
+      <dl class="definitions_fenetre">
+        <dt>Grätzlrad (Vienne, Autriche)</dt>
+        <dd>des vélos cargo mis gratuitement à disposition d’un quartier via une plateforme de réservation&#8239;: un même vélo remplace les besoins occasionnels de plusieurs dizaines de foyers.</dd>
+        <dt>LastenVelo (Fribourg, Allemagne)</dt>
+        <dd>une flotte de vélos cargo partagés, qui réduit le nombre de vélos en circulation.</dd>
+        <dt>Véligo Location (France)</dt>
+        <dd>la location avec maintenance et assistance plutôt que l’achat, qui allonge la durée de vie grâce à une maintenance centralisée.</dd>
+        <dt>Cargoroo</dt>
+        <dd>des vélos cargo en libre-service via une application, pour optimiser leur taux d’utilisation.</dd>
+      </dl>
+      <span class="span_source"><span class="souligne_fin">sources&#8239;:</span> ADEME, Impact socio-économique des usages du vélo en France (2026)&#8239;; ADEME, Étude préalable filière REP Articles de sport et de loisirs (2020)</span>
+    </div>
+  </div>
+  <button type="button" class="bouton_plus" aria-expanded="false">des exemples de partage</button>
+
+  <p class="acteurs"><strong>Acteurs associés&#8239;:</strong> collectivités locales, plateformes de mobilité partagée, opérateurs de location, professionnels du reconditionnement (Upway, Décathlon, Loewi, Alltricks).</p>
+</dialog>
+
+
+<!-- ========== Bandeau du bas (logos) ========== -->
+<footer id="bandeau_bas"></footer>
+
+</body>
+</html>

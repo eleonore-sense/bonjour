@@ -1,18 +1,5 @@
 // =====================================================================
 // SCRIPT COMMUN À TOUTES LES PAGES
-//
-// 1. Construit la structure commune à partir de cours.js :
-//    barre du haut, onglets, boutons ronds, barre des parties,
-//    titres, bouton « passer à la suite », pop-up des dessins.
-// 2. Active chaque composant SEULEMENT s'il est présent sur la page.
-// 3. Fournit des outils aux activités (progression, bouton suite, étoile).
-//
-// Réglages possibles sur <body> :
-//   data-chapitre="3"            → couleur de fond du chapitre (CSS)
-//   data-suite="cache"           → bouton suite caché jusqu'à afficherSuite()
-//   data-suite="non"             → pas de bouton suite
-//   data-progression="manuelle"  → la barre rose avance avec reglerProgression()
-// =====================================================================
 
 
 // ---------------------------------------------------------------------
@@ -20,17 +7,29 @@
 // ---------------------------------------------------------------------
 const fichierActuel = decodeURIComponent(location.pathname.split('/').pop());
 
-const chapitre = COURS.chapitres.find(c => c.parties.some(p => p.lien === fichierActuel))
+// chemin vers le dossier apprenant/ (data-racine="../" dans les pages rangées dans un sous-dossier)
+const RACINE = document.body.dataset.racine || '';
+const nomFichier = lien => (lien || '').split('/').pop();
+// ajoute la racine devant un lien de cours.js (sauf lien complet, absolu, ancre ou déjà en ../)
+const versRacine = lien => (!lien || /^(https?:|\/|#|\.\.\/)/.test(lien)) ? lien : RACINE + lien;
+// les pages d'une partie : pages: [...] ou lien: '…'
+const pagesDe = p => p ? (p.pages || [p.lien]) : [];
+const contientPage = p => pagesDe(p).some(l => nomFichier(l) === fichierActuel);
+
+const chapitre = COURS.chapitres.find(c => c.parties.some(contientPage))
               || COURS.chapitres.find(c => c.numero === parseInt(document.body.dataset.chapitre, 10));
 const numChapitre = chapitre ? chapitre.numero : NaN;
 const parties     = chapitre ? chapitre.parties : [];
 
-let indexPartie = parties.findIndex(p => p.lien === fichierActuel);
+let indexPartie = parties.findIndex(contientPage);
 if (indexPartie === -1) indexPartie = parseInt(document.body.dataset.partie, 10) - 1;
 
 const numPartie     = indexPartie + 1;
 const partie        = parties[indexPartie];
+// rang de la page dans sa partie (0 = première page)
+const indexPage     = pagesDe(partie).findIndex(l => nomFichier(l) === fichierActuel);
 const partiesFaites = new Set(PROGRESSION.partiesFaites[numChapitre] || []);
+
 
 if (!partie) {
   console.error(`La page « ${fichierActuel} » n'est pas dans cours.js. Vérifie le champ lien de sa partie.`);
@@ -98,17 +97,17 @@ function htmlOnglets() {
     if (c.numero === numChapitre) etat = 'en_cours';
     else if (PROGRESSION.chapitresTermines.includes(c.numero)) etat = 'termine';
 
-    const premierePage = c.parties[0]?.lien;
-    const titre = etat && premierePage
-      ? `<a href="${premierePage}">${c.titre}</a>`
-      : c.titre;
+    const premierePage = pagesDe(c.parties[0])[0];
+        const titre = etat && premierePage
+      ? `<a href="${versRacine(premierePage)}">${c.titre}</a>`
+            : c.titre;
 
     return `
       <div id="chap_${c.numero}" class="${etat}">
         <div class="numero">${c.numero}</div>
         <div class="titre_onglet">${titre}</div>
-        <a class="lien_fiche_onglet" href="${c.fiches}">aller aux fiches notion du chapitre</a>
-      </div>`;
+        <a class="lien_fiche_onglet" href="${versRacine(c.fiches)}">aller aux fiches notion du chapitre</a>
+              </div>`;
   }).join('');
 
   return `<div id="onglet_chapitre">${onglets}</div>`;
@@ -117,8 +116,8 @@ function htmlOnglets() {
 function htmlMenuGauche() {
   const boutons = COURS.boutons.map(b => `
     <div class="bouton_icone_wrap">
-      <a href="${b.lien}" id="${b.id}" class="bouton_icone" aria-label="${pourAttribut(b.texte)}" data-tooltip="${pourAttribut(b.texte)}">
-        <img src="${b.image}" alt=""${b.hauteurImage ? ` style="height:${b.hauteurImage}"` : ''}>
+      <a href="${versRacine(b.lien)}" id="${b.id}" class="bouton_icone" aria-label="${pourAttribut(b.texte)}" data-tooltip="${pourAttribut(b.texte)}">
+        <img src="${versRacine(b.image)}" alt=""${b.hauteurImage ? ` style="height:${b.hauteurImage}"` : ''}>
       </a>
     </div>`).join('');
 
@@ -143,8 +142,7 @@ function htmlMenuGauche() {
     barre += '<div class="point_hover"></div><div class="label_partie"></div>';
 
     parties.forEach((p, i) => {
-      barre += `<div class="zone_hover" data-partie="${i + 1}"${p.etoile ? ' data-etoile="true"' : ''} data-nom="${pourAttribut(p.nom)}" data-lien="${p.lien}"></div>`;
-    });
+      barre += `<div class="zone_hover" data-partie="${i + 1}"${p.etoile ? ' data-etoile="true"' : ''} data-nom="${pourAttribut(p.nom)}" data-lien="${versRacine(pagesDe(p)[0])}"></div>`;    });
   }
 
   return `
@@ -178,14 +176,15 @@ function htmlModale() {
     </div>`;
 }
 
-// Partie suivante du chapitre, ou 1re partie du chapitre suivant
+// Page suivante de la partie, sinon partie suivante, sinon 1re partie du chapitre suivant
 function lienSuivant() {
   if (!chapitre) return null;
-  if (parties[numPartie]) return parties[numPartie].lien;
+  const pages = pagesDe(partie);
+  if (indexPage > -1 && indexPage < pages.length - 1) return versRacine(pages[indexPage + 1]);
+  if (parties[numPartie]) return versRacine(pagesDe(parties[numPartie])[0]);
   const chapitreSuivant = COURS.chapitres.find(c => c.numero === numChapitre + 1);
-  return chapitreSuivant?.parties[0]?.lien || null;
+  return versRacine(pagesDe(chapitreSuivant?.parties[0])[0]) || null;
 }
-
 
 // ---------------------------------------------------------------------
 // 2. COMPOSANTS
@@ -539,8 +538,8 @@ function initAnimationsRive() {
   if (typeof rive === 'undefined') return;
 
   // le moteur de Rive est dans le dossier rive/, pas sur internet
-  rive.RuntimeLoader.setWasmUrl('rive/rive.wasm');
-  rive.RuntimeLoader.wasmFallbackURL = 'rive/rive_fallback.wasm';
+  rive.RuntimeLoader.setWasmUrl(RACINE + 'rive/rive.wasm');
+  rive.RuntimeLoader.wasmFallbackURL = RACINE + 'rive/rive_fallback.wasm';
 
   const groupes = [];
 

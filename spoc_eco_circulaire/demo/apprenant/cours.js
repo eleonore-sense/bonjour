@@ -35,22 +35,24 @@ const COURS = {
       fiches: '#',
       parties: [
         // I.
-        { section: "Qu'est-ce que l'éco-conception ?", nom: "Définitions et grands principes", duree: '10 min', lien: 'chap3_I_1.html' },
-        { section: "Qu'est-ce que l'éco-conception ?", nom: "Les réglementations liées à l'éco-conception", duree: '5min', lien: 'chap3_I_2.html' },
-        { section: "Qu'est-ce que l'éco-conception ?", nom: "Activité: les niveaux d'éco-conception", duree: '15 min', lien: 'chap3_I_4.html', etoile: true },
+        { section: "Qu'est-ce que l'éco-conception ?", nom: "Définitions et grands principes", duree: '10 min', lien: 'chap_3/chap3_I_1.html' },
+        { section: "Qu'est-ce que l'éco-conception ?", nom: "Les réglementations liées à l'éco-conception", duree: '5min', lien: 'chap_3/chap3_I_2.html' },
+        { section: "Qu'est-ce que l'éco-conception ?", nom: "Activité: les niveaux d'éco-conception", duree: '15 min', lien: 'chap_3/chap3_I_3.html', etoile: true },
         // II.
-        { section: "Éco-solutions et outils de l'éco-conception", nom: "Des éco-solutions à chaque étape du cycle de vie", duree: '20 min', lien: 'chap3_II_1.html' },
-        { section: "Éco-solutions et outils de l'éco-conception", nom: "Activité: les éco-solutions et la roue de Brezet", duree: '', lien: 'chap3_II_2.html', etoile: true },
-        { section: "Éco-solutions et outils de l'éco-conception", nom: "Les outils de l'éco-conception", duree: '', lien: 'chap3_II_3.html' },
-        { section: "Éco-solutions et outils de l'éco-conception", nom: "Activité: à chaque situation son outil", duree: '', lien: 'chap3_II_4.html', etoile: true },
+        { section: "Éco-solutions et outils de l'éco-conception", nom: "Des éco-solutions à chaque étape du cycle de vie", duree: '20 min', lien: 'chap_3/chap3_II_1.html' },
+        { section: "Éco-solutions et outils de l'éco-conception", nom: "Activité: les éco-solutions et la roue de Brezet", duree: '', lien: 'chap_3/chap3_II_2.html', etoile: true },
+        { section: "Éco-solutions et outils de l'éco-conception", nom: "Les outils de l'éco-conception", duree: '', lien: 'chap_3/chap3_II_3.html' },
+        { section: "Éco-solutions et outils de l'éco-conception", nom: "Activité: à chaque situation son outil", duree: '', lien: 'chap_3/chap3_II_4.html', etoile: true },
         // III.
-        { section: "Appliquer une démarche d'éco-conception", nom: "Les étapes d'une démarche d'éco-conception", duree: '', lien: 'chap3_III-1.html' },
-        { section: "Appliquer une démarche d'éco-conception", nom: "Exemple : le cola Saclay", duree: '', lien: 'chap3_III-2.html' },
-        { section: "Appliquer une démarche d'éco-conception", nom: "Témoignage: mettre en place une démarche", duree: '', lien: 'chap3_III-3.html' },
-        { section: "Appliquer une démarche d'éco-conception", nom: "Activité: cas d'étude d'un smartphone", duree: '30 min', lien: 'chap3_III-4.html', etoile: true },
-        { section: "Appliquer une démarche d'éco-conception", nom: "Activité: cas d'étude d'un smartphone", duree: '30 min', lien: 'chap3_IV_2.html', etoile: true },
+        // III.
+        { section: "Appliquer une démarche d'éco-conception", nom: "Les étapes d'une démarche d'éco-conception", duree: '15 min',
+          pages: ['chap_3/chap3_III_1.html', 'chap_3/chap3_III_2.html', 'chap_3/chap3_III_3.html', 'chap_3/chap3_III_4.html', 'chap_3/chap3_III_5.html'] },
+        { section: "Appliquer une démarche d'éco-conception", nom: "Témoignage: mettre en place une démarche", duree: '', lien: 'chap_3/chap_3/chap3_III_6.html' },
         // IV.
-        { section: "Conclusion", nom: "Conclusion", duree: '', lien: 'chap3_IV.html' },      ],
+   
+        { section: "Appliquer une démarche d'éco-conception", nom: "Activité: cas d'étude d'un smartphone", duree: '30 min', etoile: true,
+          pages: ['chap_3/chap3_IV_1.html', 'chap_3/chap3_IV_2.html', 'chap_3/chap3_IV_3.html', 'chap_3/chap3_IV_4.html'] },
+            { section: "Conclusion", nom: "Conclusion", duree: '', lien: 'chap_3/chap3_IV.html' },      ],
     },
     { numero: 4,  titre: 'titre du chapitre', fiches: '#', parties: [] },
     { numero: 5,  titre: 'titre du chapitre', fiches: '#', parties: [] },

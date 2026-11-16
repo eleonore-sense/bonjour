@@ -1,7 +1,23 @@
 /* =====================================================================
-   1. VARIABLES, POLICES, GÉNÉRAL
+   STYLE COMMUN À TOUT LE COURS
+   Ce qui est propre au chapitre III est dans chap3_III.css.
+
+   1.  Variables, polices, général
+   2.  Structure commune (barres, menu, onglets, contenu, bouton suite, bandeau)
+   3.  Textes du contenu
+   4.  Pop-ups et fenêtres
+   5.  Composants (exemples, médias, galerie, schéma circulaire)
+   6.  Activités (QCM, classement, graphique, roue de Brezet…)
+   7.  Fiche synthèse
+   8.  Réglages propres à certaines pages ou à certains dessins
+   9.  Espacements
+   10. Accessibilité : mouvement réduit, zoom, petits écrans
    ===================================================================== */
 
+
+/* =====================================================================
+   1. VARIABLES, POLICES, GÉNÉRAL
+   ===================================================================== */
 /* couleurs : couleurs.css, à charger avant ce fichier */
 
 :root {
@@ -103,7 +119,6 @@ body {
   top: 0.15em;
 }
 
-
 /* ---------- Accessibilité ---------- */
 
 .visuellement_cache {
@@ -138,28 +153,10 @@ body {
   outline-offset: 3px;
 }
 
-
-/* ---------- Bandeau de la page de test ---------- */
-
-.clone-banner {
-  margin: 12px auto;
-  padding: 12px;
-  border: 2px solid #111;
-  background: #fff;
-  color: #111;
-  max-width: 1100px;
-  font: 1rem/1.4 sans-serif;
-}
-
-.clone-status {
-  font-weight: 700;
-}
-
-
-
 /* =====================================================================
    2. STRUCTURE COMMUNE
    ===================================================================== */
+
 
 /* ---------- Barre de progression du haut ---------- */
 
@@ -183,11 +180,6 @@ body {
 body[data-progression="manuelle"] #barre_progression_remplie {
   transition: width .6s ease;
 }
-
-.fenetre_document::backdrop {
-  background: transparent;
-}
-
 
 /* ---------- Onglets des chapitres ---------- */
 
@@ -272,7 +264,6 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 #onglet_chapitre > div:not(.en_cours):not(.termine) .lien_fiche_onglet {
   display: none;
 }
-
 
 /* ---------- Menu de gauche ---------- */
 
@@ -376,7 +367,6 @@ body[data-progression="manuelle"] #barre_progression_remplie {
 #tooltip.visible {
   opacity: 1;
 }
-
 
 /* ---------- Barre verticale des parties ---------- */
 
@@ -552,7 +542,6 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   transform: translate(-50%, -50%);
 }
 
-
 /* ---------- Zone de contenu et titres ---------- */
 
 #droite_contenu {
@@ -622,7 +611,6 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   width: 33.33%;
 }
 
-
 /* ---------- Bouton « passer à la suite » ---------- */
 
 .conteneur_suite {
@@ -643,20 +631,287 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   font-size: 1rem;
   color: var(--couleur_texte);
   text-decoration: none;
-  background: var(--rose);
+  background: var(--fond);
   border: 1px solid var(--trait);
   border-radius: var(--arrondi_pilule);
   padding: 8px 22px;
   cursor: pointer;
   box-shadow: 0 0 0 var(--trait);
-  transition: transform .2s ease, box-shadow .2s ease;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
 }
 
 .bouton_suite:hover,
 .bouton_suite:focus-visible {
+  background: var(--rose);
   transform: translate(-4px, -4px);
   box-shadow: 4px 4px 0 var(--trait);
 }
+
+/* ---------- Bandeau du bas ---------- */
+
+#bandeau_bas {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--hauteur_bandeau_bas);
+  z-index: 101;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 0 40px;
+  background: var(--fond);
+  border-top: 1px solid var(--trait);
+}
+
+#bandeau_bas img {
+  height: 32px;
+  width: auto;
+}
+
+/* =====================================================================
+   3. TEXTES DU CONTENU
+   ===================================================================== */
+
+
+/* ---------- Gras, italique, soulignés ---------- */
+
+strong {
+  font-family: var(--extra_bold);
+  font-weight: normal;
+  -webkit-text-stroke: 0.3px currentColor;
+  letter-spacing: 0.03em;
+}
+
+.italic {
+  font-family: var(--italic);
+}
+
+.souligne {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+}
+
+.souligne_fin {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+/* ---------- Titres et paragraphes ---------- */
+
+.petit_titre {
+  display: inline-block;
+  font-size: 1.1rem;
+  font-family: var(--titre);
+  color: var(--texte_inverse);
+  background: var(--trait);
+  border-radius: var(--arrondi_pilule);
+  padding: 8px 15px;
+  margin: 0 0 30px;
+}
+
+.txt_labeur {
+  margin-top: 60px;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.petit_titre + .txt_labeur {
+  margin-top: 0;
+}
+
+.sous_texte {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--labeur);
+  font-size: 0.85rem;
+  line-height: 1.35em;
+}
+
+.ecart {
+  margin-top: 30px;
+}
+
+.ecart_grand {
+  margin-top: 60px;
+}
+
+.lien_page {
+  cursor: pointer;
+}
+
+/* titre en pastille, fond transparent (ex. « Le guide sectoriel ») */
+.pastille_titre {
+  display: inline-block;
+  padding: 4px 12px 5px;
+  font-family: var(--titre);
+  background: transparent;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+}
+
+/* lignes avec étoile dans un texte : un peu d'air entre elles */
+.ligne_etoile {
+  margin: 0 0 8px;
+}
+
+/* ---------- Encadrés ---------- */
+
+.contenu_gras {
+  max-width: 860px;
+  margin: 0 0 30px 12px;
+  padding: 16px 18px;
+  font-size: 1.05rem;
+  font-family: var(--titre);
+  line-height: 1.35;
+  background: var(--vert_bleu);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+  position: relative;
+}
+
+.definition {
+  background-color: var(--rose) !important;
+}
+
+/* encadrés roses : à la largeur du texte (sans dépasser 860px) */
+.contenu_gras.definition {
+  width: fit-content;
+}
+
+.contenu_gras > .span_source {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 6px;
+  font-family: var(--labeur);
+}
+
+.contenu_gras:has(> .span_source) {
+  margin-bottom: 55px;
+}
+
+.chapeau {
+  max-width: 860px;
+  margin: 0 0 30px 12px;
+  padding: 16px 18px;
+  font-size: 1.2rem;
+  line-height: 1.35;
+  background: var(--fond_intro);
+  border: 1px solid var(--violet_trait);
+  border-radius: var(--arrondi_boite);
+}
+
+.chapeau + .txt_labeur {
+  margin-top: 0;
+  margin-left: 12px;
+  max-width: 800px;
+}
+
+.consigne {
+  display: inline-block;
+  font-family: var(--labeur);
+  font-size: 1rem;
+  color: var(--couleur_texte);
+  background: var(--fond_consigne);
+  border: 1px solid var(--trait);
+  border-radius: 16px;
+  margin: 25px 0 0 12px;
+  padding: 10px 18px;
+}
+
+/* ---------- Sources ---------- */
+
+.span_source {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  font-family: var(--labeur);
+}
+
+.source {
+  color: var(--prune);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+
+.source:hover,
+.source:focus-visible {
+  font-family: var(--titre);
+  text-decoration-thickness: 2px;
+}
+
+.source:visited {
+  color: var(--violet);
+}
+
+/* lien vers une autre partie du cours : souligné, prune, rose au survol */
+.lien_cours {
+  color: var(--prune);
+  -webkit-text-stroke-color: currentColor;   /* le contour des lettres en gras suit la couleur du lien */
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  transition: color .2s ease;
+}
+
+.lien_cours:hover,
+.lien_cours:focus-visible {
+  color: var(--rose);
+}
+
+/* ---------- Mots notion et boîte de définition ---------- */
+
+.mot_notion {
+  font-family: var(--titre);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+  cursor: help;
+}
+
+.boite_notion {
+  position: absolute;
+  right: 4%;
+  width: 27%;
+  display: none;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+  padding: 22px 16px 14px;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  z-index: 70;
+  cursor: grab;
+  touch-action: none;
+}
+
+.boite_notion strong {
+  display: block;
+  font-family: var(--titre);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.boite_notion.deplacement {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.boite_notion.visible {
+  display: block;
+}
+
+.boite_notion.arriere_plan {
+  z-index: 0;
+}
+
+/* =====================================================================
+   4. POP-UPS ET FENÊTRES
+   ===================================================================== */
 
 
 /* ---------- Pop-up des dessins ---------- */
@@ -730,7 +985,6 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   margin-top: 0;
 }
 
-
 /* ---------- Pop-up mascotte ---------- */
 
 .pop_mascotte {
@@ -782,219 +1036,249 @@ body[data-progression="manuelle"] #barre_progression_remplie {
   line-height: 1.35;
 }
 
-
-
-/* =====================================================================
-   3. TEXTES DU CONTENU
-   ===================================================================== */
-
-/* ---------- Gras, italique, soulignés ---------- */
-
-strong {
-  font-family: var(--extra_bold);
-  font-weight: normal;
-  -webkit-text-stroke: 0.3px currentColor;
-  letter-spacing: 0.03em;
+.pop_mascotte.placee {
+  margin-top: 70px;
+    margin-left: 50px;
+  inset: auto;
 }
 
-.italic {
-  font-family: var(--italic);
+/* pop-up mascotte avec un bouton sous le texte */
+.pop_mascotte_contenu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
 }
 
-.souligne {
-  text-decoration: underline;
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 2px;
+/* ---------- Pop-up de fin de partie ---------- */
+
+.pop_fin {
+  max-width: min(680px, 92vw);       /* plus large que la pop-up d'accueil */
+  padding: 30px 44px 30px 36px;      /* haut, droite (place du rond rouge), bas, gauche */
+  background: var(--fond);
 }
 
-.souligne_fin {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
+.pop_fin[open] {
+  align-items: center;
+  gap: 32px;                         /* entre le logo et le texte */
 }
 
-
-/* ---------- Titres et paragraphes ---------- */
-
-.petit_titre {
-  display: inline-block;
-  font-size: 1.1rem;
-  font-family: var(--titre);
-  color: var(--texte_inverse);
-  background: var(--trait);
-  border-radius: var(--arrondi_pilule);
-  padding: 8px 15px;
-  margin: 0 0 30px;
+.pop_fin .pop_mascotte_contenu {
+  gap: 18px;                         /* entre le texte et les boutons */
 }
 
-.txt_labeur {
-  margin-top: 60px;
-  font-size: 1rem;
-  line-height: 1.45;
-}
-
-.petit_titre + .txt_labeur {
-  margin-top: 0;
-}
-
-.sous_texte {
-  display: block;
-  margin-top: 6px;
-  font-family: var(--labeur);
-  font-size: 0.85rem;
-  line-height: 1.35em;
-}
-
-.ecart {
-  margin-top: 30px;
-}
-
-.ecart_grand {
-  margin-top: 60px;
-}
-
-.lien_page {
-  cursor: pointer;
+.pop_fin_boutons {
+  display: flex;
+  flex-wrap: nowrap;                 /* les deux boutons côte à côte */
+  gap: 70px;                         /* entre « voir la fiche synthèse » et « passer à la suite » */
 }
 
 
-/* ---------- Encadrés ---------- */
+/* le logo de la fiche synthèse, à la place de la mascotte */
+.pop_fin .logo_fiche {
+  width: 70px;
+  height: auto;
+  flex-shrink: 0;
+}
 
-.contenu_gras {
-  max-width: 860px;
-  margin: 0 0 30px 12px;
-  padding: 16px 18px;
-  font-size: 1.05rem;
-  font-family: var(--titre);
-  line-height: 1.35;
+/* le logo qui vole vers la pastille du menu, dans une bulle ronde */
+.logo_vol {
+  position: fixed;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.logo_vol .logo_fiche {
+  width: 50%;
+  height: auto;
+  color: var(--trait);
+}
+
+/* la pastille du menu qui reçoit le logo */
+@keyframes pastille_recoit {
+  0%, 100% { transform: none; box-shadow: 0 0 0 var(--trait); border-color: var(--trait); }
+  40%      { transform: translate(-4px, -4px) scale(1.15); box-shadow: 4px 4px 0 var(--trait); border-color: var(--fond); }
+}
+
+.bouton_icone.pastille_recoit {
+  animation: pastille_recoit .7s ease;
+}
+
+/* épaisseur du trait du logo de la fiche, quelle que soit sa taille
+   (marche quand le SVG est inséré dans la page, c'est-à-dire avec un serveur : Live Server…) */
+.pop_fin .logo_fiche {
+  --epaisseur_logo: 1.5px;
+  color: var(--trait);
+}
+
+.logo_fiche :is(path, line, polyline, polygon, rect, circle, ellipse) {
+  vector-effect: non-scaling-stroke;
+  stroke-width: var(--epaisseur_logo, 1.5px);
+}
+
+/* ---------- Encadré mascotte de fin de page ---------- */
+
+@keyframes apparition_douce {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.rappel_fin {
+  position: fixed;
+  right: 40px;
+  bottom: calc(var(--hauteur_bandeau_bas) + 25px);
+  z-index: 95;
+  display: flex;
+  align-items: flex-end;
+  gap: 15px;
+  max-width: min(420px, 90vw);
+  padding: 18px;
   background: var(--vert_bleu);
   border: 1px solid var(--trait);
   border-radius: var(--arrondi_boite);
-  position: relative;
-}
-
-.definition {
-  background-color: var(--rose) !important;
-}
-
-.contenu_gras > .span_source {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  margin-top: 6px;
-  font-family: var(--labeur);
-}
-
-.contenu_gras:has(> .span_source) {
-  margin-bottom: 55px;
-}
-
-.chapeau {
-  max-width: 860px;
-  margin: 0 0 30px 12px;
-  padding: 16px 18px;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   line-height: 1.35;
-  background: var(--fond_intro);
-  border: 1px solid var(--violet_trait);
-  border-radius: var(--arrondi_boite);
+  animation: apparition_douce .8s ease;
 }
 
-.chapeau + .txt_labeur {
-  margin-top: 0;
-  margin-left: 12px;
-  max-width: 800px;
-}
-
-.consigne {
-  display: inline-block;
-  font-family: var(--labeur);
-  font-size: 1rem;
-  color: var(--couleur_texte);
-  background: var(--fond_consigne);
-  border: 1px solid var(--trait);
-  border-radius: 16px;
-  margin: 25px 0 0 12px;
-  padding: 10px 18px;
-}
-
-
-/* ---------- Sources ---------- */
-
-.span_source {
-  display: block;
-  margin-top: 8px;
-  font-size: 0.75rem;
-  font-family: var(--labeur);
-}
-
-.source {
-  color: var(--prune);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-}
-
-.source:hover,
-.source:focus-visible {
-  font-family: var(--titre);
-  text-decoration-thickness: 2px;
-}
-
-.source:visited {
-  color: var(--violet);
-}
-
-
-/* ---------- Mots notion et boîte de définition ---------- */
-
-.mot_notion {
-  font-family: var(--titre);
-  text-decoration: underline;
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 2px;
-  cursor: help;
-}
-
-.boite_notion {
-  position: absolute;
-  right: 4%;
-  width: 27%;
+.rappel_fin[hidden] {
   display: none;
+}
+
+.rappel_fin_dessin {
+  width: 90px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+.rappel_fin p {
+  margin: 0 0 6px;
+}
+
+.rappel_fin ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---------- Capture d'écran en pop-up (dessin cliquable) ---------- */
+
+.bouton_capture {
+  display: block;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: zoom-in;
+}
+
+.bouton_capture :is(img, .dessin) {
+  display: block;
+  width: auto;
+  max-width: 160px;
+  max-height: 140px;
+  filter: drop-shadow(0 0 0 var(--trait));
+  transition: transform .2s ease, filter .2s ease;
+}
+
+.bouton_capture:hover :is(img, .dessin),
+.bouton_capture:focus-visible :is(img, .dessin) {
+  transform: translate(-4px, -4px);
+  filter: drop-shadow(4px 4px 0 var(--trait));
+}
+
+.fenetre_capture {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: fit-content;
+  height: fit-content;
+  max-width: min(900px, 90vw);
+  max-height: 85vh;
+  padding: 34px 20px 20px;
+  overflow: auto;
   background: var(--fond);
   border: 1px solid var(--trait);
   border-radius: var(--arrondi_boite);
-  padding: 22px 16px 14px;
-  font-size: 0.85rem;
-  line-height: 1.35;
-  z-index: 70;
-  cursor: grab;
-  touch-action: none;
 }
 
-.boite_notion strong {
+.fenetre_capture::backdrop {
+  background: color-mix(in srgb, var(--fond) 50%, transparent);
+}
+
+.fenetre_capture img {
   display: block;
-  font-family: var(--titre);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
+  max-width: 100%;
+  height: auto;
+  border-radius: calc(var(--arrondi_boite) / 2);
 }
 
-.boite_notion.deplacement {
-  cursor: grabbing;
-  user-select: none;
+/* ---------- Apparition et disparition en fondu ---------- */
+.fenetre_document::backdrop {
+  background: transparent;
 }
 
-.boite_notion.visible {
-  display: block;
+.qcm_pied,
+.qcm_legende,
+.classement_correction,
+.modal_dessin,
+.boite_notion,
+.fenetre_document,
+.conteneur_bouton,
+.retour_choix,
+.rappel_mascotte,
+.pop_mascotte {
+  transition: opacity var(--duree_apparition) ease;
+  transition:
+    opacity var(--duree_apparition) ease,
+    display var(--duree_apparition) allow-discrete,
+    overlay var(--duree_apparition) allow-discrete;
 }
 
-.boite_notion.arriere_plan {
-  z-index: 0;
+.qcm_pied[hidden],
+.qcm_legende:not(.visible),
+.classement_correction:not(.ouverte),
+.modal_dessin:not(.visible),
+.boite_notion:not(.visible),
+.fenetre_document:not([open]),
+.conteneur_bouton[hidden],
+.retour_choix[hidden],
+.rappel_mascotte[hidden],
+.pop_mascotte:not([open]) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@starting-style {
+  .qcm_pied:not([hidden]),
+  .qcm_legende.visible,
+  .classement_correction.ouverte,
+  .modal_dessin.visible,
+  .boite_notion.visible,
+  .fenetre_document[open],
+  .conteneur_bouton:not([hidden]),
+  .retour_choix:not([hidden]),
+  .rappel_mascotte:not([hidden]),
+  .pop_mascotte[open] {
+    opacity: 0;
+  }
+}
+
+.fenetre_document {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  height: fit-content;
 }
 
 /* =====================================================================
-   4. COMPOSANTS
+   5. COMPOSANTS
    ===================================================================== */
+
 
 /* ---------- Exemples ---------- */
 
@@ -1041,7 +1325,9 @@ strong {
   flex: 1;
   min-width: 0;
   max-width: 27vw;
-}.exemple_large {
+}
+
+.exemple_large {
   max-width: none;
   flex: 1;
 }
@@ -1053,7 +1339,6 @@ strong {
 .exemple p:last-child {
   margin-bottom: 0;
 }
-
 
 /* ---------- Fiche dans un exemple ---------- */
 
@@ -1131,7 +1416,6 @@ strong {
   font-weight: normal;
 }
 
-
 /* ---------- Animations Rive et dessins des exemples ---------- */
 
 .media_exemple {
@@ -1168,6 +1452,20 @@ strong {
   margin-left: -62px;
   position: relative;
   z-index: 2;
+}
+
+/* ---------- Pousse qui grandit au passage (dessins avec <g class="pousse">) ---------- */
+.anim_pousse .pousse { transform: scale(0); }
+.anim_pousse.joue .pousse { animation: pousse_grandit 2.5s ease-out forwards; }
+
+@keyframes pousse_grandit {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim_pousse .pousse { transform: none; }
+  .anim_pousse.joue .pousse { animation: none; }
 }
 
 /* ---------- Galerie de dessins ---------- */
@@ -1256,7 +1554,6 @@ strong {
   margin: 0;
 }
 
-
 /* ---------- Schéma circulaire ---------- */
 
 .schema_cycle {
@@ -1323,6 +1620,10 @@ strong {
   transform: translateX(-50%);
   margin-top: 10px;
 }
+
+/* =====================================================================
+   6. ACTIVITÉS
+   ===================================================================== */
 
 
 /* ---------- QCM ---------- */
@@ -1687,7 +1988,6 @@ fieldset.qcm_bloc {
   clear: both;
 }
 
-
 /* ---------- Bulle d'aide de la mascotte (correction du QCM) ---------- */
 
 .bulle_aide {
@@ -1738,7 +2038,6 @@ fieldset.qcm_bloc {
   display: none;
 }
 
-
 /* ---------- Boutons produit et correction ---------- */
 
 .choix_produit {
@@ -1777,7 +2076,6 @@ fieldset.qcm_bloc {
   color: var(--texte_inverse);
   text-decoration: underline;
 }
-
 
 /* ---------- Graphique en barres ---------- */
 
@@ -1901,7 +2199,6 @@ fieldset.qcm_bloc {
   background: var(--trait);
   color: var(--texte_inverse);
 }
-
 
 /* ---------- Classement par glisser-déposer ---------- */
 
@@ -2049,7 +2346,7 @@ fieldset.qcm_bloc {
   flex-direction: column;
   align-items: center;
   gap: 4px;
-width: auto; padding: 4px;
+  width: auto;
   padding: 8px;
   font-size: 0.85rem;
   line-height: 1.2em;
@@ -2253,295 +2550,7 @@ width: auto; padding: 4px;
   animation: apparition_mascotte .8s ease 2s both;
 }
 
-
-
-/* ---------- Bandeau du bas ---------- */
-
-#bandeau_bas {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: var(--hauteur_bandeau_bas);
-  z-index: 101;
-  display: flex;
-  align-items: center;
-  gap: 30px;
-  padding: 0 40px;
-  background: var(--fond);
-  border-top: 1px solid var(--trait);
-}
-
-#bandeau_bas img {
-  height: 32px;
-  width: auto;
-}
-
-
-
-/* =====================================================================
-   5. RÉGLAGES PROPRES À CERTAINS DESSINS
-   ===================================================================== */
-
-svg.dessin {
-  height: auto;
-  overflow: visible;
-}
-
-/* ---------- Activité A ---------- */
-
-:is(.qcm_scenario, .qcm_correction) :is([src*="lessive"],    [data-src*="lessive"])    { width: 70px; }
-:is(.qcm_scenario, .qcm_correction) :is([src*="box"],        [data-src*="box"])        { width: 80px; }
-:is(.qcm_scenario, .qcm_correction) :is([src*="imprimante"], [data-src*="imprimante"]) { width: 85px; }
-:is(.qcm_scenario, .qcm_correction) :is([src*="velo"],       [data-src*="velo"])       { width: 150px; }
-:is(.qcm_scenario, .qcm_correction) :is([src*="textile"],    [data-src*="textile"])    { width: 100px; }
-
-/* ---------- Animations Rive ---------- */
-
-#loupe        { height: 135px; }
-#basket_sorte { width: 280px; height: auto; }
-
-/* ---------- Galerie multicritère ---------- */
-
-#ionisant     { width: 75px; }
-
-/* ---------- Infobulles des acteurs ---------- */
-
-.item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="acheteur"],   [data-src*="acheteur"])   { width: 200px; }
-.item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="recherche"],  [data-src*="recherche"])  { width: 100px; }
-.item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="logistique"], [data-src*="logistique"]) { width: 150px; }
-.item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="client"],     [data-src*="client"])     { width: 100px; }
-.item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="recycleur"],  [data-src*="recycleur"])  { width: 100px; }
-
-
-
-/* =====================================================================
-   6. APPARITION ET DISPARITION EN FONDU
-   ===================================================================== */
-
-.qcm_pied,
-.qcm_legende,
-.classement_correction,
-.modal_dessin,
-.boite_notion,
-.fenetre_document,
-.conteneur_bouton,
-.retour_choix,
-.rappel_mascotte,
-.pop_mascotte {
-  transition: opacity var(--duree_apparition) ease;
-  transition:
-    opacity var(--duree_apparition) ease,
-    display var(--duree_apparition) allow-discrete,
-    overlay var(--duree_apparition) allow-discrete;
-}
-
-.qcm_pied[hidden],
-.qcm_legende:not(.visible),
-.classement_correction:not(.ouverte),
-.modal_dessin:not(.visible),
-.boite_notion:not(.visible),
-.fenetre_document:not([open]),
-.conteneur_bouton[hidden],
-.retour_choix[hidden],
-.rappel_mascotte[hidden],
-.pop_mascotte:not([open]) {
-  opacity: 0;
-  pointer-events: none;
-}
-
-@starting-style {
-  .qcm_pied:not([hidden]),
-  .qcm_legende.visible,
-  .classement_correction.ouverte,
-  .modal_dessin.visible,
-  .boite_notion.visible,
-  .fenetre_document[open],
-  .conteneur_bouton:not([hidden]),
-  .retour_choix:not([hidden]),
-  .rappel_mascotte:not([hidden]),
-  .pop_mascotte[open] {
-    opacity: 0;
-  }
-}
-
-.fenetre_document {
-  position: fixed;
-  inset: 0;
-  margin: auto;
-  height: fit-content;
-}
-
-/* ---------- Encadré mascotte de fin de page ---------- */
-
-@keyframes apparition_douce {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: none; }
-}
-
-.rappel_fin {
-  position: fixed;
-  right: 40px;
-  bottom: calc(var(--hauteur_bandeau_bas) + 25px);
-  z-index: 95;
-  display: flex;
-  align-items: flex-end;
-  gap: 15px;
-  max-width: min(420px, 90vw);
-  padding: 18px;
-  background: var(--vert_bleu);
-  border: 1px solid var(--trait);
-  border-radius: var(--arrondi_boite);
-  font-size: 0.9rem;
-  line-height: 1.35;
-  animation: apparition_douce .8s ease;
-}
-
-.rappel_fin[hidden] {
-  display: none;
-}
-
-.rappel_fin_dessin {
-  width: 90px;
-  height: auto;
-  flex-shrink: 0;
-}
-
-.rappel_fin p {
-  margin: 0 0 6px;
-}
-
-.rappel_fin ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.pop_mascotte.placee {
-  margin-top: 70px;
-    margin-left: 50px;
-  inset: auto;
-}
-/* =====================================================================
-   7. ACCESSIBILITÉ : MOUVEMENT RÉDUIT, ZOOM, PETITS ÉCRANS
-   ===================================================================== */
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* ---------- Écran moyen ou zoom fort ---------- */
-
-@media (max-width: 1100px) {
-
-  #contenu_chapitre {
-    flex-direction: column;
-    margin-left: 0;
-    padding: 0 16px;
-  }
-
-  #contenu_gauche,
-  #notion_droite {
-    width: 100%;
-  }
-
-  #titre_chapitre {
-    margin-left: 0;
-  }
-
-  .boite_notion {
-    position: static;
-    width: 100%;
-    margin-top: 20px;
-  }
-
-  .qcm,
-  .classement,
-  .galerie_dessins {
-    width: 100%;
-  }
-
-  .qcm {
-    grid-template-columns: 1fr;
-    row-gap: 60px;
-  }
-
-  .galerie_dessins {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 40px;
-  }
-
-  .bloc_exemple {
-    margin-left: 0;
-  }
- .bloc_exemple.bloc_deborde {
-    width: auto;
-  }
-  .ligne_exemple,
-  .ligne_inverse {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .exemple {
-    max-width: none;
-  }
-
-  .graphiques_vues {
-    width: 100%;
-    margin-left: 0;
-  }
-
-  .reserve {
-    position: static;
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-  }
-
-  #partie_2 {
-    padding-bottom: 60px;
-  }
-}
-
-/* =====================================================================
-   8. ESPACEMENTS
-   ===================================================================== */
-
-.ecart_avant_petit  { margin-top: 15px !important; }
-.ecart_avant        { margin-top: 30px !important; }
-.ecart_avant_grand  { margin-top: 60px !important; }
-
-.ecart_apres_petit  { margin-bottom: 15px !important; }
-.ecart_apres        { margin-bottom: 30px !important; }
-.ecart_apres_grand  { margin-bottom: 60px !important; }
-
-/* =====================================================================
-   ROUE DE BREZET (glisser-déposer sur le schéma du cycle de vie)
-   ===================================================================== */
-
-/* pop-up mascotte avec un bouton sous le texte */
-.pop_mascotte_contenu {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
-}
-
-.pop_mascotte_contenu .bouton_suite {
-  background: var(--fond);
-}
-
-.pop_mascotte_contenu .bouton_suite:hover,
-.pop_mascotte_contenu .bouton_suite:focus-visible {
-  background: var(--rose);
-}
-
+/* ---------- Roue de Brezet (glisser-déposer sur le schéma du cycle de vie) ---------- */
 /* le classement en forme de roue : pas de grille ni d'axes */
 .classement.roue_brezet {
   display: block;
@@ -2684,156 +2693,9 @@ svg.dessin {
   display: none;
 }
 
-
-/* ---------- Capture d'écran en pop-up (dessin cliquable) ---------- */
-
-.bouton_capture {
-  display: block;
-  padding: 0;
-  background: none;
-  border: 0;
-  cursor: zoom-in;
-}
-
-.bouton_capture :is(img, .dessin) {
-  display: block;
-  width: auto;
-  max-width: 160px;
-  max-height: 140px;
-  filter: drop-shadow(0 0 0 var(--trait));
-  transition: transform .2s ease, filter .2s ease;
-}
-
-.bouton_capture:hover :is(img, .dessin),
-.bouton_capture:focus-visible :is(img, .dessin) {
-  transform: translate(-4px, -4px);
-  filter: drop-shadow(4px 4px 0 var(--trait));
-}
-
-.fenetre_capture {
-  position: fixed;
-  inset: 0;
-  margin: auto;
-  width: fit-content;
-  height: fit-content;
-  max-width: min(900px, 90vw);
-  max-height: 85vh;
-  padding: 34px 20px 20px;
-  overflow: auto;
-  background: var(--fond);
-  border: 1px solid var(--trait);
-  border-radius: var(--arrondi_boite);
-}
-
-.fenetre_capture::backdrop {
-  background: color-mix(in srgb, var(--fond) 50%, transparent);
-}
-
-.fenetre_capture img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  border-radius: calc(var(--arrondi_boite) / 2);
-}
-
-/* lignes avec étoile dans un texte : un peu d'air entre elles */
-.ligne_etoile {
-  margin: 0 0 8px;
-}
-
-/* titre en pastille, fond transparent (ex. « Le guide sectoriel ») */
-.pastille_titre {
-  display: inline-block;
-  padding: 4px 12px 5px;
-  font-family: var(--titre);
-  background: transparent;
-  border: 1px solid var(--trait);
-  border-radius: var(--arrondi_pilule);
-}
-
-/* lien vers une autre partie du cours : souligné, prune, rose au survol */
-.lien_cours {
-  color: var(--prune);
-  -webkit-text-stroke-color: currentColor;   /* le contour des lettres en gras suit la couleur du lien */
-  text-decoration: underline;
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 3px;
-  transition: color .2s ease;
-}
-
-.lien_cours:hover,
-.lien_cours:focus-visible {
-  color: var(--rose);
-}
-
-
-/* ---------- Pop-up de fin de partie ---------- */
-
-.pop_fin {
-  max-width: min(680px, 92vw);       /* plus large que la pop-up d'accueil */
-  padding: 30px 44px 30px 36px;      /* haut, droite (place du rond rouge), bas, gauche */
-  background: var(--fond);
-}
-
-.pop_fin[open] {
-  align-items: center;
-  gap: 32px;                         /* entre le logo et le texte */
-}
-
-.pop_fin .pop_mascotte_contenu {
-  gap: 18px;                         /* entre le texte et les boutons */
-}
-
-.pop_fin_boutons {
-  display: flex;
-  flex-wrap: nowrap;                 /* les deux boutons côte à côte */
-  gap: 70px;                         /* entre « voir la fiche synthèse » et « passer à la suite » */
-}
-
-/* boutons : fond --fond, rose au survol */
-.pop_fin .bouton_suite {
-  background: var(--fond);
-}
-
-.pop_fin .bouton_suite:hover,
-.pop_fin .bouton_suite:focus-visible {
-  background: var(--rose);
-}
-
-/* le logo de la fiche synthèse, à la place de la mascotte */
-.pop_fin .logo_fiche {
-  width: 70px;
-  height: auto;
-  flex-shrink: 0;
-}
-
-/* le logo qui vole vers la pastille du menu, dans une bulle ronde */
-.logo_vol {
-  position: fixed;
-  z-index: 1000;
-  display: grid;
-  place-items: center;
-  background: var(--fond);
-  border: 1px solid var(--trait);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.logo_vol .logo_fiche {
-  width: 50%;
-  height: auto;
-  color: var(--trait);
-}
-
-/* la pastille du menu qui reçoit le logo */
-@keyframes pastille_recoit {
-  0%, 100% { transform: none; box-shadow: 0 0 0 var(--trait); border-color: var(--trait); }
-  40%      { transform: translate(-4px, -4px) scale(1.15); box-shadow: 4px 4px 0 var(--trait); border-color: var(--fond); }
-}
-
-.bouton_icone.pastille_recoit {
-  animation: pastille_recoit .7s ease;
-}
+/* =====================================================================
+   7. FICHE SYNTHÈSE
+   ===================================================================== */
 
 
 /* ---------- Fiche synthèse : feuille au coin plié, qui défile ---------- */
@@ -2917,6 +2779,11 @@ svg.dessin {
   border-radius: 4px;
 }
 
+/* le picto « imprimer » de la fiche : même trait que les pictos du menu, en couleur du texte */
+.bouton_imprimer .picto {
+  --epaisseur_picto: 1.2px;
+  color: var(--trait);
+}
 
 /* ---------- Contenu de la fiche synthèse ---------- */
 
@@ -3039,43 +2906,6 @@ svg.dessin {
   text-align: center;
 }
 
-
-/* ---------- Impression : seulement la fiche ---------- */
-
-@media print {
-  html.impression_fiche body > *:not(.fiche_synthese) {
-    display: none !important;
-  }
-
-  html.impression_fiche .fiche_synthese {
-    position: static;
-    width: auto;
-    height: auto;
-    margin: 0;
-  }
-
-  html.impression_fiche .fiche_synthese::backdrop {
-    display: none;
-  }
-
-  html.impression_fiche .fiche_synthese_feuille {
-    height: auto;
-    overflow: visible;
-    padding: 0;
-    background: #fff;
-    border: 0;
-    clip-path: none;
-  }
-
-  html.impression_fiche .fiche_synthese::after {
-    display: none;
-  }
-
-  html.impression_fiche .fiche_synthese > button {
-    display: none;
-  }
-}
-
 /* exemples dans la fiche : en retrait, avec un trait à gauche et une pastille sans couleur */
 .fiche_exemples {
   margin: 10px 80px 10px 4%;
@@ -3093,18 +2923,37 @@ svg.dessin {
   border-radius: var(--arrondi_pilule);
 }
 
-/* épaisseur du trait du logo de la fiche, quelle que soit sa taille
-   (marche quand le SVG est inséré dans la page, c'est-à-dire avec un serveur : Live Server…) */
-.pop_fin .logo_fiche {
-  --epaisseur_logo: 1.5px;
-  color: var(--trait);
+/* exemple avec dessin(s) à droite, dans les fiches */
+.fiche_exemple_ligne {
+  display: flex;
+  align-items: center;
+  gap: 22px;
 }
 
-.logo_fiche :is(path, line, polyline, polygon, rect, circle, ellipse) {
-  vector-effect: non-scaling-stroke;
-  stroke-width: var(--epaisseur_logo, 1.5px);
+.fiche_exemple_ligne > p {
+  flex: 1;
+  margin: 0;
 }
 
+.fiche_exemple_dessins {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.fiche_exemple_dessins :is(img, .dessin) {
+  width: auto;
+  max-width: 130px;
+  height: auto;
+  max-height: 200px;
+}
+
+.fiche_exemple_dessins_petit :is(img, .dessin) {
+  width: auto;
+  max-width: 100px;
+  height: auto;
+  max-height: 100px;
+}
 
 /* ---------- Fiches synthèse : éléments en plus (fiches 1 et 2) ---------- */
 
@@ -3271,58 +3120,185 @@ svg.dessin {
   max-height: 34px;
 }
 
-/* exemple avec dessin(s) à droite, dans les fiches */
-.fiche_exemple_ligne {
-  display: flex;
-  align-items: center;
-  gap: 22px;
+/* ---------- Impression : seulement la fiche ---------- */
+
+@media print {
+  html.impression_fiche body > *:not(.fiche_synthese) {
+    display: none !important;
+  }
+
+  html.impression_fiche .fiche_synthese {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+  }
+
+  html.impression_fiche .fiche_synthese::backdrop {
+    display: none;
+  }
+
+  html.impression_fiche .fiche_synthese_feuille {
+    height: auto;
+    overflow: visible;
+    padding: 0;
+    background: #fff;
+    border: 0;
+    clip-path: none;
+  }
+
+  html.impression_fiche .fiche_synthese::after {
+    display: none;
+  }
+
+  html.impression_fiche .fiche_synthese > button {
+    display: none;
+  }
 }
 
-.fiche_exemple_ligne > p {
-  flex: 1;
-  margin: 0;
-}
-
-.fiche_exemple_dessins {
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
-  flex-shrink: 0;
-}
-.fiche_exemple_dessins :is(img, .dessin) {
-  width: auto;
-  max-width: 130px;
+/* =====================================================================
+   8. RÉGLAGES PROPRES À CERTAINES PAGES OU À CERTAINS DESSINS
+   (à sortir dans le CSS de la page concernée quand on saura laquelle)
+   ===================================================================== */
+svg.dessin {
   height: auto;
-  max-height: 200px;
+  overflow: visible;
 }
 
-.fiche_exemple_dessins_petit :is(img, .dessin) {
-  width: auto;
-  max-width: 100px;
-  height: auto;
-  max-height: 100px;
-}
-/* le picto « imprimer » de la fiche : même trait que les pictos du menu, en couleur du texte */
-.bouton_imprimer .picto {
-  --epaisseur_picto: 1.2px;
-  color: var(--trait);
+/* ---------- Activité A ---------- */
+
+:is(.qcm_scenario, .qcm_correction) :is([src*="lessive"],    [data-src*="lessive"])    { width: 70px; }
+:is(.qcm_scenario, .qcm_correction) :is([src*="box"],        [data-src*="box"])        { width: 80px; }
+:is(.qcm_scenario, .qcm_correction) :is([src*="imprimante"], [data-src*="imprimante"]) { width: 85px; }
+:is(.qcm_scenario, .qcm_correction) :is([src*="velo"],       [data-src*="velo"])       { width: 150px; }
+:is(.qcm_scenario, .qcm_correction) :is([src*="textile"],    [data-src*="textile"])    { width: 100px; }
+
+/* ---------- Animations Rive ---------- */
+
+#loupe        { height: 135px; }
+#basket_sorte { width: 280px; height: auto; }
+
+/* ---------- Galerie multicritère ---------- */
+
+#ionisant     { width: 75px; }
+
+/* ---------- Infobulles des acteurs ---------- */
+
+.item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="acheteur"],   [data-src*="acheteur"])   { width: 200px; }
+.item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="recherche"],  [data-src*="recherche"])  { width: 100px; }
+.item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="logistique"], [data-src*="logistique"]) { width: 150px; }
+.item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="client"],     [data-src*="client"])     { width: 100px; }
+.item_dessin .tooltip_acteur .tooltip_acteur_image:is([src*="recycleur"],  [data-src*="recycleur"])  { width: 100px; }
+
+/* ---------- Bandeau de la page de test ---------- */
+.clone-banner {
+  margin: 12px auto;
+  padding: 12px;
+  border: 2px solid #111;
+  background: #fff;
+  color: #111;
+  max-width: 1100px;
+  font: 1rem/1.4 sans-serif;
 }
 
-/* une colonne qui contient une fiche prend la largeur de la fiche, pas toute la place */
-.exemple:has(> .fiche_exemple) {
-  flex: 0 1 auto;
+.clone-status {
+  font-weight: 700;
 }
 
-/* ---------- Pousse qui grandit au passage (dessins avec <g class="pousse">) ---------- */
-.anim_pousse .pousse { transform: scale(0); }
-.anim_pousse.joue .pousse { animation: pousse_grandit 2.5s ease-out forwards; }
+/* =====================================================================
+   9. ESPACEMENTS
+   ===================================================================== */
+.ecart_avant_petit  { margin-top: 15px !important; }
+.ecart_avant        { margin-top: 30px !important; }
+.ecart_avant_grand  { margin-top: 60px !important; }
 
-@keyframes pousse_grandit {
-  from { transform: scale(0); }
-  to   { transform: scale(1); }
-}
+.ecart_apres_petit  { margin-bottom: 15px !important; }
+.ecart_apres        { margin-bottom: 30px !important; }
+.ecart_apres_grand  { margin-bottom: 60px !important; }
+.ecart_avant_tres_grand { margin-top: 100px !important; }
 
+/* =====================================================================
+   10. ACCESSIBILITÉ : MOUVEMENT RÉDUIT, ZOOM, PETITS ÉCRANS
+   ===================================================================== */
 @media (prefers-reduced-motion: reduce) {
-  .anim_pousse .pousse { transform: none; }
-  .anim_pousse.joue .pousse { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Écran moyen ou zoom fort ---------- */
+
+@media (max-width: 1100px) {
+
+  #contenu_chapitre {
+    flex-direction: column;
+    margin-left: 0;
+    padding: 0 16px;
+  }
+
+  #contenu_gauche,
+  #notion_droite {
+    width: 100%;
+  }
+
+  #titre_chapitre {
+    margin-left: 0;
+  }
+
+  .boite_notion {
+    position: static;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .qcm,
+  .classement,
+  .galerie_dessins {
+    width: 100%;
+  }
+
+  .qcm {
+    grid-template-columns: 1fr;
+    row-gap: 60px;
+  }
+
+  .galerie_dessins {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 40px;
+  }
+
+  .bloc_exemple {
+    margin-left: 0;
+  }
+ .bloc_exemple.bloc_deborde {
+    width: auto;
+  }
+  .ligne_exemple,
+  .ligne_inverse {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .exemple {
+    max-width: none;
+  }
+
+  .graphiques_vues {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .reserve {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  #partie_2 {
+    padding-bottom: 60px;
+  }
 }

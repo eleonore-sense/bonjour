@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Activité : deviens le héros de ton projet d’éco-conception ! Mission 2</title>
+
+  <link rel="stylesheet" href="../couleurs.css">
+  <link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../mobile.css" media="(max-width: 1100px)">
+  <link rel="stylesheet" href="style/activite_smartphone.css">
+  <link rel="stylesheet" href="style/mentor.css">
+  <link rel="stylesheet" href="style/mission2.css">
+  <link rel="stylesheet" href="style/porte_documents.css">
+
+  <script src="../cours.js" defer></script>
+  <script src="../script.js" defer></script>
+  <script src="../memoire.js" defer></script>
+  <script src="../dessins.js" defer></script>
+  <script src="activite/activite_smartphone.js" defer></script>
+  <script src="activite/mission2.js" defer></script>
+  <script src="activite/porte_documents.js" defer></script>
+</head>
+
+
+<body data-chapitre="3" data-partie="11" data-suite="cache" data-page-suivante="chap3_IV_3.html" data-racine="../">
+
+  <a class="lien_evitement" href="#contenu_gauche">Aller au contenu</a>
+
+  <div id="droite_contenu">
+    <div id="contenu_chapitre">
+
+      <main id="contenu_gauche">
+
+
+
+        <!-- ================= MISSION 2 : PRÉSENTATION ================= -->
+
+        <section class="etape" aria-labelledby="titre_mission_2">
+
+          <h2 class="titre_etape_premier" id="titre_mission_2">mission 2&#8239;: analyser le smartphone avant de le transformer</h2>
+
+          <div class="bloc_illustre">
+            <dl class="fiche_etape">
+              <div>
+                <dt>Ta deuxième mission&#8239;: comprendre où agir</dt>
+                <dd>
+                  Tu disposes maintenant d’une première vision du contexte. Il est temps d’examiner le Basic-phone® plus en détail.<br>
+                  Une idée peut sembler écologique sans être réellement pertinente. Pour éviter les fausses bonnes idées, tu dois comprendre comment le smartphone est fabriqué, utilisé, réparé et traité en fin de vie.
+                </dd>
+              </div>
+            </dl>
+            <img class="illustration" src="../dessin/chap_3/IV/eclate_loupe.svg" alt="Le Basic-phone® démonté pièce par pièce, observé à la loupe">
+          </div>
+
+          <div class="txt_labeur">
+            <p>Tu vas mener trois analyses complémentaires&#8239;:</p>
+            <ul class="liste_etoiles">
+              <li><span class="etoile" aria-hidden="true"></span> <strong>le cycle de vie</strong> 
+                <br>quelles sont les grandes étapes du produit, de l’extraction des matières premières à sa fin de vie&#8239;?</li>
+              <li><span class="etoile" aria-hidden="true"></span> <strong>l’analyse environnementale</strong> 
+                <br>quelles étapes et quels composants contribuent le plus aux impacts&#8239;?</li>
+              <li><span class="etoile" aria-hidden="true"></span> <strong>l’analyse des usages</strong>
+                <br>comment les utilisateurs achètent-ils, utilisent-ils, entretiennent-ils, réparent-ils et éliminent-ils leur téléphone&#8239;?</li>
+            </ul>
+          </div>
+
+          <div class="consigne">
+            À partir de ces informations, tu devras identifier les enjeux prioritaires et formuler une problématique précise pour ton projet.
+          </div>
+
+          <div class="conteneur_bouton">
+            <button type="button" class="bouton_etape" data-montrer="partie_cycle" aria-controls="partie_cycle" aria-expanded="false">
+              commencer l’analyse
+            </button>
+          </div>
+
+
+          <!-- ================= INTERACTION 1 : LE CYCLE DE VIE ================= -->
+
+          <div class="partie_cachee" id="partie_cycle" hidden>
+
+            <!-- CONSIGNE : son texte change quand les étapes se placent en rond (activite/mission2.js).
+                 .consigne_jeu  = pendant le jeu de remise en ordre
+                 .consigne_rond = une fois le cycle en rond -->
+            <h3 class="consigne" id="consigne_cycle">
+              <span class="consigne_jeu">Remets dans l’ordre les grandes étapes du cycle de vie du Basic-phone®, de l’extraction des matières premières à sa fin de vie. Glisse chaque étape dans une case, ou sélectionne-la puis choisis sa case.</span>
+              <span class="consigne_rond" hidden>Les experts de ton équipe ont pu réaliser une analyse environnementale du Basic-phone® tout au long de son cycle de vie. Passe ton curseur sur chaque étape du cycle pour voir ses résultats.</span>
+            </h3>
+
+            <!-- JEU DE REMISE EN ORDRE (comportement : activite/mission2.js)
+                 À gauche, les 6 étapes mélangées ; à droite, les 6 cases numérotées.
+                 data-ordre = la bonne place de l'étape (1 à 6)
+                 data-acv   = l'étape de l'ACV dont elle fait partie (sert ensuite dans le cycle en rond)
+                 Pour ajouter un dessin à une étape : <img src="../dessin/chap_3/IV/…" alt=""> avant le <span>.
+                 <br> = l'endroit où le nom passe à la ligne dans le cycle en rond
+                 (pendant le jeu, il est ignoré). Garde l'espace juste avant le <br>. -->
+            <!-- ZONE DU CYCLE : le jeu (qui devient le cercle) et, à sa droite, le graphique
+                   de l'empreinte carbone, qui se dessine au survol des étapes -->
+            <div class="cycle_zone" id="cycle_zone">
+
+            <div class="cycle" id="cycle_jeu" role="group" aria-labelledby="consigne_cycle">
+
+              <!-- FLÈCHES DU CYCLE : cachées pendant le jeu, elles apparaissent en fond
+                   quand les étapes se placent en rond (activite/mission2.css, « .en_rond ») -->
+              <svg class="cycle_fleches" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+                <defs>
+                  <marker id="pointe_cycle" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z"></path>
+                  </marker>
+                </defs>
+                <!-- d'une étape à la suivante, dans le sens des aiguilles d'une montre -->
+                <path class="fleche" d="M 66.7 15.8 A 38 38 0 0 1 78.2 24.6" marker-end="url(#pointe_cycle)"></path>
+                <path class="fleche" d="M 85.7 37.0 A 38 38 0 0 1 86.5 60.5" marker-end="url(#pointe_cycle)"></path>
+                <path class="fleche" d="M 76.4 77.3 A 38 38 0 0 1 66.7 84.2" marker-end="url(#pointe_cycle)"></path>
+                <path class="fleche" d="M 33.3 84.2 A 38 38 0 0 1 21.8 75.4" marker-end="url(#pointe_cycle)"></path>
+                <path class="fleche" d="M 13.5 60.5 A 38 38 0 0 1 14.3 37.0" marker-end="url(#pointe_cycle)"></path>
+                <!-- fin de vie → extraction : le recyclage, en pointillés -->
+                <path class="fleche fleche_recyclage" d="M 21.8 24.6 A 38 38 0 0 1 33.3 15.8" marker-end="url(#pointe_cycle)"></path>
+                <text class="texte_recyclage" x="22" y="13" text-anchor="end">recyclage</text>
+              </svg>
+
+              <!-- CENTRE DU CERCLE : dessin, puis le nom en dessous (comme la roue de la mission 1).
+                   Caché pendant le jeu, il apparaît avec les flèches. -->
+              <div class="roue_centre cycle_centre" aria-hidden="true">
+                <img class="roue_centre_dessin" src="../dessin/chap_3/IV/smartphone_plante.svg" alt="">
+                <span class="roue_centre_nom">Basic-phone®</span>
+              </div>
+
+              <ul class="cycle_reserve" aria-label="Étapes à placer">
+                <li><button type="button" class="carte_cycle" data-ordre="5" data-acv="utilisation"><span>utilisation <br>et maintenance</span></button></li>
+                <li><button type="button" class="carte_cycle" data-ordre="2" data-acv="production"><span>fabrication <br>des composants</span></button></li>
+                <li><button type="button" class="carte_cycle" data-ordre="6" data-acv="fin_de_vie"><span>fin de vie</span></button></li>
+                <li><button type="button" class="carte_cycle" data-ordre="1" data-acv="production"><span>extraction <br>et matière première</span></button></li>
+                <li><button type="button" class="carte_cycle" data-ordre="4" data-acv="distribution"><span>distribution <br>et vente</span></button></li>
+                <li><button type="button" class="carte_cycle" data-ordre="3" data-acv="production"><span>fabrication et assemblage <br>final du smartphone</span></button></li>
+              </ul>
+
+              <ol class="cycle_emplacements" aria-label="Ordre du cycle de vie">
+                <li class="cycle_case"><span class="cycle_numero" aria-hidden="true">1</span><div class="cycle_depot" data-position="1" tabindex="0" role="button" aria-label="case 1 : vide"></div></li>
+                <li class="cycle_case"><span class="cycle_numero" aria-hidden="true">2</span><div class="cycle_depot" data-position="2" tabindex="0" role="button" aria-label="case 2 : vide"></div></li>
+                <li class="cycle_case"><span class="cycle_numero" aria-hidden="true">3</span><div class="cycle_depot" data-position="3" tabindex="0" role="button" aria-label="case 3 : vide"></div></li>
+                <li class="cycle_case"><span class="cycle_numero" aria-hidden="true">4</span><div class="cycle_depot" data-position="4" tabindex="0" role="button" aria-label="case 4 : vide"></div></li>
+                <li class="cycle_case"><span class="cycle_numero" aria-hidden="true">5</span><div class="cycle_depot" data-position="5" tabindex="0" role="button" aria-label="case 5 : vide"></div></li>
+                <li class="cycle_case"><span class="cycle_numero" aria-hidden="true">6</span><div class="cycle_depot" data-position="6" tabindex="0" role="button" aria-label="case 6 : vide"></div></li>
+              </ol>
+
+            </div>
+
+            <!-- GRAPHIQUE DE L'EMPREINTE CARBONE (doc de la prof, p. 39), en barres verticales.
+                 Caché pendant le jeu. Chaque barre apparaît quand on survole son étape du cycle :
+                 data-acv de la ligne = data-acv des étapes (les 3 étapes de production révèlent « Production »).
+                 --valeur = le chiffre, --max = le plus grand. -->
+            <figure class="graph_carbone" id="graph_carbone" hidden>
+              <figcaption>
+                <span class="acv_titre">Empreinte carbone du Basic-phone®</span>
+                <span class="acv_precision">Données simplifiées de l’ACV de référence</span>
+                <span class="acv_precision">Scénario étudié&#8239;: 3&nbsp;ans d’utilisation en France</span>
+              </figcaption>
+
+              <!-- texte de l'étape survolée (<template id="bulle_…"> en bas de la page) -->
+              <div class="graph_info" id="graph_info" aria-live="polite">
+                <p class="graph_info_vide">Passe ton curseur sur une étape du cycle.</p>
+              </div>
+
+              <table class="colonnes">
+                <caption class="visuellement_cache">Empreinte carbone par étape, en kg CO2-équivalent</caption>
+                <tbody style="--max: 25.98">
+                  <tr data-acv="production"><td><span class="colonne_valeur">25,98<small>kg CO<sub>2</sub>-éq</small></span><span class="colonne" style="--valeur: 25.98"></span></td><th scope="row"><span>Production</span></th></tr>
+                  <tr data-acv="distribution"><td><span class="colonne_valeur">2,40<small>kg CO<sub>2</sub>-éq</small></span><span class="colonne" style="--valeur: 2.40"></span></td><th scope="row"><span>Distribution</span></th></tr>
+                  <tr data-acv="utilisation"><td><span class="colonne_valeur">0,77<small>kg CO<sub>2</sub>-éq</small></span><span class="colonne" style="--valeur: 0.77"></span></td><th scope="row"><span>Utilisation</span></th></tr>
+                  <tr data-acv="fin_de_vie"><td><span class="colonne_valeur">0,14<small>kg CO<sub>2</sub>-éq</small></span><span class="colonne" style="--valeur: 0.14"></span></td><th scope="row"><span>Fin de vie</span></th></tr>
+                </tbody>
+              </table>
+
+              <p class="span_source">Source&#8239;: dossier pédagogique ATHEN’TECH / données ACV de référence. Les résultats dépendent du périmètre et des hypothèses.</p>
+            </figure>
+
+            </div>
+
+            <p class="visuellement_cache" id="annonce_cycle" role="status"></p>
+
+            <!-- bouton fixe en bas à droite : il apparaît quand les 6 étapes sont placées.
+                 « vérifier », puis (s'il y a eu des corrections) « passer à l'analyse »,
+                 qui fait glisser les étapes en rond -->
+            <div class="qcm_pied" id="pied_cycle" hidden>
+              <button type="button" class="qcm_verifier" id="bouton_cycle">vérifier</button>
+            </div>
+
+            <!-- onglet de la mascotte : après 2 barres révélées, tant que les 4 ne l'ont pas été -->
+            <div class="rappel_mascotte" id="rappel_bulles" hidden>
+              <!-- DESSIN DE LA MASCOTTE : remplacer ce <div> par
+                   <img class="rappel_mascotte_dessin" src="../dessin/chap_3/IV/…" alt=""> -->
+              <div class="rappel_mascotte_dessin emplacement_illustration" aria-hidden="true">mascotte</div>
+              <p>Passe ton curseur sur toutes les étapes du cycle avant de passer à la suite&#8239;!</p>
+            </div>
+
+            <!-- bouton fixe en bas à droite : il apparaît quand tout le graphique est révélé -->
+            <div class="qcm_pied" id="pied_bulles" hidden>
+              <button type="button" class="qcm_verifier" data-montrer="partie_acv" aria-controls="partie_acv" aria-expanded="false">
+                voir l’analyse environnementale de la production du Basic-phone®
+              </button>
+            </div>
+
+          </div>
+
+
+          <!-- ================= INTERACTION 2 : L'ANALYSE DE LA PRODUCTION ================= -->
+          <!-- Elle apparaît au clic sur « voir l'analyse environnementale de la production… ».
+               Schéma du doc de la prof (p. 39), dessiné en HTML. -->
+
+          <div class="partie_cachee" id="partie_acv" hidden>
+
+            <h3 class="visuellement_cache" id="titre_acv">Analyse environnementale de la production</h3>
+
+            <figure class="acv_production" id="graph_production">
+              <figcaption>
+                <span class="acv_titre">Analyse environnementale de la production du Basic-phone®</span>
+                <span class="acv_sous_titre">Deux indicateurs pour comprendre les principaux contributeurs aux impacts</span>
+              </figcaption>
+
+              <!-- ---------- 1. Changement climatique : les barres, les unes sous les autres ---------- -->
+              <section class="acv_indicateur" aria-labelledby="titre_climat">
+                <h4 id="titre_climat">Production — Changement climatique</h4>
+                <p class="acv_sous_titre">Principaux contributeurs à l’impact (données VoLCA / BAFU 2026)</p>
+                <table class="barres barres_petites">
+                  <caption class="visuellement_cache">Production, changement climatique : principaux contributeurs, en pourcentage</caption>
+                  <tbody style="--max: 34">
+                    <tr><th scope="row">Wafer / circuit intégré logique, usine</th><td><span class="barre" style="--valeur: 34"></span><span class="barre_valeur">34&nbsp;%</span></td></tr>
+                    <tr><th scope="row">Carte électronique imprimée, assemblée</th><td><span class="barre" style="--valeur: 17"></span><span class="barre_valeur">17&nbsp;%</span></td></tr>
+                    <tr><th scope="row">Électricité moyenne tension</th><td><span class="barre" style="--valeur: 13"></span><span class="barre_valeur">13&nbsp;%</span></td></tr>
+                    <tr><th scope="row">Module LED</th><td><span class="barre" style="--valeur: 7.9"></span><span class="barre_valeur">7,9&nbsp;%</span></td></tr>
+                    <tr><th scope="row">Wafer / circuit intégré, autre procédé</th><td><span class="barre" style="--valeur: 7.7"></span><span class="barre_valeur">7,7&nbsp;%</span></td></tr>
+                    <tr><th scope="row">Circuit intégré logique, autre activité</th><td><span class="barre" style="--valeur: 4.6"></span><span class="barre_valeur">4,6&nbsp;%</span></td></tr>
+                    <tr><th scope="row">Composant électronique actif</th><td><span class="barre" style="--valeur: 3.3"></span><span class="barre_valeur">3,3&nbsp;%</span></td></tr>
+                    <tr><th scope="row">Chargeur</th><td><span class="barre" style="--valeur: 2.7"></span><span class="barre_valeur">2,7&nbsp;%</span></td></tr>
+                    <tr><th scope="row">Batterie Li-ion NMC111</th><td><span class="barre" style="--valeur: 1.7"></span><span class="barre_valeur">1,7&nbsp;%</span></td></tr>
+                    <tr><th scope="row">Résistance électronique</th><td><span class="barre" style="--valeur: 1.2"></span><span class="barre_valeur">1,2&nbsp;%</span></td></tr>
+                  </tbody>
+                </table>
+                <!-- Phrase du schéma de la prof, retirée pour l'instant car elle donne la réponse
+                     à la question « quels composants ressortent ? ». Pour la remettre, enlève les marques de commentaire :
+                <p class="acv_note">Les principaux postes concernent les composants électroniques et l’électricité de fabrication.</p>
+                -->
+              </section>
+
+              <!-- ---------- 2. Épuisement des ressources : des boîtes sur 2 lignes ----------
+                   La largeur de chaque boîte dépend de son pourcentage (--part).
+                   Les deux lignes ont la même échelle, pour pouvoir les comparer.
+                   Vue hiérarchique : les pourcentages ne s'additionnent pas. -->
+              <section class="acv_indicateur" aria-labelledby="titre_ressources">
+                <h4 id="titre_ressources">Production — Épuisement des ressources minérales et métalliques</h4>
+                <p class="acv_sous_titre">Activités et composants mis en évidence dans la vue en arborescence</p>
+
+                <p class="tuiles_titre">Principales activités (plus haut niveau dans la vue en arborescence)</p>
+                <ul class="tuiles tuiles_grandes">
+                  <li style="--part: 43"><span>Carte électronique imprimée assemblée</span><strong>43&nbsp;%</strong></li>
+                  <li style="--part: 36"><span>Circuit intégré logique, usine</span><strong>36&nbsp;%</strong></li>
+                  <li style="--part: 36"><span>Or primaire, raffinerie</span><strong>36&nbsp;%</strong></li>
+                </ul>
+
+                <p class="tuiles_titre">Autres composants et intrants mis en évidence</p>
+                <ul class="tuiles">
+                  <li style="--part: 15"><span>Circuit intégré logique, usine</span><strong>15&nbsp;%</strong></li>
+                  <li style="--part: 11"><span>Composant électronique actif</span><strong>11&nbsp;%</strong></li>
+                  <li style="--part: 10"><span>Chargeur</span><strong>10&nbsp;%</strong></li>
+                  <li style="--part: 9"><span>Résistance électronique</span><strong>9&nbsp;%</strong></li>
+                  <li style="--part: 8"><span>Module LED</span><strong>8&nbsp;%</strong></li>
+                  <li style="--part: 1.5"><span>Autres petites contributions</span><strong>1,5&nbsp;%</strong></li>
+                  <li style="--part: 0"><span>Émissions directes</span><strong>0&nbsp;%</strong></li>
+                </ul>
+
+                <p class="acv_note">Vue hiérarchique&#8239;: les pourcentages affichés ne doivent pas être additionnés.</p>
+              </section>
+
+              <p class="span_source">Périmètre&#8239;: production uniquement. Résultats issus du scénario de référence smartphone de VoLCA / BAFU 2026&#8239;; ils dépendent du modèle, des données et des hypothèses.</p>
+            </figure>
+
+            <div class="conteneur_bouton">
+              <button type="button" class="bouton_etape" data-montrer="suite_acv" aria-controls="suite_acv" aria-expanded="false">
+                j’ai fini d’analyser les documents
+              </button>
+            </div>
+
+
+            <!-- ---------- Les questions, après « j'ai fini d'analyser les documents » ---------- -->
+
+            <div class="partie_cachee" id="suite_acv" hidden>
+
+              <!-- ---------- Question : quel enseignement principal ? ---------- -->
+              <!-- Comme « Que fais-tu maintenant ? » de la mission 1 : pas d'IA.
+                   Andréa répond en pop-up avec le texte écrit pour chaque choix
+                   (<template id="texte_retour_acv_…">, en bas de page ; comportement : activite/mission2.js).
+                   A et C : « revoir mon choix ». B : « continuer », puis la question des composants. -->
+
+              <form class="choix_etape" id="question_acv">
+                <fieldset>
+                  <legend class="consigne">Quel enseignement principal tires-tu de ces résultats&#8239;?</legend>
+
+                  <div class="qcm_options">
+                    <label class="qcm_option">
+                      <input type="radio" name="q_acv" value="A">
+                      <span>La priorité est nécessairement de réduire l’électricité consommée pendant la recharge.</span>
+                    </label>
+
+                    <label class="qcm_option">
+                      <input type="radio" name="q_acv" value="B">
+                      <span>La production est le principal contributeur à l’empreinte carbone dans ce scénario&#8239;; elle mérite une attention prioritaire.</span>
+                    </label>
+
+                    <label class="qcm_option">
+                      <input type="radio" name="q_acv" value="C">
+                      <span>La fin de vie est l’étape la plus importante, car elle détermine la recyclabilité du téléphone.</span>
+                    </label>
+                  </div>
+                </fieldset>
+
+                <div class="conteneur_bouton">
+                  <button type="submit" class="bouton_etape">valider mon choix</button>
+                </div>
+              </form>
+
+              <div class="retour_choix" id="retour_acv" role="status" aria-live="polite" hidden></div>
+
+              <!-- Question : quels composants ressortent ?
+                   Réponse ouverte, discutée avec Andréa (agent IA de la mission 2), dans son pop-up.
+                   Elle s'ouvre après la bonne réponse au QCM (<template id="texte_composants">).
+                   Quand Andréa valide, « continuer » mène au parcours utilisateur. -->
+
+
+            </div>
+
+          </div>
+
+
+
+          <!-- ================= ANALYSE 3 : PARCOURS UTILISATEUR ================= -->
+
+          <div class="partie_cachee" id="partie_parcours" hidden>
+
+            <h3 class="titre_etape titre_parcours" id="consigne_parcours">comprendre les usages&#8239;: observe le parcours de l’utilisateur</h3>
+
+            <div class="txt_labeur">
+              <p>Un smartphone n’existe pas uniquement dans une usine. Son impact dépend aussi de la manière dont il est acheté, utilisé, entretenu et éliminé.</p>
+            </div>
+
+            <!-- Andréa parle : petit dessin à gauche, texte à droite -->
+            <div class="andrea_parle">
+              <img class="andrea_parle_dessin" src="../dessin/chap_3/IV/mentor_doute.svg" alt="">
+              <p>Imagine le parcours d’une personne qui souhaite changer de téléphone. Elle compare les prix et les performances, achète un nouvel appareil, le configure, l’utilise, le recharge, puis peut-être le fait réparer ou le remplace. À la fin de sa première utilisation, son ancien téléphone peut être revendu, conservé dans un tiroir ou déposé dans un point de collecte.</p>
+            </div>
+
+            <div class="conteneur_bouton">
+              <button type="button" class="bouton_etape" data-montrer="parcours_schema" aria-controls="parcours_schema" aria-expanded="false">c’est parti&#8239;!</button>
+            </div>
+
+            <!-- schéma du parcours (doc prof p. 40) -->
+            <div class="partie_cachee" id="parcours_schema" hidden>
+
+              <div class="consigne" id="consigne_schema">Pour chaque étape, décris ce que fait l’utilisateur et identifie les points importants à prendre en compte pour l’éco-conception.</div>
+
+              <section class="parcours_bloc" aria-labelledby="titre_parcours_schema">
+                <h4 class="acv_titre" id="titre_parcours_schema">Le parcours d’un·e utilisateur·rice de smartphone</h4>
+
+                <!-- data-etape = nom de l'étape, repris par Andréa (signal EVAL) -->
+                <ol class="parcours">
+                <li class="parcours_etape" data-etape="Envie et renseignement">
+                  <span class="parcours_numero" aria-hidden="true">1</span>
+                  <img class="parcours_dessin" src="../dessin/chap_3/IV/envie_smarphone.svg" alt="">
+                  <label class="parcours_question" for="p_envie"><strong>Envie et renseignement</strong><span>Pourquoi et comment l’utilisateur envisage-t-il de changer de téléphone&#8239;?</span></label>
+                  <textarea id="p_envie" rows="2" placeholder="Décris cette étape avec tes mots, puis Entrée…"></textarea>
+                </li>
+
+                <li class="parcours_etape" data-etape="Achat du téléphone">
+                  <span class="parcours_numero" aria-hidden="true">2</span>
+                  <img class="parcours_dessin" src="../dessin/chap_3/IV/vente_smartphone.svg" alt="">
+                  <label class="parcours_question" for="p_achat"><strong>Achat du téléphone</strong><span>Comment l’utilisateur achète-t-il son téléphone&#8239;?</span></label>
+                  <textarea id="p_achat" rows="2" placeholder="Décris cette étape avec tes mots, puis Entrée…"></textarea>
+                </li>
+
+                <li class="parcours_etape" data-etape="Première utilisation">
+                  <span class="parcours_numero" aria-hidden="true">3</span>
+                  <img class="parcours_dessin" src="../dessin/chap_3/IV/premiere_utilisation.svg" alt="">
+                  <label class="parcours_question" for="p_premiere"><strong>Première utilisation</strong><span>Que fait l’utilisateur lorsqu’il reçoit son nouveau téléphone&#8239;?</span></label>
+                  <textarea id="p_premiere" rows="2" placeholder="Décris cette étape avec tes mots, puis Entrée…"></textarea>
+                </li>
+
+                <li class="parcours_etape" data-etape="Ancien téléphone">
+                  <span class="parcours_numero" aria-hidden="true">4</span>
+                  <img class="parcours_dessin" src="../dessin/chap_3/IV/changer_tel.svg" alt="">
+                  <label class="parcours_question" for="p_ancien"><strong>Ancien téléphone</strong><span>Que devient l’ancien téléphone&#8239;?</span></label>
+                  <textarea id="p_ancien" rows="2" placeholder="Décris cette étape avec tes mots, puis Entrée…"></textarea>
+                </li>
+
+                <li class="parcours_etape" data-etape="Utilisation du nouveau téléphone">
+                  <span class="parcours_numero" aria-hidden="true">5</span>
+                  <img class="parcours_dessin" src="../dessin/chap_3/IV/utilisation_tel.svg" alt="">
+                  <label class="parcours_question" for="p_utilisation"><strong>Utilisation du nouveau téléphone</strong><span>Comment l’utilisateur utilise-t-il son téléphone au quotidien&#8239;?</span></label>
+                  <textarea id="p_utilisation" rows="2" placeholder="Décris cette étape avec tes mots, puis Entrée…"></textarea>
+                </li>
+
+                <li class="parcours_etape" data-etape="Réparation">
+                  <span class="parcours_numero" aria-hidden="true">6</span>
+                  <img class="parcours_dessin" src="../dessin/chap_3/1/cycle_de_vie/reparation.svg" alt="">
+                  <label class="parcours_question" for="p_reparation"><strong>Réparation</strong><span>Que se passe-t-il en cas de panne ou de casse&#8239;? Comment l’utilisateur fait-il réparer son téléphone&#8239;?</span></label>
+                  <textarea id="p_reparation" rows="2" placeholder="Décris cette étape avec tes mots, puis Entrée…"></textarea>
+                </li>
+
+                <li class="parcours_etape" data-etape="Fin de vie">
+                  <span class="parcours_numero" aria-hidden="true">7</span>
+                  <img class="parcours_dessin" src="../dessin/chap_3/IV/jeter_telephone.svg" alt="">
+                  <label class="parcours_question" for="p_fin"><strong>Fin de vie</strong><span>Que fait l’utilisateur lorsque son téléphone n’est plus utilisé&#8239;?</span></label>
+                  <textarea id="p_fin" rows="2" placeholder="Décris cette étape avec tes mots, puis Entrée…"></textarea>
+                </li>
+
+                </ol>
+              </section>
+
+              <p class="visuellement_cache" id="annonce_parcours" role="status"></p>
+
+              <!-- mascotte : 2 étapes remplies → rappel -->
+              <div class="rappel_mascotte" id="rappel_parcours" hidden>
+                <div class="rappel_mascotte_dessin emplacement_illustration" aria-hidden="true">mascotte</div>
+                <p>Remplis toutes les étapes du parcours avant de passer à la suite&#8239;!</p>
+              </div>
+
+              <!-- bouton fixe : 7 étapes remplies → pop-up Andréa → solutions -->
+              <div class="qcm_pied" id="pied_parcours" hidden>
+                <button type="button" class="qcm_verifier" id="bouton_parcours">continuer</button>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- ================= SOLUTIONS DU PARCOURS ================= -->
+
+          <div class="partie_cachee" id="partie_solutions" hidden>
+
+            <div class="consigne" id="consigne_solutions">
+              Propose au moins deux solutions, puis précise à quelle étape du parcours elles s’appliquent et comment elles répondent au problème identifié.
+            </div>
+
+            <!-- propositions : créées par mission2.js (modèle : template modele_proposition) -->
+            <div class="propositions" id="propositions" role="group" aria-labelledby="consigne_solutions"></div>
+
+            <div class="conteneur_bouton">
+              <button type="button" class="bouton_etape" id="ajouter_proposition">ajouter une solution</button>
+            </div>
+
+            <p class="visuellement_cache" id="annonce_solutions" role="status"></p>
+
+            <!-- mascotte : 1 proposition complète → rappel -->
+            <div class="rappel_mascotte" id="rappel_solutions" hidden>
+              <div class="rappel_mascotte_dessin emplacement_illustration" aria-hidden="true">mascotte</div>
+              <p>Tu dois remplir au moins 2&nbsp;propositions pour pouvoir continuer&#8239;!</p>
+            </div>
+
+            <!-- bouton fixe : 2 propositions complètes -->
+            <div class="qcm_pied" id="pied_solutions" hidden>
+              <button type="button" class="qcm_verifier" id="bouton_solutions">continuer</button>
+            </div>
+
+          </div>
+
+
+          <!-- ================= LIVRABLE : CADRER LE PROJET ================= -->
+
+          <div class="partie_cachee" id="partie_livrable" hidden>
+
+            <h3 class="titre_etape titre_livrable" id="consigne_livrable">cadrer le projet</h3>
+
+            <div class="consigne" id="consigne_problematique">À partir de tes analyses, rédige une problématique qui guidera ton projet.</div>
+
+            <div class="txt_labeur bloc_liste livrable_liste">
+              <p>Tu dois préciser&#8239;:</p>
+              <ul class="liste_etoiles">
+                <li><span class="etoile" aria-hidden="true"></span> les principaux enjeux environnementaux identifiés&#8239;;</li>
+                <li><span class="etoile" aria-hidden="true"></span> les besoins des utilisateurs à préserver&#8239;;</li>
+                <li><span class="etoile" aria-hidden="true"></span> les contraintes à respecter&#8239;;</li>
+                <li><span class="etoile" aria-hidden="true"></span> les éléments du produit et de sa chaîne de valeur que tu peux modifier.</li>
+              </ul>
+            </div>
+
+            <!-- problématique : Entrée ou « soumettre à Andréa » → petite fenêtre d'Andréa (IA) -->
+            <form class="livrable" id="formulaire_problematique">
+              <label for="t_problematique" class="proposition_label">ta problématique</label>
+              <textarea id="t_problematique" rows="4" placeholder="Comment… ? puis Entrée pour la montrer à Andréa"></textarea>
+
+              <div class="livrable_boutons">
+                <!-- exemple de la prof : montré au clic, puis le bouton disparaît -->
+                <button type="button" class="qcm_verifier bouton_exemple" id="voir_exemple" aria-controls="exemple_problematique">voir un exemple</button>
+                <button type="submit" class="qcm_verifier" id="soumettre_problematique">soumettre à Andréa</button>
+              </div>
+
+              <div class="exemple exemple_large" id="exemple_problematique" hidden>
+                <p><span class="intro_exemple">exemple de formulation</span></p>
+                <p>Comment améliorer la performance environnementale du Basic-phone® en agissant en priorité sur sa production et sa durée de vie, tout en préservant ses fonctions essentielles, sa qualité et un prix compétitif&#8239;?</p>
+                <p>Cette formulation est un point de départ&#8239;: elle doit être adaptée aux résultats de ton analyse.</p>
+              </div>
+            </form>
+
+            <p class="visuellement_cache" id="annonce_livrable" role="status"></p>
+
+            <!-- bouton fixe : problématique validée (ou 3 essais) -->
+            <div class="qcm_pied" id="pied_livrable" hidden>
+              <button type="button" class="qcm_verifier" id="bouton_livrable">continuer</button>
+            </div>
+
+          </div>
+
+        </section>
+
+
+      <!-- ================= MENTOR IA (mission 2) ================= -->
+      <!-- Même structure que la mission 1, pour reprendre mentor.css.
+           Comportement : activite/mission2.js (messages écrits à l'avance, et discussion avec l'IA).
+           Placé dans <main> pour que dessins.js colore ses dessins SVG. -->
+
+      <aside class="mentor" id="mentor_ia" aria-labelledby="mentor_titre" hidden>
+
+        <!-- GRAND DESSIN DU MENTOR (pop-ups) : un par humeur, le CSS montre le bon -->
+        <img class="mentor_grand_dessin humeur_neutre"  src="../dessin/chap_3/IV/mentor.svg" alt="">
+        <img class="mentor_grand_dessin humeur_content" src="../dessin/chap_3/IV/mentor_heureux.svg" alt="">
+        <img class="mentor_grand_dessin humeur_decu"    src="../dessin/chap_3/IV/mentor_doute.svg" alt="">
+
+        <div class="mentor_entete">
+          <!-- PETIT DESSIN DU MENTOR (fenêtre en bas à droite) : un par humeur -->
+          <img class="mentor_illustration humeur_neutre"  src="../dessin/chap_3/IV/mentor.svg" alt="">
+          <img class="mentor_illustration humeur_content" src="../dessin/chap_3/IV/mentor_heureux.svg" alt="">
+          <img class="mentor_illustration humeur_decu"    src="../dessin/chap_3/IV/mentor_doute.svg" alt="">
+          <h2 class="mentor_titre" id="mentor_titre">Andréa</h2>
+        </div>
+
+        <div class="mentor_corps" id="mentor_corps">
+
+          <div class="mentor_scene" role="region" aria-label="Message du mentor" tabindex="-1">
+            <div class="mentor_scene_texte"></div>
+            <div class="mentor_scene_fil" role="log" aria-live="polite" aria-relevant="additions"></div>
+          </div>
+
+          <div class="mentor_fil" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation avec le mentor" tabindex="0"></div>
+
+          <p class="mentor_etat" role="status"></p>
+
+          <!-- bouton du pop-up : son texte change selon le message (activite/mission2.js) -->
+          <div class="mentor_choix">
+            <button type="button" class="bouton_etape" data-choix="suivant">c’est parti&#8239;!</button>
+          </div>
+
+          <form class="mentor_saisie" id="mentor_saisie">
+            <label for="mentor_message" class="visuellement_cache">Ton message au mentor</label>
+            <textarea id="mentor_message" rows="2" maxlength="2000" placeholder="Réponds au mentor…"></textarea>
+            <button type="submit" class="qcm_verifier">envoyer</button>
+          </form>
+
+        </div>
+      </aside>
+
+      <!-- boîte de la mascotte, en bas à droite : elle proposera de passer
+           après 3 réponses que le mentor n'a pas validées -->
+      <div class="rappel_mascotte rappel_avec_bouton" id="rappel_passer" role="status" hidden>
+        <!-- DESSIN DE LA MASCOTTE : remplacer ce <div> par
+             <img class="rappel_mascotte_dessin" src="../dessin/chap_3/IV/…" alt=""> -->
+        <div class="rappel_mascotte_dessin emplacement_illustration" aria-hidden="true">mascotte</div>
+        <div class="rappel_mascotte_texte">
+          <p>Tes réponses ne sont pas encore celles attendues. Je te conseille de réfléchir encore avec Andréa, mais tu peux passer à l’étape suivante.</p>
+          <button type="button" class="bouton_etape" id="passer_etape">continuer</button>
+        </div>
+      </div>
+
+      </main>
+
+
+      <!-- Boîtes de définition des mots notion de la page -->
+      <div id="notion_droite"></div>
+
+    </div>
+  </div>
+
+
+  <!-- ================= TEXTES D'ANDRÉA (écrits par toi, pas par l'IA) ================= -->
+
+  <!-- Accueil de la mission 2.
+       Si l'élève a fait la mission 1 dans ce navigateur, ses enjeux pourront s'afficher
+       à la place de <ul class="rappel_enjeux">. -->
+  <template id="texte_accueil">
+    <p><strong>Te revoilà&#8239;! Prêt·e pour ta deuxième mission&#8239;?</strong></p>
+    <p>Tu as identifié les enjeux d’ATHEN’TECH. Maintenant, on va regarder le Basic-phone® de plus près, pour savoir où agir en priorité.</p>
+    <ul class="rappel_enjeux"></ul>
+    <p>Commence par remettre dans l’ordre les étapes de son cycle de vie.</p>
+  </template>
+
+  <!-- Cycle de vie remis dans le bon ordre (Andréa contente) -->
+  <template id="texte_cycle_bravo" data-humeur="content">
+    <p><strong>Bravo&#8239;!</strong> Tu as remis en ordre le cycle de vie&#8239;!</p>
+    <p>Passons à l’analyse du cycle de vie&#8239;!</p>
+  </template>
+
+  <!-- Cycle de vie avec des erreurs (Andréa qui doute) : elle corrige elle-même l'ordre -->
+  <template id="texte_cycle_correction" data-humeur="decu">
+    <p><strong>Pas tout à fait…</strong></p>
+    <p>Laisse-moi apporter quelques corrections.</p>
+  </template>
+
+
+  <!-- ========== TEXTES DU GRAPHIQUE, AU SURVOL DU CYCLE EN ROND ==========
+       Un texte par étape de l'ACV (data-acv des étapes, dans le jeu). Il s'affiche au-dessus du graphique.
+       Les 3 étapes de la production (extraction, composants, assemblage) partagent le même texte :
+       l'ACV ne donne qu'un seul résultat pour les trois.
+       Le titre (le nom de l'étape survolée) est ajouté par activite/mission2.js. -->
+
+  <template id="bulle_production">
+    <p>Cette étape fait partie de la <strong>production</strong>, avec l’extraction des matières premières, la fabrication des composants et l’assemblage final.</p>
+    <p>Ensemble, ces trois étapes pèsent <strong>25,98&nbsp;kg CO<sub>2</sub>-éq</strong>.</p>
+  </template>
+
+  <template id="bulle_distribution">
+    <p>Le téléphone est produit en Chine, puis acheminé jusqu’en France par avion et camion.</p>
+    <p><strong>2,40&nbsp;kg CO<sub>2</sub>-éq</strong></p>
+  </template>
+
+  <template id="bulle_utilisation">
+    <p>Le Basic-phone® est utilisé en France pendant 3&nbsp;ans.</p>
+    <p><strong>0,77&nbsp;kg CO<sub>2</sub>-éq</strong></p>
+  </template>
+
+  <template id="bulle_fin_de_vie">
+    <p>Dans ce scénario, le téléphone est mis au recyclage.</p>
+    <p><strong>0,14&nbsp;kg CO<sub>2</sub>-éq</strong></p>
+  </template>
+
+  <!-- Source des chiffres de ces textes : dossier pédagogique ATHEN'TECH, données ACV de référence (doc de la prof, p. 39). -->
+
+  <!-- Réponses d'Andréa à « Quel enseignement principal tires-tu de ces résultats ? » (bonne réponse : B, doc de la prof p. 39).
+       Une par choix ; data-humeur choisit le visage d'Andréa. Pas d'IA à cette étape. -->
+  <template id="texte_retour_acv_A" data-humeur="decu">
+    <p><strong>Pas tout à fait…</strong></p>
+    <p>Regarde le graphique&#8239;: l’utilisation, recharge comprise, ne pèse que 0,77&nbsp;kg CO<sub>2</sub>-éq, sur près de 30 au total. Réduire la consommation pendant la recharge peut être utile, mais ce n’est pas la priorité dans ce scénario.</p>
+    <p>Revois ton choix.</p>
+  </template>
+
+  <template id="texte_retour_acv_B" data-humeur="content">
+    <p><strong>Bravo&#8239;!</strong></p>
+    <p>Dans ce scénario, la production pèse 25,98&nbsp;kg CO<sub>2</sub>-éq, bien plus que toutes les autres étapes réunies (3,31&nbsp;kg).</p>
+    <p>Attention&#8239;: c’est vrai pour le carbone. Un résultat carbone ne dit rien des autres impacts&#8239;; c’est pour ça qu’on regarde aussi l’épuisement des ressources.</p>
+  </template>
+
+  <template id="texte_retour_acv_C" data-humeur="decu">
+    <p><strong>Pas tout à fait…</strong></p>
+    <p>La recyclabilité compte, mais d’après le graphique, la fin de vie est l’étape qui pèse le moins&#8239;: 0,14&nbsp;kg CO<sub>2</sub>-éq. Et ce graphique ne mesure que le carbone&#8239;: il ne dit pas tout de la recyclabilité.</p>
+    <p>Revois ton choix.</p>
+  </template>
+
+  <!-- Question ouverte, discutée avec l'IA (doc de la prof, p. 40).
+       La 1re phrase est la question de la prof ; la 2e est un coup de pouce, à retirer si tu veux. -->
+  <template id="texte_composants" data-humeur="neutre">
+    <p><strong>Au sein de l’étape de production, quels composants ressortent particulièrement&#8239;?</strong></p>
+    <p>Appuie-toi sur les deux indicateurs&#8239;: le changement climatique et l’épuisement des ressources. Écris ta réponse ci-dessous, on en discute ensemble.</p>
+  </template>
+
+  <!-- Andréa : avant les solutions -->
+  <template id="texte_solutions" data-humeur="neutre">
+    <p>À partir de cette analyse, on va maintenant repérer les moments de ce parcours sur lesquels ATHEN’TECH pourrait agir pour diminuer les impacts environnementaux du Basic-phone®, prolonger la durée de vie du smartphone, faciliter sa réparation et améliorer sa fin de vie.</p>
+  </template>
+
+  <!-- modèle d'une proposition (numéro et identifiants : mission2.js) -->
+  <template id="modele_proposition">
+    <fieldset class="proposition">
+      <legend class="proposition_titre">proposition <span class="proposition_numero">1</span></legend>
+
+      <label class="visuellement_cache proposition_label_etape">Étape du parcours</label>
+      <span class="proposition_choix">
+        <select class="proposition_etape" required>
+          <option value="">choisis ici l’étape du parcours</option>
+          <option>Envie et renseignement</option>
+          <option>Achat du téléphone</option>
+          <option>Première utilisation</option>
+          <option>Ancien téléphone</option>
+          <option>Utilisation du nouveau téléphone</option>
+          <option>Réparation</option>
+          <option>Fin de vie</option>
+        </select>
+      </span>
+
+      <label class="proposition_label proposition_label_probleme">problématique soulevée</label>
+      <textarea class="proposition_probleme" rows="3"></textarea>
+
+      <label class="proposition_label proposition_label_solution">solution proposée</label>
+      <textarea class="proposition_solution" rows="3" placeholder="puis Entrée pour la montrer à Andréa"></textarea>
+
+      <!-- proposition complète : bouton (ou Entrée) -->
+      <div class="proposition_pied">
+        <button type="button" class="qcm_verifier proposition_soumettre" hidden>soumettre à Andréa</button>
+      </div>
+    </fieldset>
+  </template>
+
+  <!-- Avant le livrable -->
+  <template id="texte_livrable" data-humeur="content">
+    <p><strong>C’est parti&#8239;!</strong></p>
+    <p>Tu vas pouvoir choisir une problématique pour la suite, à partir de tes analyses.</p>
+  </template>
+
+  <!-- Fin de la mission 2 -->
+  <template id="texte_fin">
+    <p>[à rédiger]</p>
+  </template>
+
+
+  <!-- ========== Bandeau du bas (logos) ========== -->
+
+  <footer id="bandeau_bas">
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Les étapes d'une démarche d'éco-conception</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../mobile.css" media="(max-width: 1100px)">
+  <link rel="stylesheet" href="../couleurs.css">
+  <link rel="stylesheet" href="style/chap3.css">
+  <script src="../rive/rive.js"></script>
+  <script src="../cours.js" defer></script>
+  <script src="../script.js" defer></script>
+  <script src="../dessins.js" defer></script>
+</head>
+
+<!-- Où est cette page dans le cours ? (le reste vient de cours.js) — data-partie à régler -->
+<body data-chapitre="3" data-partie="8" data-racine="../">
+
+
+<dialog class="pop_mascotte" id="pop_mascotte" aria-labelledby="pop_mascotte_texte">
+  <button type="button" class="fermer_modal" aria-label="fermer"></button>
+  <img class="pop_mascotte_image" src="../dessin/mascotte/mascotte.svg" alt="">
+  <p class="pop_mascotte_texte" id="pop_mascotte_texte">Tu as des idées d’éco-solutions&nbsp;? Super&#8239;! Mais comment passer d’une bonne idée à un produit vraiment plus respectueux de l’environnement&nbsp;? <br>Suis-moi, on découvre les étapes pour y arriver&#8239;!</p>
+</dialog>
+
+
+<div id="droite_contenu">
+<div id="contenu_chapitre">
+
+<div id="contenu_gauche">
+
+  <!-- ================= 1. LES ÉTAPES D'UNE DÉMARCHE ================= -->
+  <div class="petit_titre">1. Les étapes d'une démarche d'éco-conception</div>
+
+  <div class="txt_labeur">Identifier des éco-solutions est une première étape. Encore faut-il savoir lesquelles choisir, comment les mettre en œuvre et vérifier qu’elles permettent réellement de réduire les impacts environnementaux.
+    <p>Pour cela, les entreprises peuvent suivre une démarche structurée et itérative, qui va de l’identification d’une opportunité jusqu’à la réalisation des solutions, puis à l’évaluation de leurs résultats.</p>
+    <p>Cette démarche mobilise différents métiers&nbsp;: conception, R&amp;D, production, marketing, achats, environnement, mais aussi fournisseurs et utilisateurs.</p>
+  </div>
+
+  <div class="bloc_exemple">
+    <span class="intro_exemple">exemple</span>
+    <div class="ligne_exemple">
+      <div class="exemple">
+        <p>Nous allons découvrir les principales étapes de cette démarche à travers un exemple concret&nbsp;: celui d’une entreprise fictive qui cherche à améliorer la performance environnementale de son <span class="italic">Saclay Cola</span>.</p>
+      </div>
+      <div class="media_exemple">
+        <img src="../dessin/chap_3/III/1/cola.svg" alt="">
+      </div>
+    </div>
+  </div>
+
+
+  <div class="txt_labeur">
+    <br><span class="etoile"></span> <strong>La démarche d’éco-conception se compose en général de 6 grandes étapes&nbsp;:</strong>
+  </div>
+
+  <!-- schéma circulaire : A en haut, puis dans le sens des aiguilles d'une montre.
+       Légende à droite : avant projet (A à C) / projet (D à F) -->
+  <div class="bloc_legende">
+    <div class="schema_cycle schema_centre schema_etapes">
+      <svg class="fleches_cycle" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <marker id="pointe_etapes" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--trait)"/>
+          </marker>
+        </defs>
+        <path d="M66.1 5.8 A47 47 0 0 1 80.2 14.0" marker-end="url(#pointe_etapes)"/>
+        <path d="M96.3 41.8 A47 47 0 0 1 96.3 58.2" marker-end="url(#pointe_etapes)"/>
+        <path d="M80.2 86.0 A47 47 0 0 1 66.1 94.2" marker-end="url(#pointe_etapes)"/>
+        <path d="M33.9 94.2 A47 47 0 0 1 19.8 86.0" marker-end="url(#pointe_etapes)"/>
+        <path d="M3.7 58.2 A47 47 0 0 1 3.7 41.8" marker-end="url(#pointe_etapes)"/>
+        <path d="M19.8 14.0 A47 47 0 0 1 33.9 5.8" marker-end="url(#pointe_etapes)"/>
+      </svg>
+
+      <div class="etape_cycle" data-zone="avant_projet" style="left:50%; top:14%;">
+        <img src="../dessin/chap_3/III/1/cadrer.svg" alt="">
+        <span class="nom_dessin"><span class="lettre_etape">A</span> avant-projet et cadrage</span>
+      </div>
+      <div class="etape_cycle" data-zone="avant_projet" style="left:81.2%; top:32%;">
+        <img src="../dessin/chap_3/III/1/analyser.svg" alt="">
+        <span class="nom_dessin"><span class="lettre_etape">B</span> analyser</span>
+      </div>
+      <div class="etape_cycle" data-zone="avant_projet" style="left:81.2%; top:68%;">
+        <img src="../dessin/chap_3/III/1/imaginer.svg" alt="">
+        <span class="nom_dessin"><span class="lettre_etape">C</span> imaginer</span>
+      </div>
+      <div class="etape_cycle" data-zone="projet" style="left:50%; top:86%;">
+        <img src="../dessin/chap_3/III/1/selectionner.svg" alt="">
+        <span class="nom_dessin"><span class="lettre_etape">D</span> sélectionner</span>
+      </div>
+      <div class="etape_cycle" data-zone="projet" style="left:18.8%; top:68%;">
+        <img src="../dessin/chap_3/III/1/realiser.svg" alt="">
+        <span class="nom_dessin"><span class="lettre_etape">E</span> réaliser</span>
+      </div>
+      <div class="etape_cycle" data-zone="projet" style="left:18.8%; top:32%;">
+        <img src="../dessin/chap_3/III/1/communiquer.svg" alt="">
+        <span class="nom_dessin"><span class="lettre_etape">F</span> communiquer et capitaliser</span>
+      </div>
+    </div>
+
+    <ul class="legende_schema">
+      <li data-zone="avant_projet" tabindex="0"><span class="point_zone"></span>avant projet</li>
+      <li data-zone="projet" tabindex="0"><span class="point_zone"></span>projet</li>
+    </ul>
+  </div>
+
+
+  <!-- ================= ÉTAPE A ================= -->
+  <div class="txt_labeur">
+    <span class="pastille_titre titre_etape"><span class="lettre_etape">A</span> cadrer&nbsp;: identifier où agir</span>
+    <p><strong>Identifier les opportunités d’éco-conception avant de lancer un projet.</strong></p>
+    <p>Avant de chercher des solutions, il faut comprendre le contexte du projet et repérer les opportunités d’éco-conception. Une analyse à 360° permet notamment d’examiner trois dimensions&nbsp;:</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>L’entreprise&nbsp;:</strong> sa stratégie, ses objectifs, ses compétences et ses contraintes&#8239;;</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>La chaîne de valeur&nbsp;:</strong> les fournisseurs, la production, la distribution, les utilisateurs et la fin de vie du produit&#8239;;</p>
+    <p class="ligne_etoile"><span class="etoile"></span> <strong>Le contexte&nbsp;:</strong> les réglementations, les attentes du marché, les évolutions technologiques et les enjeux environnementaux.</p>
+    <p>Cette analyse aide à identifier les sujets sur lesquels il serait pertinent d’agir et à définir les priorités du projet.</p>
+    <span class="span_source"><span class="souligne_fin">source:</span> Hélène Teulon, <span class="italic">Le guide de l’éco-innovation</span>, Eyrolles, 2014</span>
+  </div>
+
+
+  <div class="bloc_exemple">
+    <span class="intro_exemple">exemple</span>
+
+    <div class="ligne_exemple">
+      <div class="exemple exemple_large">
+        <p>L’entreprise <span class="italic">Boire Mieux</span> souhaite proposer une nouvelle boisson éco-conçue&nbsp;: le <span class="italic">Saclay Cola</span>.</p>
+        <p>L’analyse 360° du cola permet de bien comprendre le contexte dans lequel se place l’entreprise&nbsp;: la concurrence, les attentes du client, les innovations technologiques du secteur, les exigences réglementaires…</p>
+      </div>
+    </div>
+
+    <!-- analyse 360° du cola : légende à droite (sort du contenu).
+         Survol d'une ligne de la légende : un rond de couleur apparaît devant les vignettes de la même famille (data-zone).
+         Survol d'une vignette : la phrase de l'analyse -->
+    <div class="bloc_legende">
+      <div class="schema_cycle schema_centre schema_360">
+
+        <div class="centre_schema">analyse 360°</div>
+
+        <div class="etape_cycle item_dessin en_haut" data-zone="entreprise" style="left:35.6%; top:10.5%;" tabindex="0"
+             data-nom="stratégie de l’entreprise"
+             data-def="Différenciation sur la qualité traditionnelle et la production locale à échelle humaine, démarche responsable.">
+          <img src="../dessin/chap_3/III/1/360/strategie.svg" alt="">
+          <span class="nom_dessin">stratégie de l’entreprise</span>
+        </div>
+        <div class="etape_cycle item_dessin en_haut" data-zone="entreprise" style="left:64.4%; top:10.5%;" tabindex="0"
+             data-nom="marges de manœuvre"
+             data-def="Évolution possible du packaging, du process, des matières premières, de la distribution, avec contraintes du maintien de la qualité et de l’image traditionnelle.">
+          <img src="../dessin/chap_3/III/1/360/marges.svg" alt="">
+          <span class="nom_dessin">marges de manœuvre</span>
+        </div>
+        <div class="etape_cycle item_dessin a_droite" data-zone="chaine" style="left:86.4%; top:29%;" tabindex="0"
+             data-nom="distributeurs"
+             data-def="Demandes des distributeurs pour des produits « verts » et des emballages moins impactants.">
+          <img src="../dessin/chap_3/III/1/360/distributeurs.svg" alt="">
+          <span class="nom_dessin">distributeurs</span>
+        </div>
+        <div class="etape_cycle item_dessin a_droite" data-zone="chaine" style="left:91.4%; top:57.3%;" tabindex="0"
+             data-nom="clients"
+             data-def="Sensibilité croissante des consommateurs à l’environnement et à la santé. Impression de « trop d’emballages ».">
+          <img src="../dessin/chap_3/III/1/360/clients.svg" alt="">
+          <span class="nom_dessin">clients</span>
+        </div>
+        <div class="etape_cycle item_dessin a_droite" data-zone="contexte" style="left:77%; top:82.2%;" tabindex="0"
+             data-nom="concurrents"
+             data-def="Grands concurrents : stratégie bas carbone surtout portée sur l’emballage, la consommation d’eau, mais pas sur la recette. Petit concurrent : ingrédients bio ou issus du commerce équitable + emballage réutilisable / consigné.">
+          <img src="../dessin/chap_3/III/1/360/concurrents.svg" alt="">
+          <span class="nom_dessin">concurrents</span>
+        </div>
+        <div class="etape_cycle item_dessin" data-zone="contexte" style="left:50%; top:92%;" tabindex="0"
+             data-nom="réglementations"
+             data-def="Directive européenne sur les emballages : éco-conception et valorisation des déchets.">
+          <img src="../dessin/chap_3/III/1/360/reglementations.svg" alt="">
+          <span class="nom_dessin">réglementations</span>
+        </div>
+        <div class="etape_cycle item_dessin" data-zone="contexte" style="left:23%; top:82.2%;" tabindex="0"
+             data-nom="veille technologique"
+             data-def="Secteur innovant. Ex : extraction des huiles essentielles par fluide CO2 supercritique (pas de solvant utilisé, CO2 récupéré en boucle fermée, meilleure qualité des arômes).">
+          <img src="../dessin/chap_3/III/1/360/veille.svg" alt="">
+          <span class="nom_dessin">veille technologique</span>
+        </div>
+        <div class="etape_cycle item_dessin" data-zone="chaine" style="left:8.6%; top:57.3%;" tabindex="0"
+             data-nom="fournisseurs"
+             data-def="Verre allégé. Sucre et arôme (huiles essentielles) et caféine issus de l’agriculture raisonnée ou biologique.">
+          <img src="../dessin/chap_3/III/1/360/fournisseurs.svg" alt="">
+          <span class="nom_dessin">fournisseurs</span>
+        </div>
+        <div class="etape_cycle item_dessin" data-zone="entreprise" style="left:13.6%; top:29%;" tabindex="0"
+             data-nom="impacts sur l’environnement"
+             data-def="Impacts agricoles (eau, eutrophisation, utilisation des sols, écotoxicité, biodiversité). Énergie (effet de serre, ressources, acidification). Déchets, matières premières.">
+          <img src="../dessin/chap_3/III/1/360/impacts.svg" alt="">
+          <span class="nom_dessin">impacts sur l’environnement</span>
+        </div>
+      </div>
+
+      <ul class="legende_schema">
+        <li data-zone="entreprise" tabindex="0"><span class="point_zone"></span>l’entreprise</li>
+        <li data-zone="chaine" tabindex="0"><span class="point_zone"></span>la chaîne de valeur</li>
+        <li data-zone="contexte" tabindex="0"><span class="point_zone"></span>le contexte</li>
+      </ul>
+    </div>
+    <span class="span_source"><span class="souligne_fin">d’après&nbsp;:</span> Hélène Teulon, <span class="italic">Le guide de l’éco-innovation</span>, Eyrolles, 2014</span>
+  </div>
+
+  <div class="contenu_gras definition ecart_avant_tres_grand">L’objectif n’est pas encore de trouver la solution&nbsp;: il s’agit d’identifier où agir.</div>
+
+
+  <aside class="rappel_fin" id="rappel_fin" aria-label="Pour aller plus loin" hidden>
+    <img class="rappel_fin_dessin" src="../dessin/mascotte/mascotte.svg" alt="">
+    <div>
+      <p>Pour aller plus loin, tu peux consulter&#8239;:</p>
+      <ul>
+        <li>le guide de l’éco-innovation (analyse 360°)&#8239;: <a class="source" href="https://librairie.ademe.fr/industrie-et-production-durable/3630-guide-de-l-eco-innovation-le-9782212559910.html">librairie.ademe.fr</a></li>
+        <!-- LIEN À COMPLÉTER : analyse complète du cola -->
+        <li>l’analyse complète du cola (fabrication, matières premières, emballage, chaîne de valeur et opportunités identifiées)&#8239;: <a class="source" href="">voir l’analyse</a></li>
+      </ul>
+    </div>
+  </aside>
+
+</div>
+
+</div>
+</div>
+</body>
+</html>

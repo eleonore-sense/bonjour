@@ -1,0 +1,340 @@
+/* =====================================================================
+   CHAPITRE III : APPLIQUER UNE DÉMARCHE D'ÉCO-CONCEPTION
+   À charger APRÈS style.css et couleurs.css, dans les pages du III :
+     <link rel="stylesheet" href="chap3_III.css">
+
+   1. Lettres et titres des étapes (A à F)
+   2. Schéma avec légende (étapes A à F, analyse 360°)
+   3. Analyse 360° (étape A)
+   4. Frise du cycle de vie (étape B)
+   5. Tableau des impacts (étape B)
+   ===================================================================== */
+
+
+/* =====================================================================
+   1. LETTRES ET TITRES DES ÉTAPES
+   ===================================================================== */
+
+/* lettre de l'étape : rond noir, lettre blanche */
+.lettre_etape {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.6em;
+  height: 1.6em;
+  font-family: var(--titre);
+  font-size: 0.85rem;
+  line-height: 1;
+  color: var(--texte_inverse);
+  background: var(--trait);
+  border-radius: 50%;
+}
+
+/* titre d'une étape : la pastille blanche, avec le rond noir dedans */
+.pastille_titre.titre_etape {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 14px 4px 4px;         /* moins d'air à gauche : le rond touche presque le bord */
+  margin-bottom: 12px;
+  background: var(--fond);
+}
+
+.titre_etape .lettre_etape {
+  font-size: 0.9rem;
+}
+
+
+/* =====================================================================
+   2. SCHÉMA AVEC LÉGENDE (étapes A à F, analyse 360°)
+   ===================================================================== */
+
+/* le schéma au centre du contenu, la légende à sa droite (elle sort du contenu) */
+.bloc_legende {
+  position: relative;
+  margin: 40px 0 10px;
+}
+
+.legende_schema {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0 0 0 30px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  list-style: none;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+/* une ligne de légende : déjà une pilule, invisible tant qu'elle n'est pas active */
+.legende_schema li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 12px 4px 6px;
+  border: 1px solid transparent;
+  border-radius: var(--arrondi_pilule);
+  cursor: pointer;                   /* la main au survol */
+  transition: background .2s ease, border-color .2s ease;
+}
+
+/* la couleur de chaque famille (couleurs de couleurs.css) */
+.bloc_legende [data-zone="entreprise"]   { --couleur_zone: var(--rose); }
+.bloc_legende [data-zone="chaine"]       { --couleur_zone: var(--orange); }
+.bloc_legende [data-zone="contexte"]     { --couleur_zone: var(--vert_bleu); }
+.bloc_legende [data-zone="avant_projet"] { --couleur_zone: var(--vert_citron); }
+.bloc_legende [data-zone="projet"]       { --couleur_zone: var(--violet); }
+
+/* le petit rond de la légende */
+.point_zone {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  background: var(--couleur_zone);
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+}
+
+/* ligne de légende active : survolée elle-même, ou un élément de sa famille est survolé */
+.legende_schema li:is(:hover, :focus-visible),
+.bloc_legende:has(.etape_cycle[data-zone="entreprise"]:is(:hover, :focus-within))   .legende_schema [data-zone="entreprise"],
+.bloc_legende:has(.etape_cycle[data-zone="chaine"]:is(:hover, :focus-within))       .legende_schema [data-zone="chaine"],
+.bloc_legende:has(.etape_cycle[data-zone="contexte"]:is(:hover, :focus-within))     .legende_schema [data-zone="contexte"],
+.bloc_legende:has(.etape_cycle[data-zone="avant_projet"]:is(:hover, :focus-within)) .legende_schema [data-zone="avant_projet"],
+.bloc_legende:has(.etape_cycle[data-zone="projet"]:is(:hover, :focus-within))       .legende_schema [data-zone="projet"] {
+  background: var(--couleur_zone);
+  border-color: var(--trait);
+}
+
+
+/* ---------- Schéma des étapes : le rond de la lettre se colore ---------- */
+
+.schema_etapes .etape_cycle {
+  display: flex;                     /* sans item_dessin : le dessin au-dessus du nom */
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* la lettre devant le nom de l'étape */
+.schema_etapes .nom_dessin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.schema_etapes .lettre_etape {
+  transition: background .2s ease, color .2s ease, box-shadow .2s ease;
+}
+
+/* survol d'une étape : seulement elle ; survol de la légende : toute la phase */
+.schema_etapes .etape_cycle:is(:hover, :focus-within) .lettre_etape,
+.bloc_legende:has(.legende_schema [data-zone="avant_projet"]:is(:hover, :focus-visible)) .etape_cycle[data-zone="avant_projet"] .lettre_etape,
+.bloc_legende:has(.legende_schema [data-zone="projet"]:is(:hover, :focus-visible))       .etape_cycle[data-zone="projet"]       .lettre_etape {
+  background: var(--couleur_zone);
+  color: var(--trait);               /* lettre foncée : lisible sur une couleur claire */
+  box-shadow: 0 0 0 1px var(--trait);
+}
+
+
+/* =====================================================================
+   3. ANALYSE 360° (étape A)
+   ===================================================================== */
+
+.schema_360 {
+  max-width: 640px;                  /* la roue */
+  margin-top: 0;
+}
+
+/* le rond du centre, avec « analyse 360° » */
+.centre_schema {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 30%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--titre);
+  font-size: 1rem;
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+}
+
+.schema_360 .etape_cycle {
+  width: 120px;
+}
+
+.schema_360 .etape_cycle :is(img, .dessin) {
+  max-width: 56px;
+  max-height: 50px;
+}
+
+/* le titre : déjà une pilule, invisible tant qu'elle n'est pas active */
+.schema_360 .nom_dessin {
+  margin-top: 8px;
+  padding: 2px 8px 3px;
+  font-size: 0.75rem;
+  line-height: 1.15;
+  border: 1px solid transparent;
+  border-radius: var(--arrondi_pilule);
+  transition: background .2s ease, border-color .2s ease;
+}
+
+/* survol d'une vignette : seulement elle ; survol de la légende : toute la famille */
+.schema_360 .etape_cycle:is(:hover, :focus-within) .nom_dessin,
+.bloc_legende:has(.legende_schema [data-zone="entreprise"]:is(:hover, :focus-visible)) .etape_cycle[data-zone="entreprise"] .nom_dessin,
+.bloc_legende:has(.legende_schema [data-zone="chaine"]:is(:hover, :focus-visible))     .etape_cycle[data-zone="chaine"]     .nom_dessin,
+.bloc_legende:has(.legende_schema [data-zone="contexte"]:is(:hover, :focus-visible))   .etape_cycle[data-zone="contexte"]   .nom_dessin {
+  background: var(--couleur_zone);
+  border-color: var(--trait);
+}
+
+/* la phrase au survol : boîte plus petite que celle des galeries */
+.schema_360 .tooltip_dessin {
+  width: 280px;
+  padding: 14px 16px;
+  font-size: 0.85rem;
+}
+
+
+/* =====================================================================
+   4. FRISE DU CYCLE DE VIE (étape B)
+   ===================================================================== */
+
+.frise_cycle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 34px;                    /* entre les étapes (place de la flèche) */
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.frise_cycle li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90px;
+  font-size: 0.8rem;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.frise_cycle :is(img, .dessin) {
+  width: auto;
+  max-width: 60px;
+  height: auto;
+  max-height: 55px;
+  margin-bottom: 6px;
+}
+
+/* la flèche entre deux étapes */
+.frise_cycle li:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  top: 18px;
+  right: -26px;
+  font-size: 1rem;
+}
+
+
+/* =====================================================================
+   5. TABLEAU DES IMPACTS (étape B)
+   ===================================================================== */
+
+/* le tableau peut défiler sur petit écran */
+.tableau_defile {
+  overflow-x: auto;
+  margin-top: 14px;
+}
+
+.tableau_impacts {
+  border-collapse: separate;
+  border-spacing: 4px;
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.tableau_impacts th {
+  padding: 4px 6px;
+  font-family: var(--titre);
+  font-weight: normal;
+}
+
+.tableau_impacts thead th {
+  text-align: center;
+  vertical-align: bottom;
+}
+
+.tableau_impacts tbody th {
+  text-align: right;
+  max-width: 140px;
+}
+
+.tableau_impacts td {
+  min-width: 70px;
+  padding: 4px 6px;
+  text-align: center;
+  border: 1px solid transparent;
+}
+
+/* niveaux d'impact (cases et légende) */
+.tableau_impacts .fort,
+.legende_impacts .fort         { background: var(--rouge); color: var(--texte_inverse); border: 1px solid var(--trait); }
+.tableau_impacts .significatif,
+.legende_impacts .significatif { background: var(--orange); border: 1px solid var(--trait); }
+.tableau_impacts .faible,
+.legende_impacts .faible       { background: var(--vert); border: 1px solid var(--trait); }
+
+/* cases entourées dans la figure de la prof */
+.tableau_impacts .entoure {
+  outline: 2px solid var(--trait);
+  outline-offset: 1px;
+}
+
+.legende_impacts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin-top: 10px;
+  font-size: 0.75rem;
+}
+
+.legende_impacts span {
+  padding: 1px 8px;
+}
+
+.legende_impacts .repere_entoure {
+  width: 18px;
+  height: 14px;
+  padding: 0;
+  outline: 2px solid var(--trait);
+  outline-offset: 1px;
+}
+
+
+/* =====================================================================
+   PETITS ÉCRANS
+   ===================================================================== */
+
+@media (max-width: 1100px) {
+  /* la légende passe sous le schéma */
+  .legende_schema {
+    position: static;
+    transform: none;
+    margin: 20px 0 0;
+  }
+}

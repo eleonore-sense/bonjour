@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Étape B : analyser</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../mobile.css" media="(max-width: 1100px)">
+  <link rel="stylesheet" href="../couleurs.css">
+    <link rel="stylesheet" href="style/chap_3.css">
+  <script src="../rive/rive.js"></script>
+  <script src="../cours.js" defer></script>
+  <script src="../script.js" defer></script>
+  <script src="../dessins.js" defer></script>
+</head>
+
+<!-- Où est cette page dans le cours ? (le reste vient de cours.js) — data-partie à régler -->
+<body data-chapitre="3" data-partie="?" data-racine="../">
+
+
+<div id="droite_contenu">
+<div id="contenu_chapitre">
+
+<div id="contenu_gauche">
+
+  <!-- ================= ÉTAPE B ================= -->
+  <div class="txt_labeur">
+    <span class="pastille_titre titre_etape"><span class="lettre_etape">B</span> analyser&nbsp;: comprendre le problème</span>
+    <p>Une fois les opportunités identifiées, il faut comprendre plus précisément le produit, son fonctionnement, ses usages et ses impacts environnementaux.</p>
+    <p>Quatre analyses complémentaires peuvent être mobilisées&nbsp;:</p>
+    <p class="ligne_etoile">1. L’analyse du cycle de vie du produit&nbsp;: elle permet d’identifier les grandes étapes du cycle de vie, depuis l’extraction des matières premières jusqu’à la fin de vie.</p>
+    <p class="ligne_etoile">2. L’analyse fonctionnelle&nbsp;: elle sert à identifier les fonctions que le produit doit assurer et les contraintes auxquelles il doit répondre.</p>
+    <p class="ligne_etoile">3. L’analyse environnementale&nbsp;: elle permet d’identifier les principaux impacts environnementaux et les étapes du cycle de vie qui y contribuent. Une ACV peut notamment être mobilisée pour approfondir cette analyse.</p>
+    <p class="ligne_etoile">4. L’analyse des usages&nbsp;: elle vise à comprendre comment le produit est réellement utilisé, entretenu, transporté ou éliminé.</p>
+  </div>
+
+  <div class="txt_labeur">
+    <br><span class="etoile"></span> <strong>De l’analyse à la problématique</strong>
+    <p>Ces analyses permettent de formuler une problématique précise et de définir un cahier des charges pour guider la recherche de solutions.</p>
+    <p>Celui-ci rassemble les critères auxquels les solutions devront répondre&nbsp;:</p>
+    <p class="ligne_etoile"><span class="etoile"></span> environnement&nbsp;: réduction des impacts et de la consommation de ressources&#8239;;</p>
+    <p class="ligne_etoile"><span class="etoile"></span> technique&nbsp;: performances, qualité et sécurité&#8239;;</p>
+    <p class="ligne_etoile"><span class="etoile"></span> économie&nbsp;: coûts de production, investissements et prix&#8239;;</p>
+    <p class="ligne_etoile"><span class="etoile"></span> usage&nbsp;: attentes des utilisateurs et facilité d’utilisation&#8239;;</p>
+    <p class="ligne_etoile"><span class="etoile"></span> autres contraintes&nbsp;: réglementation, production, logistique ou fin de vie.</p>
+  </div>
+
+
+  <!-- ================= EXEMPLE : LE SACLAY COLA ================= -->
+  <div class="bloc_exemple bloc_deborde">
+    <span class="intro_exemple">exemple</span>
+
+    <!-- analyse du cycle de vie : une frise -->
+    <p><strong>Analyse du cycle de vie</strong></p>
+    <ol class="frise_cycle">
+      <li><img src="../dessin/chap_3/III/2/matieres_premieres.svg" alt=""><span>matières premières</span></li>
+      <li><img src="../dessin/chap_3/III/2/sirop.svg" alt=""><span>fabrication du sirop</span></li>
+      <li><img src="../dessin/chap_3/III/2/carbonatation.svg" alt=""><span>mélange et carbonatation</span></li>
+      <li><img src="../dessin/chap_3/III/2/bouteille.svg" alt=""><span>mise en bouteille</span></li>
+      <li><img src="../dessin/chap_3/III/2/distribution.svg" alt=""><span>distribution</span></li>
+      <li><img src="../dessin/chap_3/III/2/consommation.svg" alt=""><span>consommation</span></li>
+      <li><img src="../dessin/chap_3/III/2/fin_de_vie.svg" alt=""><span>fin de vie de la bouteille</span></li>
+    </ol>
+
+    <!-- analyse environnementale : texte + tableau -->
+    <p class="ecart_avant"><strong>Analyse environnementale</strong></p>
+    <p>Les principaux impacts sont notamment liés aux matières premières, en particulier au verre de la bouteille, mais également à la culture de la betterave (pour le sucre) et des fruits et épices (pour l’arôme). Le procédé de production du cola dans l’usine de brasserie a également un impact non négligeable. L’utilisation du réfrigérateur lors de la phase d’usage est également un poste d’émission.</p>
+
+    <div class="tableau_defile">
+      <table class="tableau_impacts">
+        <caption class="visuellement_cache">Analyse environnementale du cola en bouteille : impact de chaque étape du cycle de vie</caption>
+        <thead>
+          <tr>
+            <th scope="col">cola en bouteille</th>
+            <th scope="col">matières premières</th>
+            <th scope="col">brasserie</th>
+            <th scope="col">packaging</th>
+            <th scope="col">distribution</th>
+            <th scope="col">utilisation</th>
+            <th scope="col">fin de vie</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- entoure = cases entourées en rouge dans la figure de la prof -->
+          <tr><th scope="row">énergie / effet de serre</th>
+            <td class="significatif entoure">+</td><td class="significatif entoure">+</td><td class="faible">=0</td><td class="faible">=0</td><td class="fort entoure">+++</td><td class="faible">=0</td></tr>
+          <tr><th scope="row">émissions dans l’air</th>
+            <td class="fort entoure">+++</td><td class="fort entoure">+++</td><td class="faible">=0</td><td class="significatif">+</td><td class="significatif entoure">+</td><td class="significatif">+</td></tr>
+          <tr><th scope="row">émissions dans l’eau</th>
+            <td class="fort entoure">+++</td><td class="faible">=0</td><td class="faible">=0</td><td class="faible">=0</td><td class="significatif">+</td><td class="faible">=0</td></tr>
+          <tr><th scope="row">consommation d’eau</th>
+            <td class="fort entoure">+++</td><td class="significatif">+</td><td class="faible">=0</td><td class="faible">=0</td><td class="significatif">+</td><td class="faible">=0</td></tr>
+          <tr><th scope="row">ressources naturelles (hors énergie)</th>
+            <td class="significatif entoure">+</td><td></td><td class="faible">=0</td><td></td><td></td><td></td></tr>
+          <tr><th scope="row">utilisation des sols</th>
+            <td class="significatif entoure">+</td><td></td><td class="faible">=0</td><td></td><td></td><td></td></tr>
+          <tr><th scope="row">production de déchets</th>
+            <td class="faible entoure">=0</td><td class="faible">=0</td><td></td><td class="faible">=0</td><td></td><td class="significatif">+</td></tr>
+          <tr><th scope="row">substances toxiques</th>
+            <td class="significatif entoure">+</td><td class="faible">=0</td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="legende_impacts">
+      <span class="fort">+++</span> impact fort
+      <span class="significatif">+</span> impact significatif
+      <span class="faible">=0</span> faible impact
+      <span class="repere_entoure"></span> postes les plus importants
+    </p>
+
+    <!-- analyse d'usage -->
+    <p class="ecart_avant"><strong>Analyse d’usage</strong></p>
+    <p>Le consommateur achète la bouteille, la transporte, consomme le cola, puis jette ou trie la bouteille. L’usage et la fin de vie de l’emballage doivent donc être pris en compte.</p>
+    <!-- FIGURE À VENIR : analyse d'usage (celle du PDF est celle de la bière, « à adapter pour le cola ») -->
+
+    <!-- constat, problématique, cahier des charges -->
+    <p class="ecart_avant"><strong>→ Constat</strong></p>
+    <p>Ces analyses ont permis de mettre en évidence l’impact de l’emballage en verre de la bouteille, mais également de la culture des ingrédients. Le procédé de brasserie consomme une importante quantité d’énergie. Le consommateur ne trie pas toujours la bouteille en verre et le procédé de recyclage du verre est particulièrement énergivore.</p>
+
+    <p class="ecart_avant"><strong>→ Une problématique possible&nbsp;:</strong></p>
+    <p>Comment réduire l’impact environnemental de l’emballage du cola, mais également du procédé de production du cola, tout en conservant ses fonctions de protection, de transport et de consommation&nbsp;?</p>
+
+    <p class="ecart_avant"><strong>→ Cahier des charges</strong></p>
+    <p>Les futures solutions devront notamment&nbsp;:</p>
+    <p class="ligne_etoile"><span class="etoile"></span> réduire les impacts environnementaux liés au contenant en verre et à la production du cola&#8239;;</p>
+    <p class="ligne_etoile"><span class="etoile"></span> conserver la qualité et la sécurité de la boisson&#8239;;</p>
+    <p class="ligne_etoile"><span class="etoile"></span> permettre un usage pratique pour le consommateur&nbsp;: une bonne tenue en main et une résistance au transport&#8239;;</p>
+    <p class="ligne_etoile"><span class="etoile"></span> ne pas altérer les procédés de recyclage par la composition de l’emballage&#8239;; son design doit pouvoir résister au lavage et à la consigne.</p>
+  </div>
+
+  <div class="contenu_gras definition ecart_avant_tres_grand">L’objectif n’est pas encore de choisir une solution&nbsp;: il s’agit de comprendre le problème pour savoir sur quels critères agir.</div>
+
+</div>
+
+</div>
+</div>
+</body>
+</html>
