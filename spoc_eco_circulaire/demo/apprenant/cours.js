@@ -59,7 +59,7 @@ const COURS = {
         // III.
         // III.
         { section: "Appliquer une démarche d'éco-conception", nom: "Les étapes d'une démarche d'éco-conception", duree: '15 min',
-          pages: ['chap_3/chap3_III_1.html', 'chap_3/chap3_III_2.html', 'chap_3/chap3_III_3.html', 'chap_3/chap3_III_4.html', 'chap_3/chap3_III_5.html' , 'chap_3/chap3_III_5.html'] },
+          pages: ['chap_3/chap3_III_1.html', 'chap_3/chap3_III_2.html', 'chap_3/chap3_III_3.html', 'chap_3/chap3_III_4.html', 'chap_3/chap3_III_5.html' , 'chap_3/chap3_III_6.html'] },
         { section: "Appliquer une démarche d'éco-conception", nom: "Témoignage: mettre en place une démarche", duree: '', lien: 'chap_3/chap3_III_7.html' },
         // IV.
    
