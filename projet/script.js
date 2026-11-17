@@ -1,6 +1,26 @@
 var effet_txt = '0px 0px 4px rgba(255, 0, 221, 1)';
 
 
+function montrer_visuel(fichier){
+  var video = document.getElementById('video');
+  if (fichier.endsWith('.mp4')) {
+    $("#photo").css("background-image", "none");
+    video.src = fichier;
+    video.style.display = 'block';
+    video.play();
+  } else {
+    $("#photo").css("background-image", "url(" + fichier + ")");
+  }
+}
+
+function cacher_visuel(){
+  var video = document.getElementById('video');
+  video.pause();
+  video.removeAttribute('src');
+  video.style.display = 'none';
+  $("#photo").css("background-image", "none");
+}
+
 function angers(){
 $( ".angers" ).css('textShadow',effet_txt);
 $("#photo").css("background-image", "url(angers/img/3.jpg)");
@@ -344,7 +364,7 @@ $( "#gif_nuit_blanche" ).css('display','none');
 
 function hysterie_collective(){
 $( ".hysterie_collective" ).css('textShadow',effet_txt);
-$("#photo").css("background-image", "url(hysterie_collective/img/3.jpg)");
+$("#photo").css("background-image", "url(hysterie_collective/img/11.jpg)");
 $('#legende').text('organisation et scénographie d’un évenement festif autour de l’invention du therme "hystérie" avec le collectif collective au Shakirail_ 2024');
 $( "#gif_hysterie_collective" ).css('display','block');
 
@@ -415,7 +435,7 @@ $('#legende').text('');
 
 function chimere(){
 $( ".chimere" ).css('textShadow',effet_txt);
-$("#photo").css("background-image", "url(cire/img/3.jpg)");
+montrer_visuel('chimere/img/1.mp4');
 $('#legende').text('graphisme et programmation web d’une exposition en ligne du Centre Pompidou et de Kadist_ 2026');
 $( "#gif_chimere" ).css('display','block');
 
@@ -424,7 +444,7 @@ $( "#gif_chimere" ).css('display','block');
 
 function quitter_chimere(){
 $('.chimere').css('textShadow','none');
-$("#photo").css("background-image", "none");
+cacher_visuel();
 $('#legende').text('')
 $( "#gif_chimere" ).css('display','none');
     };
@@ -433,19 +453,25 @@ $( "#gif_chimere" ).css('display','none');
 
 
 
-  function montrer_clippy() {
-    $('#clippy').removeClass('cache');
-  $('#contact .lien').css('textShadow', effet_txt)
-  setTimeout(fermer_clippy, 8000)
-  }
+function montrer_clippy() {
+  $('#clippy').removeClass('cache');
+  $('#contact .lien').css('textShadow', effet_txt);
+  setTimeout(fermer_clippy, 8000);
+}
 
-  function fermer_clippy() {
-    $('#clippy').addClass('cache');
+function fermer_clippy() {
+  $('#clippy').addClass('cache');
   $('#contact .lien').css('textShadow', 'none');
+}
+
+$(function () {
+  $('#clippy_fermer').on('click', fermer_clippy);
+
+  var deja_vu = false;
+  try { deja_vu = sessionStorage.getItem('clippy_vu'); } catch (e) {}
+
+  if (!deja_vu) {
+    setTimeout(montrer_clippy, 3000);
+    try { sessionStorage.setItem('clippy_vu', 'oui'); } catch (e) {}
   }
-
-
-  $(function () {
-    $('#clippy_fermer').on('click', fermer_clippy);
-    setTimeout(montrer_clippy, 3000);               
-  });
+});

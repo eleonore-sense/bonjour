@@ -105,6 +105,23 @@ display: flex;
 }
 
 
+#photo {
+  position: relative;
+}
+
+#video {
+  display: none;          
+  position: absolute;
+  inset: 0;                 
+  width: 100%;
+  height: 100%;
+  object-fit: contain;      
+  object-position: right bottom;}
+
+#gauche, #droite {
+  z-index: 2;             
+}
+
 #titre{
 	font-size: 1.3em;
 }
