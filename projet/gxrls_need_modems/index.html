@@ -47,13 +47,16 @@
 <div id="txt_pres">
     <div class="bloc_titre">
       <p id="titre">>_ gxrls need modems</p>
-      <p id="sous_titre">jeu vidéo réalisé en ASCII qui met en lumière des fxmmes et minorités de genre qui ont joué un rôle important dans le domaine du numérique, avec l’artiste et designer <a href="https://www.instagram.com/pacificreem/" target="_blank" class="lien_pote">Reem Saleh</a>_ 2021/2024</p>
+      <p id="sous_titre">jeu vidéo et installation scénographique réalisé avec l’artiste et designer <a href="https://www.instagram.com/pacificreem/" target="_blank" class="lien_pote">Reem Saleh</a>_ 2021/2024</p>
     </div>
     <div id="txt">
 Gxrls need modems est un jeu vidéo qui reprend l’esthétique graphique des premiers temps d’internet (dessins uniquement en ASCII) pour créer une narration autour des fxmmes et minorités de genre qui ont été invisibilisé·es dans le domaine du numérique.
-<br><br>Sous forme de quête absurde le·a protagoniste part à la rencontre de multiples êtres chimériques qui font référence à des personnes importantes au développement du domaine, proposant ainsi une contre-histoire du numérique. 
-<br>Il reprend les codes de l’heroic fantasy en les détournant, dans l’objectif de créer de nouvelles mythologies à s’imaginer et se raconter
-<br>Découvrir une <a href="https://vimeo.com/891391301?share=copy" class="lien_pote">maquette vidéo du jeu</a>.
+<br>Sous forme de quête absurde, lea protagoniste part à la rencontre de multiples êtres chimériques qui font référence à des personnes importantes au développement du domaine, proposant ainsi une contre-histoire du numérique.
+<br>Il reprend les codes de l’heroic fantasy en les détournant, dans l’objectif de créer de nouvelles mythologies à s’imaginer et se raconter.
+<br><br><a href="https://gxrls-need-modems.github.io/" target="_blank" class="lien_pote">Jouer au jeu en ligne</a>.
+<br>Découvrir une <a href="https://vimeo.com/891391301?share=copy" target="_blank" class="lien_pote">maquette vidéo du jeu</a>.
+<br><br><br><p id="sous_titre">Le projet a été présenté et mis en scène dans un espace dans le cadre de l’exposition <a href="https://www.lecubegarges.fr/programme/sous-le-meme-ciel/" target="_blank" class="lien_pote">Sous le même ciel?</a> <br>au <a href="https://www.lecubegarges.fr/" target="_blank" class="lien_pote">Cube Garges</a>, à Garges-Les-Gonesses et dans le cadre de <a href="https://www.siana.eu/biennale-siana/" target="_blank" class="lien_pote">la biennale d’art numérique SIANA</a> à Evry-Courcouronnes.
+</p>
     </div>
 </div>
 
@@ -62,7 +65,11 @@ Gxrls need modems est un jeu vidéo qui reprend l’esthétique graphique des pr
 
 
 <div id="visuel">
-<div id="photo" style="background-image: url('img/1.jpg');">
+<div id="photo">
+  <div id="cadre">
+    <img id="image_projet" alt="">
+    <video id="video" muted loop playsinline></video>
+  </div>
   <div id="gauche" onclick="prev_img()">
     <p id="precedent">←</p>
   </div>
@@ -78,40 +85,15 @@ Gxrls need modems est un jeu vidéo qui reprend l’esthétique graphique des pr
 
 
 
-
+<div id="credit">
+(<span class="emoji"></span> photos réalisées par l'artite et designer <a href="https://www.instagram.com/pacificreem/" target="_blank" class="lien_pote">Reem Saleh</a>).
+</div>
 
 </body>
 
 
 <script>
-  var image = ['1.jpg', '2.jpg', '3.webp', '4.jpg', '5.jpg', '6.jpg','7.webp', '8.jpg', '9.jpg'];
-
-  var x = 0;
-var long = image.length-1;
-
-   function next_img(){
-    if (x < long){
-  x=x+1;  
-  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
-
-}else{
-    x=0;  
-
-  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
-}
-};
-
-
-
-   function prev_img(){
-  if (x >= 1){
-  x=x-1;
-  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
-}else{
-x=8;
-  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
-    console.log(x);
-}
-};
+  var image = ['1.jpg', '2.jpg', '3.mp4', '4.mp4', '5.jpg', '6.jpg','7.jpg', '8.jpg', '9.jpg','10.mp4', '11.jpg', '12.jpg','13.gif', '14.jpg', '15.webp', '16.jpg', '17.jpg', '18.jpg','19.jpg', '20.jpg', '21.jpg', '22.jpg'];
+    var sans_cadre = image;
 </script>
 	</html>

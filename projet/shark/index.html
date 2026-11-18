@@ -62,7 +62,11 @@ Gxrls need modems est un jeu vidéo qui reprend l’esthétique graphique des pr
 
 
 <div id="visuel">
-<div id="photo" style="background-image: url('img/1.jpg');">
+<div id="photo">
+  <div id="cadre">
+    <img id="image_projet" alt="">
+    <video id="video" muted loop playsinline></video>
+  </div>
   <div id="gauche" onclick="prev_img()">
     <p id="precedent">←</p>
   </div>
@@ -84,34 +88,7 @@ Gxrls need modems est un jeu vidéo qui reprend l’esthétique graphique des pr
 
 
 <script>
-  var image = ['1.jpg', '2.jpg', '3.gif', '4.jpg', '5.jpg', '6.jpg','7.gif', '8.jpg', '9.jpg'];
-
-  var x = 0;
-var long = image.length-1;
-
-   function next_img(){
-    if (x < long){
-  x=x+1;  
-  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
-
-}else{
-    x=0;  
-
-  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
-}
-};
-
-
-
-   function prev_img(){
-  if (x >= 1){
-  x=x-1;
-  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
-}else{
-x=8;
-  $('#photo').css({'background-image': 'url("img/' + image[x] + '")'});
-    console.log(x);
-}
-};
+  var image = ['1.jpg', '2.jpg', '3.mp4', '4.jpg', '5.jpg', '6.jpg','7.jpg', '8.jpg', '9.jpg','10.jpg', '11.jpg', '12.jpg','13.jpg', '14.jpg', '15.jpg', '16.jpg'];
+    var sans_cadre = image;
 </script>
 	</html>

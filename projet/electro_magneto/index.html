@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device_width, initial-scale=1.0">
+  <title>↗📃↘🎰↗📃↘🎰↗📃↘🎰</title>
+  <link rel="icon" type="image/png" href="../../img_4.png" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="../script_projet.js"></script>
+  <link rel="stylesheet" type="text/css" href="../style_projet.css">
+  <script src="../../precharge.js"></script>
+</head>
+
+<body id="body">
+
+<div id="entete">
+  <div id="accueil">
+    <p><span class="emoji"></span>
+      <a href="../index.html" class="lien"> retour à la liste</a>
+    </p>
+    <p><span class="emoji"></span>
+      <a href="../messagerie_cryptee/index.html" class="lien"> voir un autre projet</a>
+    </p>
+    <p><span class="emoji"></span>
+      <a href="../../index.html" class="lien"> retour au bureau</a>
+    </p>
+  </div>
+
+  <div id="contact">
+    <p><a href="https://docs.google.com/spreadsheets/d/12UdJACSnNIuI5MsdhvDRUM02DI4OiWgJJHoQ_n4WByk/edit?hl=fr#gid=0" target="_blank" class="lien"> éléonore sense</a>
+    </p>
+  </div>
+</div>
+
+<div id="contenu_projet">
+<div id="txt_pres">
+    <div class="bloc_titre">
+      <p id="titre">>_ electro_magneto_cool.html</p>
+      <p id="sous_titre">site web et graphisme d’une partie de l’exposition 100% à la Villette_ 2022</p>
+    </div>
+    <div id="txt">
+Dans les brumes est le site web qui met en forme la recherche réalisée par l'artiste-designer <a href="https://www.instagram.com/paulette.odette/" target="_blank" class="lien_pote">Camille Peyrachon</a> pour son mémoire de fin d'étude à l'ENSCI-les-Ateliers, Paris.
+<br>Elle réalise une enquête autour des savoir-faires tisserand dans le village de Saint-Julien-Molin-Molette en Auvergne-Rhône-Alpes.
+<br><br>Conception graphique et codage du site web, à visiter ici:
+<br><span class="emoji"></span> le site web est aujourd'hui hors ligne 🤷‍♀️.
+<br><span class="emoji"></span> <a href="../diploramax/index.html" target="_blank" class="lien_pote">en apprendre plus sur l'exposition</a>.
+    </div>
+</div>
+
+<div id="visuel">
+<div id="photo">
+  <div id="cadre">
+    <img id="bordure" src="img/bordure_electro.jpg" alt="">
+    <img id="image_projet" alt="">
+    <video id="video" muted loop playsinline></video>
+  </div>
+  <div id="gauche" onclick="prev_img()">
+    <p id="precedent">←</p>
+  </div>
+  <div id="droite" onclick="next_img()">
+    <p id="suivant">→</p>
+  </div>
+</div>
+</div>
+
+</div>
+
+<div id="gif" style="background-image: url('img/0.gif'); left:500px; bottom: 80px;"></div>
+
+</body>
+
+<script>
+  var image = ['1.mp4', '2.jpg', '3.jpg', '4.mp4', '5.jpg', '6.jpg'];
+
+  var x = 0;
+  var long = image.length-1;
+
+  function afficher(){
+    var fichier = 'img/' + image[x];
+    var video = document.getElementById('video');
+    var img = document.getElementById('image_projet');
+
+    if (fichier.endsWith('.mp4')) {
+      img.style.display = 'none';
+      img.removeAttribute('src');
+      video.src = fichier;
+      video.style.display = 'block';
+      video.play();
+    } else {
+      video.pause();
+      video.removeAttribute('src');
+      video.style.display = 'none';
+      img.src = fichier;
+      img.style.display = 'block';
+    }
+  }
+
+  function next_img(){
+    if (x < long){ x = x+1; } else { x = 0; }
+    afficher();
+  }
+
+  function prev_img(){
+    if (x >= 1){ x = x-1; } else { x = long; }
+    afficher();
+  }
+
+  afficher();
+</script>
+</html>

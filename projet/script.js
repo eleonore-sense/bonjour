@@ -1,25 +1,46 @@
 var effet_txt = '0px 0px 4px rgba(255, 0, 221, 1)';
 
 
-function montrer_visuel(fichier){
+function montrer_visuel(fichier, bandeau){
+  var cadre = $('#cadre');
   var video = document.getElementById('video');
+  var img = document.getElementById('image_projet');
+
+  cadre.toggleClass('sans_cadre', bandeau === 'sans_cadre');
+  if (bandeau && bandeau !== 'sans_cadre') {
+    $('#bordure').attr('src', bandeau);
+    cadre.addClass('avec_bandeau');
+  } else {
+    cadre.removeClass('avec_bandeau');
+  }
+
   if (fichier.endsWith('.mp4')) {
-    $("#photo").css("background-image", "none");
+    img.style.display = 'none';
     video.src = fichier;
     video.style.display = 'block';
     video.play();
   } else {
-    $("#photo").css("background-image", "url(" + fichier + ")");
+    video.pause();
+    video.removeAttribute('src');
+    video.style.display = 'none';
+    img.src = fichier;
+    img.style.display = 'block';
   }
+  cadre.addClass('visible');
 }
 
 function cacher_visuel(){
   var video = document.getElementById('video');
+  $('#cadre').removeClass('visible');
   video.pause();
   video.removeAttribute('src');
-  video.style.display = 'none';
-  $("#photo").css("background-image", "none");
+  document.getElementById('image_projet').removeAttribute('src');
 }
+
+
+
+
+
 
 function angers(){
 $( ".angers" ).css('textShadow',effet_txt);
@@ -103,7 +124,7 @@ $( "#gif_game" ).css('display','none');    };
 
 function gxrls_need_modems(){
 $( ".gxrls_need_modems" ).css('textShadow',effet_txt);
-$("#photo").css("background-image", "url(gxrls_need_modems/img/3.webp)");
+$("#photo").css("background-image", "url(gxrls_need_modems/img/2.jpg)");
 $('#legende').text('jeu vidéo réalisé en ASCII qui met en lumière des fxmmes et minorités de genre qui ont joué un rôle important dans le domaine du numérique, avec l’artiste et designer Reem Saleh_ 2024')
     };
 
@@ -418,7 +439,7 @@ $( "#gif_cire" ).css('display','none');
 
 function shark(){
 $( ".shark" ).css('textShadow',effet_txt);
-$("#photo").css("background-image", "url(cire/img/3.jpg)");
+montrer_visuel('shark/img/4.jpg','sans_cadre');
 $('#legende').text('recherche et conception d’outils de médiation autour de la captation d’ondes électromagnétiques et leur impact sur le vivant à la Villette Makerz_ 2025');
 
 
@@ -427,6 +448,7 @@ $('#legende').text('recherche et conception d’outils de médiation autour de l
 
 function quitter_shark(){
 $('.shark').css('textShadow','none');
+cacher_visuel();
 $("#photo").css("background-image", "none");
 $('#legende').text('');
     };
@@ -435,7 +457,7 @@ $('#legende').text('');
 
 function chimere(){
 $( ".chimere" ).css('textShadow',effet_txt);
-montrer_visuel('chimere/img/1.mp4');
+montrer_visuel('chimere/img/1.mp4', 'chimere/img/bordure_chimere.jpg');
 $('#legende').text('graphisme et programmation web d’une exposition en ligne du Centre Pompidou et de Kadist_ 2026');
 $( "#gif_chimere" ).css('display','block');
 
@@ -450,7 +472,21 @@ $( "#gif_chimere" ).css('display','none');
     };
 
 
+function electro_magneto(){
+$( ".electro_magneto" ).css('textShadow',effet_txt);
+montrer_visuel('electro_magneto/img/1.mp4', 'electro_magneto/img/bordure_electro.jpg');
+$('#legende').text('blog de recherche et de vulgarisation autour des champs électromagnétiques émis par les infrastructures numériques_ depuis 2025');
+$( "#gif_electro_magneto" ).css('display','block');
 
+
+    };
+
+function quitter_electro_magneto(){
+$('.electro_magneto').css('textShadow','none');
+cacher_visuel();
+$('#legende').text('')
+$( "#gifelectro_magneto" ).css('display','none');
+    };
 
 
 function montrer_clippy() {

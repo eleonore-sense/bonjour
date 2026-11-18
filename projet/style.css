@@ -85,26 +85,53 @@ line-height: 0.3em;
 }
 
 
-#photo{
-	width:auto ;
-	height: 97%;
-background-position-x: right;
-	background-size: contain;
-background-repeat: no-repeat;
-background-position-y: bottom;
-}
-
 #photo {
   position: relative;
+  width: auto;
+  height: 97%;
+  background-position-x: right;
+  background-position-y: bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
-#video {
+#cadre {
   display: none;
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: right bottom;
+  right: 0;
+  bottom: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 0.7px solid black;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 4px rgba(255, 0, 221, 0.5), 0 0 14px rgba(255, 0, 221, 0.3), 0 0 28px rgba(255, 0, 221, 0.15);
+}
+
+#cadre.visible {
+  display: flex;
+}
+
+#cadre.sans_cadre {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+#bordure {
+  display: none;
+  width: 0;
+  min-width: 100%;
+  height: auto;
+}
+
+#cadre.avec_bandeau #bordure {
+  display: block;
+}
+
+#image_projet, #video {
+  display: none;
+  max-width: 45vw;
+  max-height: 58vh;
 }
 
 

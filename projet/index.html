@@ -121,13 +121,13 @@ doIt();
     </div>
     <div class="lien_projets">
 <a class="vers_projet" href="shark/index.html" onmouseover="shark()" onmouseleave="quitter_shark()"><p class="shark">_ shark 1.8GHz</p></a>
-<a class="vers_projet" href="cire/index.html" onmouseover="cire()" onmouseleave="quitter_cire()"><p class="cire">_ totaly cire</p></a>
+<a class="vers_projet" href="cire/index.html" onmouseover="cire()" onmouseleave="quitter_cire()"><p class="cire">_ totally cire</p></a>
 <a class="vers_projet" href="fabrique_a_film/index.html" onmouseover="fabrique_a_film()" onmouseleave="quitter_fabrique_a_film()"><p class="fabrique_a_film">_ fabrique à film à roulette</p></a>
 <a class="vers_projet" href="angers/index.html" onmouseover="angers()" onmouseleave="quitter_angers()"><p class="angers">_ plantes voisines, exploration en chemin</p></a>
 <a class="vers_projet"  href="gaite_atelier/index.html" onmouseover="gaite_atelier()" onmouseleave="quitter_gaite_atelier()"><p class="gaite_atelier">_ chimères numériques</p></a>
 <a class="vers_projet" href="genre/index.html" onmouseover="genre()" onmouseleave="quitter_genre()"><p class="genre">_ genre c'est du design</p></a>
 <a class="vers_projet" href="game_gxrls/index.html" onmouseover="game_gxrls()" onmouseleave="quitter_game_gxrls()"><p class="game_gxrls">_ game gxrls</p></a>
-<a class="vers_projet" href="machine_histoire/index.html" onmouseover="machine_histoire()" onmouseleave="quitter_machine_histoire()"><p class="machine_histoire">_ machine à histoires collectives</p></a>
+<!--<a class="vers_projet" href="machine_histoire/index.html" onmouseover="machine_histoire()" onmouseleave="quitter_machine_histoire()"><p class="machine_histoire">_ machine à histoires collectives</p></a>-->
 
     </div>
   </div>
@@ -141,6 +141,7 @@ doIt();
     </div>
     <div class="lien_projets">
 <a class="vers_projet" href="chimere/index.html" onmouseover="chimere()" onmouseleave="quitter_chimere()"><p class="chimere">_ do our chimeras most resemble us?</p></a>
+<a class="vers_projet" href="electro_magneto/index.html" onmouseover="electro_magneto()" onmouseleave="quitter_electro_magneto()"><p class="electro_magneto">_ electro_magneto_cool</p></a>
 <a class="vers_projet" href="dans_les_brumes/index.html" onmouseover="dans_les_brumes()" onmouseleave="quitter_dans_les_brumes()"><p class="dans_les_brumes">_ dans les brumes</p></a>
 <a class="vers_projet" href="diploramax_site/index.html" onmouseover="diploramax_site()" onmouseleave="quitter_diploramax_site()"><p class="diploramax_site">_ diploramax</p></a>
 <a class="vers_projet" href="messagerie_cryptee/index.html" onmouseover="messagerie_cryptee()" onmouseleave="quitter_messagerie_cryptee()"><p class="messagerie_cryptee">_ encrypter les internets</p></a>
@@ -156,8 +157,13 @@ doIt();
 
 
 <div id="visuel">
-<div id="photo"><video id="video" muted loop playsinline></video></div>
-
+<div id="photo">
+  <div id="cadre">
+    <img id="bordure" alt="">
+    <img id="image_projet" alt="">
+    <video id="video" muted loop playsinline></video>
+  </div>
+</div>
 <div id="ref"><p id="legende"></p></div>
 </div>
 
