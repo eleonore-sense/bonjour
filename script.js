@@ -80,11 +80,12 @@ $("#photo").css("background-image", "none");
 
 
 function lampe(){
-$("#photo").css("background-image", "url(bureau/lampe.jpg)");
-    };
+$("#photo").css("background-image", "url(bureau/lampe_lave.png)");
+  $("#filtre_nuit").addClass("allume");  };
 
 function quitter_lampe(){
 $("#photo").css("background-image", "none");
+  $("#filtre_nuit").removeClass("allume");
     };
 
 
@@ -138,3 +139,60 @@ $("#photo").css("background-image", "none");
 
 
 
+
+function bougie(){
+$("#photo").css("background-image", "url(bureau/bougie.png)");
+    };
+
+function quitter_bougie(){
+$("#photo").css("background-image", "none");
+    };
+
+
+
+function journal(){
+$("#visuel_journal").css("background-image", "url(bureau/journal_ouvert.png)");
+    };
+
+function quitter_journal(){
+$("#visuel_journal").css("background-image", "url(bureau/journal.png)");
+    };
+
+
+
+function cle(){
+$("#visuel_cle").css("background-image", "url(bureau/cle_prise.png)");
+    };
+
+function quitter_cle(){
+$("#visuel_cle").css("background-image", "url(bureau/cle.png)");
+    };
+
+
+
+var pause_heure = false;
+
+function reveil(){
+  pause_heure = true;
+  $('#heure').text('<3  <3');
+}
+
+function quitter_reveil(){
+  pause_heure = false;
+  maj_heure();
+}
+
+function maj_heure(){
+  if (pause_heure) return;
+
+  var d = new Date();
+  var h = String(d.getHours()).padStart(2, '0');
+  var m = String(d.getMinutes()).padStart(2, '0');
+  var deux_points = d.getSeconds() % 2 ? '  ' : ' ';
+  $('#heure').text(h + deux_points + m);
+}
+
+$(function () {
+  maj_heure();
+  setInterval(maj_heure, 1000);
+});

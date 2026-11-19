@@ -54,11 +54,50 @@ position: absolute;
 	width: 1200px;
 		height: 682px;
 		transform: translate(-50%, -50%);
-				background-image: url("bureau/fond.jpg");
+				background-image: url("bureau/fond_2026.jpg");
+}
+
+#visuel_journal{
+left:50vw;
+top: 50vh;
+position: absolute;
+	width: 1200px;
+		height: 682px;
+		transform: translate(-50%, -50%);
+				background-image: url("bureau/journal.png");
+}
+
+#visuel_cle{
+left:50vw;
+top: 50vh;
+position: absolute;
+	width: 1200px;
+		height: 682px;
+		transform: translate(-50%, -50%);
+				background-image: url("bureau/cle.png");
 }
 
 
-#photo{
+#filtre_nuit {
+  display: none;
+  position: absolute;
+  left: 50vw;
+  top: 50vh;
+  width: 1200px;
+  height: 682px;
+  transform: translate(-50%, -50%);
+  background-color: rgb(200, 40, 210);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 6;
+}
+
+#filtre_nuit.allume {
+  display: block;
+}
+
+
+.photo{
 	width:100% ;
 	height: 100%;
 	background-size: contain;
@@ -94,7 +133,7 @@ height: 110px;
 #declencheur_magie{
 width: 100px;
 height: 100px;
-		transform: translate(187px, 214px);
+		transform: translate(193px, 133px);
 margin-top: -1px;
 margin-left: -1.5px;
 }
@@ -108,9 +147,9 @@ height: 31px;
 
 
 #declencheur_lampe{
-width: 61px;
-height: 73px;
-		transform: translate(-97px, -190px);
+width: 42px;
+height: 90px;
+		transform: translate(-87px, -165px);
 }
 
 
@@ -136,8 +175,8 @@ transform: translate(297px, -172px);
 
 #declencheur_radio{
 width: 89px;
-height: 110px;
-transform: translate(-383px, -243px);
+height: 63px;
+transform: translate(-563px, -293px);
 }
 
 #declencheur_livre{
@@ -156,6 +195,29 @@ margin-left: -1.5px;
 }
 
 
+#declencheur_bougie{
+width: 89px;
+height: 97px;
+transform: translate(-365px, -235px);
+}
+
+#declencheur_cle{
+width: 89px;
+height: 63px;
+transform: translate(-258px, 238px);
+}
+
+#declencheur_journal{
+width: 125px;
+height: 63px;
+transform: translate(208px, 259px);
+}
+
+#declencheur_reveil{
+width: 89px;
+height: 44px;
+transform: translate(405px, -266px);
+}
 
 #clippy{width: 100%;
 	height: 60px;
@@ -214,4 +276,22 @@ right: 15px;
 
 #tel{
 	display: none;
+}
+
+
+#heure {
+  position: absolute;
+  left: 50vw;
+  top: 50vh;
+  transform: translate(393px, -302px);
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Consolas, monospace;
+  font-size: 14px;
+  color: orangered;
+  text-shadow: 0 0 4px orangered;
+  pointer-events: none;
+  rotate: 7deg;
 }

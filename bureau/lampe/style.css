@@ -51,17 +51,41 @@ line-height: 0.3em;
 	text-decoration: underline;
 }
 
+#tel{display: none;}
 
-#fond{
-left:50vw;
-top: 50vh;
-position: absolute;
-	width: 1000px;
-		height: 706px;
-			background-size: contain;
-background-repeat: no-repeat;
-		transform: translate(-50%, -50%);
-				background-image: url("../../projet/programm/img/10.gif");
+#haut, #bas {
+	width: 100vw;
+	height: 50vh;
+	display: flex;
+	justify-content: flex-end;
+}
+.boite {
+	box-sizing: border-box;
+	width: 50vw;
+	height: 50vh;
+	border: 4px solid rgb(245,245,245);
+	overflow: hidden;
 }
 
-#tel{display: none;}
+#h_droite, #b_droite {
+	margin-left: -2px;
+}
+
+#bas {
+	margin-top: -2px;
+}
+
+.video {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+#fond {
+	position: fixed;
+	top: 0;
+	right: 0;
+
+}
+
