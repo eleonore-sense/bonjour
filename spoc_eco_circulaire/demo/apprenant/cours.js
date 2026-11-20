@@ -24,7 +24,7 @@ const COURS = {
   etapesDemarche: [
     { lettre: 'A', nom: 'avant-projet et cadrage',   dessin: 'dessin/chap_3/III/1/cadrer.svg' },
     { lettre: 'B', nom: 'analyser',                  dessin: 'dessin/chap_3/III/1/analyser.svg' },
-    { lettre: 'C', nom: 'imaginer',                  dessin: 'dessin/chap_3/III/1/imaginer.svg' },
+    { lettre: 'C', nom: 'imaginer',                  dessin: 'dessin/chap_3/I/1/multiacteur/recherche_developpement.svg' },
     { lettre: 'D', nom: 'sélectionner',              dessin: 'dessin/chap_3/III/1/selectionner.svg' },
     { lettre: 'E', nom: 'réaliser',                  dessin: 'dessin/chap_3/III/1/realiser.svg' },
     { lettre: 'F', nom: 'communiquer et capitaliser', dessin: 'dessin/chap_3/III/1/communiquer.svg' },

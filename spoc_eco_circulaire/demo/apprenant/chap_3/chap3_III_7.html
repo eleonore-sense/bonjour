@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Témoignage</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../mobile.css" media="(max-width: 1100px)">
+  <link rel="stylesheet" href="../couleurs.css">
+  <link rel="stylesheet" href="style/chap3.css">
+  <script src="../rive/rive.js"></script>
+  <script src="../cours.js" defer></script>
+  <script src="../script.js" defer></script>
+  <script src="activite/chap3.js" defer></script>
+  <script src="../dessins.js" defer></script>
+</head>
+
+<!-- Où est cette page dans le cours ? (le reste vient de cours.js) -->
+<body data-chapitre="3" data-partie="9" data-racine="../">
+
+
+  <!-- ========== Pop-up mascotte d'accueil (1 s après l'arrivée sur la page) ========== -->
+  <dialog class="pop_mascotte" id="pop_mascotte" aria-labelledby="pop_mascotte_texte">
+    <button type="button" class="fermer_modal" aria-label="fermer"></button>
+    <img class="pop_mascotte_image" src="../dessin/mascotte/mascotte.svg" alt="">
+    <p class="pop_mascotte_texte" id="pop_mascotte_texte">Nous avons vu les grandes étapes d’une démarche d’éco-conception. Mais comment cela se passe-t-il vraiment sur le terrain&#8239;? <br>Découvrons le retour d’expérience d’un professionnel qui nous raconte les coulisses d’un projet concret&#8239;!</p>
+  </dialog>
+
+
+  <div id="droite_contenu">
+    <div id="contenu_chapitre">
+
+      <div id="contenu_gauche">
+
+        <!-- numéro repris du document de la prof (« 3. ») : à vérifier -->
+        <div class="petit_titre">3. Mettre en place une démarche d’éco-conception&#8239;: témoignage</div>
+
+
+        <!-- ================= LA VIDÉO ================= -->
+        <!-- Quand le lien sera prêt : remplacer le bloc .video_attente par l'iframe ci-dessous
+             (Vimeo : remplacer 000000000 par le numéro de la vidéo ; YouTube : https://www.youtube-nocookie.com/embed/IDENTIFIANT)
+
+             <iframe src="https://player.vimeo.com/video/000000000?dnt=1&title=0&byline=0&portrait=0"
+                     title="Témoignage : un projet d’éco-conception raconté par un professionnel"
+                     allow="fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        -->
+        <figure class="bloc_video">
+          <div class="cadre_video">
+            <div class="video_attente">
+              <span>vidéo à venir</span>
+            </div>
+          </div>
+          <!-- INTERVENANT À COMPLÉTER -->
+          <figcaption>
+            <span class="pastille_titre pastille_fond">témoignage</span>
+            <span class="video_intervenant">Prénom Nom, fonction, entreprise</span>
+          </figcaption>
+        </figure>
+
+        <!-- transcription : pour les personnes qui ne peuvent pas écouter la vidéo (À COMPLÉTER) -->
+        <details class="transcription_video">
+          <summary>lire la transcription</summary>
+          <p>Transcription à venir.</p>
+        </details>
+
+        <!-- le bouton « passer à la suite » est ajouté automatiquement ici -->
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

@@ -211,9 +211,8 @@ initAfficher();
 initFinActivite();
 initCaptures();
 initPopFin();
-initFrises();
 initApparitions();
-initMiniEtapes();
+initAnimMilieu();
 // Lance une action chaque fois qu'un élément passe la ligne des 60 % de l'écran
 function surPassage(element, action) {
   new IntersectionObserver(
@@ -536,6 +535,7 @@ function couleurEnRgb(texte) {
 // Tout <canvas class="anim_riv"> placé dans un .media_exemple est pris en charge.
 // La 1re animation de la page se joue au chargement et au retour en haut,
 // les suivantes à chaque passage de la ligne des 60 %.
+// data-milieu sur le canvas : se joue quand le dessin passe le milieu de la fenêtre.
 function initAnimationsRive() {
   if (typeof rive === 'undefined') return;
 
@@ -586,7 +586,7 @@ function initAnimationsRive() {
       instances.push(r);
     });
 
-    if (instances.length) groupes.push({ media, instances });
+    if (instances.length) groupes.push({ media, instances, milieu: !!media.querySelector('[data-milieu]') });
   });
 
   if (!groupes.length) return;
@@ -610,23 +610,39 @@ function initAnimationsRive() {
     });
   }
 
-  // 1re animation : une fois la page chargée, puis à chaque retour tout en haut
-  const lancerPremiere = () => setTimeout(() => jouer(groupes[0].instances), 400);
-  if (document.readyState === 'complete') lancerPremiere();
-  else window.addEventListener('load', lancerPremiere);
+  // data-milieu : l'animation se lance quand le dessin passe le milieu de la fenêtre
+  function auMilieu(element, action) {
+    new IntersectionObserver(
+      entries => entries.forEach(entry => { if (entry.isIntersecting) action(); }),
+      { root: zoneScroll, rootMargin: '-50% 0px -50% 0px', threshold: 0 }
+    ).observe(element);
+  }
 
-  let dejaEnHaut = true;
-  zoneScroll.addEventListener('scroll', () => {
-    if (zoneScroll.scrollTop === 0) {
-      if (!dejaEnHaut) jouer(groupes[0].instances);
-      dejaEnHaut = true;
-    } else {
-      dejaEnHaut = false;
-    }
+  // 1re animation de la page (sauf si data-milieu) : au chargement, puis à chaque retour tout en haut
+  const premier = groupes[0].milieu ? null : groupes[0];
+
+  if (premier) {
+    const lancerPremiere = () => setTimeout(() => jouer(premier.instances), 400);
+    if (document.readyState === 'complete') lancerPremiere();
+    else window.addEventListener('load', lancerPremiere);
+
+    let dejaEnHaut = true;
+    zoneScroll.addEventListener('scroll', () => {
+      if (zoneScroll.scrollTop === 0) {
+        if (!dejaEnHaut) jouer(premier.instances);
+        dejaEnHaut = true;
+      } else {
+        dejaEnHaut = false;
+      }
+    });
+  }
+
+  // les autres : au milieu de la fenêtre (data-milieu) ou au passage de la ligne des 60 %
+  groupes.filter(g => g !== premier).forEach(groupe => {
+    const lancer = () => jouer(groupe.instances);
+    if (groupe.milieu) auMilieu(groupe.media, lancer);
+    else surPassage(groupe.media, lancer);
   });
-
-  // Les suivantes : au passage de la ligne des 60 %
-  groupes.slice(1).forEach(groupe => surPassage(groupe.media, () => jouer(groupe.instances)));
 }
 
 
@@ -1995,71 +2011,21 @@ function initApparitions() {
   });
 }
 
-
-// ---------- Mini schéma des étapes (en haut à droite) ----------
-// <body data-etape="B"> : le mini schéma des 6 étapes (cours.js : etapesDemarche) apparaît en haut à droite,
-// l'étape B mise en avant et son nom au centre. data-etape="E F" : deux étapes à la fois.
-// <body data-mini-apres="#schema_etapes"> : il n'apparaît qu'une fois cet élément dépassé en faisant défiler la page
-// (et disparaît si on remonte jusqu'à lui).
-// Simple repère : rien n'est cliquable. Masqué sur petit écran (CSS).
-function initMiniEtapes() {
-  const lettres = (document.body.dataset.etape || '').split(/\s+/).filter(Boolean);
-  const etapes  = COURS.etapesDemarche;
-  const gauche  = document.getElementById('contenu_gauche');
-  if (!lettres.length || !etapes || !gauche) return;
-
-  // places des 6 dessins sur le cercle (en %), dans l'ordre A → F
-  const PLACES = [[50, 14], [81.2, 32], [81.2, 68], [50, 86], [18.8, 68], [18.8, 32]];
-  const estEnCours = e => lettres.includes(e.lettre);
-
-  const dessins = etapes.map((e, i) => `
-      <div class="mini_etape${estEnCours(e) ? ' en_cours' : ''}" style="left:${PLACES[i][0]}%; top:${PLACES[i][1]}%;">
-        <img src="${versRacine(e.dessin)}" alt="">
-        <span class="mini_nom" aria-hidden="true">${e.lettre}. ${e.nom}</span>
-      </div>`).join('');
-
-  const centre = etapes.filter(estEnCours).map(e => `${e.lettre}. ${e.nom}`).join('<br>');
-  const liste  = etapes.map(e => `<li>${e.lettre}. ${e.nom}${estEnCours(e) ? ' (étape en cours)' : ''}</li>`).join('');
-
-  // dans #contenu_gauche : dessins.js y insère les SVG (couleurs de couleurs.css)
-  gauche.insertAdjacentHTML('afterbegin', `
-    <aside class="mini_etapes" aria-label="Où en es-tu dans la démarche d’éco-conception ?">
-      <svg class="mini_fleches" viewBox="0 0 100 100" aria-hidden="true">
-        <defs>
-          <marker id="pointe_mini" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto">
-            <path d="M0 0 L10 5 L0 10 z"/>
-          </marker>
-        </defs>
-        <path d="M59.9 15.4 A36 36 0 0 1 75.0 24.1" marker-end="url(#pointe_mini)"/>
-        <path d="M84.9 41.3 A36 36 0 0 1 84.9 58.7" marker-end="url(#pointe_mini)"/>
-        <path d="M75.0 75.9 A36 36 0 0 1 59.9 84.6" marker-end="url(#pointe_mini)"/>
-        <path d="M40.1 84.6 A36 36 0 0 1 25.0 75.9" marker-end="url(#pointe_mini)"/>
-        <path d="M15.1 58.7 A36 36 0 0 1 15.1 41.3" marker-end="url(#pointe_mini)"/>
-        <path d="M25.0 24.1 A36 36 0 0 1 40.1 15.4" marker-end="url(#pointe_mini)"/>
-      </svg>
-      ${dessins}
-      <p class="mini_centre" aria-hidden="true">${centre}</p>
-      <ul class="visuellement_cache">${liste}</ul>
-    </aside>`);
-
-  const mini = gauche.querySelector('.mini_etapes');
-  const des  = document.body.dataset.miniDes && document.querySelector(document.body.dataset.miniDes);
-
-  // sans data-mini-des : visible tout de suite
-  if (!des || !zoneScroll) {
-    mini.classList.add('visible');
-    return;
-  }
-
-  // avec data-mini-des : visible dès que l'élément passe la ligne des 60 % de l'écran (comme les autres apparitions)
-  function verifier() {
-    const zone  = zoneScroll.getBoundingClientRect();
-    const ligne = zone.top + zone.height * 0.6;
-    mini.classList.toggle('visible', des.getBoundingClientRect().top < ligne);
-  }
-  zoneScroll.addEventListener('scroll', verifier);
-  window.addEventListener('resize', verifier);
-  verifier();
+// ---------- Dessins animés en CSS : lancés au milieu de l'écran, une seule fois ----------
+// <div class="media_exemple" data-anim-milieu> : les animations CSS du dessin
+// (dans le SVG inséré par dessins.js) restent en pause, puis démarrent une seule fois
+// quand le bloc passe le milieu de l'écran (classe .joue).
+function initAnimMilieu() {
+  if (!zoneScroll) return;
+  document.querySelectorAll('[data-anim-milieu]').forEach(bloc => {
+    const obs = new IntersectionObserver(entries => {
+      if (entries.some(e => e.isIntersecting)) {
+        bloc.classList.add('joue');
+        obs.disconnect();
+      }
+    }, { root: zoneScroll, rootMargin: '-50% 0px -50% 0px', threshold: 0 });
+    obs.observe(bloc);
+  });
 }
 // ---------------------------------------------------------------------
 // 3. OUTILS POUR LES ACTIVITÉS
@@ -2177,37 +2143,3 @@ document.querySelectorAll('.anim_pousse').forEach(bloc => {
     bloc.classList.add('joue');
   });
 });
-
-
-
-// ---------- Frise à étapes (ex. analyse d'usage) ----------
-// <div class="frise_usage"> : des .frise_scene (dessin + phrase), des .frise_segment (les étapes)
-// et un <input type="range" class="frise_curseur">.
-// On fait glisser la boule, on clique une étape, ou on utilise les flèches du clavier :
-// le dessin et la phrase de l'étape apparaissent, son intervalle passe en gras.
-function initFrises() {
-  document.querySelectorAll('.frise_usage').forEach(frise => {
-    const curseur  = frise.querySelector('.frise_curseur');
-    const scenes   = [...frise.querySelectorAll('.frise_scene')];
-    const segments = [...frise.querySelectorAll('.frise_segment')];
-    if (!curseur || !segments.length) return;
-
-    curseur.min = 1;
-    curseur.max = segments.length;
-
-    function afficher(n) {
-      curseur.value = n;
-      scenes.forEach((s, i) => s.classList.toggle('visible', i === n - 1));
-      segments.forEach((s, i) => {
-        s.classList.toggle('choisi', i === n - 1);
-        s.setAttribute('aria-pressed', String(i === n - 1));
-      });
-      curseur.setAttribute('aria-valuetext', segments[n - 1].textContent.trim());
-    }
-
-    curseur.addEventListener('input', () => afficher(parseInt(curseur.value, 10)));
-    segments.forEach((s, i) => s.addEventListener('click', () => afficher(i + 1)));
-
-    afficher(parseInt(curseur.value, 10) || 1);
-  });
-}

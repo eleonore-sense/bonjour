@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="386.28" height="415.55" viewBox="-3.5 -2.76 386.28 415.55" stroke-linecap="round" stroke-linejoin="round">
+  <rect class="marron2 trait_fin" x="289.56" y="252.64" width="32.27" height="166.11" rx="8.5" ry="8.5" transform="translate(-147.84 314.48) rotate(-45)" />
+  <rect class="orange trait_fin" x="271.91" y="323.78" width="63.34" height="17.93" rx="8.96" ry="8.96" transform="translate(-146.37 312.12) rotate(-45)" />
+  <polygon class="blanc trait_fin" points="255.04 381.26 .5 381.26 .5 1.24 196.48 1.24 255.04 62.19 255.04 381.26" />
+  <polygon class="blanc trait_fin" points="196.48 1.24 196.48 62.19 255.04 62.19 196.48 1.24" />
+  <line class="sans_fond trait_fin" fill="none" x1="79.37" y1="89.67" x2="201.26" y2="89.67" />
+  <line class="sans_fond trait_fin" fill="none" x1="79.37" y1="112.38" x2="201.26" y2="112.38" />
+  <rect class="blanc trait_fin" x="19.62" y="75.33" width="38.24" height="38.24" />
+  <line class="sans_fond trait_fin" fill="none" x1="79.37" y1="161.37" x2="201.26" y2="161.37" />
+  <line class="sans_fond trait_fin" fill="none" x1="79.37" y1="184.08" x2="201.26" y2="184.08" />
+  <rect class="blanc trait_fin" x="19.62" y="147.03" width="38.24" height="38.24" />
+  <line class="sans_fond trait_fin" fill="none" x1="79.37" y1="235.47" x2="201.26" y2="235.47" />
+  <line class="sans_fond trait_fin" fill="none" x1="79.37" y1="258.17" x2="201.26" y2="258.17" />
+  <rect class="blanc trait_fin" x="19.62" y="221.13" width="38.24" height="38.24" />
+  <line class="sans_fond" fill="none" stroke="#ffae6a" stroke-width="1" x1="23.21" y1="64.58" x2="59.06" y2="126.72" />
+  <line class="sans_fond" fill="none" stroke="#ffae6a" stroke-width="1" x1="61.45" y1="63.38" x2="16.04" y2="121.94" />
+  <rect class="marron2 trait_fin" x="153.46" y="225.91" width="167.3" height="81.26" rx="8.5" ry="8.5" transform="translate(-119.02 245.73) rotate(-45)" />
+  <rect class="orange trait_fin" x="191.49" y="256.03" width="23.9" height="96.8" rx="11.95" ry="11.95" transform="translate(-155.68 233.02) rotate(-45)" />
+  <rect class="orange trait_fin" x="262.47" y="185.05" width="23.9" height="96.8" rx="11.95" ry="11.95" transform="translate(-84.7 262.42) rotate(-45)" />
+  <rect class="orange trait_fin" x="321.64" y="336.11" width="38.24" height="69.31" rx="12" ry="12" transform="translate(-162.37 349.55) rotate(-45)" />
+</svg>

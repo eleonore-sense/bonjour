@@ -11,6 +11,7 @@
   <script src="../rive/rive.js"></script>
   <script src="../cours.js" defer></script>
   <script src="../script.js" defer></script>
+  <script src="activite/chap3.js" defer></script>
   <script src="../dessins.js" defer></script>
 </head>
 
@@ -44,9 +45,10 @@
       <div class="exemple">
         <p>Nous allons découvrir les principales étapes de cette démarche à travers un exemple concret&nbsp;: celui d’une entreprise fictive qui cherche à améliorer la performance environnementale de son <span class="italic">Saclay Cola</span>.</p>
       </div>
-      <div class="media_exemple">
-        <img src="../dessin/chap_3/III/1/cola.svg" alt="">
-      </div>
+    <div class="media_exemple">
+<canvas id="tchin" class="anim_riv" data-riv="../dessin/chap_3/III/1/cola_tchin.riv" data-milieu data-anim="tchin" width="416" height="448"></canvas>
+
+    </div>
     </div>
   </div>
 
@@ -65,12 +67,12 @@
             <path d="M0 0 L10 5 L0 10 z" fill="var(--trait)"/>
           </marker>
         </defs>
-        <path d="M66.1 5.8 A47 47 0 0 1 80.2 14.0" marker-end="url(#pointe_etapes)"/>
-        <path d="M96.3 41.8 A47 47 0 0 1 96.3 58.2" marker-end="url(#pointe_etapes)"/>
-        <path d="M80.2 86.0 A47 47 0 0 1 66.1 94.2" marker-end="url(#pointe_etapes)"/>
-        <path d="M33.9 94.2 A47 47 0 0 1 19.8 86.0" marker-end="url(#pointe_etapes)"/>
-        <path d="M3.7 58.2 A47 47 0 0 1 3.7 41.8" marker-end="url(#pointe_etapes)"/>
-        <path d="M19.8 14.0 A47 47 0 0 1 33.9 5.8" marker-end="url(#pointe_etapes)"/>
+                <path d="M62.3 16.2 A36 36 0 0 1 73.1 22.4" marker-end="url(#pointe_etapes)"/>
+        <path d="M85.5 43.7 A36 36 0 0 1 85.5 56.3" marker-end="url(#pointe_etapes)"/>
+        <path d="M73.1 77.6 A36 36 0 0 1 62.3 83.8" marker-end="url(#pointe_etapes)"/>
+        <path d="M37.7 83.8 A36 36 0 0 1 26.9 77.6" marker-end="url(#pointe_etapes)"/>
+        <path d="M14.5 56.3 A36 36 0 0 1 14.5 43.7" marker-end="url(#pointe_etapes)"/>
+        <path d="M26.9 22.4 A36 36 0 0 1 37.7 16.2" marker-end="url(#pointe_etapes)"/>
       </svg>
 
       <div class="etape_cycle" data-zone="avant_projet" style="left:50%; top:14%;">
@@ -78,7 +80,7 @@
         <span class="nom_dessin"><span class="lettre_etape">A</span> avant-projet <br>et cadrage</span>
       </div>
       <div class="etape_cycle" data-zone="avant_projet" style="left:81.2%; top:32%;">
-        <img src="../dessin/chap_3/IV/mentor_doute.svg" alt="">
+        <img src="../dessin/chap_3/III/1/analyser.svg" alt="">
         <span class="nom_dessin"><span class="lettre_etape">B</span> analyser</span>
       </div>
       <div class="etape_cycle" data-zone="avant_projet" style="left:81.2%; top:68%;">
@@ -94,7 +96,7 @@
         <span class="nom_dessin"><span class="lettre_etape">E</span> réaliser</span>
       </div>
       <div class="etape_cycle" data-zone="projet" style="left:18.8%; top:32%;">
-        <img src="../dessin/chap_3/III/communiquer.svg" alt="">
+        <img src="../dessin/chap_3/III/1/communiquer.svg" alt="">
         <span class="nom_dessin"><span class="lettre_etape">F</span> communiquer et capitaliser</span>
       </div>
     </div>
@@ -137,55 +139,55 @@
 
         <div class="centre_schema">analyse 360°</div>
 
-        <div class="etape_cycle item_dessin en_haut" data-zone="entreprise" style="left:35.6%; top:10.5%;" tabindex="0"
+        <div class="etape_cycle item_dessin en_haut" data-zone="entreprise" style="left:37.7%; top:16.1%;" tabindex="0"
              data-nom="stratégie de l’entreprise"
              data-def="Différenciation sur la qualité traditionnelle et la production locale à échelle humaine, démarche responsable.">
-          <img src="../dessin/chap_3/III/1/360/strategie.svg" alt="">
+          <img src="../dessin/chap_3/III/1/strategie.svg" alt="">
           <span class="nom_dessin">stratégie de l’entreprise</span>
         </div>
-        <div class="etape_cycle item_dessin en_haut" data-zone="entreprise" style="left:64.4%; top:10.5%;" tabindex="0"
+        <div class="etape_cycle item_dessin en_haut" data-zone="entreprise" style="left:62.3%; top:16.1%;" tabindex="0"
              data-nom="marges de manœuvre"
              data-def="Évolution possible du packaging, du process, des matières premières, de la distribution, avec contraintes du maintien de la qualité et de l’image traditionnelle.">
-          <img src="../dessin/chap_3/III/1/360/marges.svg" alt="">
+          <img src="../dessin/chap_3/III/1/marge_manoeuvre.svg" alt="">
           <span class="nom_dessin">marges de manœuvre</span>
         </div>
-        <div class="etape_cycle item_dessin a_droite" data-zone="chaine" style="left:86.4%; top:29%;" tabindex="0"
+        <div class="etape_cycle item_dessin a_droite" data-zone="chaine" style="left:81.2%; top:32%;" tabindex="0"
              data-nom="distributeurs"
              data-def="Demandes des distributeurs pour des produits « verts » et des emballages moins impactants.">
-          <img src="../dessin/chap_3/III/distributeur.svg" alt="">
+          <img src="../dessin/chap_3/III/1/distributeur.svg" alt="">
           <span class="nom_dessin">distributeurs</span>
         </div>
-        <div class="etape_cycle item_dessin a_droite" data-zone="chaine" style="left:91.4%; top:57.3%;" tabindex="0"
+        <div class="etape_cycle item_dessin a_droite" data-zone="chaine" style="left:85.5%; top:56.3%;" tabindex="0"
              data-nom="clients"
              data-def="Sensibilité croissante des consommateurs à l’environnement et à la santé. Impression de « trop d’emballages ».">
-          <img src="../dessin/chap_3/III/client.svg" alt="">
+          <img src="../dessin/chap_3/III/1/client.svg" alt="">
           <span class="nom_dessin">clients</span>
         </div>
-        <div class="etape_cycle item_dessin a_droite" data-zone="contexte" style="left:77%; top:82.2%;" tabindex="0"
+        <div class="etape_cycle item_dessin a_droite" data-zone="contexte" style="left:73.1%; top:77.6%;" tabindex="0"
              data-nom="concurrents"
              data-def="Grands concurrents : stratégie bas carbone surtout portée sur l’emballage, la consommation d’eau, mais pas sur la recette. Petit concurrent : ingrédients bio ou issus du commerce équitable + emballage réutilisable / consigné.">
-          <img src="../dessin/chap_3/III/concurrent.svg" alt="">
+          <img src="../dessin/chap_3/III/1/concurrent.svg" alt="">
           <span class="nom_dessin">concurrents</span>
         </div>
-        <div class="etape_cycle item_dessin" data-zone="contexte" style="left:50%; top:92%;" tabindex="0"
+        <div class="etape_cycle item_dessin" data-zone="contexte" style="left:50%; top:86%;" tabindex="0"
              data-nom="réglementations"
              data-def="Directive européenne sur les emballages : éco-conception et valorisation des déchets.">
-          <img src="../dessin/chap_3/III/1/360/reglementations.svg" alt="">
+          <img src="../dessin/chap_3/III/1/reglementation.svg" alt="">
           <span class="nom_dessin">réglementations</span>
         </div>
-        <div class="etape_cycle item_dessin" data-zone="contexte" style="left:23%; top:82.2%;" tabindex="0"
+        <div class="etape_cycle item_dessin" data-zone="contexte" style="left:26.9%; top:77.6%;" tabindex="0"
              data-nom="veille technologique"
              data-def="Secteur innovant. Ex : extraction des huiles essentielles par fluide CO2 supercritique (pas de solvant utilisé, CO2 récupéré en boucle fermée, meilleure qualité des arômes).">
-          <img src="../dessin/chap_3/III/1/360/veille.svg" alt="">
+          <img src="../dessin/chap_3/III/1/veille_technologique.svg" alt="">
           <span class="nom_dessin">veille technologique</span>
         </div>
-        <div class="etape_cycle item_dessin" data-zone="chaine" style="left:8.6%; top:57.3%;" tabindex="0"
+        <div class="etape_cycle item_dessin" data-zone="chaine" style="left:14.5%; top:56.3%;" tabindex="0"
              data-nom="fournisseurs"
              data-def="Verre allégé. Sucre et arôme (huiles essentielles) et caféine issus de l’agriculture raisonnée ou biologique.">
           <img src="../dessin/chap_3/I/4/camion.svg" alt="">
           <span class="nom_dessin">fournisseurs</span>
         </div>
-        <div class="etape_cycle item_dessin" data-zone="entreprise" style="left:13.6%; top:29%;" tabindex="0"
+        <div class="etape_cycle item_dessin" data-zone="entreprise" style="left:18.8%; top:32%;" tabindex="0"
              data-nom="impacts sur l’environnement"
              data-def="Impacts agricoles (eau, eutrophisation, utilisation des sols, écotoxicité, biodiversité). Énergie (effet de serre, ressources, acidification). Déchets, matières premières.">
           <img src="../dessin/chap_3/I/1/multicritere/eutrophisation_terre.svg" alt="">

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="523.35" height="392.5" viewBox="-3.5 -3.5 523.35 392.5" stroke-linecap="round" stroke-linejoin="round">
+  <rect class="blanc trait_fin" x=".5" y="143.01" width="515.35" height="241.99" rx="12" ry="12" />
+  <rect class="blanc trait_fin" x="22.01" y="167.21" width="472.33" height="137.13" rx="12" ry="12" />
+  <polygon class="bleu_clair trait_fin" points="181.82 284.65 215.42 284.65 226.98 195.62 181.82 195.62 136.67 195.62 148.22 284.65 181.82 284.65" />
+  <polygon class="bleu trait_fin" points="181.82 276.99 209.99 276.99 219.68 200.75 181.82 200.75 143.96 200.75 153.65 276.99 181.82 276.99" />
+  <polygon class="marron2 trait_fin" points="151.57 259.32 212.12 259.32 209.99 276.99 153.65 276.99 151.57 259.32" />
+  <rect class="vert_citron trait_fin" x="299.26" y="124.37" width="127.07" height="56.56" rx="12" ry="12" transform="translate(191.18 -201.56) rotate(41.33)" />
+  <rect class="orange_pale trait_fin" x="297.15" y="126.77" width="127.07" height="56.56" rx="12" ry="12" transform="translate(192.24 -199.58) rotate(41.33)" />
+  <rect class="orange_pale trait_fin" x="286.11" y="139.33" width="127.07" height="56.56" rx="12" ry="12" transform="translate(197.78 -189.15) rotate(41.33)" />
+  <ellipse class="bleu_clair trait_fin" rx="21.96" ry="11.2" cx="258.18" cy="265.35" />
+  <path class="bleu_clair trait_fin" d="M268.05,.5h-17.05c-.65,0-1.29,.08-1.9,.22h-37.4c-.61-.14-1.25-.22-1.9-.22h-17.05c-4.68,0-8.5,3.83-8.5,8.5V62.35c0,4.68,3.83,8.5,8.5,8.5h17.05c4.68,0,8.5-3.83,8.5-8.5v-27.57h24.2v109.58c0,4.68,3.83,8.5,8.5,8.5h17.05c4.68,0,8.5-3.83,8.5-8.5V9c0-4.68-3.83-8.5-8.5-8.5Z" />
+  <rect class="bleu_clair trait_fin" x="115.22" y="90.13" width="49.29" height="62.74" rx="8.5" ry="8.5" />
+  <rect class="bleu_clair trait_fin" x="62.34" y="113.43" width="78.87" height="7.17" rx="3.59" ry="3.59" />
+</svg>

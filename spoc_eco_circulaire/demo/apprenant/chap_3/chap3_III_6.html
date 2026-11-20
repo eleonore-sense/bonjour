@@ -11,7 +11,9 @@
   <script src="../rive/rive.js"></script>
   <script src="../cours.js" defer></script>
   <script src="../script.js" defer></script>
+    <script src="activite/chap3.js" defer></script>
   <script src="../dessins.js" defer></script>
+
 </head>
 
 <!-- Où est cette page dans le cours ? (le reste vient de cours.js) -->
@@ -42,31 +44,22 @@
           <span class="intro_exemple">exemple</span>
 
           <div class="ligne_exemple">
-            <div class="media_exemple">
-              <!-- DESSIN À FAIRE : l'amélioration -->
-              <img src="../dessin/chap_3/III/6/procede_economie.svg" alt="">
-            </div>
             <div class="exemple">
               <p>Un nouveau procédé de fabrication permet de produire le cola avec moins d’énergie et moins d’eau. Si cette baisse des coûts conduit à vendre beaucoup plus de bouteilles, une partie des gains environnementaux est perdue&nbsp;: c’est un effet rebond.</p>
             </div>
-            <div class="media_exemple">
-              <!-- DESSIN À FAIRE : le rebond -->
-              <img src="../dessin/chap_3/III/6/procede_rebond.svg" alt="">
+            <div class="media_exemple" data-anim-milieu style="margin-top: -72px;">
+              <img src="../dessin/chap_3/III/3/bouteille_production.svg" alt="">
             </div>
           </div>
 
           <div class="ligne_exemple">
-            <div class="media_exemple">
-              <!-- DESSIN À FAIRE : l'amélioration -->
-              <img src="../dessin/chap_3/III/6/bouteille_legere.svg" alt="">
+            <div class="media_exemple" data-anim-milieu >
+              <img src="../dessin/chap_3/III/3/peser_anime.svg" alt=""style="width: 200px; margin-top: -30px;">
             </div>
             <div class="exemple">
               <p>L’allègement de la bouteille en verre permet de diminuer les impacts environnementaux liés à la production, mais aussi au transport. Si cette baisse des coûts du transport conduit l’entreprise à exporter plus loin ou à augmenter la fréquence des livraisons, le gain environnemental obtenu par le design plus léger est alors partiellement compensé.</p>
             </div>
-            <div class="media_exemple">
-              <!-- DESSIN À FAIRE : le rebond -->
-              <img src="../dessin/chap_3/III/6/bouteille_rebond.svg" alt="">
-            </div>
+
           </div>
         </div>
 
@@ -199,16 +192,16 @@
                   <path d="M0 0 L10 5 L0 10 z" fill="var(--trait)"/>
                 </marker>
               </defs>
-              <path d="M66.1 5.8 A47 47 0 0 1 80.2 14.0" marker-end="url(#pointe_fiche)"/>
-              <path d="M96.3 41.8 A47 47 0 0 1 96.3 58.2" marker-end="url(#pointe_fiche)"/>
-              <path d="M80.2 86.0 A47 47 0 0 1 66.1 94.2" marker-end="url(#pointe_fiche)"/>
-              <path d="M33.9 94.2 A47 47 0 0 1 19.8 86.0" marker-end="url(#pointe_fiche)"/>
-              <path d="M3.7 58.2 A47 47 0 0 1 3.7 41.8" marker-end="url(#pointe_fiche)"/>
-              <path d="M19.8 14.0 A47 47 0 0 1 33.9 5.8" marker-end="url(#pointe_fiche)"/>
+              <path d="M62.3 16.2 A36 36 0 0 1 73.1 22.4" marker-end="url(#pointe_fiche)"/>
+              <path d="M85.5 43.7 A36 36 0 0 1 85.5 56.3" marker-end="url(#pointe_fiche)"/>
+              <path d="M73.1 77.6 A36 36 0 0 1 62.3 83.8" marker-end="url(#pointe_fiche)"/>
+              <path d="M37.7 83.8 A36 36 0 0 1 26.9 77.6" marker-end="url(#pointe_fiche)"/>
+              <path d="M14.5 56.3 A36 36 0 0 1 14.5 43.7" marker-end="url(#pointe_fiche)"/>
+              <path d="M26.9 22.4 A36 36 0 0 1 37.7 16.2" marker-end="url(#pointe_fiche)"/>
             </svg>
 
             <div class="etape_cycle" data-zone="avant_projet" style="left:50%; top:14%;">
-              <img src="../dessin/chap_3/III/1/cadrer.svg" alt="">
+              <img src="../dessin/chap_3/III/1/strategie.svg" alt="">
               <span class="nom_dessin"><span class="lettre_etape">A</span> avant-projet et cadrage</span>
             </div>
             <div class="etape_cycle" data-zone="avant_projet" style="left:81.2%; top:32%;">
@@ -216,7 +209,7 @@
               <span class="nom_dessin"><span class="lettre_etape">B</span> analyser</span>
             </div>
             <div class="etape_cycle" data-zone="avant_projet" style="left:81.2%; top:68%;">
-              <img src="../dessin/chap_3/III/1/imaginer.svg" alt="">
+              <img src="../dessin/chap_3/III/1/veille_technologique.svg" alt="">
               <span class="nom_dessin"><span class="lettre_etape">C</span> imaginer</span>
             </div>
             <div class="etape_cycle" data-zone="projet" style="left:50%; top:86%;">
@@ -232,17 +225,16 @@
               <span class="nom_dessin"><span class="lettre_etape">F</span> communiquer et capitaliser</span>
             </div>
           </div>
-
           <!-- 2e cercle : les parties prenantes, sur le trait vert -->
+          <!-- NOMS DE DESSINS À VÉRIFIER -->
           <ul class="fiche_cercle_acteurs" aria-label="Les parties prenantes">
-            <li style="left:67.6%; top:7.5%;">conception</li>
-            <li style="left:92.5%; top:32.4%;">R&amp;D</li>
-            <li style="left:92.5%; top:67.6%;">production</li>
-            <li style="left:67.6%; top:92.5%;">marketing</li>
-            <li style="left:32.4%; top:92.5%;">achats</li>
-            <li style="left:7.5%; top:67.6%;">environnement</li>
-            <li style="left:7.5%; top:32.4%;">fournisseurs</li>
-            <li style="left:32.4%; top:7.5%;">utilisateurs</li>
+            <li style="left:68.4%; top:11.7%;"><img src="../dessin/chap_3/III/1/cadrer.svg" alt=""><span>conception</span></li>
+            <li style="left:91.4%; top:40.5%;"><img src="../dessin/chap_3/I/1/multiacteur/recherche_developpement.svg" alt=""><span>recherche et développement</span></li>
+            <li style="left:83.2%; top:76.5%;"><img src="../dessin/chap_3/I/1/multiacteur/producteur.svg" alt=""><span>production</span></li>
+            <li style="left:50%; top:92.5%;"><img src="../dessin/chap_3/III/3/marketing.svg" alt=""><span>marketing</span></li>
+            <li style="left:16.8%; top:76.5%;"><img src="../dessin/chap_3/I/1/multiacteur/acheteur_fournisseur.svg" alt=""><span>achats et fournisseurs</span></li>
+            <li style="left:8.6%; top:40.5%;"><img src="../dessin/chap_3/I/1/multicritere/eutrophisation_terre.svg" alt=""><span>environnement</span></li>
+            <li style="left:31.6%; top:11.7%;"><img src="../dessin/chap_3/III/1/client.svg" alt=""><span>client</span></li>
           </ul>
         </div>
       </div>
@@ -285,10 +277,9 @@
           <div class="fiche_exemple_ligne">
             <div>
               <p>Comment réduire l’impact environnemental de la bouteille en verre de mon cola, tout en maintenant sa résistance mécanique, ses propriétés de préservation du goût et les contraintes de coûts de l’entreprise&#8239;?</p>
-              <p>Illustration de cahier des charges&#8239;: −10&nbsp;% d’empreinte carbone, coût fixe, résistance au choc, design de bouteille adaptable à la ligne de production, préservation des arômes…</p>
             </div>
             <div class="fiche_exemple_dessins_petit">
-              <img src="../dessin/chap_3/III/1/cola.svg" alt="">
+              <img src="../dessin/chap_3/III/3/cahier_charge.svg" alt="">
             </div>
           </div>
         </div>

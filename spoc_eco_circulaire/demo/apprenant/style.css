@@ -3237,8 +3237,92 @@ svg.dessin {
 .ecart_apres_grand  { margin-bottom: 60px !important; }
 .ecart_avant_tres_grand { margin-top: 100px !important; }
 
+
+
+
 /* =====================================================================
-   10. ACCESSIBILITÉ : MOUVEMENT RÉDUIT, ZOOM, PETITS ÉCRANS
+   10. VIDEOS
+   ===================================================================== */
+
+
+
+/* ---------- Vidéo (Vimeo, YouTube…) ---------- */
+
+.bloc_video {
+  margin: 30px 0 0;
+}
+
+/* le cadre : toujours au format 16:9 */
+.cadre_video {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: 12px;
+}
+
+.cadre_video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* en attendant la vidéo */
+.video_attente {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--titre);
+  font-size: 0.9rem;
+}
+
+.bloc_video figcaption {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.bloc_video .pastille_titre {
+  margin-bottom: 0;
+}
+
+.video_intervenant {
+  font-size: 0.85rem;
+}
+
+/* la transcription, repliée */
+.transcription_video {
+  margin-top: 14px;
+  font-size: 0.85rem;
+}
+
+.transcription_video summary {
+  font-family: var(--titre);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* =====================================================================
+   11. ACCESSIBILITÉ : MOUVEMENT RÉDUIT, ZOOM, PETITS ÉCRANS
    ===================================================================== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

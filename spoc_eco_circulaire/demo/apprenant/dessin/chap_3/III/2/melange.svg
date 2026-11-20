@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="554.68" height="476.72" viewBox="-3.5 -3.5 554.68 476.72" stroke-linecap="round" stroke-linejoin="round">
+  <path class="bleu_clair trait_fin" d="M.5,200.34v219.88c0,27.06,74.9,49,167.3,49s167.3-21.94,167.3-49V200.34H.5Z" />
+  <ellipse class="bleu_clair trait_fin" rx="167.3" ry="49" cx="167.8" cy="200.34" />
+  <ellipse class="bleu_clair trait_fin" rx="49" ry="167.3" cx="418.09" cy="283.68" transform="translate(-86.59 259.78) rotate(-31.45)" />
+  <path class="bleu_clair trait_fin" d="M344.53,163.37c-19.46,11.9-2.3,75.41,38.33,141.85,40.63,66.44,89.34,110.66,108.8,98.76,19.46-11.9,13.54-84.38-27.09-150.82-40.63-66.44-100.58-101.68-120.04-89.78Z" />
+  <circle class="bleu_clair trait_fin" cx="473.32" cy="245.71" r="16.73" />
+  <path class="marron2 trait_fin" d="M12.05,218.27c24.43,18.19,84.96,31.07,155.75,31.07s131.32-12.88,155.75-31.07c-.52-.38-1.05-.77-1.6-1.15-25.4-17.59-84.86-29.92-154.16-29.92s-131.32,12.88-155.75,31.07Z" />
+  <circle class="orange_pale trait_fin" cx="105.66" cy="209.9" r="4.78" />
+  <circle class="orange_pale trait_fin" cx="103.87" cy="111.31" r="10.16" />
+  <circle class="orange_pale trait_fin" cx="65.63" cy="142.38" r="10.16" />
+  <circle class="orange_pale trait_fin" cx="201.86" cy="237.38" r="4.78" />
+  <circle class="orange_pale trait_fin" cx="161.83" cy="169.87" r="10.16" />
+  <circle class="orange_pale trait_fin" cx="100.88" cy="164.49" r="5.98" />
+  <circle class="orange_pale trait_fin" cx="37.55" cy="54.55" r="8.37" />
+  <circle class="orange_pale trait_fin" cx="154.06" cy="222.74" r="8.37" />
+  <circle class="orange_pale trait_fin" cx="233.38" cy="206.61" r="8.37" />
+  <circle class="orange_pale trait_fin" cx="222.62" cy="142.08" r="8.37" />
+  <circle class="orange_pale trait_fin" cx="279.54" cy="110.71" r="8.37" />
+  <circle class="orange_pale trait_fin" cx="137.34" cy="65.63" r="10.16" />
+  <circle class="orange_pale trait_fin" cx="175.58" cy="96.7" r="10.16" />
+  <circle class="orange_pale trait_fin" cx="203.67" cy="8.87" r="8.37" />
+</svg>
