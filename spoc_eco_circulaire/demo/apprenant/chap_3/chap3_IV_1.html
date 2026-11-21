@@ -158,16 +158,6 @@
                   </button>
                 </li>
 
-                <li>
-                  <button type="button" class="miniature" data-document="doc_brief">
-                    <span class="miniature_titre">Stratégie RSE d’ATHEN’TECH</span>
-                    <span class="miniature_lignes" aria-hidden="true">
-                      <span>– empreinte carbone</span>
-                      <span>– actions 2025</span>
-                      <span>– améliorations à apporter</span>
-                    </span>
-                  </button>
-                </li>
 
                 <li>
                   <button type="button" class="miniature" data-document="doc_reglementation">
@@ -241,78 +231,21 @@
                 <span class="roue_centre_nom">Basic-phone®</span>
               </div>
 
-              <!-- 1. Stratégie de l'entreprise -->
-              <div class="rubrique" style="--position: 0deg" data-cote="haut">
-                <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_strategie">Stratégie de l’entreprise</button>
+              <!-- Rubriques : ordre de la prof.
+                   rubrique_fixe   = pré-remplie, non modifiable, pas envoyée à Andréa
+                   rubrique_grisee = visible mais vide, non cliquable
+                   Les autres : remplies par l'élève (« continuer » quand elles le sont toutes). -->
 
-                <div class="rubrique_fenetre" id="r_strategie">
-                  <label for="t_strategie">Quelles ambitions ATHEN’TECH souhaite-t-elle atteindre&#8239;?</label>
-                  <textarea id="t_strategie" rows="4"></textarea>
-                </div>
-
+              <!-- 1. Stratégie de l’entreprise : pré-remplie (texte de la prof), non modifiable -->
+              <div class="rubrique rubrique_fixe" style="--position: 0deg" data-cote="haut">
+                <span class="rubrique_bouton">Stratégie de l’entreprise</span>
                 <div class="rubrique_notes">
-                  <p class="note_eleve" hidden></p>
+                  <p class="note_eleve note_fixe"><span class="visuellement_cache">Quelle ambition ATHEN’TECH souhaite-t-elle atteindre&#8239;? Réponse donnée&#8239;: </span>Aller au-delà des exigences réglementaires et concevoir un smartphone parmi les plus performants du marché sur le plan environnemental, sans sacrifier les fonctionnalités essentielles, la qualité ni un prix compétitif.</p>
                 </div>
               </div>
 
-              <!-- 2. Clients -->
+              <!-- 2. Impacts environnementaux -->
               <div class="rubrique" style="--position: 51deg" data-cote="haut_droite">
-                <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_clients">Clients</button>
-
-                <div class="rubrique_fenetre" id="r_clients">
-                  <label for="t_clients">Quelles sont les attentes des utilisateurs concernant le prix, les performances, la durée de vie et la réparabilité&#8239;?</label>
-                  <textarea id="t_clients" rows="4"></textarea>
-                </div>
-
-                <div class="rubrique_notes">
-                  <p class="note_eleve" hidden></p>
-                </div>
-              </div>
-
-              <!-- 3. Concurrents -->
-              <div class="rubrique" style="--position: 97deg" data-cote="droite">
-                <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_concurrents">Concurrents</button>
-
-                <div class="rubrique_fenetre" id="r_concurrents">
-                  <label for="t_concurrents">Quelles pratiques de Fairphone peuvent inspirer ATHEN’TECH&#8239;?</label>
-                  <textarea id="t_concurrents" rows="4"></textarea>
-                </div>
-
-                <div class="rubrique_notes">
-                  <p class="note_eleve" hidden></p>
-                </div>
-              </div>
-
-              <!-- 4. Réglementations -->
-              <div class="rubrique" style="--position: 143deg" data-cote="bas">
-                <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_reglementations">Réglementations</button>
-
-                <div class="rubrique_fenetre" id="r_reglementations">
-                  <label for="t_reglementations">Quelles exigences actuelles ou évolutions réglementaires doivent être prises en compte&#8239;?</label>
-                  <textarea id="t_reglementations" rows="4"></textarea>
-                </div>
-
-                <div class="rubrique_notes">
-                  <p class="note_eleve" hidden></p>
-                </div>
-              </div>
-
-              <!-- 5. Marges de manœuvre -->
-              <div class="rubrique" style="--position: 217deg" data-cote="bas_gauche">
-                <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_marges">Marges de manœuvre</button>
-
-                <div class="rubrique_fenetre" id="r_marges">
-                  <label for="t_marges">Quels éléments du smartphone ou de sa chaîne de valeur l’entreprise peut-elle modifier&#8239;?</label>
-                  <textarea id="t_marges" rows="4"></textarea>
-                </div>
-
-                <div class="rubrique_notes">
-                  <p class="note_eleve" hidden></p>
-                </div>
-              </div>
-
-              <!-- 6. Impacts sur l'environnement -->
-              <div class="rubrique" style="--position: 263deg" data-cote="gauche">
                 <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_impacts">Impacts environnementaux</button>
 
                 <div class="rubrique_fenetre" id="r_impacts">
@@ -325,13 +258,18 @@
                 </div>
               </div>
 
-              <!-- 7. Enjeux sociaux -->
-              <div class="rubrique" style="--position: 309deg" data-cote="haut_gauche">
-                <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_sociaux">Enjeux sociaux</button>
+              <!-- 3. Clients : grisée, non cliquable (« laisser vide ou masqué ») -->
+              <div class="rubrique rubrique_grisee" style="--position: 97deg" data-cote="droite">
+                <span class="rubrique_bouton" aria-disabled="true">Clients<span class="visuellement_cache"> (rubrique non utilisée dans cette activité)</span></span>
+              </div>
 
-                <div class="rubrique_fenetre" id="r_sociaux">
-                  <label for="t_sociaux">Quels enjeux liés aux conditions d’extraction et de fabrication faut-il considérer&#8239;?</label>
-                  <textarea id="t_sociaux" rows="4"></textarea>
+              <!-- 4. Concurrents -->
+              <div class="rubrique" style="--position: 143deg" data-cote="bas">
+                <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_concurrents">Concurrents</button>
+
+                <div class="rubrique_fenetre" id="r_concurrents">
+                  <label for="t_concurrents">Quelles pratiques de Fairphone peuvent inspirer ATHEN’TECH&#8239;?</label>
+                  <textarea id="t_concurrents" rows="4"></textarea>
                 </div>
 
                 <div class="rubrique_notes">
@@ -339,9 +277,45 @@
                 </div>
               </div>
 
+              <!-- 5. Réglementations -->
+              <div class="rubrique" style="--position: 217deg" data-cote="bas_gauche">
+                <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_reglementations">Réglementations</button>
+
+                <div class="rubrique_fenetre" id="r_reglementations">
+                  <label for="t_reglementations">Quelles exigences actuelles ou évolutions réglementaires doivent être prises en compte&#8239;?</label>
+                  <textarea id="t_reglementations" rows="4"></textarea>
+                </div>
+
+                <div class="rubrique_notes">
+                  <p class="note_eleve" hidden></p>
+                </div>
+              </div>
+
+              <!-- 6. Marges de manœuvre -->
+              <div class="rubrique" style="--position: 263deg" data-cote="gauche">
+                <button type="button" class="rubrique_bouton" aria-expanded="false" aria-controls="r_marges">Marges de manœuvre</button>
+
+                <div class="rubrique_fenetre" id="r_marges">
+                  <label for="t_marges">Quels éléments du smartphone ou de sa chaîne de valeur l’entreprise peut-elle modifier&#8239;?</label>
+                  <textarea id="t_marges" rows="4"></textarea>
+                </div>
+
+                <div class="rubrique_notes">
+                  <p class="note_eleve" hidden></p>
+                </div>
+              </div>
+
+              <!-- 7. Enjeux sociaux : pré-remplie (texte de la prof), non modifiable -->
+              <div class="rubrique rubrique_fixe" style="--position: 309deg" data-cote="haut_gauche">
+                <span class="rubrique_bouton">Enjeux sociaux</span>
+                <div class="rubrique_notes">
+                  <p class="note_eleve note_fixe"><span class="visuellement_cache">Quels enjeux liés aux conditions d’extraction et de fabrication faut-il considérer&#8239;? Réponse donnée&#8239;: </span>Les conditions de travail et la santé des travailleurs (sur tout le cycle de vie du produit, mais en particulier pour l’étape d’extraction et de raffinage des métaux et de production) sont des indicateurs sociaux clés pour le smartphone.</p>
+                </div>
+              </div>
+
             </div>
 
-            <!-- bouton fixe en bas à droite : il apparaît quand les 7 rubriques sont remplies.
+            <!-- bouton fixe en bas à droite : il apparaît quand les rubriques à remplir le sont toutes.
                  Au clic, le mentor fait le bilan de la roue (voir activite/mentor.js). -->
             <p class="visuellement_cache" id="annonce_roue" role="status"></p>
             <div class="qcm_pied" id="pied_roue" hidden>
@@ -464,19 +438,18 @@
 
 
   <!-- ================= DOCUMENTS EN POP-UP ================= -->
-  <!-- un <dialog> par document, ouvert au clic sur sa miniature -->
+  <!-- 
 
   <dialog class="fenetre_document fenetre_rse" id="doc_brief" aria-labelledby="titre_doc_brief">
     <button type="button" class="qcm_fermer" aria-label="fermer le document"></button>
     <h4 id="titre_doc_brief">Rapport RSE 2025 d’ATHEN’TECH</h4>
 
-    <!-- 1. EMPREINTE CARBONE -->
+    
     <h5 class="rse_pilule">1. Notre empreinte carbone en 2025</h5>
     <p>Depuis 2023, ATHEN’TECH mesure chaque année ses émissions de gaz à effet de serre, selon la méthode du GHG Protocol.</p>
 
     <div class="rse_graphique">
       <figure>
-        <!-- camembert : vraies proportions (0,6 % / 1,9 % / 97,5 %) -->
         <svg viewBox="0 0 340 320" role="img" aria-label="Répartition des émissions 2025 : scope 1, 120 t CO2e ; scope 2, 380 t CO2e ; scope 3, 19 500 t CO2e">
           <path class="part_scope3" d="M170,190 L174.5,70.1 A120,120 0 1 1 155.7,70.9 Z"/>
           <path class="part_scope2" d="M170,190 L155.7,70.9 A120,120 0 0 1 170.0,70.0 Z"/>
@@ -499,7 +472,6 @@
 
     <p><span class="emoji" aria-hidden="true">🌱</span> Le scope&nbsp;3 représente 97,5&nbsp;% de nos émissions&#8239;: l’essentiel de notre impact se joue dans notre chaîne de valeur.</p>
 
-    <!-- 2. ENVIRONNEMENT -->
     <h5 class="rse_pilule">2. Environnement</h5>
 
     <h6>Nos actions en 2025</h6>
@@ -518,7 +490,6 @@
       <li>Des données environnementales venant de nos fournisseurs</li>
     </ul>
 
-    <!-- 3. SOCIAL -->
     <h5 class="rse_pilule">3. Social</h5>
 
     <h6>Nos actions en 2025</h6>
@@ -535,14 +506,12 @@
       <li>Des indicateurs sociaux pour suivre nos fournisseurs</li>
     </ul>
 
-    <!-- CHIFFRES CLÉS -->
     <ul class="rse_chiffres">
       <li><span class="emoji" aria-hidden="true">👥</span><span class="rse_chiffre">2&nbsp;500</span>salariés dans le monde</li>
       <li><span class="emoji" aria-hidden="true">📱</span><span class="rse_chiffre">8&nbsp;millions</span>de smartphones vendus en 2025</li>
       <li><span class="emoji" aria-hidden="true">🌍</span><span class="rse_chiffre">20&nbsp;000&nbsp;t CO₂e</span>émises en 2025</li>
     </ul>
 
-    <!-- PRIORITÉS -->
     <h6>Nos priorités pour les années à venir</h6>
     <ul class="rse_etoiles">
       <li>explorer l’éco-conception</li>
@@ -551,6 +520,10 @@
       <li>mieux évaluer nos impacts sociaux</li>
     </ul>
   </dialog>
+
+
+
+-->
 
   <dialog class="fenetre_document fenetre_fiche" id="doc_fiche" aria-labelledby="titre_doc_fiche">
     <button type="button" class="qcm_fermer" aria-label="fermer le document"></button>
@@ -613,7 +586,7 @@
 
     <h5 class="souligne_fin">Une économie plus circulaire</h5>
     <p>En France, la loi AGEC a renforcé l’information des consommateurs et les démarches qui favorisent la réparation et la réduction des déchets.</p>
-    <p>À l’échelle européenne, le règlement sur l’éco-conception des produits durables (ESPR) fixe un cadre pour faire évoluer les exigences de différentes catégories de produits. Les obligations précises dépendent toutefois des textes adoptés pour chaque catégorie.</p>
+    <p>À l’échelle européenne, le règlement sur l’écoconception des produits durables (ESPR) établit un cadre pour faire évoluer les exigences applicables à différentes catégories de produits. Les obligations précises dépendent toutefois des textes adoptés pour chaque catégorie.</p>
 
     <h5 class="souligne_fin">Sources de référence&#8239;:</h5>
     <p class="note_document">

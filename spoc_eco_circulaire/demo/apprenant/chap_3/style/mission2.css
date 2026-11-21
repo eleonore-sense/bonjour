@@ -730,6 +730,42 @@
   font-size: 0.8rem;
 }
 
+/* ressources : boîtes séparées, à l'échelle.
+   Largeur = % × (rangée − 5 espaces) : la rangée entière vaut 100 %. */
+.tuiles_echelle {
+  --espace: 6px;
+  gap: var(--espace);
+}
+
+.tuiles_echelle li {
+  flex: 0 0 calc((100% - 5 * var(--espace)) * var(--part) / 100);
+  min-width: 0;
+  padding: 6px 5px;
+  font-size: 0.7rem;
+}
+
+/* « dont 36 % … de l'or » : bandeau de 36 %, même échelle que les boîtes */
+.acv_or {
+  --espace: 6px;
+  width: calc((100% - 5 * var(--espace)) * 0.36);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin: 8px 0 0;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: 8px;
+}
+
+.acv_or strong {
+  font-family: var(--titre);
+  font-weight: normal;
+  font-size: 1rem;
+}
+
 
 /* =====================================================================
    5. PETITS ÉCRANS ET ZOOM FORT
@@ -757,6 +793,18 @@
   /* les boîtes passent à la ligne si besoin */
   .tuiles {
     flex-wrap: wrap;
+  }
+
+  .tuiles_echelle {
+    gap: 6px;
+  }
+
+  .tuiles_echelle li {
+    flex: 1 1 110px;
+  }
+
+  .acv_or {
+    width: auto;
   }
 }
 
@@ -1207,4 +1255,31 @@ h4.acv_titre {
 
 @keyframes mise_a_jour {
   0%, 30% { background: var(--vert_bleu); }
+}
+
+
+/* parcours : exemple de la prof, en bleu, modifiable */
+.parcours_etape textarea.exemple_prof {
+  color: var(--focus);
+}
+
+/* pop-up : choix de la problématique, plus large (chaque choix sur une ligne) */
+.mentor.popup.popup_large[data-etape="message"] {
+  --largeur_mentor: 560px;
+}
+
+.mentor_scene .choix_problematique_options {
+  margin: 14px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.mentor_scene .choix_problematique_options .qcm_option {
+  font-size: 0.9rem;
+}
+
+.choix_erreur {
+  margin: 10px 0 0;
+  color: var(--rouge);
+  font-size: 0.85rem;
 }

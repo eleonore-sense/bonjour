@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="361.31" height="456.4" viewBox="-36 -1 361.31 456.4" stroke-linecap="round" stroke-linejoin="round">
+  <style>
+    /* le jean se balance doucement de gauche à droite, accroché au haut du crochet */
+    .balance { transform-box: view-box; transform-origin: 148px 1px; animation: balance 3s ease-in-out infinite alternate; }
+    @keyframes balance { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
+    @media (prefers-reduced-motion: reduce) { .balance { animation: none; } }
+  </style>
+  <g class="balance">
+  <path class="bleu_clair trait_fin" d="M171.09,23.5c0-12.7-10.3-23-23-23s-23,10.3-23,23h6c0-9.39,7.61-17.01,17.01-17.01s17.01,7.61,17.01,17.01-7.61,17.01-17.01,17.01v37.87h5.46V45.85c10.07-2.45,17.55-11.52,17.55-22.35Z" />
+  <path class="marron2 trait_fin" d="M288.51,103.69c-33.6-21.5-82.96-35.07-137.98-35.07S45.62,82.34,12.02,104.03l.04,.06v20.09H288.26v-20.1h-.16l.41-.4Zm-37.88,.4l.1,5.55-200.76-.2,.46-5.35c28.78-10.53,63.16-16.65,100.1-16.65s71.32,6.12,100.1,16.65Z" />
+  <polygon class="bleu trait_fin" points="256.31 408.21 143.98 428.52 106.93 240.91 238.38 207.45 256.31 408.21" />
+  <polygon class="bleu trait_fin" points="61.52 103.48 240.77 108.26 257.5 206.25 114.1 417.77 .58 353.24 61.52 103.48" />
+  <polygon class="sans_fond trait_fin" fill="none" points="158.32 325.75 50.77 298.27 90.2 218.2 132.03 211.03 166.68 238.52 158.32 325.75" />
+  <line class="sans_fond trait_fin" fill="none" x1="157.52" y1="352.44" x2="10.14" y2="312.61" />
+  <line class="sans_fond trait_fin" fill="none" x1="151.55" y1="361.6" x2="7.55" y2="322.96" />
+  <polygon class="orange trait_fin" points="103.29 376.37 47.34 345.02 29.71 371.94 85.66 403.28 103.29 376.37" />
+  <polygon class="bleu_clair trait_fin" points="264.28 431.71 144.77 452.82 139.99 428.13 259.5 407.01 264.28 431.71" />
+  <path class="sans_fond trait_fin" fill="none" d="M71.08,258.04s5.18,9.16,19.52,11.55,36.01-7.99,36.01-7.99" />
+  <path class="sans_fond trait_fin" fill="none" d="M162.12,283.26s-9.03,5.04-21.47-.24c-12.44-5.28-23.3-24.72-23.3-24.72" />
+  <path class="sans_fond trait_fin" fill="none" d="M162.52,275.7s-9.03,5.04-21.47-.24c-12.44-5.28-17.58-20.41-17.58-20.41" />
+  <path class="sans_fond trait_fin" fill="none" d="M73.18,251.39s5.18,9.16,19.52,11.55,30.76-7.89,30.76-7.89" />
+  </g>
+</svg>

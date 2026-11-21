@@ -15,19 +15,15 @@
 //   6. Conversation IA          commun (relais, signaux, file d'attente)
 //   7. Composants               pop-up, IA
 //   8. Parcours utilisateur     petite fenêtre, IA à chaque étape
-//   9. Solutions du parcours    propositions (étape, problème, solution), IA à chaque envoi
-//  10. Livrable : problématique pop-up, puis petite fenêtre d'Andréa (IA)
+//   9. Livrable : choix de la problématique dans le pop-up d'Andréa (pas d'IA)
 //
 // Signaux invisibles écrits par l'IA (retirés avant affichage) :
 //   [VALIDE: composants]               composants validés
-//   [VALIDE: problematique]            problématique validée
 //   [EVAL: Étape = ok|a_approfondir]   avis sur une étape du parcours
-//   [EVAL: Proposition N = ok|a_approfondir]   avis sur une proposition de solution
 //   [RESUME: Climat : … | Ressources : …]  ce qui a été validé, rangé dans le porte-documents
 //   [HUMEUR: neutre|content|decu]      le visage d'Andréa
 //   [DOC: recyclage]                   lien vers un PDF du site (DOCUMENTS), sous son message
-//   [TEXTE: Étape = …] / [TEXTE: problematique = …]   version finale → la case se remplit
-//   [PROPOSITION: N = problème | solution]           version finale d'une proposition
+//   [TEXTE: Étape = …]                 version finale → la case se remplit
 // =====================================================================
 
 (function () {
@@ -78,9 +74,12 @@
     scene.focus({ preventScroll: true });   // les lecteurs d'écran lisent le message
   }
 
+  let choixProblematiqueOuvert = false;    // pop-up du choix de la problématique (section 9)
+
   function fermerAndrea() {
     if (!panneau || panneau.hidden) return;
     panneau.hidden = true;                  // fondu de sortie (mentor.css)
+    panneau.classList.remove('popup_large');
     const suite = apresAndrea;
     apresAndrea = null;
     if (suite) suite();
@@ -90,7 +89,7 @@
     boutonSuivant?.addEventListener('click', fermerAndrea);
     // Échap ferme un pop-up de message, comme le bouton (pas une discussion en cours)
     panneau.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && panneau.dataset.etape === 'message') fermerAndrea();
+      if (e.key === 'Escape' && panneau.dataset.etape === 'message' && !choixProblematiqueOuvert) fermerAndrea();
     });
     // le pop-up change de taille (dessin chargé, fenêtre redimensionnée) : on le recentre
     // seulement en pop-up (la petite fenêtre reste en bas à droite)
@@ -500,7 +499,7 @@
   const LONGUEUR_MAX = 2000;
   const ESSAIS_RELAIS = 3;              // relais en erreur : 3 essais (5 s, puis 10 s d'attente)
   const ECART_MIN = 2500;               // Mistral gratuit : au moins 2,5 s entre deux messages
-  const REPONSES_AVANT_PASSER = 3;      // mascotte : 3 réponses non validées
+  const REPONSES_AVANT_PASSER = 2;      // mascotte : 2 essais non validés (comme la mission 1)
   const CLE_ENJEUX = 'athentech_enjeux';
   const CLE_MISSION2 = 'athentech_mission2';
 
@@ -595,7 +594,6 @@
     let humeur = null;
     const docs = [];
     const textes = [];
-    const propositionsFinales = [];
     let texte = brut;
     texte = texte.replace(/\[\s*VALIDE\s*:\s*([^\]]+?)\s*\]/gi, (_, quoi) => { valide = normaliser(quoi); return ''; });
     texte = texte.replace(/\[\s*RESUME\s*:\s*([^\]]+)\]/gi, (_, r) => { resume = r.trim(); return ''; });
@@ -605,17 +603,13 @@
     });
     texte = texte.replace(/\[\s*HUMEUR\s*:\s*([a-zéè_]+)\s*\]/gi, (_, h) => { humeur = h.toLowerCase(); return ''; });
     texte = texte.replace(/\[\s*TEXTE\s*:\s*([^=\]]+?)\s*=\s*([^\]]+)\]/gi, (_, nom, t) => { textes.push({ nom: nom.trim(), texte: t.trim() }); return ''; });
-    texte = texte.replace(/\[\s*PROPOSITION\s*:\s*(\d+)\s*=\s*([^|\]]+)\|([^\]]+)\]/gi, (_, n, pb, so) => {
-      propositionsFinales.push({ n: Number(n), probleme: pb.trim(), solution: so.trim() });
-      return '';
-    });
     texte = texte.replace(/\[\s*DOC\s*:\s*([a-z_]+)\s*\]/gi, (_, d) => { docs.push(d.toLowerCase()); return ''; });
-    texte = texte.replace(/\[\s*(EVAL|VALIDE|HUMEUR|RESUME|DOC|TEXTE|PROPOSITION)[^\]]*\]/gi, '');   // signal mal écrit : caché
+    texte = texte.replace(/\[\s*(EVAL|VALIDE|HUMEUR|RESUME|DOC|TEXTE)[^\]]*\]/gi, '');   // signal mal écrit : caché
     texte = texte
       .replace(/\*\*(.+?)\*\*/gs, '$1').replace(/__(.+?)__/gs, '$1')   // gras Markdown
       .replace(/^\s*#{1,6}\s+/gm, '')                                      // titres Markdown
       .replace(/\*\*/g, '');
-    return { texte: texte.replace(/\n{3,}/g, '\n\n').trim(), evals, valide, resume, humeur, docs, textes, propositionsFinales };
+    return { texte: texte.replace(/\n{3,}/g, '\n\n').trim(), evals, valide, resume, humeur, docs, textes };
   }
 
   // envoi au relais (file d'attente) → { ok, texte, evals, valide, resume } ou { ok: false, erreur }
@@ -683,8 +677,6 @@
     if (!texte) return;
     if (panneau.dataset.etape === 'discussion') { champ.value = ''; repondreComposants(texte); }
     else if (panneau.dataset.etape === 'parcours') { champ.value = ''; repondreParcours(texte); }
-    else if (panneau.dataset.etape === 'solutions') { champ.value = ''; repondreSolutions(texte); }
-    else if (panneau.dataset.etape === 'problematique') { champ.value = ''; repondreProblematique(texte); }
   });
 
   // Entrée envoie ; Maj + Entrée : nouvelle ligne
@@ -698,7 +690,7 @@
   // =====================================================================
   // 7. COMPOSANTS (pop-up, IA)
   // [VALIDE: composants] → « continuer » ; [RESUME: …] → porte-documents
-  // 3 réponses non validées → mascotte
+  // 2 essais non validés → mascotte « continuer » → porte-documents (bulle)
   // =====================================================================
 
   const rappelPasser = document.getElementById('rappel_passer');
@@ -707,6 +699,7 @@
   let composantsValides = false;
   let resumeComposants = '';
   const reponsesComposants = [];
+  let essaisComposants = 0;                // erreurs du relais comprises : jamais bloqué
 
   function lancerComposants() {
     if (!panneau) return versParcours();
@@ -726,6 +719,7 @@
   }
 
   async function repondreComposants(texte) {
+    essaisComposants++;
     reponsesComposants.push(texte);
     ajouterMessage('eleve', texte);
     const r = await envoyer(`${debutMessage()}[Étape : composants de l'ACV]\n[Réponse à la question « Au sein de l'étape de production, quels composants ressortent particulièrement ? »]\n${texte}`);
@@ -739,7 +733,7 @@
       if (r.texte) ajouterMessage('mentor', r.texte);
       if (r.valide === 'composants') validerComposants();
     }
-    if (!composantsValides && reponsesComposants.length >= REPONSES_AVANT_PASSER && rappelPasser) rappelPasser.hidden = false;
+    if (!composantsValides && essaisComposants >= REPONSES_AVANT_PASSER && rappelPasser) rappelPasser.hidden = false;
     if (!composantsValides) champ.focus({ preventScroll: true });
   }
 
@@ -805,7 +799,7 @@
   const estRemplie = li => caseDe(li).value.trim() !== '';
   const etapeNommee = nom => etapesParcours.find(li => normaliser(nomEtape(li)) === normaliser(nom));
 
-  // petite fenêtre : parcours ou solutions
+  // petite fenêtre : parcours
   function ouvrirFenetre(etape = 'parcours') {
     if (!panneau) return false;
     if (!panneau.hidden && panneau.classList.contains('popup')) return false;   // pop-up en cours
@@ -824,7 +818,7 @@
   }
 
   function fermerFenetre() {
-    if (!panneau || !['parcours', 'solutions', 'problematique'].includes(panneau.dataset.etape)) return;
+    if (!panneau || panneau.dataset.etape !== 'parcours') return;
     panneau.hidden = true;
     document.body.classList.remove('mentor_visible');
   }
@@ -865,6 +859,20 @@
   }
 
   // une étape validée avec Entrée
+  // hauteur des cases = tout le texte visible (exemples de la prof compris)
+  function ajusterHauteur(zone) {
+    if (!zone.offsetWidth) return;
+    zone.style.height = 'auto';
+    zone.style.height = `${zone.scrollHeight + 2}px`;
+  }
+  const largeurs = new WeakMap();
+  const hauteurAuto = new ResizeObserver(entrees => entrees.forEach(({ target }) => {
+    const l = target.offsetWidth;
+    if (largeurs.get(target) === l) return;          // seulement si la largeur change
+    largeurs.set(target, l);
+    ajusterHauteur(target);
+  }));
+
   // « soumettre à Andréa » : texte écrit et pas encore envoyé
   function majSoumettre(li) {
     const b = li.querySelector('.soumettre_andrea');
@@ -938,7 +946,14 @@
     zone.after(bouton);
     bouton.addEventListener('click', () => envoyerEtape(li));
 
-    zone.addEventListener('input', () => { verifierParcours(); majSoumettre(li); });
+    // exemple de la prof (bleu) : déjà « envoyé », redevient texte de l'élève dès qu'il le modifie
+    if (zone.classList.contains('exemple_prof')) {
+      li.dataset.envoye = zone.value.trim();
+      zone.addEventListener('input', () => zone.classList.remove('exemple_prof'), { once: true });
+    }
+
+    zone.addEventListener('input', () => { verifierParcours(); majSoumettre(li); ajusterHauteur(zone); });
+    hauteurAuto.observe(zone);              // case affichée ou élargie : hauteur du texte
 
     // Entrée : envoi + étape suivante ; Maj + Entrée : nouvelle ligne
     zone.addEventListener('keydown', e => {
@@ -950,344 +965,54 @@
     });
   });
 
-  // « continuer » : fenêtre fermée → Andréa (pop-up) → solutions
+  // « continuer » : fenêtre fermée → Andréa (pop-up) : choix de la problématique
   piedParcours?.querySelector('button')?.addEventListener('click', () => {
     sauverParcours();
     fermerFenetre();
     if (rappelParcours) rappelParcours.hidden = true;
     piedParcours.hidden = true;
     parcoursFini = true;
-    andreaDit('texte_solutions', 'c’est parti !', montrerSolutions);
+    choisirProblematique();
   });
 
 
   // =====================================================================
-  // 9. SOLUTIONS DU PARCOURS
-  // 2 propositions au départ, « ajouter une solution » pour d'autres.
-  // Entrée ou « soumettre à Andréa » → IA → petite fenêtre (bien vu, ou une question).
-  // Mascotte : 1 proposition complète → rappel ; 2 complètes → « continuer ».
+  // 9. LIVRABLE : CHOIX DE LA PROBLÉMATIQUE (pop-up, pas d'IA)
+  // texte_livrable : question + 3 choix → « valider mon choix »
+  // → texte_fin : Andréa sourit, rappelle le choix → « c'est parti ! » → mission 3
   // =====================================================================
 
-  const partieSolutions = document.getElementById('partie_solutions');
-  const zonePropositions = document.getElementById('propositions');
-  const modeleProposition = document.getElementById('modele_proposition');
-  const boutonAjouter = document.getElementById('ajouter_proposition');
-  const rappelSolutions = document.getElementById('rappel_solutions');
-  const piedSolutions = document.getElementById('pied_solutions');
-  const annonceSolutions = document.getElementById('annonce_solutions');
-  const PROPOSITIONS_MIN = 2;
-  const PROPOSITIONS_MAX = 6;
-  let solutionsFinies = false;              // « continuer » cliqué
-
-  const propositions = () => [...zonePropositions.querySelectorAll('.proposition')];
-  const champsDe = f => ({
-    etape: f.querySelector('.proposition_etape'),
-    probleme: f.querySelector('.proposition_probleme'),
-    solution: f.querySelector('.proposition_solution'),
-  });
-  const estComplete = f => Object.values(champsDe(f)).every(c => c.value.trim() !== '');
-  const numeroDe = f => propositions().indexOf(f) + 1;
-  const propositionNommee = nom => {
-    const n = parseInt(String(nom).replace(/\D+/g, ''), 10);
-    return propositions()[n - 1];
-  };
-
-  // nouvelle proposition (modèle, numéro, liens label → champ)
-  function ajouterProposition() {
-    if (!modeleProposition || propositions().length >= PROPOSITIONS_MAX) return null;
-    const f = modeleProposition.content.firstElementChild.cloneNode(true);
-    const n = propositions().length + 1;
-    f.querySelector('.proposition_numero').textContent = n;
-    const c = champsDe(f);
-    [['etape', '.proposition_label_etape'], ['probleme', '.proposition_label_probleme'], ['solution', '.proposition_label_solution']]
-      .forEach(([cle, label]) => {
-        c[cle].id = `proposition_${n}_${cle}`;
-        f.querySelector(label).htmlFor = c[cle].id;
-      });
-
-    // saisie : mascotte, boutons, mémoire
-    const soumettre = f.querySelector('.proposition_soumettre');
-    soumettre?.addEventListener('click', () => envoyerProposition(f));
-    Object.values(c).forEach(champ => {
-      champ.addEventListener('input', () => {
-        delete f.dataset.envoye;
-        verifierSolutions();
-        majSoumettreProposition(f);
-      });
-      champ.addEventListener('change', sauverSolutions);
-    });
-
-    // Entrée : problème → solution ; solution → Andréa
-    c.probleme.addEventListener('keydown', e => {
-      if (e.key !== 'Enter' || e.shiftKey || e.isComposing) return;
-      e.preventDefault();
-      c.solution.focus();
-    });
-    c.solution.addEventListener('keydown', e => {
-      if (e.key !== 'Enter' || e.shiftKey || e.isComposing) return;
-      e.preventDefault();
-      envoyerProposition(f);
-    });
-
-    zonePropositions.appendChild(f);
-    if (boutonAjouter) boutonAjouter.hidden = propositions().length >= PROPOSITIONS_MAX;
-    return f;
+  function choisirProblematique() {
+    andreaDit('texte_livrable', 'valider mon choix', null);
+    panneau.classList.add('popup_large');  // les 3 choix sur une ligne
+    choixProblematiqueOuvert = true;       // pop-up de message, mais Échap ne le ferme pas
   }
 
-  // « soumettre à Andréa » : proposition complète, pas encore envoyée
-  const cleDe = f => { const c = champsDe(f); return `${c.etape.value}|${c.probleme.value.trim()}|${c.solution.value.trim()}`; };
-  function majSoumettreProposition(f) {
-    const b = f.querySelector('.proposition_soumettre');
-    if (b) b.hidden = !estComplete(f) || f.dataset.envoye === cleDe(f);
+  function versMission3() {
+    if (typeof afficherSuite === 'function') afficherSuite();
+    const lien = document.querySelector('.conteneur_suite a');
+    if (lien) lien.click();
+    else if (document.body.dataset.pageSuivante) location.href = document.body.dataset.pageSuivante;
   }
 
-  function sauverSolutions() {
-    const solutions = propositions().map(f => {
-      const c = champsDe(f);
-      return { etape: c.etape.value, probleme: c.probleme.value.trim(), solution: c.solution.value.trim(), avis: f.dataset.avis || null };
-    }).filter(x => x.etape || x.probleme || x.solution);
-    sauverMission2({ solutions });
-  }
-
-  function verifierSolutions() {
-    if (!piedSolutions || solutionsFinies) return;
-    const completes = propositions().filter(estComplete).length;
-    const assez = completes >= PROPOSITIONS_MIN;
-    if (assez && piedSolutions.hidden && annonceSolutions) {
-      annonceSolutions.textContent = 'Deux propositions sont complètes. Le bouton « continuer » est disponible en bas de l’écran.';
-    }
-    piedSolutions.hidden = !assez;
-    if (rappelSolutions) rappelSolutions.hidden = assez || completes < 1;   // mascotte : 1 proposition complète
-  }
-
-  // après le pop-up d'Andréa
-  function montrerSolutions() {
-    if (!partieSolutions) return;
-    if (!propositions().length) for (let i = 0; i < PROPOSITIONS_MIN; i++) ajouterProposition();
-    partieSolutions.hidden = false;
-    requestAnimationFrame(() => {
-      const consigne = document.getElementById('consigne_solutions');
-      if (typeof calerEnHaut === 'function') calerEnHaut(consigne);
-      else consigne.scrollIntoView({ behavior: 'smooth' });
-      champsDe(propositions()[0]).etape.focus({ preventScroll: true });
-    });
-  }
-
-  function appliquerAvisSolutions(evals) {
-    evals.forEach(({ nom, avis }) => {
-      if (!/proposition/i.test(nom)) return;
-      const f = propositionNommee(nom);
-      if (f) f.dataset.avis = avis;
-    });
-  }
-
-  // proposition envoyée avec Entrée
-  async function envoyerProposition(f) {
-    const c = champsDe(f);
-    const manquant = Object.values(c).find(x => x.value.trim() === '');
-    if (manquant) {                          // incomplète : on va au champ vide
-      if (annonceSolutions) annonceSolutions.textContent = 'Complète d’abord l’étape, la problématique et la solution de cette proposition.';
-      manquant.focus();
+  // « valider mon choix » : avant le clic normal (fermerAndrea)
+  boutonSuivant?.addEventListener('click', e => {
+    if (!choixProblematiqueOuvert) return;
+    e.stopImmediatePropagation();
+    const coche = sceneTexte.querySelector('input[name="q_problematique"]:checked');
+    const erreur = sceneTexte.querySelector('.choix_erreur');
+    if (!coche) {
+      if (erreur) erreur.hidden = false;
+      sceneTexte.querySelector('input[name="q_problematique"]')?.focus();
       return;
     }
-    const n = numeroDe(f);
-    const etape = c.etape.value;
-    const probleme = c.probleme.value.trim();
-    const solution = c.solution.value.trim();
-    const cle = cleDe(f);
-    if (f.dataset.envoye === cle) return;
-    f.dataset.envoye = cle;
-    majSoumettreProposition(f);
-    sauverSolutions();
+    const intitule = coche.closest('label').textContent.replace(/\s+/g, ' ').trim();
+    sauverMission2({ problematique: { choix: coche.value, intitule, date: new Date().toISOString() } });
+    choixProblematiqueOuvert = false;
 
-    const message = `${debutMessage()}[Étape : solutions du parcours]\n[Proposition ${n} : étape du parcours « ${etape} »]\nProblématique soulevée : ${probleme}\nSolution proposée : ${solution}`;
-
-    f.classList.add('en_lecture');
-    const r = await envoyer(message);
-    f.classList.remove('en_lecture');
-    if (!r.ok) {
-      delete f.dataset.envoye;
-      majSoumettreProposition(f);
-      if (!solutionsFinies && ouvrirFenetre('solutions')) ajouterMessage('erreur', `${r.erreur} Valide à nouveau la proposition ${n} avec Entrée dans un instant.`);
-      return;
-    }
-    appliquerAvisSolutions(r.evals);
-    sauverSolutions();
-
-    // Andréa répond toujours (bien vu, ou une question)
-    if (r.texte && !solutionsFinies && ouvrirFenetre('solutions')) {
-      changerHumeur(r.humeur);
-      ajouterMessage('eleve', `${probleme}\n→ ${solution}`, etape);
-      ajouterMessage('mentor', r.texte, null, r.docs);
-    }
-  }
-
-  // réponse écrite dans la petite fenêtre
-  async function repondreSolutions(texte) {
-    ajouterMessage('eleve', texte);
-    const r = await envoyer(`${debutMessage()}[Étape : solutions du parcours]\n${texte}`);
-    if (!r.ok) {
-      ajouterMessage('erreur', `${r.erreur} Ton message n’est pas parti : réécris-le dans un instant.`);
-      return;
-    }
-    appliquerAvisSolutions(r.evals);
-    r.propositionsFinales.forEach(({ n, probleme, solution }) => {
-      const f = propositions()[n - 1];
-      if (!f) return;
-      const c = champsDe(f);
-      remplirCase(c.probleme, probleme);
-      remplirCase(c.solution, solution);
-      f.dataset.envoye = cleDe(f);
-      majSoumettreProposition(f);
-    });
-    verifierSolutions();
-    sauverSolutions();
-    changerHumeur(r.humeur);
-    if (r.texte) ajouterMessage('mentor', r.texte, null, r.docs);
-    champ.focus({ preventScroll: true });
-  }
-
-  boutonAjouter?.addEventListener('click', () => {
-    const f = ajouterProposition();
-    verifierSolutions();
-    if (f) champsDe(f).etape.focus();
-  });
-
-  // « continuer » : mémoire, fenêtre fermée → Andréa (pop-up) → livrable
-  piedSolutions?.querySelector('button')?.addEventListener('click', () => {
-    sauverSolutions();
-    solutionsFinies = true;
-    piedSolutions.hidden = true;
-    fermerFenetre();
-    if (rappelSolutions) rappelSolutions.hidden = true;
-    andreaDit('texte_livrable', 'c’est parti !', montrerLivrable);
-  });
-
-
-  // =====================================================================
-  // 10. LIVRABLE : LA PROBLÉMATIQUE
-  // Entrée ou « soumettre à Andréa » → petite fenêtre d'Andréa (IA).
-  // [VALIDE: problematique] ou 3 essais → « continuer » → texte_fin.
-  // =====================================================================
-
-  const partieLivrable = document.getElementById('partie_livrable');
-  const formProblematique = document.getElementById('formulaire_problematique');
-  const caseProblematique = document.getElementById('t_problematique');
-  const boutonExemple = document.getElementById('voir_exemple');
-  const exemple = document.getElementById('exemple_problematique');
-  const piedLivrable = document.getElementById('pied_livrable');
-  const annonceLivrable = document.getElementById('annonce_livrable');
-  const ESSAIS_AVANT_CONTINUER = 3;
-  const versionsProblematique = [];
-  let problematiqueValidee = false;
-
-  function montrerLivrable() {
-    if (!partieLivrable) return;
-    partieLivrable.hidden = false;
-    requestAnimationFrame(() => {
-      const titre = document.getElementById('consigne_livrable');
-      if (typeof calerEnHaut === 'function') calerEnHaut(titre);
-      else titre.scrollIntoView({ behavior: 'smooth' });
-      caseProblematique?.focus({ preventScroll: true });
-    });
-  }
-
-  function sauverProblematique() {
-    sauverMission2({ problematique: {
-      texte: caseProblematique.value.trim(), versions: versionsProblematique, valide: problematiqueValidee,
-    } });
-  }
-
-  function verifierLivrable() {
-    const pret = problematiqueValidee || versionsProblematique.length >= ESSAIS_AVANT_CONTINUER;
-    if (pret && piedLivrable.hidden && annonceLivrable) {
-      annonceLivrable.textContent = 'Le bouton « continuer » est disponible en bas de l’écran.';
-    }
-    piedLivrable.hidden = !pret;
-  }
-
-  // copie de l'exemple de la prof : plus de 80 % de ses mots repris
-  const motsDe = t => normaliser(t).replace(/[^a-z0-9 ]/g, ' ').split(' ').filter(m => m.length > 3);
-  const motsExemple = new Set(motsDe(exemple?.querySelectorAll('p')[1]?.textContent || ''));
-  function copieExemple(texte) {
-    const mots = motsDe(texte);
-    if (!mots.length || !motsExemple.size) return false;
-    const repris = mots.filter(m => motsExemple.has(m)).length;
-    return repris / mots.length >= 0.8 && repris / motsExemple.size >= 0.6;
-  }
-
-  function lireValidation(r) {
-    if (r.valide === 'problematique' && copieExemple(caseProblematique.value)) return;   // jamais validée
-    if (r.valide === 'problematique') {
-      problematiqueValidee = true;
-      sauverProblematique();
-      verifierLivrable();
-    }
-  }
-
-  async function envoyerProblematique() {
-    const texte = caseProblematique.value.trim();
-    if (!texte) { caseProblematique.focus(); return; }
-    if (texte === versionsProblematique[versionsProblematique.length - 1]) return;
-    versionsProblematique.push(texte);
-    sauverProblematique();
-
-    ouvrirFenetre('problematique');
-    ajouterMessage('eleve', texte, 'Ma problématique');
-    const copie = copieExemple(texte) ? '\n[Attention : cette version reprend presque mot pour mot l’exemple de l’équipe pédagogique. Ne la valide pas.]' : '';
-    const r = await envoyer(`${debutMessage()}[Étape : problématique]\n[Problématique proposée (version ${versionsProblematique.length})]\n${texte}${copie}`);
-    if (!r.ok) {
-      versionsProblematique.pop();
-      ajouterMessage('erreur', `${r.erreur} Ta problématique n’est pas partie : soumets-la à nouveau dans un instant.`);
-      return;
-    }
-    changerHumeur(r.humeur);
-    if (r.texte) ajouterMessage('mentor', r.texte, null, r.docs);
-    lireValidation(r);
-    verifierLivrable();
-  }
-
-  // réponse écrite dans la petite fenêtre
-  async function repondreProblematique(texte) {
-    ajouterMessage('eleve', texte);
-    const r = await envoyer(`${debutMessage()}[Étape : problématique]\n${texte}`);
-    if (!r.ok) {
-      ajouterMessage('erreur', `${r.erreur} Ton message n’est pas parti : réécris-le dans un instant.`);
-      return;
-    }
-    const finale = r.textes.find(t => normaliser(t.nom) === 'problematique');
-    if (finale) {
-      remplirCase(caseProblematique, finale.texte);
-      versionsProblematique.push(finale.texte);
-      sauverProblematique();
-    }
-    changerHumeur(r.humeur);
-    if (r.texte) ajouterMessage('mentor', r.texte, null, r.docs);
-    lireValidation(r);
-    verifierLivrable();
-    champ.focus({ preventScroll: true });
-  }
-
-  formProblematique?.addEventListener('submit', e => { e.preventDefault(); envoyerProblematique(); });
-  caseProblematique?.addEventListener('keydown', e => {
-    if (e.key !== 'Enter' || e.shiftKey || e.isComposing) return;
-    e.preventDefault();
-    formProblematique.requestSubmit();
-  });
-
-  // exemple de la prof : montré, puis le bouton disparaît
-  boutonExemple?.addEventListener('click', () => {
-    exemple.hidden = false;
-    boutonExemple.hidden = true;
-    caseProblematique.focus({ preventScroll: true });
-  });
-
-  // « continuer » : fin de la mission 2
-  piedLivrable?.querySelector('button')?.addEventListener('click', () => {
-    sauverProblematique();
-    piedLivrable.hidden = true;
-    fermerFenetre();
-    andreaDit('texte_fin', 'continuer', () => { if (typeof afficherSuite === 'function') afficherSuite(); });
-  });
+    andreaDit('texte_fin', 'c’est parti !', versMission3);
+    const place = sceneTexte.querySelector('.choix_problematique');
+    if (place) place.textContent = intitule.charAt(0).toLowerCase() + intitule.slice(1);
+  }, { capture: true });
 
 })();

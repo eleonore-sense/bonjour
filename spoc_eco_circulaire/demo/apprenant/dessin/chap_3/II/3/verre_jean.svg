@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="245" height="222" viewBox="-3 -3 245 222" stroke-linecap="round" stroke-linejoin="round">
+  <style>
+    /* cycle de 6 s : l'eau du verre descend, et le jean apparaît de bas en haut en même temps */
+    .niveau_eau, .apparition { animation: 6s ease-in-out infinite; }
+    .niveau_eau { animation-name: vider; }
+    .apparition { animation-name: apparaitre; }
+    @keyframes vider      { 0%, 15% { transform: none; } 70%, 92% { transform: translateY(122px); } 100% { transform: none; } }
+    @keyframes apparaitre { 0%, 15% { transform: translateY(220px); } 70%, 92% { transform: none; } 100% { transform: translateY(220px); } }
+    @media (prefers-reduced-motion: reduce) { .niveau_eau, .apparition { animation: none; } }
+  </style>
+  <!-- le verre d'eau, réduit (50 %) -->
+  <clipPath id="eau_jean_niveau">
+    <rect class="niveau_eau" x="60" y="234" width="190" height="130"/>
+  </clipPath>
+  <g transform="translate(-33.88 26.57) scale(0.5)">
+    <polygon class="bleu_clair trait_fin" points="151.52 378.86 213.86 378.86 235.29 213.68 151.52 213.68 67.75 213.68 89.19 378.86 151.52 378.86"/>
+    <polygon class="bleu" clip-path="url(#eau_jean_niveau)" points="151.52 355.94 195.62 355.94 210.79 236.6 151.52 236.6 92.26 236.6 107.42 355.94 151.52 355.94"/>
+    <polygon class="sans_fond trait_fin" fill="none" points="151.52 355.94 195.62 355.94 210.79 236.6 151.52 236.6 92.26 236.6 107.42 355.94 151.52 355.94"/>
+  </g>
+  <!-- le jean debout, qui apparaît de bas en haut -->
+  <clipPath id="jean_apparition">
+    <rect class="apparition" x="-5" y="-2" width="135" height="222"/>
+  </clipPath>
+  <g transform="translate(114 0)" clip-path="url(#jean_apparition)">
+  <polygon class="bleu trait_fin" points="16.83 1.7 108.25 1.7 120.8 206.04 79.57 206.04 59.4 66.23 48.2 204.25 2.49 204.25 16.83 1.7" />
+  <path class="bleu_clair trait_fin" d="M35.35,13.25s-1.84,9.61-7.17,14.94-13.74,5.18-13.74,5.18l1.72-20.69,19.2,.57Z" />
+  <path class="bleu_clair trait_fin" d="M89.7,12.94s1.84,9.61,7.17,14.94c5.33,5.33,12.88,5.28,12.88,5.28l-.85-20.79-19.2,.57Z" />
+  <line class="sans_fond trait_fin" fill="none" x1="108.05" y1="12.85" x2="16.83" y2="12.85" />
+  <line class="sans_fond trait_fin" fill="none" x1="59.4" y1="66.23" x2="59.4" y2="1.7" />
+  <path class="bleu trait_fin" d="M67.02,1.7V39.54c0,4.98-7.17,5.18-7.17,5.18" />
+  <rect class="bleu trait_fin" x="45.91" y=".5" width="4.78" height="13.94" />
+  <rect class="bleu trait_fin" x="23.4" y=".5" width="4.78" height="13.94" />
+  <rect class="bleu trait_fin" x="97.89" y=".5" width="4.78" height="13.94" />
+  <rect class="bleu trait_fin" x="75.39" y=".5" width="4.78" height="13.94" />
+  <rect class="bleu_clair trait_fin" x=".5" y="201.66" width="49" height="14.34" />
+  <rect class="bleu_clair trait_fin" x="76.98" y="201.77" width="46.41" height="14.13" />
+  </g>
+</svg>

@@ -1,0 +1,781 @@
+/* =====================================================================
+   MISSION 3 : styles propres
+   Éco-solutions : mêmes styles que les propositions de la mission 2 (mission2.css, section 7).
+   ===================================================================== */
+
+
+/* ---------- 1. Présentation ---------- */
+
+/* rappel de la problématique choisie en mission 2 */
+.rappel_problematique {
+  margin: 30px 0 0;
+  max-width: 860px;
+}
+
+
+/* ---------- 2. Banque d'idées : fiches dans le dossier (comme la mission 1) ---------- */
+
+.dossier_idees {
+  margin-top: 70px;
+}
+
+/* une fiche : thématique, idée, auteur */
+.miniature_idee {
+  justify-content: space-between;
+}
+
+/* thématique : capsule */
+.miniature_theme {
+  align-self: flex-start;
+  max-width: calc(100% - 20px);     /* pas sous le coin plié */
+  padding: 2px 10px;
+  font-size: 0.78rem;
+  line-height: 1.25;
+  text-transform: lowercase;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+}
+
+.miniature_idee .miniature_titre {
+  font-size: 0.85rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.miniature_auteur {
+  align-self: flex-end;
+  padding: 2px 10px;
+  font-size: 0.7rem;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  background: var(--vert_bleu);
+}
+
+/* l'idée de l'élève : pastille rose */
+.idee_eleve .miniature_auteur {
+  background: var(--rose);
+}
+
+/* fiche ouverte */
+.fenetre_idee {
+  width: min(560px, 92vw);
+}
+
+.fenetre_idee .idee_theme {
+  margin: 0 0 6px;
+  font-size: 0.85rem;
+  text-transform: lowercase;
+}
+
+.fenetre_idee .idee_auteur {
+  margin: 24px 0 0;
+  font-size: 0.8rem;
+  text-align: right;
+}
+
+
+/* ---------- 3. Boutons fixes sous la fenêtre d'Andréa ---------- */
+
+body.mentor_visible #pied_soumettre,
+body.mentor_visible #pied_idees,
+body.mentor_visible #pied_piste,
+body.mentor_visible #pied_fiche_suite {
+  right: 24px;
+  bottom: calc(var(--hauteur_bandeau_bas) + 16px);
+  width: min(340px, calc(100vw - 32px));
+  align-items: center;
+}
+
+body.mentor_visible:has(#pied_soumettre:not([hidden]), #pied_idees:not([hidden]), #pied_piste:not([hidden]), #pied_fiche_suite:not([hidden])) .mentor:not(.popup) {
+  bottom: calc(var(--hauteur_bandeau_bas) + 16px + 64px);
+}
+
+/* les deux boutons à la fois : l'un au-dessus de l'autre */
+body.mentor_visible:has(#pied_soumettre:not([hidden])) #pied_idees {
+  bottom: calc(var(--hauteur_bandeau_bas) + 16px + 56px);
+}
+
+body.mentor_visible:has(#pied_soumettre:not([hidden])):has(#pied_idees:not([hidden])) .mentor:not(.popup) {
+  bottom: calc(var(--hauteur_bandeau_bas) + 16px + 120px);
+}
+
+/* pop-up à deux boutons (« je veux reprendre » / « continuer quand même ») */
+.mentor_choix {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.mentor .derniere_remarque {
+  font-style: italic;
+  white-space: pre-line;
+}
+
+
+/* ---------- 4. Comparer : consigne en liste ---------- */
+
+.consigne_liste p {
+  margin: 0 0 8px;
+}
+
+.consigne_liste p:last-child {
+  margin: 10px 0 0;
+}
+
+.consigne_liste .liste_etoiles {
+  margin-left: 4px;
+}
+
+
+/* ---------- 5. Grille : 3 cartes, curseurs de −3 à +3 ---------- */
+
+.grille_zone {
+  max-width: 860px;
+  margin-top: 50px;
+}
+
+.grille {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  margin-top: 30px;
+}
+
+.evaluation {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+/* « solution étudiée 1 » : pastille rose, comme les éco-solutions */
+.evaluation_titre {
+  float: left;
+  margin-bottom: 16px;
+  padding: 6px 22px;
+  font-family: var(--titre);
+  background: var(--rose);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+}
+
+.evaluation_badge {
+  margin-left: 8px;
+  font-size: 0.8rem;
+  font-family: var(--labeur);
+}
+
+.evaluation_choix {
+  clear: both;
+  display: block;
+  margin-bottom: 18px;
+}
+
+.evaluation_choix .proposition_etape {
+  width: 100%;
+  min-width: 0;
+}
+
+/* l'exemple : pastille du menu en bleu, curseurs figés */
+.evaluation_exemple .proposition_etape:disabled {
+  background: var(--bleu_clair);
+  opacity: 1;
+  color: var(--couleur_texte);
+  cursor: default;
+}
+
+.criteres {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* une ligne : nom à gauche, curseur à droite */
+.critere {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(240px, 1.3fr);
+  align-items: center;
+  gap: 20px;
+}
+
+.critere_nom {
+  font-size: 0.92rem;
+}
+
+.critere_curseur {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* la barre : 0 au centre (petit trait), −3 à gauche, +3 à droite */
+.critere input[type="range"] {
+  flex: 1;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 22px;
+  margin: 0;
+  background:
+    linear-gradient(var(--trait), var(--trait)) center / 2px 14px no-repeat,
+    linear-gradient(var(--trait_doux), var(--trait_doux)) center / 100% 2px no-repeat;
+  cursor: pointer;
+}
+
+.critere input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--blanc);
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+}
+
+.critere input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--blanc);
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+}
+
+
+.critere input[type="range"]:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.critere input[type="range"]:disabled {
+  cursor: default;
+}
+
+
+/* la note : petite pastille */
+.critere_valeur {
+  flex: 0 0 38px;
+  padding: 2px 0;
+  font-size: 0.85rem;
+  text-align: center;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+}
+
+/* légende sous les curseurs */
+.evaluation_echelle {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(240px, 1.3fr);
+  gap: 20px;
+  margin: 6px 0 0;
+  font-size: 0.72rem;
+  color: var(--trait_doux);
+}
+
+.evaluation_echelle span:first-child {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: start;
+}
+
+.evaluation_echelle span:nth-child(2) {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: center;
+  margin-right: 50px;               /* aligné sur le 0 (la pastille de note est à droite) */
+}
+
+.evaluation_echelle span:last-child {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  margin-right: 50px;
+}
+
+
+/* ---------- 6. Graphique araignée (comme le radar du cola, chapitre 3) ---------- */
+
+.bloc_radar {
+  max-width: 860px;
+  margin: 60px 0 0;
+}
+
+.bloc_radar figcaption {
+  margin-bottom: 16px;
+}
+
+.pastille_titre.pastille_fond {
+  display: inline-block;
+  padding: 6px 18px;
+  font-family: var(--titre);
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+}
+
+/* boutons « voir tout » / une solution */
+.radar_choix {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  margin-bottom: 10px;
+}
+
+.radar_choix label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  font-size: 0.82rem;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  cursor: pointer;
+}
+
+.radar_choix input {
+  position: absolute;
+  opacity: 0;
+}
+
+.radar_choix label:has(input:checked) {
+  background: var(--bleu_clair);
+}
+
+.radar_choix label:has(input:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* pastille de couleur devant chaque solution */
+.radar_choix label[data-solution]::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+  background: var(--couleur_serie);
+}
+
+.radar {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.radar_grille circle,
+.radar_grille line {
+  fill: none;
+  stroke: var(--trait_doux);
+  stroke-width: 1;
+}
+
+.radar_grille .radar_zero {
+  stroke: var(--trait);
+  stroke-dasharray: 4 4;
+}
+
+.radar_graduations text {
+  font-size: 11px;
+  fill: var(--trait_doux);
+}
+
+.radar_axes text {
+  font-family: var(--titre);
+  font-size: 15px;
+  fill: var(--couleur_texte);
+}
+
+/* couleurs des 3 solutions */
+[data-solution="1"] { --couleur_serie: var(--vert_citron, #cf3); }
+[data-solution="2"] { --couleur_serie: var(--orange); }
+[data-solution="3"] { --couleur_serie: var(--rose); }
+
+.radar_serie polygon {
+  fill: var(--couleur_serie);
+  fill-opacity: 0.45;
+  stroke: var(--couleur_serie);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.radar_serie circle {
+  fill: var(--couleur_serie);
+  stroke: var(--couleur_serie);
+}
+
+.radar_serie {
+  transition: opacity .3s ease;
+}
+
+.radar_serie.radar_estompee {
+  opacity: 0.2;
+}
+
+/* deux boutons fixes, côte à côte : modifier / poursuivre */
+.pied_double {
+  flex-direction: row;
+  align-items: center;
+}
+
+.pied_double[hidden] {
+  display: none;
+}
+
+.bouton_secondaire {
+  background: var(--fond);
+}
+
+.bouton_secondaire:hover,
+.bouton_secondaire:focus-visible {
+  background: var(--rose);
+}
+
+
+/* ---------- 7. Petits écrans ---------- */
+
+@media (max-width: 700px) {
+  .critere,
+  .evaluation_echelle {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .evaluation_echelle span {
+    grid-column: 1 !important;
+  }
+}
+
+
+/* ---------- 8. Choix de la piste : capsules dans le pop-up d'Andréa ---------- */
+
+.capsules_piste {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.capsules_piste label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 16px;
+  font-size: 0.9rem;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  cursor: pointer;
+}
+
+.capsules_piste input {
+  position: absolute;
+  opacity: 0;
+}
+
+/* pastille de la couleur du graphique */
+.capsules_piste label::before {
+  content: "";
+  flex: 0 0 12px;
+  height: 12px;
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+  background: var(--couleur_serie);
+}
+
+.capsules_piste label:has(input:checked) {
+  background: var(--couleur_serie);
+}
+
+.capsules_piste label:has(input:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+
+/* ---------- 9. Fiche synthétique : une feuille au coin plié ---------- */
+
+.feuille {
+  --coin: 46px;
+  position: relative;
+  max-width: 860px;
+  margin: 40px 0 0;
+  padding: 44px 48px 36px;
+  background:
+    linear-gradient(var(--trait), var(--trait)) top 0 right calc(var(--coin) - 1px) / 1px var(--coin) no-repeat,
+    linear-gradient(var(--trait), var(--trait)) top calc(var(--coin) - 1px) right 0 / var(--coin) 1px no-repeat,
+    linear-gradient(to bottom left, transparent 50%, var(--trait) 50%, var(--trait) calc(50% + 1.5px), var(--blanc) calc(50% + 1.5px)) top right / var(--coin) var(--coin) no-repeat,
+    var(--blanc);
+  border: 1px solid var(--trait);
+  clip-path: polygon(0 0, calc(100% - var(--coin)) 0, 100% var(--coin), 100% 100%, 0 100%);
+}
+
+.feuille_titre {
+  margin: 0 0 10px;
+  padding-right: var(--coin);
+  font-family: var(--titre);
+  font-size: 1.1rem;
+}
+
+.feuille_titre strong {
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* projet, n°, statut : sur une ligne */
+.fiche_infos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 28px;
+  margin-bottom: 34px;
+}
+
+.fiche_info {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.92rem;
+}
+
+.fiche_info input {
+  padding: 4px 14px;
+  font: inherit;
+  background: var(--blanc);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+}
+
+/* statut (sous le titre), et notes de la grille : capsules noires, texte blanc */
+.fiche_statut {
+  display: inline-block;
+  margin: 0 0 34px;
+}
+
+.fiche_statut,
+.fiche_note {
+  padding: 3px 14px;
+  font-size: 0.82rem;
+  color: var(--blanc);
+  background: var(--noir);
+  border-radius: var(--arrondi_pilule);
+}
+
+.fiche_note[hidden] {
+  display: none;
+}
+
+.fiche_atout_titre {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* un bloc : titre en capsule, puis le champ */
+.fiche_bloc {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0 0 32px;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+/* titres : capsules vert d'eau ; petits titres : capsules blanches */
+.fiche_nom {
+  float: none;
+  padding: 5px 18px;
+  font-family: var(--titre);
+  font-size: 0.95rem;
+  background: var(--vert_bleu);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+}
+
+legend.fiche_nom {
+  margin-bottom: 12px;
+}
+
+.fiche_nom_petit {
+  padding: 3px 14px;
+  font-size: 0.82rem;
+  background: var(--blanc);
+}
+
+/* champs : grandes cases arrondies, bleu clair à la saisie */
+.feuille textarea,
+.fiche_champ_titre {
+  width: 100%;
+  padding: 12px 16px;
+  font: inherit;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  background: var(--blanc);
+  border: 1px solid var(--trait);
+  border-radius: 18px;
+  resize: vertical;
+}
+
+.fiche_champ_titre {
+  border-radius: var(--arrondi_pilule);
+  padding: 10px 20px;
+}
+
+.feuille textarea:focus,
+.feuille input[type="text"]:focus {
+  outline: none;
+  background: var(--bleu_clair);
+}
+
+/* points positifs : 4 cases en 2 colonnes */
+.fiche_atouts {
+  align-items: stretch;
+  width: 100%;
+}
+
+.fiche_atouts_grille {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 24px;
+}
+
+.fiche_atout {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/* choix : 3 capsules avec un smiley */
+.feuille textarea::placeholder,
+.fiche_champ_titre::placeholder {
+  color: var(--trait_doux);
+}
+
+/* choix : 3 capsules sur toute la largeur */
+.fiche_choix {
+  align-items: stretch;
+  width: 100%;
+}
+
+.fiche_choix_capsules {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.fiche_choix_capsules label {
+  flex: 1;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 7px 18px;
+  font-size: 0.92rem;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+  cursor: pointer;
+}
+
+.fiche_choix_capsules input {
+  position: absolute;
+  opacity: 0;
+}
+
+.fiche_choix_capsules label:has(input[value="retenue"]:checked)   { background: var(--vert_citron, #cf3); }
+.fiche_choix_capsules label:has(input[value="a_etudier"]:checked) { background: var(--orange); }
+.fiche_choix_capsules label:has(input[value="ecartee"]:checked)   { background: var(--rose); }
+
+.fiche_choix_capsules label:has(input:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* échéance : barre fine noire, curseur rond */
+.fiche_echeance {
+  align-items: stretch;
+  width: 100%;
+}
+
+.fiche_echeance .fiche_nom {
+  align-self: flex-start;
+}
+
+.fiche_curseur {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  font-size: 0.85rem;
+}
+
+.fiche_curseur input {
+  flex: 1;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 22px;
+  margin: 0;
+  background: linear-gradient(var(--noir), var(--noir)) center / 100% 1px no-repeat;
+  cursor: pointer;
+}
+
+.fiche_curseur input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--blanc);
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+}
+
+.fiche_curseur input::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--blanc);
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+}
+
+.fiche_curseur input:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (max-width: 700px) {
+  .feuille {
+    padding: 36px 20px 28px;
+  }
+
+  .fiche_atouts_grille {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ---------- 10. Conclusion ---------- */
+
+.conclusion_rose {
+  max-width: 860px;
+  margin: 60px 0 0;
+  padding: 22px 28px;
+  background: var(--rose);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+}
+
+.conclusion_rose p {
+  margin: 0 0 10px;
+}
+
+.conclusion_rose p:last-child {
+  margin: 0;
+}
+
+.conclusion_rose strong {
+  font-family: var(--titre);
+  font-weight: normal;
+}
+
+/* lien « continuer » vers la page suivante, en bouton */
+.bouton_lien_suite {
+  display: inline-block;
+  text-decoration: none;
+}

@@ -1415,6 +1415,79 @@
   color: var(--texte_inverse);
   box-shadow: none;
 }
+
+
+
+/* =====================================================================
+   16. OUTILS DE L'ÉCO-CONCEPTION (II) : chaise, voiture qui arrive
+   ===================================================================== */
+
+/* un dessin plus petit */
+.media_petit :is(img, .dessin) {
+  width: 120px;
+  height: auto;
+}
+
+/* la voiture Saclay : 220 px, tournée vers la gauche (miroir) */
+.voiture_arrivee :is(img, .dessin) {
+  width: 220px;
+  height: auto;
+  scale: -1 1;
+  transform-origin: 50% 100%;
+  translate: 70vw 0;                 /* attend hors de l'écran, à droite */
+}
+
+/* au milieu de l'écran (classe .joue, une seule fois) : elle arrive en roulant, puis freine */
+.voiture_arrivee.joue :is(img, .dessin) {
+  animation:
+    voiture_arrive 2.4s cubic-bezier(.2, .7, .3, 1) forwards,
+    voiture_cahot .25s ease-in-out 8;
+}
+
+@keyframes voiture_arrive {
+  0%   { translate: 70vw 0; }
+  85%  { translate: -10px 0; }       /* dépasse un peu en freinant */
+  100% { translate: 0 0; }
+}
+
+/* petits cahots pendant qu'elle roule */
+@keyframes voiture_cahot {
+  0%, 100% { rotate: 0deg; }
+  50%      { rotate: -1.5deg; }
+}
+
+/* pas de barre de défilement horizontale pendant qu'elle est hors de l'écran */
+#droite_contenu:has(.voiture_arrivee) {
+  overflow-x: hidden;
+}
+
+/* sans animation pour qui l'a demandé dans son système : la voiture est déjà à sa place */
+@media (prefers-reduced-motion: reduce) {
+  .voiture_arrivee :is(img, .dessin) {
+    translate: 0 0;
+  }
+  .voiture_arrivee.joue :is(img, .dessin) {
+    animation: none;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* =====================================================================
    PETITS ÉCRANS
    ===================================================================== */

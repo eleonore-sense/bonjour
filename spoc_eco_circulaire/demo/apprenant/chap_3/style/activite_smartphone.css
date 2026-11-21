@@ -734,6 +734,52 @@ h3.consigne {
   border-style: dashed;
 }
 
+/* rubrique pré-remplie : titre fixe, texte de la prof (bleu consigne), non cliquable */
+.rubrique_fixe .rubrique_bouton {
+  display: inline-block;
+  background: var(--fond_consigne);
+  cursor: default;
+}
+
+.rubrique_fixe .rubrique_bouton:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.rubrique_fixe .note_fixe {
+  width: 230px;
+  max-width: none;
+  background: var(--fond_consigne);
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Stratégie (en haut) : le texte passe au-dessus du titre, hors du cercle */
+.rubrique_fixe[data-cote="haut"] .note_fixe {
+  top: auto;
+  bottom: calc(100% + 6px);
+  width: 300px;
+}
+
+/* place au-dessus de la roue pour ce texte */
+.roue:has(.rubrique_fixe[data-cote="haut"]) {
+  margin-top: 150px;
+}
+
+/* rubrique grisée (Clients) : visible, vide, non cliquable */
+.rubrique_grisee .rubrique_bouton {
+  display: inline-block;
+  color: var(--trait_doux);
+  border-color: var(--trait_doux);
+  border-style: dashed;
+  cursor: not-allowed;
+}
+
+.rubrique_grisee .rubrique_bouton:hover {
+  transform: none;
+  box-shadow: none;
+}
+
 /* fenêtre de saisie : au survol, au clavier, ou épinglée au clic */
 .rubrique_fenetre {
   display: none;
@@ -1186,6 +1232,15 @@ h3.consigne {
     margin-top: 8px;
   }
 
+  .rubrique_fixe .note_fixe,
+  .rubrique_fixe[data-cote="haut"] .note_fixe {
+    width: auto;
+  }
+
+  .roue:has(.rubrique_fixe[data-cote="haut"]) {
+    margin-top: 30px;
+  }
+
   .miniatures {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
@@ -1231,8 +1286,3 @@ h3.consigne {
   pointer-events: auto;
   cursor: pointer;
 }
-
-
-
-
-

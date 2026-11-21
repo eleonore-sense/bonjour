@@ -90,7 +90,9 @@
   const normaliser = t => t.normalize('NFD').replace(/[̀-ͯ]/g, '')
     .replace(/[’`]/g, "'").replace(/\s+/g, ' ').trim().toLowerCase();
 
-  const rubriques = [...document.querySelectorAll('.roue .rubrique')];
+  // rubriques à remplir (sans les pré-remplies ni Clients, grisée)
+  const RUBRIQUES_A_REMPLIR = '.roue .rubrique:not(.rubrique_fixe, .rubrique_grisee)';
+  const rubriques = [...document.querySelectorAll(RUBRIQUES_A_REMPLIR)];
   const nomDe = r => r.querySelector('.rubrique_bouton').textContent.trim();
   const rubriqueNommee = nom => rubriques.find(r => normaliser(nomDe(r)) === normaliser(nom));
   const rubriquesARevoir = () => rubriques.map(nomDe).filter(nom => evaluations.get(nom) === 'a_approfondir');
@@ -325,7 +327,7 @@
     passerA('roue');
     montrerBoutons();
     dansLeCoin({ reduit: true });
-    document.querySelector('.roue .rubrique_bouton')?.focus({ preventScroll: true });
+    document.querySelector(`${RUBRIQUES_A_REMPLIR} .rubrique_bouton`)?.focus({ preventScroll: true });
   }
 
   boutons.commencer.addEventListener('click', commencer);
@@ -344,7 +346,7 @@
     dansLeCoin();
     ajouterMessage('eleve', texte, nom);
 
-    let message = `Rubrique « ${nom} » (${remplies}/7 rubriques remplies) :\n${texte}`;
+    let message = `Rubrique « ${nom} » (${remplies}/${rubriques.length} rubriques remplies) :\n${texte}`;
     message += restantes.length
       ? `\n\nRubriques encore à remplir : ${restantes.join(', ')}.`
       : '\n\nToutes les rubriques sont remplies.';

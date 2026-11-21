@@ -117,7 +117,7 @@
   // ---------- Question 1 : roue de l'analyse 360° ----------
   // la fenêtre s'ouvre au survol ou au clavier ; un clic sur la rubrique la garde ouverte
 
-  const rubriques = document.querySelectorAll('.roue .rubrique');
+const rubriques = document.querySelectorAll('.roue .rubrique:not(.rubrique_fixe, .rubrique_grisee)');
   const LONGUEUR_NOTE = 90;   // nombre de caractères affichés à côté du titre
 
   const nomDe = r => r.querySelector('.rubrique_bouton').textContent.trim();

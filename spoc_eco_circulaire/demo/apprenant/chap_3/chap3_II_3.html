@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="../couleurs.css">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../mobile.css" media="(max-width: 1100px)">
-
+  <link rel="stylesheet" href="style/chap3.css">
   <script src="../rive/rive.js"></script>
   <script src="../cours.js" defer></script>
   <script src="../script.js" defer></script>
@@ -62,9 +62,9 @@
       </div>
       <!-- DESSIN À CRÉER : rgesn.svg — au clic, il ouvre la capture d'écran (#capture_rgesn, plus bas) -->
       <div class="media_exemple">
-        <button type="button" class="bouton_capture" data-capture="#capture_rgesn" aria-label="voir une capture d’écran du RGESN">
-          <img src="../dessin/chap_3/II/3/rgesn.svg" alt="">
-        </button>
+        <a class="capture_lien capture_moyenne" href="https://www.arcep.fr/mes-demarches-et-services/entreprises/fiches-pratiques/referentiel-general-ecoconception-services-numeriques.html" target="_blank" rel="noopener" aria-label="ouvrir le RGESN sur arcep.fr (nouvel onglet)">
+          <img src="documents/rgesn.webp" alt="">
+        </a>
       </div>
     </div>
   </div>
@@ -87,11 +87,8 @@
         <p class="ligne_etoile"><span class="etoile"></span> le nombre de pièces et la durée de vie émotionnelle à l’usage.</p>
         <span class="span_source"><span class="souligne_fin">source&#8239;:</span> ADEME, <a class="source" href="https://librairie.ademe.fr/dechets-economie-circulaire/6836-guide-d-eco-conception-pour-les-mobiliers-meublants.html" target="_blank" rel="noopener">librairie.ademe.fr</a></span>
       </div>
-      <!-- DESSIN À CRÉER : guide_ademe.svg — au clic, il ouvre l'extrait du guide (#capture_guide_ademe, plus bas) -->
-      <div class="media_exemple">
-        <button type="button" class="bouton_capture" data-capture="#capture_guide_ademe" aria-label="voir un extrait du guide de l’ADEME">
-          <img src="../dessin/chap_3/II/3/guide_ademe.svg" alt="">
-        </button>
+      <div class="media_exemple media_petit">
+          <img src="../dessin/chap_3/II/2/chaise.svg" alt="">
       </div>
     </div>
   </div>
@@ -124,9 +121,8 @@
         <p>La voiture électrique «&#8239;Saclay&#8239;» contient 25&nbsp;% de plastique recyclé. Il faut 5&nbsp;h pour démonter sa batterie, l’ouvrir, changer le BMS (Battery Management System), la refermer et la remonter sur le véhicule. Sa batterie est garantie jusqu’à 160&nbsp;000&nbsp;km (ou 70&nbsp;% d’état de santé), et elle affiche son étiquette énergie.</p>
         <span class="span_source">voiture et chiffres fictifs</span>
       </div>
-      <!-- IMAGE FICTIVE À CRÉER : la voiture Saclay avec ses indicateurs (25 % recyclé, 5 h, 160 000 km, étiquette énergie) -->
-      <div class="media_exemple">
-        <img src="../dessin/chap_3/II/3/voiture_saclay.svg" alt="La voiture électrique fictive Saclay et ses indicateurs de conception.">
+      <div class="media_exemple voiture_arrivee" data-anim-milieu>
+        <img src="../dessin/chap_3/III/2/voiture.svg" alt="La voiture électrique fictive Saclay">
       </div>
     </div>
   </div>
@@ -147,8 +143,8 @@
         <span class="span_source"><span class="souligne_fin">source&#8239;:</span> ADEME, Impact CO₂, <a class="source" href="https://impactco2.fr/outils/habillement/jeans" target="_blank" rel="noopener">impactco2.fr</a></span>
       </div>
       <!-- DESSIN À CRÉER : jean_carbone.svg -->
-      <div class="media_exemple">
-        <img src="../dessin/chap_3/II/3/jean_carbone.svg" alt="">
+      <div class="media_exemple" data-anim-milieu>
+        <img src="../dessin/chap_3/II/3/jean.svg" alt="">
       </div>
     </div>
   </div>
@@ -165,8 +161,8 @@
         <span class="span_source"><span class="souligne_fin">source&#8239;:</span> ADEME, <a class="source" href="https://librairie.ademe.fr/economie-circulaire-et-dechets/7868-l-empreinte-eau-d-un-jean.html" target="_blank" rel="noopener">librairie.ademe.fr</a></span>
       </div>
       <!-- DESSIN À CRÉER : jean_eau.svg -->
-      <div class="media_exemple">
-        <img src="../dessin/chap_3/I/2/eau.svg" alt="">
+      <div class="media_exemple" data-anim-milieu>
+        <img src="../dessin/chap_3/II/3/verre_jean.svg" alt="">
       </div>
     </div>
   </div>
@@ -181,11 +177,13 @@
     <div class="ligne_exemple">
       <div class="exemple">
         <p>Pour un jean, le simulateur Ecobalyse donne un coût environnemental de 5&nbsp;000 points d’impact. À titre de repère, un t-shirt en coton bio se situe autour de 350 à 500 points, et un t-shirt fast fashion entre 1&nbsp;500 et 1&nbsp;800 points&#8239;: le jean est plus lourd, et plus gourmand en matière et en eau.</p>
-        <span class="span_source"><span class="souligne_fin">source&#8239;:</span> Ecobalyse</span>
+        <span class="span_source"><span class="souligne_fin">source&#8239;:</span> <a class="source" href="https://ecobalyse.beta.gouv.fr/versions/v7.0.0/#/textile/simulator" target="_blank" rel="noopener">Ecobalyse d'un jean</a></span>
       </div>
       <!-- CAPTURE À AJOUTER : le simulateur Ecobalyse -->
       <div class="media_exemple">
-        <img src="../dessin/chap_3/II/3/ecobalyse.png" alt="Capture du simulateur Ecobalyse pour un jean.">
+        <a class="capture_lien capture_moyenne" href="https://ecobalyse.beta.gouv.fr/versions/v7.0.0/#/textile/simulator" target="_blank" rel="noopener" aria-label="ouvrir le simulateur Ecobalyse (nouvel onglet)">
+          <img src="documents/ecobalyse.jpg" alt="">
+        </a>
       </div>
     </div>
   </div>

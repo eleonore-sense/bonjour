@@ -65,7 +65,7 @@ const COURS = {
    
         { section: "Appliquer une démarche d'éco-conception", nom: "Activité: cas d'étude d'un smartphone", duree: '30 min', etoile: true,
           pages: ['chap_3/chap3_IV_1.html', 'chap_3/chap3_IV_2.html', 'chap_3/chap3_IV_3.html', 'chap_3/chap3_IV_4.html'] },
-            { section: "Conclusion", nom: "Conclusion", duree: '', lien: 'chap_3/chap3_IV.html' },      ],
+            { section: "Conclusion", nom: "Conclusion", duree: '', lien: 'chap_3/chap3_V.html' },      ],
     },
     { numero: 4,  titre: 'titre du chapitre', fiches: '#', parties: [] },
     { numero: 5,  titre: 'titre du chapitre', fiches: '#', parties: [] },

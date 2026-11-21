@@ -1637,6 +1637,39 @@ strong {
   margin-top: 10px;
 }
 
+
+/* ---------- Capture d'écran = lien vers la source ---------- */
+/* bord noir fin, angles arrondis ; au survol, elle se soulève (comme les pilules) */
+.capture_lien {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--trait);
+  border-radius: 12px;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.capture_lien img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.capture_lien:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 3px 3px 0 var(--trait);
+}
+
+.capture_lien:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* tailles */
+.capture_grande  { width: 340px; }
+.capture_moyenne { width: 280px; }
+
+
+
 /* =====================================================================
    6. ACTIVITÉS
    ===================================================================== */

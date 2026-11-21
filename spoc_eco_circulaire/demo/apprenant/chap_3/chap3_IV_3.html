@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Activité : deviens le héros de ton projet d’éco-conception ! Mission 3</title>
+
+  <link rel="stylesheet" href="../couleurs.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../mobile.css" media="(max-width: 1100px)">
+  <link rel="stylesheet" href="style/activite_smartphone.css">
+  <link rel="stylesheet" href="style/mentor.css">
+  <link rel="stylesheet" href="style/mission2.css">
+  <!-- styles propres à la mission 3 (banque d'idées, grille, graphique araignée, fiche) : à créer -->
+  <link rel="stylesheet" href="style/mission3.css">
+  <link rel="stylesheet" href="style/porte_documents.css">
+
+  <script src="../cours.js" defer></script>
+  <script src="../script.js" defer></script>
+  <script src="../memoire.js" defer></script>
+  <script src="../dessins.js" defer></script>
+  <script src="activite/activite_smartphone.js" defer></script>
+  <!-- mission 3 : Andréa (agent IA de la mission 3), banque d'idées, grille, fiche : à créer -->
+  <script src="activite/mission3.js" defer></script>
+  <script src="activite/porte_documents.js" defer></script>
+</head>
+
+
+<!-- data-page-suivante : la page après l'activité D -->
+<body data-chapitre="3" data-partie="11" data-suite="cache" data-page-suivante="chap3_V.html" data-racine="../">
+
+  <a class="lien_evitement" href="#contenu_gauche">Aller au contenu</a>
+
+  <div id="droite_contenu">
+    <div id="contenu_chapitre">
+
+      <main id="contenu_gauche">
+
+
+
+        <!-- ================= MISSION 3 : PRÉSENTATION ================= -->
+
+        <section class="etape" aria-labelledby="titre_mission_3">
+
+          <h2 class="titre_etape_premier" id="titre_mission_3">mission 3&#8239;: imaginer des éco-solutions et faire les bons choix</h2>
+
+          <div class="bloc_illustre">
+            <dl class="fiche_etape">
+              <div>
+                <dt>Ta troisième mission&#8239;: passer de l’analyse à l’idéation&#8239;!</dt>
+                <dd>
+                  Tu as identifié les principaux enjeux du Basic-phone® et défini les priorités de ton projet. Il est temps de chercher des solutions&#8239;!<br>
+                  Ton objectif n’est pas de trouver une idée unique immédiatement, mais d’explorer plusieurs possibilités, puis de sélectionner les plus pertinentes.
+                </dd>
+              </div>
+            </dl>
+            <!-- ILLUSTRATION : remplacer ce <div> par <img class="illustration" src="../dessin/chap_3/IV/…" alt="…"> -->
+            <div class="illustration emplacement_illustration" aria-hidden="true">illustration</div>
+          </div>
+
+          <!-- rappel de la problématique choisie en mission 2 (mission3.js, mémoire « athentech_mission2 ») -->
+          <p class="rappel_problematique" id="rappel_problematique" hidden>
+            Ta problématique&#8239;: <strong id="problematique_choisie"></strong>
+          </p>
+
+          <div class="txt_labeur">
+            <p>Tu peux agir à différentes échelles, pour répondre à la problématique que tu viens de choisir&#8239;:</p>
+            <ul class="liste_etoiles">
+              <li><span class="etoile" aria-hidden="true"></span> les composants et les matériaux&#8239;;</li>
+              <li><span class="etoile" aria-hidden="true"></span> la conception du téléphone&#8239;;</li>
+              <li><span class="etoile" aria-hidden="true"></span> la production et la distribution&#8239;;</li>
+              <li><span class="etoile" aria-hidden="true"></span> l’utilisation et la fin de vie.</li>
+            </ul>
+          </div>
+
+          <div class="consigne">
+            Pour chaque solution, demande-toi&#8239;: quel problème permet-elle de résoudre&#8239;? Quels bénéfices peut-on attendre&#8239;? Quelles contraintes ou conséquences faut-il examiner&#8239;?
+          </div>
+
+          <div class="conteneur_bouton">
+            <button type="button" class="bouton_etape" data-montrer="partie_idees" aria-controls="partie_idees" aria-expanded="false">c’est parti&#8239;!</button>
+          </div>
+
+
+          <!-- ================= INTERACTION 1 : CONSTITUER UNE BANQUE D'IDÉES ================= -->
+          <!-- 1 éco-solution obligatoire, 2 facultatives. Entrée (ou « soumettre à Andréa ») :
+               Andréa (agent 3) aide à justifier, dans sa petite fenêtre (à coder). -->
+
+          <div class="partie_cachee" id="partie_idees" hidden>
+
+            <h3 class="titre_etape" id="titre_idees">constituer une banque d’idées</h3>
+
+            <div class="consigne" id="consigne_idees">Propose au moins 1&nbsp;éco-solution et justifie pourquoi tu l’as choisie.</div>
+
+            <!-- éco-solutions : même mise en page que les propositions de la mission 2.
+                 Créées par mission3.js (modèle : template modele_eco_solution) ; 1 au départ, 3 au plus. -->
+            <div class="propositions" id="propositions" role="group" aria-labelledby="consigne_idees"></div>
+
+            <div class="conteneur_bouton">
+              <button type="button" class="bouton_etape" id="ajouter_proposition">proposer une autre éco-solution</button>
+            </div>
+
+            <p class="visuellement_cache" id="annonce_idees" role="status"></p>
+
+            <!-- bouton fixe : éco-solution complète, pas encore envoyée → Andréa
+                 (la petite fenêtre d'Andréa prend sa place) -->
+            <div class="qcm_pied" id="pied_soumettre" hidden>
+              <button type="button" class="qcm_verifier" id="bouton_soumettre">soumettre à Andréa</button>
+            </div>
+
+            <!-- bouton fixe : éco-solution validée par Andréa, ou 2 échanges → pop-up d'Andréa -->
+            <div class="qcm_pied" id="pied_idees" hidden>
+              <button type="button" class="qcm_verifier" id="bouton_idees">continuer</button>
+            </div>
+
+
+          </div>
+
+
+          <!-- ================= LA BANQUE D'IDÉES DE L'ÉQUIPE =================
+             (à part de partie_idees : le bouton « c'est parti ! » centre la page sur cette partie,
+             et chercherait sinon le dossier encore caché)
+               Après le pop-up d'Andréa (texte_belle_intuition).
+               5 fiches dans un dossier, comme les documents de la mission 1 :
+               celles de l'élève + celles de l'équipe, tirées au hasard dans la liste
+               de la prof pour sa problématique (templates banque_…, en bas de la page). -->
+
+          <div class="partie_cachee" id="partie_banque" hidden>
+
+            <div class="consigne" id="consigne_banque">Voici la banque d’idées de ton équipe&#8239;: ouvre chaque fiche pour la lire.</div>
+
+            <div class="dossier dossier_idees">
+              <ul class="miniatures" id="banque_idees" aria-labelledby="consigne_banque"></ul>
+            </div>
+
+            <p class="visuellement_cache" id="annonce_banque" role="status"></p>
+
+            <!-- mascotte : 2 fiches ouvertes, tant que toutes ne le sont pas -->
+            <div class="rappel_mascotte" id="rappel_banque" hidden>
+              <div class="rappel_mascotte_dessin emplacement_illustration" aria-hidden="true">mascotte</div>
+              <p>Ouvre toutes les fiches de la banque d’idées avant de passer à la suite&#8239;!</p>
+            </div>
+
+            <!-- bouton fixe : toutes les fiches lues -->
+            <div class="qcm_pied" id="suite_banque" hidden>
+              <button type="button" class="qcm_verifier" data-montrer="partie_comparer" aria-controls="partie_comparer" aria-expanded="false">comparer les solutions</button>
+            </div>
+
+          </div>
+
+
+          <!-- ================= INTERACTION 2 : COMPARER LES SOLUTIONS ================= -->
+
+          <div class="partie_cachee" id="partie_comparer" hidden>
+
+            <h3 class="titre_etape" id="titre_comparer">comparer les solutions</h3>
+
+            <div class="txt_labeur">
+              <p><strong>Comment choisir les solutions les plus pertinentes&#8239;?</strong><br>
+                Toutes les idées ne peuvent pas nécessairement être mises en œuvre. Tu dois donc les comparer à partir de critères définis pour ton projet.</p>
+            </div>
+
+            <div class="consigne consigne_liste" id="consigne_comparer">
+              <p>Pour chaque solution, évalue qualitativement&#8239;:</p>
+              <ul class="liste_etoiles">
+                <li><span class="etoile" aria-hidden="true"></span> <strong>le bénéfice environnemental potentiel</strong>&#8239;: quels impacts pourrait-elle réduire&#8239;?</li>
+                <li><span class="etoile" aria-hidden="true"></span> <strong>la faisabilité technique</strong>&#8239;: peut-elle être mise en œuvre facilement&#8239;?</li>
+                <li><span class="etoile" aria-hidden="true"></span> <strong>le coût</strong>&#8239;: nécessite-t-elle des investissements ou modifie-t-elle le coût de fabrication&#8239;?</li>
+                <li><span class="etoile" aria-hidden="true"></span> <strong>la valeur pour l’utilisateur</strong>&#8239;: améliore-t-elle la durée de vie, la réparabilité ou l’expérience d’utilisation&#8239;?</li>
+                <li><span class="etoile" aria-hidden="true"></span> <strong>les éventuels effets négatifs</strong>&#8239;: peut-elle augmenter d’autres impacts ou dégrader une performance&#8239;?</li>
+              </ul>
+              <p>Lorsque tu ne disposes pas de données chiffrées suffisantes, utilise une évaluation qualitative ou semi-quantitative et indique les incertitudes.</p>
+            </div>
+
+            <!-- GRILLE (dessin de la prof, p. 45) : 3 solutions.
+                 1 = exemple de l'équipe, déjà noté (data-exemple dans les listes banque_…) ;
+                 2 et 3 = au choix parmi les 4 autres fiches de la banque.
+                 Curseurs de −3 à +3, par rapport au Basic-phone® actuel (0 = pas de changement).
+                 Cartes créées par mission3.js (modèle : template modele_evaluation). -->
+            <section class="grille_zone" aria-labelledby="titre_grille">
+              <h4 class="acv_titre" id="titre_grille">Ta grille de sélection</h4>
+              <p class="acv_sous_titre">Note chaque solution de −3 à +3 par rapport au Basic-phone® actuel. Les notes sont qualitatives et doivent être justifiées&#8239;; elles ne remplacent pas une ACV comparative.</p>
+              <div class="grille" id="grille"></div>
+            </section>
+
+            <p class="visuellement_cache" id="annonce_comparer" role="status"></p>
+
+            <!-- bouton fixe : les 3 solutions notées -->
+            <div class="qcm_pied" id="pied_evaluation" hidden>
+              <button type="button" class="qcm_verifier" id="bouton_evaluation">soumettre mon évaluation</button>
+            </div>
+
+
+            <!-- GRAPHIQUE ARAIGNÉE (même mise en page que le radar du cola, chapitre 3)
+                 axes : bénéfice environnemental (haut), faisabilité (droite), intérêt utilisateur (bas), coût (gauche).
+                 Rayon = (note + 3) × 25. Formes et boutons créés par mission3.js. -->
+            <div class="partie_cachee" id="partie_radar" hidden>
+              <figure class="bloc_radar" id="bloc_radar">
+                <figcaption>
+                  <span class="pastille_titre pastille_fond">Évaluation de tes éco-solutions</span>
+                </figcaption>
+
+                <div class="radar_choix" id="radar_choix" role="radiogroup" aria-label="Solution à afficher"></div>
+
+                <svg class="radar" id="radar" viewBox="-120 0 640 400" role="img"
+                     aria-label="Graphique radar : tes trois solutions notées de −3 à +3 sur quatre critères. Le détail des notes est dans le tableau qui suit.">
+                  <g class="radar_grille">
+                    <circle cx="200" cy="200" r="25"/>
+                    <circle cx="200" cy="200" r="50"/>
+                    <circle class="radar_zero" cx="200" cy="200" r="75"/>
+                    <circle cx="200" cy="200" r="100"/>
+                    <circle cx="200" cy="200" r="125"/>
+                    <circle cx="200" cy="200" r="150"/>
+                    <line x1="200" y1="50" x2="200" y2="350"/>
+                    <line x1="50" y1="200" x2="350" y2="200"/>
+                  </g>
+                  <g class="radar_graduations">
+                    <text x="206" y="54">+3</text><text x="206" y="79">+2</text><text x="206" y="104">+1</text>
+                    <text x="206" y="129">0</text><text x="206" y="154">−1</text><text x="206" y="179">−2</text><text x="206" y="204">−3</text>
+                  </g>
+                  <g id="radar_series"></g>
+                  <g class="radar_axes">
+                    <text x="200" y="32" text-anchor="middle">bénéfice environnemental</text>
+                    <text x="362" y="196" text-anchor="start"><tspan x="362">faisabilité</tspan><tspan x="362" dy="17">technique</tspan></text>
+                    <text x="200" y="378" text-anchor="middle">intérêt pour l’utilisateur</text>
+                    <text x="38" y="196" text-anchor="end">coût</text>
+                  </g>
+                </svg>
+
+                <table class="visuellement_cache" id="radar_tableau">
+                  <caption>Notes de tes trois solutions, de −3 à +3</caption>
+                  <thead><tr><th scope="col">solution</th><th scope="col">bénéfice environnemental</th><th scope="col">faisabilité technique</th><th scope="col">coût</th><th scope="col">intérêt pour l’utilisateur</th></tr></thead>
+                  <tbody></tbody>
+                </table>
+              </figure>
+
+              <!-- 2 boutons fixes : modifier / poursuivre (→ Andréa : texte_apres_comparaison) -->
+              <div class="qcm_pied pied_double" id="pied_radar" hidden>
+                <button type="button" class="qcm_verifier bouton_secondaire" id="bouton_modifier">modifier mon évaluation</button>
+                <button type="button" class="qcm_verifier" id="bouton_poursuivre">poursuivre</button>
+              </div>
+
+              <!-- bouton fixe, sous la fenêtre d'Andréa, pendant la discussion « je ne suis pas sûr·e » -->
+              <div class="qcm_pied" id="pied_piste" hidden>
+                <button type="button" class="qcm_verifier" id="bouton_piste">choisir ma piste</button>
+              </div>
+            </div>
+
+          </div>
+
+
+          <!-- ================= LIVRABLE : LA FICHE SYNTHÉTIQUE ================= -->
+          <!-- « Idea sheet » de la prof (p. 46), en français.
+               Pré-remplie depuis la grille (titre, description, notes) ; l'étudiant complète le reste.
+               Andréa relit à la fin. -->
+
+          <div class="partie_cachee" id="partie_fiche" hidden>
+
+            <h3 class="titre_etape" id="titre_fiche">livrable de la mission 3&#8239;: ta fiche synthétique</h3>
+
+            <div class="consigne">Pour l’éco-solution qui semble la plus pertinente suite à ta notation qualitative, prépare une fiche synthétique.</div>
+
+            <!-- FICHE IDÉE : une feuille au coin plié (style/mission3.css, « 9. Fiche »).
+                 Titres dans des capsules vert d'eau ; notes de la grille en pastilles noires ;
+                 consignes en gris (placeholder) ; pré-remplie par mission3.js avec la piste choisie. -->
+            <form class="fiche_idee feuille" id="fiche_idee" aria-labelledby="titre_feuille">
+
+              <p class="feuille_titre" id="titre_feuille"><strong>fiche idée</strong> · éco-conception du Basic-phone®</p>
+
+              <p class="fiche_statut">statut&#8239;: sélectionnée</p>
+
+              <div class="fiche_bloc">
+                <label class="fiche_nom" for="fiche_titre">titre de l’idée</label>
+                <input type="text" class="fiche_champ_titre" id="fiche_titre">
+              </div>
+
+              <div class="fiche_bloc">
+                <label class="fiche_nom" for="fiche_description">description de l’idée</label>
+                <textarea id="fiche_description" rows="4" placeholder="En quoi consiste-t-elle, à quelle étape du cycle de vie agit-elle ?"></textarea>
+              </div>
+
+              <fieldset class="fiche_bloc fiche_atouts">
+                <legend class="fiche_nom">points positifs de l’idée</legend>
+                <div class="fiche_atouts_grille">
+                  <label class="fiche_atout"><span class="fiche_atout_titre"><span class="fiche_nom fiche_nom_petit">niveau d’innovation</span><span class="fiche_note" data-note="innovation" hidden></span></span><textarea id="fiche_innovation" rows="3" placeholder="En quoi cette idée est-elle nouvelle pour ATHEN’TECH, ou sur le marché ?"></textarea></label>
+                  <label class="fiche_atout"><span class="fiche_atout_titre"><span class="fiche_nom fiche_nom_petit">environnement</span><span class="fiche_note" data-note="environnement" hidden></span></span><textarea id="fiche_environnement" rows="3" placeholder="Quels impacts réduit-elle, à quelle étape du cycle de vie ? Sur quelles données t’appuies-tu ?"></textarea></label>
+                  <label class="fiche_atout"><span class="fiche_atout_titre"><span class="fiche_nom fiche_nom_petit">performance</span><span class="fiche_note" data-note="performance" hidden></span></span><textarea id="fiche_performance" rows="3" placeholder="Que gagne l’utilisateur (durée de vie, réparabilité, usage) ? Les fonctions essentielles sont-elles préservées ?"></textarea></label>
+                  <label class="fiche_atout"><span class="fiche_atout_titre"><span class="fiche_nom fiche_nom_petit">coût</span><span class="fiche_note" data-note="cout" hidden></span></span><textarea id="fiche_cout" rows="3" placeholder="Faut-il investir ? Quel effet sur le coût de fabrication (250 € au plus) ?"></textarea></label>
+                </div>
+              </fieldset>
+
+              <div class="fiche_bloc">
+                <label class="fiche_nom" for="fiche_limites">difficultés, limites</label>
+                <textarea id="fiche_limites" rows="3" placeholder="Obstacles techniques, coûts, effets négatifs possibles (une amélioration ici peut-elle dégrader autre chose ?), incertitudes…"></textarea>
+              </div>
+
+              <fieldset class="fiche_bloc fiche_choix">
+                <legend class="fiche_nom">choix</legend>
+                <div class="fiche_choix_capsules">
+                  <label><input type="radio" name="fiche_choix" value="retenue"> retenue</label>
+                  <label><input type="radio" name="fiche_choix" value="a_etudier"> à étudier</label>
+                  <label><input type="radio" name="fiche_choix" value="ecartee"> écartée</label>
+                </div>
+              </fieldset>
+
+              <div class="fiche_bloc">
+                <label class="fiche_nom" for="fiche_plan">plan d’action</label>
+                <textarea id="fiche_plan" rows="3" placeholder="Les étapes pour la mettre en œuvre et vérifier ses bénéfices : 1. … 2. … 3. …"></textarea>
+              </div>
+
+              <div class="fiche_bloc fiche_echeance">
+                <label class="fiche_nom" for="fiche_echeance">échéance</label>
+                <span class="fiche_curseur"><span>court terme</span><input type="range" id="fiche_echeance" min="1" max="5" value="3"><span>long terme</span></span>
+              </div>
+
+            </form>
+
+            <!-- bouton fixe, en bas à droite → Andréa relit (petite fenêtre, qui prend sa place) -->
+            <div class="qcm_pied" id="pied_fiche">
+              <button type="submit" class="qcm_verifier" form="fiche_idee">soumettre ma fiche à Andréa</button>
+            </div>
+
+            <!-- bouton fixe, sous la fenêtre : fiche validée par Andréa, ou 2 échanges → « Bravo » -->
+            <div class="qcm_pied" id="pied_fiche_suite" hidden>
+              <button type="button" class="qcm_verifier" id="bouton_fiche_suite">continuer</button>
+            </div>
+
+            <p class="visuellement_cache" id="annonce_fiche" role="status"></p>
+
+          </div>
+
+
+          <!-- ================= CONCLUSION DE L'ACTIVITÉ D (doc de la prof, p. 46) =================
+               Après le pop-up « Bravo » d'Andréa (texte_conclusion). -->
+
+          <div class="partie_cachee" id="partie_conclusion" hidden>
+
+            <div class="conclusion_rose" id="conclusion_rose">
+              <p><strong>Le plus important n’est pas de trouver une solution parfaite du premier coup, mais de construire un raisonnement rigoureux, de tester ses hypothèses et de vérifier les résultats.</strong></p>
+              <p>Ces réflexes te seront utiles pour éco-concevoir bien d’autres produits et services&#8239;!</p>
+            </div>
+
+            <div class="conteneur_bouton">
+              <a class="bouton_etape bouton_lien_suite" href="chap3_V.html">continuer</a>
+            </div>
+
+          </div>
+
+        </section>
+
+
+      <!-- ================= POP-UP MASCOTTE DE FIN ================= -->
+      <dialog class="pop_mascotte pop_fin" id="pop_fin" data-delai="4000" aria-labelledby="pop_fin_texte">
+        <button type="button" class="fermer_modal" aria-label="Fermer"></button>
+        <img class="pop_mascotte_image" src="../dessin/mascotte/mascotte.svg" alt="">
+        <div class="pop_mascotte_contenu">
+          <p class="pop_mascotte_texte" id="pop_fin_texte">Mission accomplie&#8239;! Tu as transformé une problématique environnementale en un projet concret. Garde ce réflexe&#8239;: analyse, imagine, compare et vérifie. C’est comme ça qu’on fait vraiment la différence&#8239;!</p>
+          <div class="pop_fin_boutons">
+            <a class="bouton_suite" href="chap3_V.html">continuer</a>
+          </div>
+        </div>
+      </dialog>
+
+      <!-- ================= MENTOR IA (mission 3) ================= -->
+      <!-- Même structure que la mission 1, pour reprendre mentor.css.
+           Comportement : activite/mission3.js (messages écrits à l'avance, et discussion avec l'IA).
+           Placé dans <main> pour que dessins.js colore ses dessins SVG. -->
+
+      <aside class="mentor" id="mentor_ia" aria-labelledby="mentor_titre" hidden>
+
+        <!-- GRAND DESSIN DU MENTOR (pop-ups) : un par humeur, le CSS montre le bon -->
+        <img class="mentor_grand_dessin humeur_neutre"  src="../dessin/chap_3/IV/mentor.svg" alt="">
+        <img class="mentor_grand_dessin humeur_content" src="../dessin/chap_3/IV/mentor_heureux.svg" alt="">
+        <img class="mentor_grand_dessin humeur_decu"    src="../dessin/chap_3/IV/mentor_doute.svg" alt="">
+
+        <div class="mentor_entete">
+          <!-- PETIT DESSIN DU MENTOR (fenêtre en bas à droite) : un par humeur -->
+          <img class="mentor_illustration humeur_neutre"  src="../dessin/chap_3/IV/mentor.svg" alt="">
+          <img class="mentor_illustration humeur_content" src="../dessin/chap_3/IV/mentor_heureux.svg" alt="">
+          <img class="mentor_illustration humeur_decu"    src="../dessin/chap_3/IV/mentor_doute.svg" alt="">
+          <h2 class="mentor_titre" id="mentor_titre">Andréa</h2>
+        </div>
+
+        <div class="mentor_corps" id="mentor_corps">
+
+          <div class="mentor_scene" role="region" aria-label="Message du mentor" tabindex="-1">
+            <div class="mentor_scene_texte"></div>
+            <div class="mentor_scene_fil" role="log" aria-live="polite" aria-relevant="additions"></div>
+          </div>
+
+          <div class="mentor_fil" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation avec le mentor" tabindex="0"></div>
+
+          <p class="mentor_etat" role="status"></p>
+
+          <!-- bouton du pop-up : son texte change selon le message (activite/mission3.js) -->
+          <div class="mentor_choix">
+            <!-- 2e bouton : seulement pour « je veux reprendre » (mission3.js) -->
+            <button type="button" class="bouton_etape" data-choix="reprendre" hidden>je veux reprendre</button>
+            <button type="button" class="bouton_etape" data-choix="suivant">c’est parti&#8239;!</button>
+          </div>
+
+          <form class="mentor_saisie" id="mentor_saisie">
+            <label for="mentor_message" class="visuellement_cache">Ton message au mentor</label>
+            <textarea id="mentor_message" rows="2" maxlength="2000" placeholder="Réponds au mentor…"></textarea>
+            <button type="submit" class="qcm_verifier">envoyer</button>
+          </form>
+
+        </div>
+      </aside>
+
+      <!-- boîte de la mascotte, en bas à droite : elle proposera de passer
+           après 3 réponses que le mentor n'a pas validées -->
+      <div class="rappel_mascotte rappel_avec_bouton" id="rappel_passer" role="status" hidden>
+        <!-- DESSIN DE LA MASCOTTE : remplacer ce <div> par
+             <img class="rappel_mascotte_dessin" src="../dessin/chap_3/IV/…" alt=""> -->
+        <div class="rappel_mascotte_dessin emplacement_illustration" aria-hidden="true">mascotte</div>
+        <div class="rappel_mascotte_texte">
+          <p>Tes réponses ne sont pas encore celles attendues. Je te conseille de réfléchir encore avec Andréa, mais tu peux passer à l’étape suivante.</p>
+          <button type="button" class="bouton_etape" id="passer_etape">continuer</button>
+        </div>
+      </div>
+
+
+      </main>
+
+
+      <!-- Boîtes de définition des mots notion de la page -->
+      <div id="notion_droite"></div>
+
+    </div>
+  </div>
+
+
+  <!-- ================= FICHE D'UNE IDÉE EN POP-UP ================= -->
+  <!-- Une seule fenêtre, remplie par mission3.js avec la fiche cliquée. -->
+
+  <dialog class="fenetre_document fenetre_idee" id="fenetre_idee" aria-labelledby="titre_fenetre_idee">
+    <button type="button" class="qcm_fermer" aria-label="fermer la fiche"></button>
+    <p class="idee_theme"></p>
+    <h4 class="idee_titre_fiche" id="titre_fenetre_idee"></h4>
+    <h5 class="souligne_fin">Pourquoi&#8239;?</h5>
+    <p class="idee_pourquoi"></p>
+    <p class="idee_auteur"></p>
+  </dialog>
+
+
+  <!-- ================= TEXTES D'ANDRÉA (écrits par toi, pas par l'IA) ================= -->
+
+  <!-- Accueil de la mission 3 -->
+  <template id="texte_accueil" data-humeur="content">
+    <p><strong>Te revoilà&#8239;! Prêt·e pour ta troisième mission&#8239;?</strong></p>
+    <p>Tu as choisi ta problématique. Maintenant, place aux idées&#8239;: propose tes éco-solutions, puis compare-les pour choisir les plus pertinentes.</p>
+  </template>
+
+  <!-- modèle d'une éco-solution (numéro et identifiants : mission3.js).
+       Même mise en page que les propositions de la mission 2 (style/mission2.css). -->
+  <template id="modele_eco_solution">
+    <fieldset class="proposition">
+      <legend class="proposition_titre">éco-solution <span class="proposition_numero">1</span></legend>
+
+      <label class="visuellement_cache proposition_label_etape">Échelle d’action</label>
+      <span class="proposition_choix">
+        <select class="proposition_etape" required>
+          <option value="">choisis ici l’échelle d’action</option>
+          <option>Les composants et les matériaux</option>
+          <option>La conception du téléphone</option>
+          <option>La production et la distribution</option>
+          <option>L’utilisation et la fin de vie</option>
+        </select>
+      </span>
+
+      <label class="proposition_label proposition_label_probleme">éco-solution proposée</label>
+      <textarea class="proposition_probleme" rows="3"></textarea>
+
+      <label class="proposition_label proposition_label_solution">pourquoi l’as-tu choisie&#8239;?</label>
+      <textarea class="proposition_solution" rows="3" placeholder="puis Entrée pour la montrer à Andréa"></textarea>
+    </fieldset>
+  </template>
+
+  <!-- modèle d'une carte de la grille (mission3.js) -->
+  <template id="modele_evaluation">
+    <fieldset class="evaluation">
+      <legend class="evaluation_titre">solution étudiée <span class="evaluation_numero">1</span></legend>
+      <label class="visuellement_cache evaluation_label_choix">Solution étudiée</label>
+      <span class="proposition_choix evaluation_choix">
+        <select class="proposition_etape evaluation_solution" required>
+          <option value="">choisis une solution de la banque</option>
+        </select>
+      </span>
+      <div class="criteres">
+        <div class="critere" data-critere="environnement">
+          <label class="critere_nom">bénéfice environnemental potentiel</label>
+          <div class="critere_curseur">
+            <input type="range" min="-3" max="3" step="1" value="0">
+            <output class="critere_valeur">0</output>
+          </div>
+        </div>
+        <div class="critere" data-critere="faisabilite">
+          <label class="critere_nom">faisabilité technique</label>
+          <div class="critere_curseur">
+            <input type="range" min="-3" max="3" step="1" value="0">
+            <output class="critere_valeur">0</output>
+          </div>
+        </div>
+        <div class="critere" data-critere="cout">
+          <label class="critere_nom">coût</label>
+          <div class="critere_curseur">
+            <input type="range" min="-3" max="3" step="1" value="0">
+            <output class="critere_valeur">0</output>
+          </div>
+        </div>
+        <div class="critere" data-critere="utilisateur">
+          <label class="critere_nom">intérêt pour l’utilisateur</label>
+          <div class="critere_curseur">
+            <input type="range" min="-3" max="3" step="1" value="0">
+            <output class="critere_valeur">0</output>
+          </div>
+        </div>
+      </div>
+      <p class="evaluation_echelle" aria-hidden="true"><span>−3 bien moins bien</span><span>0 pareil</span><span>+3 bien mieux</span></p>
+    </fieldset>
+  </template>
+
+  <!-- Éco-solutions : continuer alors qu'Andréa n'est pas encore convaincue.
+       <p class="derniere_remarque"> = sa dernière remarque (mission3.js).
+       Boutons : « je veux reprendre » / « continuer quand même ». -->
+  <template id="texte_chagrin" data-humeur="decu">
+    <p><strong>Hmm, ça me chagrine encore un peu…</strong></p>
+    <p class="derniere_remarque"></p>
+    <p>Tu veux reprendre ton éco-solution, ou continuer quand même&#8239;?</p>
+  </template>
+
+  <!-- « continuer quand même » : vers la banque d'idées -->
+  <template id="texte_banque_quand_meme" data-humeur="neutre">
+    <p><strong>D’accord, on avance&#8239;!</strong></p>
+    <p>Ton équipe a également constitué une banque d’idées&#8239;: elle va t’aider à élargir tes pistes.</p>
+  </template>
+
+  <!-- Après « poursuivre », sous le graphique araignée.
+       Boutons : « c'est bon pour moi » (→ texte_choix_piste) / « je ne suis pas sûr·e… » (→ discussion). -->
+  <template id="texte_apres_comparaison" data-humeur="content">
+    <p><strong>Super&#8239;!</strong></p>
+    <p>Cette évaluation a-t-elle pu te permettre de tirer une conclusion sur la piste la plus pertinente à développer&#8239;?</p>
+  </template>
+
+  <!-- Choix de la piste : les 3 solutions évaluées en capsules (mission3.js).
+       Bouton : « valider mon choix » → la fiche synthétique pré-remplie. -->
+  <template id="texte_choix_piste" data-humeur="neutre">
+    <p><strong>Quelle piste te semble la plus pertinente&#8239;?</strong></p>
+    <div class="capsules_piste" role="radiogroup" aria-label="Piste la plus pertinente"></div>
+    <p class="choix_erreur" role="alert" hidden>Choisis d’abord une piste.</p>
+  </template>
+
+  <!-- Après les éco-solutions : bouton « voir la banque d'idées » -->
+  <template id="texte_belle_intuition" data-humeur="content">
+    <p><strong>Ça me semble être une belle intuition&#8239;!</strong></p>
+    <p>Ton équipe a également constitué une banque d’idées.</p>
+  </template>
+
+  <!-- ========== BANQUE D'IDÉES DE L'ÉQUIPE ==========
+       Liste verte de la prof (doc p. 42-44), 15 idées par problématique.
+       data-theme = la thématique ; data-titre = l'idée ; le texte = pourquoi.
+       data-exemple = l'idée notée en exemple dans la grille (toujours dans la banque) :
+       notes environnement, faisabilité, coût, utilisateur, de −3 à +3 (à faire valider par la prof).
+       Les « pourquoi » sont des propositions à faire relire par la prof. -->
+
+  <template id="banque_production">
+    <ul>
+      <li data-theme="Matériaux" data-titre="Acheter les composants les plus impactants (carte électronique principale, écran…) à des fournisseurs engagés dans une production bas carbone">Les composants électroniques sont les premiers contributeurs à l’empreinte carbone de la production&#8239;: agir sur leurs fournisseurs vise directement le plus gros poste.</li>
+      <li data-theme="Matériaux" data-titre="Utiliser de l’or issu de filières responsables (Fairmined, Fairtrade)">L’or ressort fortement dans l’épuisement des ressources&#8239;; des filières responsables limitent aussi les risques sociaux liés à son extraction.</li>
+      <li data-theme="Matériaux" data-titre="Utiliser du cobalt certifié responsable, ou une batterie qui en contient moins">Le cobalt est un métal critique, dont l’extraction pose de graves problèmes sociaux, comme le travail des enfants dans certaines mines.</li>
+      <li data-theme="Matériaux" data-titre="Utiliser de la matière recyclée pour la coque (plastique, aluminium)">Moins de matières premières à extraire, à condition de vérifier que la matière recyclée est réellement moins impactante.</li>
+      <li data-theme="Matériaux" data-titre="Remplacer certains métaux critiques par des alternatives">Moins de pression sur des ressources rares et sur des approvisionnements à risque.</li>
+      <li data-theme="Matériaux" data-titre="Éviter les substances dangereuses">Protège la santé des travailleurs pendant la fabrication et facilite le traitement en fin de vie.</li>
+      <li data-theme="Énergie" data-exemple="2,2,-1,0" data-titre="Utiliser de l’énergie renouvelable pour l’assemblage final">L’électricité utilisée pour fabriquer fait partie des principaux postes de l’empreinte carbone de la production.</li>
+      <li data-theme="Énergie" data-titre="Diminuer la consommation d’énergie de l’assemblage final">Moins d’électricité consommée en usine, c’est moins d’émissions à la production.</li>
+      <li data-theme="Technologie propre" data-titre="Optimiser la consommation d’énergie des salles blanches où l’on fabrique l’électronique">La fabrication des puces électroniques est le premier contributeur au changement climatique de la production.</li>
+      <li data-theme="Technologie propre" data-titre="Réutiliser les chutes de production">Moins de matière perdue, donc moins de matière à extraire et à transformer.</li>
+      <li data-theme="Technologie propre" data-titre="Réutiliser l’eau en boucle fermée">La fabrication électronique consomme beaucoup d’eau&#8239;: le carbone n’est pas le seul impact.</li>
+      <li data-theme="Transport" data-titre="Choisir des fournisseurs de composants proches de l’usine d’assemblage">Moins de transport entre les étapes de fabrication.</li>
+      <li data-theme="Transport" data-titre="Réduire le transport aérien au profit du bateau ou du train">La distribution, par avion et camion, est le 2e poste de l’empreinte carbone du Basic-phone®.</li>
+      <li data-theme="Emballage" data-titre="Réduire le volume et la masse de l’emballage">Moins de matière à produire, et plus de téléphones transportés à chaque voyage.</li>
+      <li data-theme="Emballage" data-titre="Rendre optionnel l’achat du chargeur et des accessoires">Le chargeur pèse dans l’épuisement des ressources, et beaucoup d’utilisateurs en ont déjà un.</li>
+    </ul>
+  </template>
+
+  <template id="banque_utilisation">
+    <ul>
+      <li data-theme="Énergie" data-titre="Un écran et un processeur plus sobres en consommation">Moins d’électricité consommée à chaque recharge, pendant toute la durée de vie du téléphone.</li>
+      <li data-theme="Énergie" data-titre="Un mode d’économie d’énergie intelligent">Le téléphone consomme moins, sans que l’utilisateur ait besoin d’y penser.</li>
+      <li data-theme="Énergie" data-titre="Une recharge nocturne optimisée">Beaucoup d’utilisateurs rechargent toute la nuit&#8239;: une recharge optimisée ménage la batterie et prolonge sa vie.</li>
+      <li data-theme="Énergie" data-titre="Diminuer la puissance maximale de recharge">Une recharge très rapide (jusqu’à 100&nbsp;W sur le Basic-phone®) use la batterie plus vite.</li>
+      <li data-theme="Consommateur et comportement" data-titre="Afficher l’état de santé de la batterie">L’utilisateur sait quand changer la batterie, plutôt que tout le téléphone.</li>
+      <li data-theme="Consommateur et comportement" data-titre="Conseiller une recharge optimisée">De bonnes habitudes de recharge prolongent la vie de la batterie.</li>
+      <li data-theme="Consommateur et comportement" data-titre="Inciter à réparer avant de remplacer, par exemple avec un bon de réparation">Garder son téléphone plus longtemps évite d’en fabriquer un nouveau, l’étape qui pèse le plus.</li>
+      <li data-theme="Durabilité" data-titre="Une protection renforcée contre les chocs">Le téléphone suit son utilisateur partout et tombe souvent&#8239;: moins de casse, c’est une vie plus longue.</li>
+      <li data-theme="Entretien et maintenance" data-exemple="2,1,-1,2" data-titre="Une batterie, un écran, une caméra et un haut-parleur remplaçables">Ce sont les pièces qui lâchent le plus souvent&#8239;; les changer évite de remplacer tout le téléphone.</li>
+      <li data-theme="Entretien et maintenance" data-titre="Des pièces détachées disponibles pendant 10&nbsp;ans">Sans pièce disponible, la réparation est impossible et le téléphone est remplacé.</li>
+      <li data-theme="Entretien et maintenance" data-titre="Un support logiciel pendant 8 à 10&nbsp;ans">Un téléphone qui ne reçoit plus de mises à jour devient obsolète, même s’il fonctionne encore.</li>
+      <li data-theme="Entretien et maintenance" data-titre="Un réseau de réparateurs agréés et des notices de réparation">Trouver un réparateur près de chez soi est souvent ce qui manque pour faire réparer.</li>
+      <li data-theme="Durabilité" data-titre="Une garantie de 8&nbsp;ans">Le fabricant s’engage sur la durée de vie, et l’utilisateur est rassuré.</li>
+      <li data-theme="Fonctionnalité" data-titre="Pouvoir ajouter de la mémoire">Le téléphone suit l’évolution des besoins sans devoir être remplacé.</li>
+      <li data-theme="Dématérialisation" data-titre="Un diagnostic logiciel et un service après-vente à distance">Les pannes sont repérées plus tôt, sans déplacement.</li>
+    </ul>
+  </template>
+
+  <template id="banque_fin_de_vie">
+    <ul>
+      <li data-theme="Fin de vie" data-exemple="2,2,-1,1" data-titre="Une batterie démontable">La batterie doit être démontée pour être traitée dans une filière spécifique.</li>
+      <li data-theme="Fin de vie" data-titre="Un assemblage réversible, sans colle ni soudure">Un téléphone qui se démonte facilement se répare, se reconditionne et se recycle mieux.</li>
+      <li data-theme="Fin de vie" data-titre="Limiter le nombre de matières différentes">La grande diversité des matières complique le tri et le recyclage.</li>
+      <li data-theme="Fin de vie" data-titre="Marquer les plastiques">Le recycleur identifie les plastiques et les trie correctement.</li>
+      <li data-theme="Fin de vie" data-titre="Un passeport numérique avec les informations clés pour le recycleur">Le recycleur sait comment démonter le téléphone et ce qu’il contient.</li>
+      <li data-theme="Consommateur et comportement" data-titre="Une campagne de reprise de l’ancien téléphone, avec un bonus">Beaucoup de téléphones dorment dans les tiroirs&#8239;: la reprise les fait revenir vers le reconditionnement ou le recyclage.</li>
+      <li data-theme="Consommateur et comportement" data-titre="Indiquer où trouver les bornes de collecte">Beaucoup d’utilisateurs ne savent pas où déposer leur ancien téléphone.</li>
+      <li data-theme="Matériaux" data-titre="Éviter les substances dangereuses">Le recyclage est plus sûr et moins polluant.</li>
+      <li data-theme="Entretien et maintenance" data-titre="Des notices de remplacement pour les particuliers et les réparateurs">Un téléphone réparé ou reconditionné repart pour une deuxième vie au lieu d’être jeté.</li>
+      <li data-theme="Entretien et maintenance" data-titre="Une réparation possible avec des outils standard">Réparateurs et recycleurs ouvrent le téléphone sans outil spécial.</li>
+      <li data-theme="Matériaux" data-titre="Utiliser de la matière recyclée pour la coque">La matière récupérée en fin de vie trouve un débouché, à condition qu’elle soit réellement moins impactante.</li>
+      <li data-theme="Emballage" data-titre="Un emballage réutilisable pour la vente en ligne">L’emballage ne devient pas un déchet après la livraison.</li>
+      <li data-theme="Emballage" data-titre="Un emballage sans plastique, ou en plastique recyclable ou recyclé">L’emballage se recycle facilement après le déballage.</li>
+      <li data-theme="Fonctionnalité" data-titre="Une connectique universelle">Câbles et chargeurs restent utilisables d’un téléphone à l’autre&#8239;: moins de déchets.</li>
+      <li data-theme="Durabilité" data-titre="Un port USB remplaçable">Une panne fréquente ne condamne plus tout le téléphone.</li>
+    </ul>
+  </template>
+
+  <!-- Fin de l'activité D (doc de la prof, p. 46) : pop-up d'Andréa, bouton « continuer » → conclusion -->
+  <template id="texte_conclusion" data-humeur="content">
+    <p><strong>Bravo, tu as mené ton projet d’éco-conception&#8239;!</strong></p>
+    <p>Tu as appris à analyser le contexte d’une entreprise, à comprendre les impacts d’un produit, à imaginer des solutions et à sélectionner celles qui répondent le mieux aux objectifs du projet.</p>
+    <p>Tu as également découvert qu’une démarche d’éco-conception implique des arbitrages&#8239;: une solution doit être évaluée au regard de ses bénéfices environnementaux, de sa faisabilité, de son coût et des besoins des utilisateurs.</p>
+  </template>
+
+
+  <!-- ========== Bandeau du bas (logos) ========== -->
+
+  <footer id="bandeau_bas">
+  </footer>
+
+</body>
+</html>
