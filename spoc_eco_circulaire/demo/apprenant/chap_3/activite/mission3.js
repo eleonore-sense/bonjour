@@ -16,6 +16,7 @@
 // Signaux de l'IA (retirés avant affichage) :
 //   [EVAL: Éco-solution N = ok|a_approfondir]   avis (rond dans la pastille)
 //   [ECO: N = éco-solution | pourquoi]          version finale → les cases se remplissent
+//   [THEME: N = catégorie]                      catégorie de la prof (mise au propre) → banque d'idées
 //   [HUMEUR: neutre|content|decu]               visage d'Andréa
 // =====================================================================
 
@@ -143,6 +144,21 @@
   const normaliser = t => t.normalize('NFD').replace(/[̀-ͯ]/g, '')
     .replace(/[’`]/g, "'").replace(/\s+/g, ' ').trim().toLowerCase();
 
+  // texte d'Andréa : **mot** ou __mot__ → en gras ; titres et astérisques seuls retirés
+  function ecrireTexte(element, texte) {
+    element.replaceChildren();
+    String(texte).replace(/^\s*#{1,6}\s+/gm, '').split(/(\*\*[^*\n]+?\*\*|__[^_\n]+?__)/g).forEach(morceau => {
+      if (!morceau) return;
+      if (/^(\*\*|__)[\s\S]+(\*\*|__)$/.test(morceau)) {
+        const gras = document.createElement('strong');
+        gras.textContent = morceau.slice(2, -2);
+        element.append(gras);
+      } else {
+        element.append(morceau.replace(/\*\*/g, ''));
+      }
+    });
+  }
+
   function ajouterMessage(qui, texte, etiquette) {
     const cible = panneau.classList.contains('popup') ? sceneFil : fil;
     const bulle = document.createElement('div');
@@ -159,7 +175,8 @@
     }
     const p = document.createElement('p');
     p.className = 'mentor_texte';
-    p.textContent = texte;
+    if (qui === 'mentor') ecrireTexte(p, texte);
+    else p.textContent = texte;
     bulle.append(p);
     cible.appendChild(bulle);
     cible.scrollTop = cible.scrollHeight;
@@ -179,6 +196,7 @@
     const evals = [];
     const ecos = [];
     const champsFiche = [];
+    const themes = [];
     let valide = null;
     let humeur = null;
     let texte = brut;
@@ -192,13 +210,11 @@
       ecos.push({ n: Number(n), solution: solution.trim(), pourquoi: pourquoi.trim() });
       return '';
     });
+    texte = texte.replace(/\[\s*THEME\s*:\s*(\d+)\s*=\s*([^\]]+?)\s*\]/gi, (_, n, t) => { themes.push({ n: Number(n), theme: t }); return ''; });
     texte = texte.replace(/\[\s*HUMEUR\s*:\s*([a-zéè_]+)\s*\]/gi, (_, h) => { humeur = h.toLowerCase(); return ''; });
-    texte = texte.replace(/\[\s*(EVAL|ECO|HUMEUR|VALIDE|RESUME|TEXTE|DOC|FICHE)[^\]]*\]/gi, '');   // signal mal écrit
-    texte = texte
-      .replace(/\*\*(.+?)\*\*/gs, '$1').replace(/__(.+?)__/gs, '$1')   // Markdown
-      .replace(/^\s*#{1,6}\s+/gm, '')
-      .replace(/\*\*/g, '');
-    return { texte: texte.replace(/\n{3,}/g, '\n\n').trim(), evals, ecos, champsFiche, valide, humeur };
+    texte = texte.replace(/\[\s*(EVAL|ECO|THEME|HUMEUR|VALIDE|RESUME|TEXTE|DOC|FICHE)[^\]]*\]/gi, '');   // signal mal écrit
+    // gras Markdown (**mot**) : gardé, affiché en gras par ecrireTexte
+    return { texte: texte.replace(/\n{3,}/g, '\n\n').trim(), evals, ecos, themes, champsFiche, valide, humeur };
   }
 
   // envoi au relais, un message à la fois
@@ -314,8 +330,19 @@
     place.textContent = choix.charAt(0).toLowerCase() + choix.slice(1);
     ligne.hidden = false;
   }
+  // titre des éco-solutions : « éco-solution 1 : l'impact sur la production »
+  const CIBLES = { production: 'la production', utilisation: 'l’utilisation', fin_de_vie: 'la fin de vie' };
+  function ecrireCible(f) {
+    const cible = CIBLES[problematique()?.choix];
+    const place = f.querySelector('.proposition_cible');
+    if (place) place.textContent = cible ? `\u202F: l’impact sur ${cible}` : '';
+  }
+
   montrerProblematique();
-  document.addEventListener('memoire:prete', montrerProblematique);
+  document.addEventListener('memoire:prete', () => {
+    montrerProblematique();
+    document.querySelectorAll('#propositions .proposition').forEach(ecrireCible);
+  });
 
 
   // =====================================================================
@@ -368,6 +395,7 @@
     const f = modele.content.firstElementChild.cloneNode(true);
     const n = fiches().length + 1;
     f.querySelector('.proposition_numero').textContent = n;
+    ecrireCible(f);
     const c = champsDe(f);
     [['echelle', '.proposition_label_etape'], ['solution', '.proposition_label_probleme'], ['pourquoi', '.proposition_label_solution']]
       .forEach(([cle, label]) => {
@@ -400,7 +428,7 @@
   function lireIdees() {
     return fiches().map(f => {
       const c = champsDe(f);
-      return { echelle: c.echelle.value, solution: c.solution.value.trim(), pourquoi: c.pourquoi.value.trim(), avis: f.dataset.avis || null };
+      return { echelle: c.echelle.value, solution: c.solution.value.trim(), pourquoi: c.pourquoi.value.trim(), avis: f.dataset.avis || null, theme: f.dataset.theme || null };
     });
   }
   const sauverIdees = () => sauverMission3({ idees: lireIdees().filter(x => x.echelle || x.solution || x.pourquoi) });
@@ -511,7 +539,10 @@
     }).join('\n');
     if (etat) etat.textContent = 'Andréa met tes éco-solutions au propre…';
     const r = await envoyer(`${debutMessage()}[Étape : mise au propre]\n${liste}`);
-    if (r.ok) appliquerEcos(r.ecos);       // erreur : on garde les textes tels quels
+    if (r.ok) {                            // erreur : on garde les textes tels quels
+      appliquerEcos(r.ecos);
+      r.themes.forEach(({ n, theme }) => { const f = fiches()[n - 1]; if (f) f.dataset.theme = theme; });
+    }
     sauverIdees();
   }
 
@@ -529,7 +560,7 @@
     andreaDit('texte_chagrin', 'continuer quand même', () => versBanque('texte_banque_quand_meme'));
     const place = sceneTexte.querySelector('.derniere_remarque');
     if (place) {
-      if (derniereRemarque) place.textContent = derniereRemarque;
+      if (derniereRemarque) ecrireTexte(place, derniereRemarque);
       else place.remove();
     }
     // « je veux reprendre » : retour à la petite fenêtre
@@ -543,8 +574,11 @@
 
   // =====================================================================
   // 5. BANQUE D'IDÉES
-  // 5 fiches : celles de l'élève + l'exemple de l'équipe (data-exemple)
-  // + d'autres idées tirées au hasard (templates banque_…).
+  // 5 fiches : celles de l'élève + des idées de l'équipe (liste verte de la prof, templates banque_…)
+  // de la même catégorie que l'éco-solution de l'élève (Andréa la donne à la mise au propre : [THEME]),
+  // de sa problématique d'abord, puis des autres ; sans celles qui ressemblent trop à son idée.
+  // Catégorie inconnue, ou trop peu d'idées : on complète au hasard dans sa problématique.
+  // La 1re idée de l'équipe retenue = l'exemple de la grille (notes : data-notes).
   // Dossier comme en mission 1 ; toutes ouvertes → « comparer les solutions » (bas à droite).
   // =====================================================================
 
@@ -556,17 +590,28 @@
   const rappelBanque = document.getElementById('rappel_banque');
   const suiteBanque = document.getElementById('suite_banque');
   const annonceBanque = document.getElementById('annonce_banque');
+  const LISTES = ['production', 'utilisation', 'fin_de_vie'];
 
-  function listeEquipe() {
-    const choix = problematique()?.choix || 'production';
-    const modeleListe = document.getElementById(`banque_${choix}`) || document.getElementById('banque_production');
-    return [...(modeleListe?.content.querySelectorAll('li') || [])].map(li => ({
-      theme: li.dataset.theme,
-      titre: li.dataset.titre,
-      pourquoi: li.textContent.replace(/\s+/g, ' ').trim(),
-      auteur: 'equipe',
-      exemple: li.dataset.exemple ? li.dataset.exemple.split(',').map(Number) : null,
-    }));
+  // les 45 idées de la prof : sa problématique d'abord, sans doublon
+  function toutesLesIdees(choix) {
+    const vues = new Set();
+    const idees = [];
+    [choix, ...LISTES.filter(l => l !== choix)].forEach(liste => {
+      document.getElementById(`banque_${liste}`)?.content.querySelectorAll('li').forEach(li => {
+        const cle = normaliser(li.dataset.titre);
+        if (vues.has(cle)) return;
+        vues.add(cle);
+        idees.push({
+          theme: li.dataset.theme,
+          titre: li.dataset.titre,
+          pourquoi: li.textContent.replace(/\s+/g, ' ').trim(),
+          auteur: 'equipe',
+          liste,
+          notes: (li.dataset.notes || '0,0,0,0').split(',').map(Number),
+        });
+      });
+    });
+    return idees;
   }
 
   const auHasard = (liste, nombre) => {
@@ -578,18 +623,51 @@
     return copie.slice(0, nombre);
   };
 
-  // les 5 fiches : nouveau tirage à chaque fois (parmi les 15 de la prof)
+  // « Durabilité » et « Durabilité accrue » : même catégorie
+  const memeCategorie = (a, b) => {
+    const x = normaliser(a || ''), y = normaliser(b || '');
+    return !!x && !!y && (x.startsWith(y) || y.startsWith(x));
+  };
+
+  // idée trop proche de celle de l'élève : la moitié de ses mots importants en commun
+  const motsDe = t => new Set(normaliser(t).replace(/[^a-z0-9 ]/g, ' ').split(' ').filter(m => m.length > 3));
+  function ressemble(a, b) {
+    const ma = motsDe(a), mb = motsDe(b);
+    const communs = [...ma].filter(m => mb.has(m)).length;
+    return communs > 0 && communs >= Math.min(ma.size, mb.size) / 2;
+  }
+
+  // catégorie de l'élève : la plus fréquente parmi ses éco-solutions (la 1re en cas d'égalité)
+  function categorieEleve(idees) {
+    const compte = new Map();
+    idees.forEach(x => { if (x.theme) compte.set(x.theme, (compte.get(x.theme) || 0) + 1); });
+    let meilleure = null;
+    compte.forEach((n, t) => { if (!meilleure || n > compte.get(meilleure)) meilleure = t; });
+    return meilleure;
+  }
+
+  // les 5 fiches : nouveau tirage à chaque fois
   function constituerBanque() {
-    const eleve = lireIdees().filter(x => x.solution && x.pourquoi).map(x => ({
-      theme: x.echelle, titre: x.solution, pourquoi: x.pourquoi, auteur: 'eleve',
-    }));
+    const idees = lireIdees().filter(x => x.solution && x.pourquoi);
+    const eleve = idees.map(x => ({ theme: x.theme || x.echelle, titre: x.solution, pourquoi: x.pourquoi, auteur: 'eleve' }));
     const nombre = Math.max(TOTAL_FICHES - eleve.length, 1);
-    const liste = listeEquipe();
-    const exemple = liste.find(x => x.exemple);
-    const autres = liste.filter(x => x !== exemple);
-    let equipe = exemple ? [exemple, ...auHasard(autres, nombre - 1)] : auHasard(liste, nombre);
-    equipe = auHasard(equipe, equipe.length);         // l'exemple n'est pas toujours en premier
-    sauverMission3({ banque_equipe: equipe });
+    const choix = LISTES.includes(problematique()?.choix) ? problematique().choix : 'production';
+    const categorie = categorieEleve(idees);
+
+    const candidates = toutesLesIdees(choix).filter(x => !eleve.some(e => ressemble(e.titre, x.titre)));
+    const memes = categorie ? candidates.filter(x => memeCategorie(x.theme, categorie)) : [];
+    let equipe = [
+      ...auHasard(memes.filter(x => x.liste === choix), nombre),
+      ...auHasard(memes.filter(x => x.liste !== choix), nombre),
+    ].slice(0, nombre);
+    if (equipe.length < nombre) {
+      equipe.push(...auHasard(candidates.filter(x => x.liste === choix && !equipe.includes(x)), nombre - equipe.length));
+    }
+
+    // la 1re retenue (la plus proche) = l'exemple noté de la grille ; puis l'ordre est mélangé
+    equipe = equipe.map((x, k) => ({ ...x, exemple: k === 0 ? x.notes : null }));
+    equipe = auHasard(equipe, equipe.length);
+    sauverMission3({ banque_equipe: equipe, categorie });
     return [...eleve, ...equipe];
   }
 
@@ -770,7 +848,7 @@
   // =====================================================================
   // 7. GRAPHIQUE ARAIGNÉE
   // Rayon = (note + 3) × 25 ; axes : environnement (haut), faisabilité (droite),
-  // utilisateur (bas), coût (gauche). « voir tout », puis une solution à la fois.
+  // utilisateur (bas), gain économique (gauche). « voir tout », puis une solution à la fois.
   // =====================================================================
 
   const partieRadar = document.getElementById('partie_radar');
@@ -780,7 +858,7 @@
   const piedRadar = document.getElementById('pied_radar');
   const SVG = 'http://www.w3.org/2000/svg';
 
-  // [environnement, faisabilité, coût, utilisateur] → points haut, droite, bas, gauche
+  // [environnement, faisabilité, gain économique, utilisateur] → points haut, droite, bas, gauche
   function points(notes) {
     const r = n => (n + 3) * 25;
     const [env, fais, cout, util] = notes;
@@ -828,7 +906,7 @@
       th.scope = 'row';
       th.textContent = sol.titre;
       tr.append(th);
-      // ordre du tableau : environnement, faisabilité, coût, utilisateur
+      // ordre du tableau : environnement, faisabilité, gain économique, utilisateur
       sol.notes.forEach(n => { const td = document.createElement('td'); td.textContent = signe(n); tr.append(td); });
       return tr;
     }));
@@ -924,7 +1002,7 @@
     if (piedPiste) piedPiste.hidden = false;
     const evaluation = lireEvaluation();
     const lignes = evaluation.map((sol, k) =>
-      `${k + 1}. ${sol.titre}${sol.exemple ? ' (exemple de l’équipe)' : sol.auteur === 'eleve' ? ' (son idée)' : ''} : environnement ${signe(sol.notes[0])}, faisabilité ${signe(sol.notes[1])}, coût ${signe(sol.notes[2])}, utilisateur ${signe(sol.notes[3])}`);
+      `${k + 1}. ${sol.titre}${sol.exemple ? ' (exemple de l’équipe)' : sol.auteur === 'eleve' ? ' (son idée)' : ''} : environnement ${signe(sol.notes[0])}, faisabilité ${signe(sol.notes[1])}, gain économique ${signe(sol.notes[2])}, utilisateur ${signe(sol.notes[3])}`);
     ajouterMessage('eleve', 'Je ne suis pas sûr·e de la piste la plus pertinente.');
     const r = await envoyer(`${debutMessage()}[Étape : choisir la piste]\n[Les 3 solutions évaluées, notes de −3 à +3 par rapport au Basic-phone® actuel]\n${lignes.join('\n')}\nL'apprenant n'est pas sûr de la piste la plus pertinente à développer.`);
     if (!r.ok) { ajouterMessage('erreur', `${r.erreur} Réessaie dans un instant, ou choisis ta piste.`); return; }
@@ -949,7 +1027,7 @@
   // 9. FICHE SYNTHÉTIQUE : pré-remplie avec la piste choisie
   // =====================================================================
 
-  const NOMS_NOTES = ['environnement', 'faisabilité technique', 'coût', 'intérêt pour l’utilisateur'];
+  const NOMS_NOTES = ['environnement', 'faisabilité technique', 'gain économique', 'intérêt pour l’utilisateur'];
 
   function montrerFiche(sol) {
     const fiche = document.getElementById('partie_fiche');
@@ -989,7 +1067,7 @@
   const annonceFiche = document.getElementById('annonce_fiche');
   const CHAMPS_FICHE = {
     titre: 'titre de l’idée', description: 'description', innovation: 'niveau d’innovation', environnement: 'environnement',
-    performance: 'performance', cout: 'coût', limites: 'difficultés, limites', plan: 'plan d’action',
+    performance: 'performance', cout: 'gain économique', limites: 'difficultés, limites', plan: 'plan d’action',
   };
   const ECHANGES_FICHE = 2;
   let echangesFiche = 0;
@@ -1078,8 +1156,8 @@
   // 11. CONCLUSION : boîte rose, mascotte, « continuer » → chap3_V
   // =====================================================================
 
-  const popFin = document.getElementById('pop_fin');
-  const DELAI_POP_FIN = Number(popFin?.dataset.delai) || 4000;
+  const finConclu = document.getElementById('conclusion_fin');
+  const DELAI_FIN = Number(finConclu?.dataset.delai) || 3000;
 
   function montrerConclusion() {
     const conclusion = document.getElementById('partie_conclusion');
@@ -1088,23 +1166,17 @@
     if (window.Memoire?.terminer) window.Memoire.terminer();     // SCORM : activité terminée
     requestAnimationFrame(() => {
       const zoneConclu = document.getElementById('conclusion_rose');
-      if (typeof centrerSur === 'function') centrerSur(conclusion.getBoundingClientRect());
+      if (typeof centrerSur === 'function') centrerSur(zoneConclu.getBoundingClientRect());
       else zoneConclu.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
-    // mascotte : quelques secondes après
-    if (popFin && typeof popFin.showModal === 'function') {
-      setTimeout(() => { if (!popFin.open) popFin.showModal(); }, DELAI_POP_FIN);
-    }
-  }
-
-  // pop-up mascotte : croix, clic à côté
-  if (popFin) {
-    popFin.querySelector('.fermer_modal')?.addEventListener('click', () => popFin.close());
-    popFin.addEventListener('click', e => {
-      if (e.target !== popFin) return;
-      const r = popFin.getBoundingClientRect();
-      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) popFin.close();
-    });
+    // mascotte + continuer : quelques secondes après
+    if (finConclu) setTimeout(() => {
+      finConclu.hidden = false;
+      requestAnimationFrame(() => {
+        if (typeof centrerSur === 'function') centrerSur(conclusion.getBoundingClientRect());
+        else finConclu.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    }, DELAI_FIN);
   }
 
 })();

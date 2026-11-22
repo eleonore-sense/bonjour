@@ -747,6 +747,10 @@ legend.fiche_nom {
   .fiche_atouts_grille {
     grid-template-columns: 1fr;
   }
+
+  .conclusion_mascotte {
+    margin-left: 20px;
+  }
 }
 
 
@@ -772,6 +776,44 @@ legend.fiche_nom {
 .conclusion_rose strong {
   font-family: var(--titre);
   font-weight: normal;
+}
+
+/* mascotte : petite boîte verte, décalée vers la droite, qui apparaît en douceur */
+.conclusion_mascotte {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 520px;
+  margin: 30px 0 0 80px;              /* légèrement décalée */
+  padding: 14px 20px 14px 14px;
+  font-size: 0.92rem;
+  background: var(--vert_bleu);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+}
+
+.conclusion_mascotte p {
+  margin: 0;
+}
+
+.conclusion_mascotte_dessin {
+  flex: 0 0 80px;
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.conclusion_fin:not([hidden]) {
+  animation: apparition_fin 0.5s ease-out;
+}
+
+@keyframes apparition_fin {
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .conclusion_fin:not([hidden]) { animation: none; }
 }
 
 /* lien « continuer » vers la page suivante, en bouton */

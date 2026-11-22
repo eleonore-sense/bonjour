@@ -532,7 +532,22 @@
   let dernierEnvoi = 0;
 
   const normaliser = t => t.normalize('NFD').replace(/[̀-ͯ]/g, '')
-    .replace(/[’`]/g, "'").replace(/\s+/g, ' ').trim().toLowerCase();
+    .replace(/[«»"“”]/g, '').replace(/[’`]/g, "'").replace(/\s+/g, ' ').trim().toLowerCase();
+
+  // texte d'Andréa : **mot** ou __mot__ → en gras ; titres et astérisques seuls retirés
+  function ecrireTexte(element, texte) {
+    element.replaceChildren();
+    String(texte).replace(/^\s*#{1,6}\s+/gm, '').split(/(\*\*[^*\n]+?\*\*|__[^_\n]+?__)/g).forEach(morceau => {
+      if (!morceau) return;
+      if (/^(\*\*|__)[\s\S]+(\*\*|__)$/.test(morceau)) {
+        const gras = document.createElement('strong');
+        gras.textContent = morceau.slice(2, -2);
+        element.append(gras);
+      } else {
+        element.append(morceau.replace(/\*\*/g, ''));
+      }
+    });
+  }
 
   // bulle : dans le pop-up ou dans la petite fenêtre
   function ajouterMessage(qui, texte, etiquette, docs = []) {
@@ -554,7 +569,8 @@
 
     const p = document.createElement('p');
     p.className = 'mentor_texte';
-    p.textContent = texte;
+    if (qui === 'mentor') ecrireTexte(p, texte);
+    else p.textContent = texte;
     bulle.append(p);
 
     // liens vers les documents
@@ -605,10 +621,7 @@
     texte = texte.replace(/\[\s*TEXTE\s*:\s*([^=\]]+?)\s*=\s*([^\]]+)\]/gi, (_, nom, t) => { textes.push({ nom: nom.trim(), texte: t.trim() }); return ''; });
     texte = texte.replace(/\[\s*DOC\s*:\s*([a-z_]+)\s*\]/gi, (_, d) => { docs.push(d.toLowerCase()); return ''; });
     texte = texte.replace(/\[\s*(EVAL|VALIDE|HUMEUR|RESUME|DOC|TEXTE)[^\]]*\]/gi, '');   // signal mal écrit : caché
-    texte = texte
-      .replace(/\*\*(.+?)\*\*/gs, '$1').replace(/__(.+?)__/gs, '$1')   // gras Markdown
-      .replace(/^\s*#{1,6}\s+/gm, '')                                      // titres Markdown
-      .replace(/\*\*/g, '');
+    // gras Markdown (**mot**) : gardé, affiché en gras par ecrireTexte
     return { texte: texte.replace(/\n{3,}/g, '\n\n').trim(), evals, valide, resume, humeur, docs, textes };
   }
 
@@ -793,6 +806,7 @@
   const ETAPES_AVANT_RAPPEL = 2;
   let basDuSchemaVu = false;              // mascotte : seulement après avoir vu la dernière étape
   let parcoursFini = false;               // « continuer » cliqué : plus de bouton ni de mascotte
+  let etapeEnDiscussion = null;           // dernière étape envoyée : la réponse dans la fenêtre la concerne
 
   const nomEtape   = li => li.dataset.etape;
   const caseDe     = li => li.querySelector('textarea');
@@ -894,21 +908,31 @@
     message += restantes.length ? `\n[Étapes encore à remplir : ${restantes.join(', ')}.]` : '\n[Toutes les étapes du parcours sont remplies.]';
 
     li.classList.add('en_lecture');          // Andréa lit
+    etapeEnDiscussion = li;
+    // la fenêtre s'ouvre tout de suite (« Andréa écrit… »)
+    const fenetreOuverte = !parcoursFini && ouvrirFenetre();
+    if (fenetreOuverte) ajouterMessage('eleve', texte, nom);
     const r = await envoyer(message);
     li.classList.remove('en_lecture');
     if (!r.ok) {
       delete li.dataset.envoye;
       majSoumettre(li);
-      if (!parcoursFini && ouvrirFenetre()) ajouterMessage('erreur', `${r.erreur} Valide à nouveau l’étape « ${nom} » avec Entrée dans un instant.`);
+      if (fenetreOuverte && !parcoursFini && ouvrirFenetre()) ajouterMessage('erreur', `${r.erreur} Valide à nouveau l’étape « ${nom} » avec Entrée dans un instant.`);
       return;
     }
     appliquerAvis(r.evals);
+    r.textes.forEach(({ nom: n, texte: t }) => {
+      const cible = etapeNommee(n) || li;
+      remplirCase(caseDe(cible), t);
+      cible.dataset.envoye = t;
+      majSoumettre(cible);
+    });
     sauverParcours();
 
     // Andréa répond toujours : encouragement, ou une question
     if (r.texte && !parcoursFini && ouvrirFenetre()) {
       changerHumeur(r.humeur);
-      ajouterMessage('eleve', texte, nom);
+      if (!fenetreOuverte) ajouterMessage('eleve', texte, nom);
       ajouterMessage('mentor', r.texte, null, r.docs);
     }
   }
@@ -916,19 +940,38 @@
   // réponse écrite dans la petite fenêtre
   async function repondreParcours(texte) {
     ajouterMessage('eleve', texte);
-    const r = await envoyer(`${debutMessage()}[Étape : parcours utilisateur]\n${texte}`);
+    const li = etapeEnDiscussion;
+    const contexte = li
+      ? `[Réponse à ta remarque sur l'étape du parcours « ${nomEtape(li)} »]\n[Texte actuel de la case : ${caseDe(li).value.trim()}]\n`
+      : '';
+    const r = await envoyer(`${debutMessage()}[Étape : parcours utilisateur]\n${contexte}${texte}`);
     if (!r.ok) {
       ajouterMessage('erreur', `${r.erreur} Ton message n’est pas parti : réécris-le dans un instant.`);
       return;
     }
+    const avisAvant = li?.dataset.avis;
     appliquerAvis(r.evals);
+    let caseRemplie = false;
     r.textes.forEach(({ nom, texte: t }) => {
-      const li = etapeNommee(nom);
-      if (!li) return;
-      remplirCase(caseDe(li), t);
-      li.dataset.envoye = t;
-      majSoumettre(li);
+      const cible = etapeNommee(nom) || li;
+      if (!cible) return;
+      remplirCase(caseDe(cible), t);
+      cible.dataset.envoye = t;
+      majSoumettre(cible);
+      if (cible === li) caseRemplie = true;
     });
+    // validée sans [TEXTE] : sa précision s'ajoute à la case
+    if (li && !caseRemplie && avisAvant === 'a_approfondir' && li.dataset.avis === 'ok') {
+      const avant = caseDe(li).value.trim();
+      if (!normaliser(avant).includes(normaliser(texte))) {
+        const fin = /[.!?…]$/.test(avant) ? '' : '.';
+        const ajout = texte.charAt(0).toUpperCase() + texte.slice(1);
+        const t = avant ? `${avant}${fin} ${ajout}` : ajout;
+        remplirCase(caseDe(li), t);
+        li.dataset.envoye = t;
+        majSoumettre(li);
+      }
+    }
     verifierParcours();
     sauverParcours();
     changerHumeur(r.humeur);

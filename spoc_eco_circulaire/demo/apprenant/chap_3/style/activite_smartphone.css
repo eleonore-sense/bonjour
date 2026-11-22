@@ -1286,3 +1286,183 @@ h3.consigne {
   pointer-events: auto;
   cursor: pointer;
 }
+
+
+
+
+
+
+
+/* ---------- Étiquettes du Basic-phone (document « cadre réglementaire ») ----------
+   Étiquette énergie (classes A à G), puis l'indice de réparabilité en dessous. */
+
+.fenetre_reglementation {
+  width: min(960px, 94vw);
+}
+
+.etiquettes {
+  margin: 30px 0 34px;
+  padding: 22px 24px 18px;
+  background: var(--blanc);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+}
+
+.fenetre_document .etiquettes_titre {
+  margin: 0 0 18px;
+  font-family: var(--titre);
+}
+
+.etiquettes_grille {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 34px;
+}
+
+/* l'étiquette énergie ne prend pas toute la largeur */
+.etiquette_energie {
+  max-width: 460px;
+}
+
+/* titres : capsules vert d'eau */
+.fenetre_document .etiquette_nom {
+  display: inline-block;
+  text-decoration: none;
+  margin: 0;
+  padding: 4px 16px;
+  font-family: var(--titre);
+  font-size: 0.9rem;
+  font-weight: normal;
+  background: var(--vert_bleu);
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_pilule);
+}
+
+.fenetre_document .etiquette_texte_loi {
+  margin: 6px 0 14px;
+  font-size: 0.78rem;
+}
+
+/* classes A à G : flèches de plus en plus longues, de notre vert à notre rouge */
+.fenetre_document .energie_classes {
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.fenetre_document .energie_classes li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 3px;
+}
+
+.energie_barre {
+  width: var(--l);
+  padding: 1px 0 1px 8px;
+  font-family: var(--titre);
+  font-size: 0.85rem;
+  color: var(--noir);
+  background: var(--c);
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
+}
+
+.energie_classes li:nth-child(1) { --c: #009a44; --l: 34%; }
+.energie_classes li:nth-child(2) { --c: #52ae32; --l: 42%; }
+.energie_classes li:nth-child(3) { --c: #a8c73c; --l: 50%; }
+.energie_classes li:nth-child(4) { --c: #e6c619; --l: 58%; }
+.energie_classes li:nth-child(5) { --c: #f39c12; --l: 66%; }
+.energie_classes li:nth-child(6) { --c: #e8602c; --l: 74%; }
+.energie_classes li:nth-child(7) { --c: #d7261e; --l: 82%; }
+
+.energie_classes li:nth-child(4) .energie_barre,
+.energie_classes li:nth-child(5) .energie_barre {
+  color: var(--noir);
+}
+
+/* la classe du Basic-phone : flèche noire à droite */
+.energie_repere {
+  padding: 1px 12px 1px 18px;
+  font-family: var(--titre);
+  font-size: 0.95rem;
+  color: var(--blanc);
+  background: var(--noir);
+  clip-path: polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 0 50%);
+}
+
+/* infos sous l'étiquette : nom à gauche, valeur à droite */
+.fenetre_document .energie_infos {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.energie_infos div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;
+  border-top: 1px solid var(--trait_doux);
+}
+
+.energie_infos dd {
+  margin: 0;
+  text-align: right;
+  font-family: var(--titre);
+}
+
+/* note de réparabilité : grand chiffre sur fond jaune */
+.fenetre_document .indice_note {
+  display: inline-block;
+  margin: 0 0 4px;
+  padding: 4px 18px;
+  font-family: var(--titre);
+  background: #ffd43b;
+  border: 1px solid var(--trait);
+  border-radius: var(--arrondi_boite);
+}
+
+.indice_chiffre {
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.indice_tableau {
+  margin: 12px 0 0;
+  font-size: 0.82rem;
+}
+
+.indice_tableau .indice_score {
+  text-align: center;
+  white-space: nowrap;
+  font-family: var(--titre);
+}
+
+.indice_tableau tbody th {
+  white-space: normal;
+}
+
+.indice_tableau thead th:nth-child(2) {
+  white-space: nowrap;
+}
+
+.fenetre_document .etiquettes_legende {
+  margin: 16px 0 0;
+  font-size: 0.75rem;
+  color: var(--trait_doux);
+}
+
+/* sur petit écran */
+@media (max-width: 760px) {
+  .etiquettes {
+    padding: 16px 12px 12px;
+  }
+
+  .indice_tableau {
+    font-size: 0.75rem;
+  }
+
+  .indice_tableau th,
+  .indice_tableau td {
+    padding: 4px 5px;
+  }
+}

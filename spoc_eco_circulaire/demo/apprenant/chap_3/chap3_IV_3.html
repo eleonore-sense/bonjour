@@ -56,8 +56,9 @@
                 </dd>
               </div>
             </dl>
-            <!-- ILLUSTRATION : remplacer ce <div> par <img class="illustration" src="../dessin/chap_3/IV/…" alt="…"> -->
-            <div class="illustration emplacement_illustration" aria-hidden="true">illustration</div>
+            <div class="media_exemple_mini anim_pousse">
+              <img src="../dessin/chap_3/I/2/smartphone_pousse.svg" alt="">
+            </div>
           </div>
 
           <!-- rappel de la problématique choisie en mission 2 (mission3.js, mémoire « athentech_mission2 ») -->
@@ -167,7 +168,7 @@
               <ul class="liste_etoiles">
                 <li><span class="etoile" aria-hidden="true"></span> <strong>le bénéfice environnemental potentiel</strong>&#8239;: quels impacts pourrait-elle réduire&#8239;?</li>
                 <li><span class="etoile" aria-hidden="true"></span> <strong>la faisabilité technique</strong>&#8239;: peut-elle être mise en œuvre facilement&#8239;?</li>
-                <li><span class="etoile" aria-hidden="true"></span> <strong>le coût</strong>&#8239;: nécessite-t-elle des investissements ou modifie-t-elle le coût de fabrication&#8239;?</li>
+                <li><span class="etoile" aria-hidden="true"></span> <strong>le gain économique</strong>&#8239;: fait-elle gagner ou perdre de l’argent à ATHEN’TECH (investissements, coût de fabrication)&#8239;?</li>
                 <li><span class="etoile" aria-hidden="true"></span> <strong>la valeur pour l’utilisateur</strong>&#8239;: améliore-t-elle la durée de vie, la réparabilité ou l’expérience d’utilisation&#8239;?</li>
                 <li><span class="etoile" aria-hidden="true"></span> <strong>les éventuels effets négatifs</strong>&#8239;: peut-elle augmenter d’autres impacts ou dégrader une performance&#8239;?</li>
               </ul>
@@ -175,7 +176,7 @@
             </div>
 
             <!-- GRILLE (dessin de la prof, p. 45) : 3 solutions.
-                 1 = exemple de l'équipe, déjà noté (data-exemple dans les listes banque_…) ;
+                 1 = exemple de l’équipe, déjà noté (data-notes dans les listes banque_…) ;
                  2 et 3 = au choix parmi les 4 autres fiches de la banque.
                  Curseurs de −3 à +3, par rapport au Basic-phone® actuel (0 = pas de changement).
                  Cartes créées par mission3.js (modèle : template modele_evaluation). -->
@@ -194,7 +195,7 @@
 
 
             <!-- GRAPHIQUE ARAIGNÉE (même mise en page que le radar du cola, chapitre 3)
-                 axes : bénéfice environnemental (haut), faisabilité (droite), intérêt utilisateur (bas), coût (gauche).
+                 axes : bénéfice environnemental (haut), faisabilité (droite), intérêt utilisateur (bas), gain économique (gauche).
                  Rayon = (note + 3) × 25. Formes et boutons créés par mission3.js. -->
             <div class="partie_cachee" id="partie_radar" hidden>
               <figure class="bloc_radar" id="bloc_radar">
@@ -225,13 +226,13 @@
                     <text x="200" y="32" text-anchor="middle">bénéfice environnemental</text>
                     <text x="362" y="196" text-anchor="start"><tspan x="362">faisabilité</tspan><tspan x="362" dy="17">technique</tspan></text>
                     <text x="200" y="378" text-anchor="middle">intérêt pour l’utilisateur</text>
-                    <text x="38" y="196" text-anchor="end">coût</text>
+                    <text x="38" y="196" text-anchor="end"><tspan x="38">gain</tspan><tspan x="38" dy="17">économique</tspan></text>
                   </g>
                 </svg>
 
                 <table class="visuellement_cache" id="radar_tableau">
                   <caption>Notes de tes trois solutions, de −3 à +3</caption>
-                  <thead><tr><th scope="col">solution</th><th scope="col">bénéfice environnemental</th><th scope="col">faisabilité technique</th><th scope="col">coût</th><th scope="col">intérêt pour l’utilisateur</th></tr></thead>
+                  <thead><tr><th scope="col">solution</th><th scope="col">bénéfice environnemental</th><th scope="col">faisabilité technique</th><th scope="col">gain économique</th><th scope="col">intérêt pour l’utilisateur</th></tr></thead>
                   <tbody></tbody>
                 </table>
               </figure>
@@ -287,7 +288,7 @@
                   <label class="fiche_atout"><span class="fiche_atout_titre"><span class="fiche_nom fiche_nom_petit">niveau d’innovation</span><span class="fiche_note" data-note="innovation" hidden></span></span><textarea id="fiche_innovation" rows="3" placeholder="En quoi cette idée est-elle nouvelle pour ATHEN’TECH, ou sur le marché ?"></textarea></label>
                   <label class="fiche_atout"><span class="fiche_atout_titre"><span class="fiche_nom fiche_nom_petit">environnement</span><span class="fiche_note" data-note="environnement" hidden></span></span><textarea id="fiche_environnement" rows="3" placeholder="Quels impacts réduit-elle, à quelle étape du cycle de vie ? Sur quelles données t’appuies-tu ?"></textarea></label>
                   <label class="fiche_atout"><span class="fiche_atout_titre"><span class="fiche_nom fiche_nom_petit">performance</span><span class="fiche_note" data-note="performance" hidden></span></span><textarea id="fiche_performance" rows="3" placeholder="Que gagne l’utilisateur (durée de vie, réparabilité, usage) ? Les fonctions essentielles sont-elles préservées ?"></textarea></label>
-                  <label class="fiche_atout"><span class="fiche_atout_titre"><span class="fiche_nom fiche_nom_petit">coût</span><span class="fiche_note" data-note="cout" hidden></span></span><textarea id="fiche_cout" rows="3" placeholder="Faut-il investir ? Quel effet sur le coût de fabrication (250 € au plus) ?"></textarea></label>
+                  <label class="fiche_atout"><span class="fiche_atout_titre"><span class="fiche_nom fiche_nom_petit">gain économique</span><span class="fiche_note" data-note="cout" hidden></span></span><textarea id="fiche_cout" rows="3" placeholder="Fait-elle gagner ou perdre de l’argent ? Faut-il investir ? Quel effet sur le coût de fabrication (250 € au plus) ?"></textarea></label>
                 </div>
               </fieldset>
 
@@ -342,26 +343,21 @@
               <p>Ces réflexes te seront utiles pour éco-concevoir bien d’autres produits et services&#8239;!</p>
             </div>
 
-            <div class="conteneur_bouton">
-              <a class="bouton_etape bouton_lien_suite" href="chap3_V.html">continuer</a>
+            <!-- mascotte (boîte verte décalée) + continuer : apparaissent ensemble, quelques secondes après -->
+            <div class="conclusion_fin" id="conclusion_fin" data-delai="3000" hidden>
+              <aside class="conclusion_mascotte">
+                <img class="conclusion_mascotte_dessin" src="../dessin/mascotte/mascotte.svg" alt="">
+                <p>Mission accomplie&#8239;! Tu as transformé une problématique environnementale en un projet concret. Garde ce réflexe&#8239;: analyse, imagine, compare et vérifie. C’est comme ça qu’on fait vraiment la différence&#8239;!</p>
+              </aside>
+              <div class="conteneur_bouton">
+                <a class="bouton_etape bouton_lien_suite" href="chap3_V.html">continuer</a>
+              </div>
             </div>
 
           </div>
 
         </section>
 
-
-      <!-- ================= POP-UP MASCOTTE DE FIN ================= -->
-      <dialog class="pop_mascotte pop_fin" id="pop_fin" data-delai="4000" aria-labelledby="pop_fin_texte">
-        <button type="button" class="fermer_modal" aria-label="Fermer"></button>
-        <img class="pop_mascotte_image" src="../dessin/mascotte/mascotte.svg" alt="">
-        <div class="pop_mascotte_contenu">
-          <p class="pop_mascotte_texte" id="pop_fin_texte">Mission accomplie&#8239;! Tu as transformé une problématique environnementale en un projet concret. Garde ce réflexe&#8239;: analyse, imagine, compare et vérifie. C’est comme ça qu’on fait vraiment la différence&#8239;!</p>
-          <div class="pop_fin_boutons">
-            <a class="bouton_suite" href="chap3_V.html">continuer</a>
-          </div>
-        </div>
-      </dialog>
 
       <!-- ================= MENTOR IA (mission 3) ================= -->
       <!-- Même structure que la mission 1, pour reprendre mentor.css.
@@ -458,7 +454,7 @@
        Même mise en page que les propositions de la mission 2 (style/mission2.css). -->
   <template id="modele_eco_solution">
     <fieldset class="proposition">
-      <legend class="proposition_titre">éco-solution <span class="proposition_numero">1</span></legend>
+      <legend class="proposition_titre">éco-solution <span class="proposition_numero">1</span><span class="proposition_cible"></span></legend>
 
       <label class="visuellement_cache proposition_label_etape">Échelle d’action</label>
       <span class="proposition_choix">
@@ -505,7 +501,7 @@
           </div>
         </div>
         <div class="critere" data-critere="cout">
-          <label class="critere_nom">coût</label>
+          <label class="critere_nom">gain économique</label>
           <div class="critere_curseur">
             <input type="range" min="-3" max="3" step="1" value="0">
             <output class="critere_valeur">0</output>
@@ -562,67 +558,68 @@
   <!-- ========== BANQUE D'IDÉES DE L'ÉQUIPE ==========
        Liste verte de la prof (doc p. 42-44), 15 idées par problématique.
        data-theme = la thématique ; data-titre = l'idée ; le texte = pourquoi.
-       data-exemple = l'idée notée en exemple dans la grille (toujours dans la banque) :
-       notes environnement, faisabilité, coût, utilisateur, de −3 à +3 (à faire valider par la prof).
+       data-notes = notes proposées pour l'idée, quand elle est l'exemple de la grille (solution 1) :
+       environnement, faisabilité, gain économique, utilisateur, de −3 à +3 (à faire valider par la prof).
+       La banque montre les idées de la même catégorie (data-theme) que l'éco-solution de l'élève.
        Les « pourquoi » sont des propositions à faire relire par la prof. -->
 
   <template id="banque_production">
     <ul>
-      <li data-theme="Matériaux" data-titre="Acheter les composants les plus impactants (carte électronique principale, écran…) à des fournisseurs engagés dans une production bas carbone">Les composants électroniques sont les premiers contributeurs à l’empreinte carbone de la production&#8239;: agir sur leurs fournisseurs vise directement le plus gros poste.</li>
-      <li data-theme="Matériaux" data-titre="Utiliser de l’or issu de filières responsables (Fairmined, Fairtrade)">L’or ressort fortement dans l’épuisement des ressources&#8239;; des filières responsables limitent aussi les risques sociaux liés à son extraction.</li>
-      <li data-theme="Matériaux" data-titre="Utiliser du cobalt certifié responsable, ou une batterie qui en contient moins">Le cobalt est un métal critique, dont l’extraction pose de graves problèmes sociaux, comme le travail des enfants dans certaines mines.</li>
-      <li data-theme="Matériaux" data-titre="Utiliser de la matière recyclée pour la coque (plastique, aluminium)">Moins de matières premières à extraire, à condition de vérifier que la matière recyclée est réellement moins impactante.</li>
-      <li data-theme="Matériaux" data-titre="Remplacer certains métaux critiques par des alternatives">Moins de pression sur des ressources rares et sur des approvisionnements à risque.</li>
-      <li data-theme="Matériaux" data-titre="Éviter les substances dangereuses">Protège la santé des travailleurs pendant la fabrication et facilite le traitement en fin de vie.</li>
-      <li data-theme="Énergie" data-exemple="2,2,-1,0" data-titre="Utiliser de l’énergie renouvelable pour l’assemblage final">L’électricité utilisée pour fabriquer fait partie des principaux postes de l’empreinte carbone de la production.</li>
-      <li data-theme="Énergie" data-titre="Diminuer la consommation d’énergie de l’assemblage final">Moins d’électricité consommée en usine, c’est moins d’émissions à la production.</li>
-      <li data-theme="Technologie propre" data-titre="Optimiser la consommation d’énergie des salles blanches où l’on fabrique l’électronique">La fabrication des puces électroniques est le premier contributeur au changement climatique de la production.</li>
-      <li data-theme="Technologie propre" data-titre="Réutiliser les chutes de production">Moins de matière perdue, donc moins de matière à extraire et à transformer.</li>
-      <li data-theme="Technologie propre" data-titre="Réutiliser l’eau en boucle fermée">La fabrication électronique consomme beaucoup d’eau&#8239;: le carbone n’est pas le seul impact.</li>
-      <li data-theme="Transport" data-titre="Choisir des fournisseurs de composants proches de l’usine d’assemblage">Moins de transport entre les étapes de fabrication.</li>
-      <li data-theme="Transport" data-titre="Réduire le transport aérien au profit du bateau ou du train">La distribution, par avion et camion, est le 2e poste de l’empreinte carbone du Basic-phone®.</li>
-      <li data-theme="Emballage" data-titre="Réduire le volume et la masse de l’emballage">Moins de matière à produire, et plus de téléphones transportés à chaque voyage.</li>
-      <li data-theme="Emballage" data-titre="Rendre optionnel l’achat du chargeur et des accessoires">Le chargeur pèse dans l’épuisement des ressources, et beaucoup d’utilisateurs en ont déjà un.</li>
+      <li data-theme="Matériaux" data-notes="3,1,-2,0" data-titre="Acheter les composants les plus impactants (carte électronique principale, écran…) à des fournisseurs engagés dans une production bas carbone">Les composants électroniques sont les premiers contributeurs à l’empreinte carbone de la production&#8239;: agir sur leurs fournisseurs vise directement le plus gros poste.</li>
+      <li data-theme="Matériaux" data-notes="1,2,-1,0" data-titre="Utiliser de l’or issu de filières responsables (Fairmined, Fairtrade)">L’or ressort fortement dans l’épuisement des ressources&#8239;; des filières responsables limitent aussi les risques sociaux liés à son extraction.</li>
+      <li data-theme="Matériaux" data-notes="1,1,-1,0" data-titre="Utiliser du cobalt certifié responsable, ou une batterie qui en contient moins">Le cobalt est un métal critique, dont l’extraction pose de graves problèmes sociaux, comme le travail des enfants dans certaines mines.</li>
+      <li data-theme="Matériaux" data-notes="1,2,0,0" data-titre="Utiliser de la matière recyclée pour la coque (plastique, aluminium)">Moins de matières premières à extraire, à condition de vérifier que la matière recyclée est réellement moins impactante.</li>
+      <li data-theme="Matériaux" data-notes="2,-1,-1,0" data-titre="Remplacer certains métaux critiques par des alternatives">Moins de pression sur des ressources rares et sur des approvisionnements à risque.</li>
+      <li data-theme="Matériaux" data-notes="1,1,-1,0" data-titre="Éviter les substances dangereuses">Protège la santé des travailleurs pendant la fabrication et facilite le traitement en fin de vie.</li>
+      <li data-theme="Énergie" data-notes="2,2,-1,0" data-titre="Utiliser de l’énergie renouvelable pour l’assemblage final">L’électricité utilisée pour fabriquer fait partie des principaux postes de l’empreinte carbone de la production.</li>
+      <li data-theme="Énergie" data-notes="1,2,1,0" data-titre="Diminuer la consommation d’énergie de l’assemblage final">Moins d’électricité consommée en usine, c’est moins d’émissions à la production.</li>
+      <li data-theme="Technologie propre" data-notes="3,-1,-1,0" data-titre="Optimiser la consommation d’énergie des salles blanches où l’on fabrique l’électronique">La fabrication des puces électroniques est le premier contributeur au changement climatique de la production.</li>
+      <li data-theme="Technologie propre" data-notes="1,2,1,0" data-titre="Réutiliser les chutes de production">Moins de matière perdue, donc moins de matière à extraire et à transformer.</li>
+      <li data-theme="Technologie propre" data-notes="1,1,-1,0" data-titre="Réutiliser l’eau en boucle fermée">La fabrication électronique consomme beaucoup d’eau&#8239;: le carbone n’est pas le seul impact.</li>
+      <li data-theme="Transport" data-notes="1,0,-1,0" data-titre="Choisir des fournisseurs de composants proches de l’usine d’assemblage">Moins de transport entre les étapes de fabrication.</li>
+      <li data-theme="Transport" data-notes="2,2,1,-1" data-titre="Réduire le transport aérien au profit du bateau ou du train">La distribution, par avion et camion, est le 2e poste de l’empreinte carbone du Basic-phone®.</li>
+      <li data-theme="Emballage" data-notes="1,3,1,0" data-titre="Réduire le volume et la masse de l’emballage">Moins de matière à produire, et plus de téléphones transportés à chaque voyage.</li>
+      <li data-theme="Emballage" data-notes="2,3,2,-1" data-titre="Rendre optionnel l’achat du chargeur et des accessoires">Le chargeur pèse dans l’épuisement des ressources, et beaucoup d’utilisateurs en ont déjà un.</li>
     </ul>
   </template>
 
   <template id="banque_utilisation">
     <ul>
-      <li data-theme="Énergie" data-titre="Un écran et un processeur plus sobres en consommation">Moins d’électricité consommée à chaque recharge, pendant toute la durée de vie du téléphone.</li>
-      <li data-theme="Énergie" data-titre="Un mode d’économie d’énergie intelligent">Le téléphone consomme moins, sans que l’utilisateur ait besoin d’y penser.</li>
-      <li data-theme="Énergie" data-titre="Une recharge nocturne optimisée">Beaucoup d’utilisateurs rechargent toute la nuit&#8239;: une recharge optimisée ménage la batterie et prolonge sa vie.</li>
-      <li data-theme="Énergie" data-titre="Diminuer la puissance maximale de recharge">Une recharge très rapide (jusqu’à 100&nbsp;W sur le Basic-phone®) use la batterie plus vite.</li>
-      <li data-theme="Consommateur et comportement" data-titre="Afficher l’état de santé de la batterie">L’utilisateur sait quand changer la batterie, plutôt que tout le téléphone.</li>
-      <li data-theme="Consommateur et comportement" data-titre="Conseiller une recharge optimisée">De bonnes habitudes de recharge prolongent la vie de la batterie.</li>
-      <li data-theme="Consommateur et comportement" data-titre="Inciter à réparer avant de remplacer, par exemple avec un bon de réparation">Garder son téléphone plus longtemps évite d’en fabriquer un nouveau, l’étape qui pèse le plus.</li>
-      <li data-theme="Durabilité" data-titre="Une protection renforcée contre les chocs">Le téléphone suit son utilisateur partout et tombe souvent&#8239;: moins de casse, c’est une vie plus longue.</li>
-      <li data-theme="Entretien et maintenance" data-exemple="2,1,-1,2" data-titre="Une batterie, un écran, une caméra et un haut-parleur remplaçables">Ce sont les pièces qui lâchent le plus souvent&#8239;; les changer évite de remplacer tout le téléphone.</li>
-      <li data-theme="Entretien et maintenance" data-titre="Des pièces détachées disponibles pendant 10&nbsp;ans">Sans pièce disponible, la réparation est impossible et le téléphone est remplacé.</li>
-      <li data-theme="Entretien et maintenance" data-titre="Un support logiciel pendant 8 à 10&nbsp;ans">Un téléphone qui ne reçoit plus de mises à jour devient obsolète, même s’il fonctionne encore.</li>
-      <li data-theme="Entretien et maintenance" data-titre="Un réseau de réparateurs agréés et des notices de réparation">Trouver un réparateur près de chez soi est souvent ce qui manque pour faire réparer.</li>
-      <li data-theme="Durabilité" data-titre="Une garantie de 8&nbsp;ans">Le fabricant s’engage sur la durée de vie, et l’utilisateur est rassuré.</li>
-      <li data-theme="Fonctionnalité" data-titre="Pouvoir ajouter de la mémoire">Le téléphone suit l’évolution des besoins sans devoir être remplacé.</li>
-      <li data-theme="Dématérialisation" data-titre="Un diagnostic logiciel et un service après-vente à distance">Les pannes sont repérées plus tôt, sans déplacement.</li>
+      <li data-theme="Énergie" data-notes="1,0,-1,2" data-titre="Un écran et un processeur plus sobres en consommation">Moins d’électricité consommée à chaque recharge, pendant toute la durée de vie du téléphone.</li>
+      <li data-theme="Énergie" data-notes="1,2,0,1" data-titre="Un mode d’économie d’énergie intelligent">Le téléphone consomme moins, sans que l’utilisateur ait besoin d’y penser.</li>
+      <li data-theme="Énergie" data-notes="1,3,0,1" data-titre="Une recharge nocturne optimisée">Beaucoup d’utilisateurs rechargent toute la nuit&#8239;: une recharge optimisée ménage la batterie et prolonge sa vie.</li>
+      <li data-theme="Énergie" data-notes="1,3,1,-1" data-titre="Diminuer la puissance maximale de recharge">Une recharge très rapide (jusqu’à 100&nbsp;W sur le Basic-phone®) use la batterie plus vite.</li>
+      <li data-theme="Consommateur et comportement" data-notes="1,3,0,2" data-titre="Afficher l’état de santé de la batterie">L’utilisateur sait quand changer la batterie, plutôt que tout le téléphone.</li>
+      <li data-theme="Consommateur et comportement" data-notes="1,3,0,1" data-titre="Conseiller une recharge optimisée">De bonnes habitudes de recharge prolongent la vie de la batterie.</li>
+      <li data-theme="Consommateur et comportement" data-notes="2,2,-1,2" data-titre="Inciter à réparer avant de remplacer, par exemple avec un bon de réparation">Garder son téléphone plus longtemps évite d’en fabriquer un nouveau, l’étape qui pèse le plus.</li>
+      <li data-theme="Durabilité" data-notes="2,2,-1,2" data-titre="Une protection renforcée contre les chocs">Le téléphone suit son utilisateur partout et tombe souvent&#8239;: moins de casse, c’est une vie plus longue.</li>
+      <li data-theme="Entretien et maintenance" data-notes="2,1,-1,2" data-titre="Une batterie, un écran, une caméra et un haut-parleur remplaçables">Ce sont les pièces qui lâchent le plus souvent&#8239;; les changer évite de remplacer tout le téléphone.</li>
+      <li data-theme="Entretien et maintenance" data-notes="2,1,-1,2" data-titre="Des pièces détachées disponibles pendant 10&nbsp;ans">Sans pièce disponible, la réparation est impossible et le téléphone est remplacé.</li>
+      <li data-theme="Entretien et maintenance" data-notes="3,0,-2,3" data-titre="Un support logiciel pendant 8 à 10&nbsp;ans">Un téléphone qui ne reçoit plus de mises à jour devient obsolète, même s’il fonctionne encore.</li>
+      <li data-theme="Entretien et maintenance" data-notes="2,1,-1,2" data-titre="Un réseau de réparateurs agréés et des notices de réparation">Trouver un réparateur près de chez soi est souvent ce qui manque pour faire réparer.</li>
+      <li data-theme="Durabilité" data-notes="2,1,-2,3" data-titre="Une garantie de 8&nbsp;ans">Le fabricant s’engage sur la durée de vie, et l’utilisateur est rassuré.</li>
+      <li data-theme="Fonctionnalité" data-notes="1,2,0,2" data-titre="Pouvoir ajouter de la mémoire">Le téléphone suit l’évolution des besoins sans devoir être remplacé.</li>
+      <li data-theme="Dématérialisation" data-notes="1,2,0,2" data-titre="Un diagnostic logiciel et un service après-vente à distance">Les pannes sont repérées plus tôt, sans déplacement.</li>
     </ul>
   </template>
 
   <template id="banque_fin_de_vie">
     <ul>
-      <li data-theme="Fin de vie" data-exemple="2,2,-1,1" data-titre="Une batterie démontable">La batterie doit être démontée pour être traitée dans une filière spécifique.</li>
-      <li data-theme="Fin de vie" data-titre="Un assemblage réversible, sans colle ni soudure">Un téléphone qui se démonte facilement se répare, se reconditionne et se recycle mieux.</li>
-      <li data-theme="Fin de vie" data-titre="Limiter le nombre de matières différentes">La grande diversité des matières complique le tri et le recyclage.</li>
-      <li data-theme="Fin de vie" data-titre="Marquer les plastiques">Le recycleur identifie les plastiques et les trie correctement.</li>
-      <li data-theme="Fin de vie" data-titre="Un passeport numérique avec les informations clés pour le recycleur">Le recycleur sait comment démonter le téléphone et ce qu’il contient.</li>
-      <li data-theme="Consommateur et comportement" data-titre="Une campagne de reprise de l’ancien téléphone, avec un bonus">Beaucoup de téléphones dorment dans les tiroirs&#8239;: la reprise les fait revenir vers le reconditionnement ou le recyclage.</li>
-      <li data-theme="Consommateur et comportement" data-titre="Indiquer où trouver les bornes de collecte">Beaucoup d’utilisateurs ne savent pas où déposer leur ancien téléphone.</li>
-      <li data-theme="Matériaux" data-titre="Éviter les substances dangereuses">Le recyclage est plus sûr et moins polluant.</li>
-      <li data-theme="Entretien et maintenance" data-titre="Des notices de remplacement pour les particuliers et les réparateurs">Un téléphone réparé ou reconditionné repart pour une deuxième vie au lieu d’être jeté.</li>
-      <li data-theme="Entretien et maintenance" data-titre="Une réparation possible avec des outils standard">Réparateurs et recycleurs ouvrent le téléphone sans outil spécial.</li>
-      <li data-theme="Matériaux" data-titre="Utiliser de la matière recyclée pour la coque">La matière récupérée en fin de vie trouve un débouché, à condition qu’elle soit réellement moins impactante.</li>
-      <li data-theme="Emballage" data-titre="Un emballage réutilisable pour la vente en ligne">L’emballage ne devient pas un déchet après la livraison.</li>
-      <li data-theme="Emballage" data-titre="Un emballage sans plastique, ou en plastique recyclable ou recyclé">L’emballage se recycle facilement après le déballage.</li>
-      <li data-theme="Fonctionnalité" data-titre="Une connectique universelle">Câbles et chargeurs restent utilisables d’un téléphone à l’autre&#8239;: moins de déchets.</li>
-      <li data-theme="Durabilité" data-titre="Un port USB remplaçable">Une panne fréquente ne condamne plus tout le téléphone.</li>
+      <li data-theme="Fin de vie" data-notes="2,2,-1,1" data-titre="Une batterie démontable">La batterie doit être démontée pour être traitée dans une filière spécifique.</li>
+      <li data-theme="Fin de vie" data-notes="2,0,-1,2" data-titre="Un assemblage réversible, sans colle ni soudure">Un téléphone qui se démonte facilement se répare, se reconditionne et se recycle mieux.</li>
+      <li data-theme="Fin de vie" data-notes="1,0,0,0" data-titre="Limiter le nombre de matières différentes">La grande diversité des matières complique le tri et le recyclage.</li>
+      <li data-theme="Fin de vie" data-notes="1,3,0,0" data-titre="Marquer les plastiques">Le recycleur identifie les plastiques et les trie correctement.</li>
+      <li data-theme="Fin de vie" data-notes="1,2,0,0" data-titre="Un passeport numérique avec les informations clés pour le recycleur">Le recycleur sait comment démonter le téléphone et ce qu’il contient.</li>
+      <li data-theme="Consommateur et comportement" data-notes="2,2,-1,2" data-titre="Une campagne de reprise de l’ancien téléphone, avec un bonus">Beaucoup de téléphones dorment dans les tiroirs&#8239;: la reprise les fait revenir vers le reconditionnement ou le recyclage.</li>
+      <li data-theme="Consommateur et comportement" data-notes="1,3,0,1" data-titre="Indiquer où trouver les bornes de collecte">Beaucoup d’utilisateurs ne savent pas où déposer leur ancien téléphone.</li>
+      <li data-theme="Matériaux" data-notes="1,1,-1,0" data-titre="Éviter les substances dangereuses">Le recyclage est plus sûr et moins polluant.</li>
+      <li data-theme="Entretien et maintenance" data-notes="1,3,0,2" data-titre="Des notices de remplacement pour les particuliers et les réparateurs">Un téléphone réparé ou reconditionné repart pour une deuxième vie au lieu d’être jeté.</li>
+      <li data-theme="Entretien et maintenance" data-notes="1,1,0,2" data-titre="Une réparation possible avec des outils standard">Réparateurs et recycleurs ouvrent le téléphone sans outil spécial.</li>
+      <li data-theme="Matériaux" data-notes="1,2,0,0" data-titre="Utiliser de la matière recyclée pour la coque">La matière récupérée en fin de vie trouve un débouché, à condition qu’elle soit réellement moins impactante.</li>
+      <li data-theme="Emballage" data-notes="1,1,-1,0" data-titre="Un emballage réutilisable pour la vente en ligne">L’emballage ne devient pas un déchet après la livraison.</li>
+      <li data-theme="Emballage" data-notes="1,2,0,0" data-titre="Un emballage sans plastique, ou en plastique recyclable ou recyclé">L’emballage se recycle facilement après le déballage.</li>
+      <li data-theme="Fonctionnalité" data-notes="1,3,1,2" data-titre="Une connectique universelle">Câbles et chargeurs restent utilisables d’un téléphone à l’autre&#8239;: moins de déchets.</li>
+      <li data-theme="Durabilité" data-notes="1,1,-1,2" data-titre="Un port USB remplaçable">Une panne fréquente ne condamne plus tout le téléphone.</li>
     </ul>
   </template>
 

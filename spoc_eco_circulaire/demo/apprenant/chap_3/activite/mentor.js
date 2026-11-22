@@ -176,6 +176,21 @@
 
   // ---------- Messages ----------
 
+  // texte d'Andréa : **mot** ou __mot__ → en gras ; titres et astérisques seuls retirés
+  function ecrireTexte(element, texte) {
+    element.replaceChildren();
+    String(texte).replace(/^\s*#{1,6}\s+/gm, '').split(/(\*\*[^*\n]+?\*\*|__[^_\n]+?__)/g).forEach(morceau => {
+      if (!morceau) return;
+      if (/^(\*\*|__)[\s\S]+(\*\*|__)$/.test(morceau)) {
+        const gras = document.createElement('strong');
+        gras.textContent = morceau.slice(2, -2);
+        element.append(gras);
+      } else {
+        element.append(morceau.replace(/\*\*/g, ''));
+      }
+    });
+  }
+
   // Pendant les enjeux, les messages s'affichent dans le pop-up ; sinon dans l'historique.
   function ajouterMessage(qui, texte, etiquette) {
     const bulle = document.createElement('div');
@@ -198,7 +213,8 @@
     } else {
       const p = document.createElement('p');
       p.className = 'mentor_texte';
-      p.textContent = texte;
+      if (qui === 'mentor') ecrireTexte(p, texte);
+      else p.textContent = texte;
       bulle.appendChild(p);
     }
 

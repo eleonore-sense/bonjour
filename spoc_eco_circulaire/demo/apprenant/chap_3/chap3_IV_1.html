@@ -576,7 +576,7 @@
     <p class="note_document">réduire les impacts sur tout le cycle de vie, pour un coût de fabrication de 250&nbsp;€ maximum par unité.</p>
   </dialog>
 
-  <dialog class="fenetre_document" id="doc_reglementation" aria-labelledby="titre_doc_reglementation">
+  <dialog class="fenetre_document fenetre_reglementation" id="doc_reglementation" aria-labelledby="titre_doc_reglementation">
     <button type="button" class="qcm_fermer" aria-label="fermer le document"></button>
     <h4 id="titre_doc_reglementation">Les règles du jeu évoluent&#8239;: cadre réglementaire</h4>
 
@@ -587,6 +587,59 @@
     <h5 class="souligne_fin">Une économie plus circulaire</h5>
     <p>En France, la loi AGEC a renforcé l’information des consommateurs et les démarches qui favorisent la réparation et la réduction des déchets.</p>
     <p>À l’échelle européenne, le règlement sur l’écoconception des produits durables (ESPR) établit un cadre pour faire évoluer les exigences applicables à différentes catégories de produits. Les obligations précises dépendent toutefois des textes adoptés pour chaque catégorie.</p>
+
+    <!-- ÉTIQUETTES DU BASIC-PHONE (doc de la prof, document 3) : étiquette énergie + indice de réparabilité -->
+    <figure class="etiquettes">
+      <p class="etiquettes_titre">Basic-phone®&#8239;: étiquette énergie et indice de réparabilité</p>
+
+      <div class="etiquettes_grille">
+
+        <!-- étiquette énergie européenne -->
+        <section class="etiquette_energie" aria-labelledby="titre_etiquette_energie">
+          <h6 class="etiquette_nom" id="titre_etiquette_energie">Étiquette énergie européenne</h6>
+          <p class="etiquette_texte_loi">smartphone, règlement délégué (UE) 2023/1669</p>
+          <ol class="energie_classes" aria-label="Classe d’efficacité énergétique : D, sur une échelle de A à G">
+            <li><span class="energie_barre">A</span></li>
+            <li><span class="energie_barre">B</span></li>
+            <li><span class="energie_barre">C</span></li>
+            <li class="energie_classe_produit"><span class="energie_barre">D</span><span class="energie_repere" aria-hidden="true">D</span></li>
+            <li><span class="energie_barre">E</span></li>
+            <li><span class="energie_barre">F</span></li>
+            <li><span class="energie_barre">G</span></li>
+          </ol>
+          <dl class="energie_infos">
+            <div><dt>autonomie</dt><dd>38&nbsp;h par charge</dd></div>
+            <div><dt>résistance aux chutes</dt><dd>50&nbsp;chutes (d’une hauteur de 1&nbsp;m)</dd></div>
+            <div><dt>classe de réparabilité</dt><dd>C</dd></div>
+            <div><dt>endurance de la batterie</dt><dd>800&nbsp;cycles (≥&nbsp;80&nbsp;% de capacité)</dd></div>
+            <div><dt>protection</dt><dd>IP54 (poussière et éclaboussures)</dd></div>
+          </dl>
+        </section>
+
+        <!-- indice de réparabilité français -->
+        <section class="etiquette_reparabilite" aria-labelledby="titre_indice_reparabilite">
+          <h6 class="etiquette_nom" id="titre_indice_reparabilite">Indice de réparabilité français</h6>
+          <p class="etiquette_texte_loi">décret n°&nbsp;2020-1757</p>
+          <p class="indice_note"><span class="indice_chiffre">6,2</span>/10</p>
+          <table class="fiche_technique indice_tableau">
+            <caption class="visuellement_cache">Notes de l’indice de réparabilité du Basic-phone, par critère</caption>
+            <thead>
+              <tr><th scope="col">critère</th><th scope="col">note /10</th><th scope="col">exemples</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">documentation</th><td class="indice_score">8,0</td><td>notices d’utilisation et de réparation disponibles&#8239;; clarté et complétude</td></tr>
+              <tr><th scope="row">démontage, accès et outils</th><td class="indice_score">6,0</td><td>facilité de démontage&#8239;; type et nombre d’outils&#8239;; fixations (standard ou propriétaires)</td></tr>
+              <tr><th scope="row">disponibilité des pièces détachées</th><td class="indice_score">5,0</td><td>durée de disponibilité des pièces (3&nbsp;ans)&#8239;; délai de livraison&#8239;; niveau de prix des pièces principales (batterie, écran…)</td></tr>
+              <tr><th scope="row">prix des pièces détachées</th><td class="indice_score">5,5</td><td>prix des pièces par rapport au prix du téléphone&#8239;; transparence des prix</td></tr>
+              <tr><th scope="row">critères spécifiques</th><td class="indice_score">6,5</td><td>remplacement de la batterie (sans outil spécial)&#8239;; remplacement de l’écran&#8239;; durée du support logiciel (3&nbsp;ans)</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+      </div>
+
+      <figcaption class="etiquettes_legende">Modèle de référence fictif, à visée pédagogique&#8239;: caractéristiques et notes données à titre d’illustration.</figcaption>
+    </figure>
 
     <h5 class="souligne_fin">Sources de référence&#8239;:</h5>
     <p class="note_document">
