@@ -79,11 +79,13 @@ doIt();
 
 
 
-
+<div id="tout">
 
 
 <div id="fond">
 </div>
+
+<div id="zone_objets"></div>
 
 <div class="declencheur" id="declencheur_dauphin"></div>
 <div class="declencheur" id="declencheur_case_game"></div>
@@ -91,8 +93,53 @@ doIt();
 <div class="declencheur" id="declencheur_encrypteur"></div>
 <div class="declencheur" id="declencheur_messagerie"></div>
 <div class="declencheur" id="declencheur_dans_les_brumes"></div>
-<div class="declencheur" id="declencheur_diploramax"></div>
+<div class="declencheur" id="declencheur_chimere"></div>
+<div class="declencheur" id="declencheur_electro_magneto_cool"></div>
 <div class="declencheur" id="declencheur_ele"></div>
+<div class="declencheur" id="declencheur_poubelle"></div>
+
+
+
+
+<div class="objet objet2" style="left: calc(50vw - 495px); top: calc(50vh + 195px);">
+<img src="CR2_p.png"><p class="sous_icone">arrestations<br>_abusives</p>
+</div>
+
+<div class="objet objet2" style="left: calc(50vw - 102px); top: calc(50vh + 195px);">
+<img src="CRS_p.png"><p class="sous_icone">violences_<br>racistes_et<br>discriminatoires</p>
+</div>
+<div class="objet objet2" style="left: calc(50vw - 305px); top: calc(50vh + 9px);">
+<img class="icone_petit" src="grenade_p.png"><p class="sous_icone">mutilations</p>
+</div>
+<div class="objet objet2" style="left: calc(50vw - 207px); top: calc(50vh - 241px);">
+<img src="helico_p.png"><p class="sous_icone">repressions</p>
+</div>
+<div class="objet objet2" style="left: calc(50vw + 289px); top: calc(50vh + 55px);">
+<img class="icone_petit" src="lacrymo_p.png"><p class="sous_icone">censures</p>
+</div>
+
+
+<div class="objet objet3" style="left: calc(50vw - 247px); top: calc(50vh + 76px);">
+<img src="darmanin_p.png" class="icone_tete"class="icone_petit"><p class="sous_icone">justice_<br>repressive</p>
+</div>
+<div class="objet objet3" style="left: calc(50vw + 126px); top: calc(50vh - 139px);">
+<img src="lecornu_p.png" class="icone_tete"><p class="sous_icone">restriction_<br>des_libertés</p>
+</div>
+<div class="objet objet3" style="left: calc(50vw - 36px); top: calc(50vh + 53px);">
+<img src="macron_p.png" class="icone_tete"><p class="sous_icone">déni_de_<br>démocratie</p>
+</div>
+<div class="objet objet3" style="left: calc(50vw - 200px); top: calc(50vh - 141px);">
+<img src="nunes_p.png" class="icone_tete"><p class="sous_icone">dérives_<br>autoritaires</p>
+</div>
+<div class="objet objet3" style="left: calc(50vw + 345px); top: calc(50vh - 78px);">
+<img src="bolore_p.png" class="icone_tete"><p class="sous_icone">désinformation</p>
+</div>
+
+
+<div id="range_bureau">range le bureau en mettant à la poubelle toutes les choses que tu ne veux plus <a id="changer_bureau">→ changer de bureau</a></div>
+
+
+
 
 <div id="pop_up_dauphin" class="pop_up">
   <div id="haut">
@@ -964,10 +1011,10 @@ doIt();
     <button id="fermer_dans_les_brumes">x</button>
   </div>
   <div id="boite_dans_les_brumes">
-    <div id="img_dans_les_brumes" class="img_pop_up"></div>
-   <a target="_blank" href="https://bonjourwesh.github.io/DANS_LES_BRUMES/" class="lien_site">visiter le site dans les brumes de Camille Peyrachon</a>
+    <img id="img_dans_les_brumes" src="../../projet/dans_les_brumes/img/1.webp" alt="">
+    <a target="_blank" href="https://bonjourwesh.github.io/DANS_LES_BRUMES/" class="lien_site">visiter le site dans les brumes de Camille Peyrachon</a>
   </div>
-</div>  
+</div>
 
 
 <div id="pop_up_diploramax" class="pop_up">
@@ -1006,15 +1053,36 @@ doIt();
 
 
 
-<div id="pop_up_encrypteur" class="pop_up">
+<div id="pop_up_chimere" class="pop_up">
   <div id="haut">
-    <button id="fermer_encrypteur">x</button>
+    <button id="fermer_chimere">x</button>
   </div>
-  <div id="boite_encrypteur">
-   <a target="_blank" href="https://bonjourwesh.github.io/eleonore_sense/dans-mes-etoiles.html?var1=Dkgpxgpwg%20uwt%20oqp%20ukvg%20ygd" id="message_cligno">décrypter le message cosmique</a>
+<div id="boite_chimere">
+  <div class="cadre_video">
+    <img class="bandeau_video" src="../../projet/chimere/img/bordure_chimere.jpg" alt="">
+    <video id="img_chimere" class="img_pop_up" src="../../projet/chimere/img/1.mp4" muted loop playsinline preload="none"></video>
   </div>
-</div>  
+  <a target="_blank" href="https://chimeras.centrepompidou.fr" class="lien_site">visiter le site <span class="italic">Do our chimeras most Ressemble Us?</span></a>
+</div>
+</div>
 
+
+<div id="pop_up_electro_magneto_cool" class="pop_up">
+  <div id="haut">
+    <button id="fermer_electro_magneto_cool">x</button>
+  </div>
+  <div id="boite_electro_magneto_cool">
+    <div class="cadre_site">
+      <img class="bandeau_video" src="../../projet/electro_magneto/img/bordure_electro.jpg" alt="">
+      <div class="ecran_site">
+        <iframe src="https://eleonore-sense.github.io/bonjour/electro_magneto_cool/champs_electromagnetique/champs_electrique.html" loading="lazy"></iframe>
+      </div>
+    </div>
+    <div class="liens_site">
+      <a target="_blank" href="https://eleonore-sense.github.io/bonjour/electro_magneto_cool/" class="vers_projet_lien">>> visiter tout le site</a>
+    </div>
+  </div>
+</div>
 
 
 
@@ -1038,7 +1106,7 @@ Pour aborder ces questions, je cherche à inviter dans de nouvelles histoires en
 </div>  
 
 
-
+</div>
 <div id="vers_brume" class="vers_projet"><span class="emoji"></span> <a href="../../projet/dans_les_brumes/index.html" class="vers_projet_lien">en apprendre plus sur le projet</a></div>
 
 <div id="vers_diploramax" class="vers_projet"><span class="emoji"></span> <a href="../../projet/diploramax_site/index.html" class="vers_projet_lien">en apprendre plus sur le projet</a></div>
@@ -1046,6 +1114,12 @@ Pour aborder ces questions, je cherche à inviter dans de nouvelles histoires en
 <div id="vers_genre" class="vers_projet"><span class="emoji"></span> <a href="../../projet/genre_site/index.html" class="vers_projet_lien">en apprendre plus sur le projet</a></div>
 
 <div id="vers_messagerie" class="vers_projet"><span class="emoji"></span> <a href="../../projet/messagerie_cryptee/index.html" class="vers_projet_lien">en apprendre plus sur le projet</a></div>
+
+
+<div id="vers_chimere" class="vers_projet"><span class="emoji"></span> <a href="../../projet/chimere/index.html" class="vers_projet_lien">en apprendre plus sur le projet</a></div>
+
+<div id="vers_electro_magneto_cool" class="vers_projet"><span class="emoji"></span> <a href="../../projet/electro_magneto/index.html" class="vers_projet_lien">en apprendre plus sur le projet</a></div>
+
 
 <div id="tel">
 <div id="gif_ordi1" class="gif_tel" style="background-image: url('../../projet/programm/img/0_gif.gif'); right:10vw; top: 13vh; width:84px; height:80px;"></div>

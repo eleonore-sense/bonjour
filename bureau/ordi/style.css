@@ -7,6 +7,13 @@
 
 	}
 
+	@font-face {
+	    font-family: 'Mincraftia';
+	    src: url('../../TYPO/Minecraftia-Regular.ttf') format('truetype');
+	    font-weight: normal;
+	    font-style: normal;
+
+	}
 
 
 html, body{
@@ -62,10 +69,18 @@ position: absolute;
 			background-size: contain;
 background-repeat: no-repeat;
 		transform: translate(-50%, -50%);
-				background-image: url("fond.jpg");
+				background-image: url("fond ordi 2026.jpg");
 }
 
-
+#tout{
+	position: absolute;
+	top: -3vh;
+	left: 0px;
+	width: 100vw;
+	height: 100vh;
+	transform: scale(0.92);
+	transform-origin: center center;
+}
 
 
 	.pop_up{
@@ -103,6 +118,8 @@ transform: translate(-50%, -50%);
 
 	#pop_up_dans_les_brumes{
 transform: translate(-50%, -50%);
+padding-left: 20px;
+padding-right: 20px;
 	}
 
 
@@ -118,7 +135,9 @@ height: 600px;
 
 
 
-
+.italic{
+	font-style: italic;
+}
 
 
 	#pop_up_genre{
@@ -230,10 +249,6 @@ margin-top: -40px;
 }
 
 
-#img_dans_les_brumes{
-	background-image: url("../../projet/dans_les_brumes/img/1.gif");
-}
-
 
 #img_diploramax{
 	background-image: url("../../projet/diploramax_site/img/1.gif");
@@ -242,6 +257,7 @@ margin-top: -40px;
 #img_genre{
 	background-image: url("../../projet/genre_site/img/2.jpg");
 }
+
 
 
 #boite_messagerie{
@@ -362,11 +378,19 @@ height: 70px;
 		transform: translate(-267px, -177px);
 }
 
-#declencheur_diploramax{
+#declencheur_chimere{
 width: 55px;
 height: 70px;
 		transform: translate(-206px, -110px);
 }
+
+
+#declencheur_electro_magneto_cool{
+width: 55px;
+height: 70px;
+		transform: translate(-145px, -110px);
+}
+
 
 #declencheur_ele{
 width: 55px;
@@ -379,6 +403,52 @@ height: 70px;
 	}
 
 
+
+
+
+
+#pop_up_chimere {
+  transform: translate(-50%, -50%);
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+#pop_up_electro_magneto_cool {
+  transform: translate(-50%, -50%);
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+
+.cadre_video {
+  width: 500px;
+  margin-bottom: 10px;
+  border: 0.7px solid black;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 4px rgba(255, 0, 221, 0.5), 0 0 14px rgba(255, 0, 221, 0.3), 0 0 28px rgba(255, 0, 221, 0.15);
+}
+
+.bandeau_video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+
+
+.cadre_video video, .cadre_video img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+#img_dans_les_brumes {
+  display: block;
+  width: 500px;
+  height: auto;
+  margin-bottom: 10px;
+}
 
 .vers_projet{
 	color: black;
@@ -409,3 +479,120 @@ a{
 }
 
 #tel{display: none;}
+
+
+
+
+#fond.bureau2{
+	background-image: url("bureau_2.jpg");
+}
+
+#fond.bureau3{
+	background-image: url("bureau_3.jpg");
+}
+
+#declencheur_poubelle{
+width: 55px;
+height: 70px;
+		transform: translate(460px, 212px);
+}
+
+.objet{
+	position: absolute;
+	z-index: 9;
+	width: 80px;
+	cursor: grab;
+	display: none;
+}
+
+
+.objet:active, .ui-draggable-dragging{
+	cursor: grabbing;
+}
+
+.objet img{
+	width: 66px;
+}
+
+.icone_petit{
+	width: 55px !important;
+	padding-left: 9px;
+}
+
+.icone_tete{
+	width: 63px !important;
+	padding-left: 4px;
+}
+
+.sous_icone{
+	width: 70px;
+	font-size: 0.7em;
+	text-align: center;
+	margin: 0px;
+font-family: Minecraftia;
+line-height: 1.4;
+	color: white;
+		margin-top: 6px;
+text-shadow: 1px 1px 1px rgba(0,0,0,0.5), -1px -1px 1px rgba(0,0,0,0.5), 1px -1px 1px rgba(0,0,0,0.5), -1px 1px 1px rgba(0,0,0,0.5);
+}
+
+
+
+
+
+#range_bureau{
+	position: absolute;
+	bottom: -30px;
+	left: 50vw;
+	transform: translateX(-50%);
+	z-index: 9;
+	background-color: white;
+	border: solid 1px black;
+	font-style: italic;
+	padding: 5px 10px;
+	font-size: 0.9em;
+	display: none;
+}
+
+#changer_bureau{
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+
+#zone_objets{
+	position: absolute;
+	left: calc(50vw - 567px);
+	top: calc(50vh - 322px);
+	width: 1125px;
+	height: 636px;
+	pointer-events: none;
+}
+
+.cadre_site {
+  width: 900px;
+  border: 0.7px solid black;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 4px rgba(255, 0, 221, 0.5), 0 0 14px rgba(255, 0, 221, 0.3), 0 0 28px rgba(255, 0, 221, 0.15);
+}
+
+
+
+.ecran_site {
+  width: 900px;
+  height: 562px;
+  overflow: hidden;
+}
+
+.ecran_site iframe {
+  width: 1440px;
+  height: 900px;
+  border: none;
+  transform: scale(0.625);
+  transform-origin: top left;
+}
+
+.liens_site {
+  padding: 10px 5px 5px;
+}
