@@ -144,7 +144,7 @@ if (tour == 1) {
 $("#notice").css("display", "block");
 }
 $(".tour" + tour).css("display", "block");
-$(".tour" + tour + " .bougie").removeClass("eteinte agitee").data("souffle", 0);
+$(".tour" + tour + " .bougie").removeClass("eteinte agitee").data("souffle", 0).data("sens", 0);
   }
 
   function flamme_eteinte(){
@@ -169,29 +169,40 @@ lancer_tour();
   var st = 0;
 
   $(document).mousemove(function(e){
+var mx = e.pageX - sx;
 var vitesse = (Math.abs(e.pageX - sx) + Math.abs(e.pageY - sy)) / Math.max(e.timeStamp - st, 1);
 sx = e.pageX;
 sy = e.pageY;
 st = e.timeStamp;
-
-
 $(".bougie:visible").not(".eteinte").each(function(){
 var r = this.getBoundingClientRect();
 var dx = e.clientX - (r.left + r.width / 2);
 var dy = e.clientY - (r.top + r.height / 2);
 var distance = Math.sqrt(dx * dx + dy * dy);
-if (distance < 120 && vitesse > 1.5) {
+if (distance < 120 && vitesse > 1) {
+$(this).addClass("agitee");
+if (mx != 0) {
+var sens = mx > 0 ? 1 : -1;
+if (sens != $(this).data("sens")) {
+$(this).data("sens", sens).data("trajet", 0).data("compte", false);
+}
+$(this).data("trajet", $(this).data("trajet") + Math.abs(mx));
+if ($(this).data("trajet") >= 30 && !$(this).data("compte")) {
+$(this).data("compte", true);
 $(this).data("souffle", ($(this).data("souffle") || 0) + 1);
-if ($(this).data("souffle") > 6) {
+}
+}
+if ($(this).data("souffle") >= 4) {
 $(this).removeClass("agitee").addClass("eteinte");
 if ($(".bougie:visible").not(".eteinte").length == 0) {
 setTimeout(flamme_eteinte, 900);
 }
 }
-} else if (distance < 100) {
+} else if (distance < 120) {
 $(this).addClass("agitee");
 } else {
 $(this).removeClass("agitee");
+$(this).data("souffle", 0).data("sens", 0);
 }
 });
   });
